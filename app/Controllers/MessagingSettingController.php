@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Organization;
 use App\Models\Position;
 use App\Models\Notice;
+use App\Models\UserModel;
 
 class MessagingSettingController extends BaseController
 {
@@ -21,32 +22,47 @@ class MessagingSettingController extends BaseController
 		$this->department = new Department();
 		$this->position = new Position();
 		$this->notice = new Notice();
+		$this->user = new UserModel();
 	}
 	public function notice_board()
 	{
 		if($this->request->getMethod() == 'post'):
 		
-		print_r($_POST);
-		//	$this->notice->save($_POST);
+	
+		$this->notice->save($_POST);
 		
-//			session()->setFlashData("action","action successful");
-//			return redirect()->to(base_url('/notice-board'));
+			session()->setFlashData("action","action successful");
+			return redirect()->to(base_url('/notice-board'));
 		
 		endif;
 		
 		
 		
 		if($this->request->getMethod() == 'get'):
+			
+		
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$data['notices'] = $this->notice
+			$notices= $this->notice
 				->where('n_status', 2)
 				->orWhere('n_status', 3)
-				->join('users', 'notices.n_by = users.user_id')
-				->findAll();
+				->join('users', 'notices.n_signed_by = users.user_id')
+				->paginate('2');
+				//->findAll();
 			
+			$new_notices = array();
+			$i = 0;
+			foreach ($notices as $notice):
+				$user = $this->user->where('user_id', $notice['n_by'])->first();
+				$notice['created_by'] = $user['user_name'];
+				$new_notices[$i] = $notice;
+				$i++;
+			endforeach;
 			
+			$data['notices'] = $notices;
+			$data['pager'] = $this->notice->pager;
 				return view('office/notice_board', $data);
+			
 		endif;
 	}
 	
