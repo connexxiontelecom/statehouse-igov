@@ -49,6 +49,11 @@ class Users extends Migration
 				'user_status' =>[
 					'type' => 'INT',
 				],
+				
+				'user_type'=>[
+					'type' => 'INT',
+				],
+				
 				'updated_at' => [
 					'type' => 'datetime',
 					'null' => true,
