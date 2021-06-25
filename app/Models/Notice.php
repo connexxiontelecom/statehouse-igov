@@ -14,7 +14,7 @@ class Notice extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['n_id', 'n_subject', 'n_body', 'n_status', 'n_by'];
+	protected $allowedFields        = ['n_id', 'n_subject', 'n_body', 'n_status', 'n_signed_by', 'n_by'];
 
 	// Dates
 	protected $useTimestamps        = false;

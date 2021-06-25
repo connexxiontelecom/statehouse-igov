@@ -59,6 +59,7 @@ class BaseController extends ResourceController
 		$this->validator = \Config\Services::validation();
 		$this->email = \Config\Services::email();
 		$this->client = \Config\Services::curlrequest();
+		helper('text');
 	}
 	
 	

@@ -25,10 +25,12 @@ class MessagingSettingController extends BaseController
 	public function notice_board()
 	{
 		if($this->request->getMethod() == 'post'):
-			
-			$this->notice->save($_POST);
-			session()->setFlashData("action","action successful");
-			return redirect()->to(base_url('/notice-board'));
+		
+		print_r($_POST);
+		//	$this->notice->save($_POST);
+		
+//			session()->setFlashData("action","action successful");
+//			return redirect()->to(base_url('/notice-board'));
 		
 		endif;
 		
@@ -37,8 +39,14 @@ class MessagingSettingController extends BaseController
 		if($this->request->getMethod() == 'get'):
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$data['notices'] = $this->notice->findAll();
-			return view('office/notice_board', $data);
+			$data['notices'] = $this->notice
+				->where('n_status', 2)
+				->orWhere('n_status', 3)
+				->join('users', 'notices.n_by = users.user_id')
+				->findAll();
+			
+			
+				return view('office/notice_board', $data);
 		endif;
 	}
 	

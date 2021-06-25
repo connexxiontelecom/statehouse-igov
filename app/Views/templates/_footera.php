@@ -1,6 +1,8 @@
 <!-- Right bar overlay-->
 <div class="rightbar-overlay"></div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 <!-- Vendor js -->
 <script src="/assetsa/js/vendor.min.js"></script>
 
@@ -21,8 +23,7 @@
 
 <!-- App js-->
 <script src="/assetsa/js/app.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
 
 <!-- Tost-->
 <script src=/assetsa/libs/jquery-toast-plugin/jquery.toast.min.js"></script>
