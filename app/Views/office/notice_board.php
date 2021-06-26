@@ -99,13 +99,13 @@
 								<!-- Progress-->
 								
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-6">
 										<div class="mb-4">
 											<h5>Created By</h5>
-<!--											<p> <small class="text-muted">--><?//=$notice['created_by']; ?><!--</small></p>-->
+											<p> <small class="text-muted"><?=$notice['created_by']; ?></small></p>
 										</div>
 									</div>
-									<div class="col-md-6">
+									<div class="col-6">
 										<div class="mb-4">
 											<h5> Date:</h5>
 											<p> <small class="text-muted"><?=$notice['created_at'] ?></small></p>
@@ -118,19 +118,24 @@
 						
 						<?php endforeach; ?>
 						
-						<?= $pager->links() ?>
+						
 					</div>
 			
 					<!-- end row -->
-					
-<!--					<div class="row">-->
-<!--						<div class="col-12">-->
-<!--							<div class="text-center mb-3">-->
-<!--								<a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-spin mdi-loading mr-1"></i> Load more </a>-->
-<!--							</div>-->
-<!--						</div> <!-- end col-->-->
+<!--					<div class="container">-->
+<!--						-->
+<!--						<ul class="pagination">-->
+<!--							<li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
+<!--							<li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--							<li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--							<li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--							<li class="page-item"><a class="page-link" href="#">Next</a></li>-->
+<!--						</ul>-->
 <!--					</div>-->
-					<!-- end row -->
+					
+					<?= $pager->links() ?>
+					
+					
 				
 				</div> <!-- end card body-->
 			</div> <!-- end card -->
@@ -163,7 +168,7 @@
 					<div class="col-md-4">
 						<div class="mb-4">
 							<h5>Created By</h5>
-<!--							<p> <small class="text-muted">--><?//=$notice['created_by']; ?><!--</small></p>-->
+							<p> <small class="text-muted"><?=$notice['created_by']; ?></small></p>
 						</div>
 					</div>
 					<div class="col-md-4">

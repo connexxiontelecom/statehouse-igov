@@ -47,7 +47,7 @@ class MessagingSettingController extends BaseController
 				->where('n_status', 2)
 				->orWhere('n_status', 3)
 				->join('users', 'notices.n_signed_by = users.user_id')
-				->paginate('2');
+				->paginate('9');
 				//->findAll();
 			
 			$new_notices = array();
@@ -59,7 +59,7 @@ class MessagingSettingController extends BaseController
 				$i++;
 			endforeach;
 			
-			$data['notices'] = $notices;
+			$data['notices'] = $new_notices;
 			$data['pager'] = $this->notice->pager;
 				return view('office/notice_board', $data);
 			

@@ -39,4 +39,25 @@ class Notice extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+	
+	public function get_notices_ad($paginate){
+		$builder = $this->db->table('notices');
+		$builder->where('n_status', 2);
+		$builder->orWhere('n_status', 3);
+		$builder->join('users', 'notices.n_signed_by = users.user_id');
+		$notices = $builder->get()->getResultArray();
+		$new_notices = array();
+		$i = 0;
+		foreach ($notices as $notice):
+			$builder =  $this->db->table('users');
+			$builder->where('user_id', $notice['n_by']);
+			$user = $builder->get()->getRowArray();
+			$notice['created_by'] = $user['user_name'];
+			$new_notices[$i] = $notice;
+			$i++;
+		endforeach;
+		
+		return $new_notices->paginate(5);
+	
+	}
 }
