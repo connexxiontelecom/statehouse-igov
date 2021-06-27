@@ -44,405 +44,98 @@
 						</div>
 					<?php endif; ?>
 					
-					<div class="row mb-2">
-						<div class="col-sm-4">
-							<button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-notice"> <i class="mdi mdi-plus mr-2"></i>New Notice</button>
-						</div>
-						<div class="col-sm-8">
-							<div class="text-sm-right">
-								<div class="btn-group mb-3">
-									<button type="button" class="btn btn-primary">All</button>
-								</div>
-								<div class="btn-group mb-3 ml-1">
-									<button type="button" class="btn btn-light">Ongoing</button>
-									<button type="button" class="btn btn-light">Finished</button>
-								</div>
-								<div class="btn-group mb-3 ml-2 d-none d-sm-inline-block">
-									<button type="button" class="btn btn-dark"><i class="mdi mdi-apps"></i></button>
-								</div>
-								<div class="btn-group mb-3 d-none d-sm-inline-block">
-									<button type="button" class="btn btn-link text-dark"><i class="mdi mdi-format-list-bulleted-type"></i></button>
-								</div>
-							</div>
-						</div><!-- end col-->
-					</div>
-					<!-- end row-->
-					
 					
 					<div class="row">
-						<div class="col-lg-4">
-							<div class="card-box project-box">
+						
+						<?php foreach ($notices as $notice):  ?>
+						<div class="col-lg-4" style="padding-bottom: 5px; max-height: 100%" >
+							<div class="card-box project-box" style=" <?php if($notice['n_status'] == 3): ?>background-color: lavenderblush; <?php endif; ?>;" >
 								<div class="dropdown float-right">
 									<a href="#" class="dropdown-toggle card-drop arrow-none" data-toggle="dropdown" aria-expanded="false">
 										<i class="mdi mdi-dots-horizontal m-0 text-muted h3"></i>
 									</a>
+									
 									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#">Edit</a>
-										<a class="dropdown-item" href="#">Delete</a>
-										<a class="dropdown-item" href="#">Add Members</a>
-										<a class="dropdown-item" href="#">Add Due Date</a>
+										<?php if($notice['n_status'] == 3): ?>
+											<form action="" method="post">
+												<input type="hidden" name="n_status" value="2">
+												<input type="hidden" name="n_id" value="<?=$notice['n_id']; ?>">
+												<button type="submit" class="dropdown-item">Activate</button>
+											
+											</form>
+										<?php endif; ?>
+										<?php if($notice['n_status'] == 2): ?>
+											<form action="" method="post">
+											<input type="hidden" name="n_status" value="3">
+												<input type="hidden" name="n_id" value="<?=$notice['n_id']; ?>">
+												<button type="submit" class="dropdown-item">Deactivate</button>
+											
+											</form>
+											
+										
+										<?php endif; ?>
 									</div>
 								</div> <!-- end dropdown -->
 								<!-- Title-->
-								<h4 class="mt-0"><a href="project-detail.html" class="text-dark">New Admin Design</a></h4>
-								<p class="text-muted text-uppercase"><i class="mdi mdi-account-circle"></i> <small>Orange Limited</small></p>
-								<div class="badge bg-soft-success text-success mb-3">Finished</div>
+								<h4 class="mt-0"><a href="#" data-toggle="modal" data-target="#view-notice<?=$notice['n_id'] ?>" class="text-dark"><?=$notice['n_subject'] ?></a></h4>
+								
 								<!-- Desc-->
-								<p class="text-muted font-13 mb-3 sp-line-2">With supporting text below as a natural lead-in to additional contenposuere erat a
-									ante...<a href="javascript:void(0);" class="font-weight-bold text-muted">view more</a>
+								<p class="text-muted font-13 mb-3 sp-line-2">
+									<?=word_limiter($notice['n_body'], 70) ?>
+								
 								</p>
+								<p class="text-muted font-13 mb-3 sp-line-2">
+										<a href="#" data-toggle="modal" data-target="#view-notice<?=$notice['n_id'] ?>" class="font-weight-bold text-muted">view more</a></p>
 								<!-- Task info-->
-								<p class="mb-1">
-                                        <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
-                                            <b>78</b> Tasks
-                                        </span>
-									<span class="text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-comment-multiple-outline text-muted"></i>
-                                            <b>214</b> Comments
-                                        </span>
-								</p>
+							
 								<!-- Team-->
 								<div class="avatar-group mb-3">
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme">
-										<img src="../assets/images/users/user-1.jpg" class="rounded-circle avatar-sm" alt="friend" />
+									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="<?=$notice['user_name'] ?>">
+										<img src="/assetsa/images/user.png" class="rounded-circle avatar-sm" alt="friend" />
 									</a>
 									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Michael Zenaty">
-										<img src="../assets/images/users/user-2.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
 									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="James Anderson">
-										<img src="../assets/images/users/user-3.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme">
-										<img src="../assets/images/users/user-4.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Username">
-										<img src="../assets/images/users/user-5.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
 								</div>
 								<!-- Progress-->
-								<p class="mb-2 font-weight-semibold">Task completed: <span class="float-right">28/78</span></p>
-								<div class="progress mb-1" style="height: 7px;">
-									<div class="progress-bar"
-										 role="progressbar" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"
-										 style="width: 34%;">
-									</div><!-- /.progress-bar .progress-bar-danger -->
-								</div><!-- /.progress .no-rounded -->
-							
+								
+								<div class="row">
+									<div class="col-6">
+										<div class="mb-4">
+											<h5>Created By</h5>
+											<p> <small class="text-muted"><?=$notice['created_by']; ?></small></p>
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="mb-4">
+											<h5> Date:</h5>
+											<p> <small class="text-muted"><?=$notice['created_at'] ?></small></p>
+										</div>
+									</div>
+									
+								</div>
 							</div> <!-- end card box-->
 						</div><!-- end col-->
 						
-						<div class="col-lg-4">
-							<div class="card-box project-box">
-								<div class="dropdown float-right">
-									<a href="#" class="dropdown-toggle card-drop arrow-none" data-toggle="dropdown" aria-expanded="false">
-										<i class="mdi mdi-dots-horizontal m-0 text-muted h3"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#">Edit</a>
-										<a class="dropdown-item" href="#">Delete</a>
-										<a class="dropdown-item" href="#">Add Members</a>
-										<a class="dropdown-item" href="#">Add Due Date</a>
-									</div>
-								</div> <!-- end dropdown -->
-								<!-- Title-->
-								<h4 class="mt-0"><a href="project-detail.html" class="text-dark">App Design and Development</a></h4>
-								<p class="text-muted text-uppercase"><i class="mdi mdi-account-circle"></i> <small>Moondust Softwares</small></p>
-								<div class="badge bg-soft-secondary text-secondary mb-3">Ongoing</div>
-								<!-- Desc-->
-								<p class="text-muted font-13 mb-3 sp-line-2">A handful of model sentence structures, to generate Lorem Ipsum which looks reasonable...<a href="javascript:void(0);" class="font-weight-bold text-muted">view more</a>
-								</p>
-								<!-- Task info-->
-								<p class="mb-1">
-                                        <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
-                                            <b>81</b> Tasks
-                                        </span>
-									<span class="text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-comment-multiple-outline text-muted"></i>
-                                            <b>103</b> Comments
-                                        </span>
-								</p>
-								<!-- Team-->
-								<div class="avatar-group mb-3">
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme">
-										<img src="../assets/images/users/user-6.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Michael Zenaty">
-										<img src="../assets/images/users/user-7.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="James Anderson">
-										<img src="../assets/images/users/user-8.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-								</div>
-								<!-- Progress-->
-								<p class="mb-2 font-weight-semibold">Task completed: <span class="float-right">55/85</span></p>
-								<div class="progress mb-1" style="height: 7px;">
-									<div class="progress-bar"
-										 role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
-										 style="width: 80%;">
-									</div><!-- /.progress-bar .progress-bar-danger -->
-								</div><!-- /.progress .no-rounded -->
-							
-							</div> <!-- end card box-->
-						</div><!-- end col-->
+						<?php endforeach; ?>
 						
-						<div class="col-lg-4">
-							<div class="card-box project-box">
-								<div class="dropdown float-right">
-									<a href="#" class="dropdown-toggle card-drop arrow-none" data-toggle="dropdown" aria-expanded="false">
-										<i class="mdi mdi-dots-horizontal m-0 text-muted h3"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#">Edit</a>
-										<a class="dropdown-item" href="#">Delete</a>
-										<a class="dropdown-item" href="#">Add Members</a>
-										<a class="dropdown-item" href="#">Add Due Date</a>
-									</div>
-								</div> <!-- end dropdown -->
-								<!-- Title-->
-								<h4 class="mt-0"><a href="project-detail.html" class="text-dark">Landing page Design</a></h4>
-								<p class="text-muted text-uppercase"><i class="mdi mdi-account-circle"></i> <small>Rose Technologies</small></p>
-								<div class="badge bg-soft-success text-success mb-3">Finished</div>
-								<!-- Desc-->
-								<p class="text-muted font-13 mb-3 sp-line-2">You need to be sure there isn't anything embarrassing hidden in the middle of text...<a href="javascript:void(0);" class="font-weight-bold text-muted">view more</a>
-								</p>
-								<!-- Task info-->
-								<p class="mb-1">
-                                        <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
-                                            <b>42</b> Tasks
-                                        </span>
-									<span class="text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-comment-multiple-outline text-muted"></i>
-                                            <b>65</b> Comments
-                                        </span>
-								</p>
-								<!-- Team-->
-								<div class="avatar-group mb-3">
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme">
-										<img src="../assets/images/users/user-9.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Michael Zenaty">
-										<img src="../assets/images/users/user-10.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="James Anderson">
-										<img src="../assets/images/users/user-1.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme">
-										<img src="../assets/images/users/user-3.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-								</div>
-								<!-- Progress-->
-								<p class="mb-2 font-weight-semibold">Task completed: <span class="float-right">21/42</span></p>
-								<div class="progress mb-1" style="height: 7px;">
-									<div class="progress-bar"
-										 role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
-										 style="width: 50%;">
-									</div><!-- /.progress-bar .progress-bar-danger -->
-								</div><!-- /.progress .no-rounded -->
-							
-							</div> <!-- end card box-->
-						</div><!-- end col-->
+						
 					</div>
+			
 					<!-- end row -->
+<!--					<div class="container">-->
+<!--						-->
+<!--						<ul class="pagination">-->
+<!--							<li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
+<!--							<li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--							<li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--							<li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--							<li class="page-item"><a class="page-link" href="#">Next</a></li>-->
+<!--						</ul>-->
+<!--					</div>-->
 					
-					<div class="row">
-						<div class="col-lg-4">
-							<div class="card-box project-box">
-								<div class="dropdown float-right">
-									<a href="#" class="dropdown-toggle card-drop arrow-none" data-toggle="dropdown" aria-expanded="false">
-										<i class="mdi mdi-dots-horizontal m-0 text-muted h3"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#">Edit</a>
-										<a class="dropdown-item" href="#">Delete</a>
-										<a class="dropdown-item" href="#">Add Members</a>
-										<a class="dropdown-item" href="#">Add Due Date</a>
-									</div>
-								</div> <!-- end dropdown -->
-								<!-- Title-->
-								<h4 class="mt-0"><a href="project-detail.html" class="text-dark">Custom Software Development</a></h4>
-								<p class="text-muted text-uppercase"><i class="mdi mdi-account-circle"></i> <small>Apple Navigations</small></p>
-								<div class="badge bg-soft-secondary text-secondary mb-3">Ongoing</div>
-								<!-- Desc-->
-								<p class="text-muted font-13 mb-3 sp-line-2">You need to be sure there isn't anything embarrassing hidden in the middle of text...<a href="javascript:void(0);" class="font-weight-bold text-muted">view more</a>
-								</p>
-								<!-- Task info-->
-								<p class="mb-1">
-                                        <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
-                                            <b>95</b> Tasks
-                                        </span>
-									<span class="text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-comment-multiple-outline text-muted"></i>
-                                            <b>1.3k</b> Comments
-                                        </span>
-								</p>
-								<!-- Team-->
-								<div class="avatar-group mb-3">
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme">
-										<img src="../assets/images/users/user-5.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Michael Zenaty">
-										<img src="../assets/images/users/user-8.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="James Anderson">
-										<img src="../assets/images/users/user-9.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-								</div>
-								<!-- Progress-->
-								<p class="mb-2 font-weight-semibold">Task completed: <span class="float-right">70/95</span></p>
-								<div class="progress mb-1" style="height: 7px;">
-									<div class="progress-bar"
-										 role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"
-										 style="width: 68%;">
-									</div><!-- /.progress-bar .progress-bar-danger -->
-								</div><!-- /.progress .no-rounded -->
-							
-							</div> <!-- end card box-->
-						</div><!-- end col-->
-						
-						<div class="col-lg-4">
-							<div class="card-box project-box">
-								<div class="dropdown float-right">
-									<a href="#" class="dropdown-toggle card-drop arrow-none" data-toggle="dropdown" aria-expanded="false">
-										<i class="mdi mdi-dots-horizontal m-0 text-muted h3"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#">Edit</a>
-										<a class="dropdown-item" href="#">Delete</a>
-										<a class="dropdown-item" href="#">Add Members</a>
-										<a class="dropdown-item" href="#">Add Due Date</a>
-									</div>
-								</div> <!-- end dropdown -->
-								<!-- Title-->
-								<h4 class="mt-0"><a href="project-detail.html" class="text-dark">Website Redesign</a></h4>
-								<p class="text-muted text-uppercase"><i class="mdi mdi-account-circle"></i> <small>Enigma Navigations</small></p>
-								<div class="badge bg-soft-secondary text-secondary mb-3">Ongoing</div>
-								<!-- Desc-->
-								<p class="text-muted font-13 mb-3 sp-line-2">There are many variations of passages of Lorem Ipsum available natural lead-in to additional...<a href="javascript:void(0);" class="font-weight-bold text-muted">view more</a>
-								</p>
-								<!-- Task info-->
-								<p class="mb-1">
-                                        <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
-                                            <b>36</b> Tasks
-                                        </span>
-									<span class="text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-comment-multiple-outline text-muted"></i>
-                                            <b>78</b> Comments
-                                        </span>
-								</p>
-								<!-- Team-->
-								<div class="avatar-group mb-3">
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="James Anderson">
-										<img src="../assets/images/users/user-3.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme">
-										<img src="../assets/images/users/user-4.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Username">
-										<img src="../assets/images/users/user-5.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme">
-										<img src="../assets/images/users/user-1.jpg" class="rounded-circle avatar-sm" alt="friend">
-									</a>
-								</div>
-								<!-- Progress-->
-								<p class="mb-2 font-weight-semibold">Task completed: <span class="float-right">12/36</span></p>
-								<div class="progress mb-1" style="height: 7px;">
-									<div class="progress-bar"
-										 role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"
-										 style="width: 33%;">
-									</div><!-- /.progress-bar .progress-bar-danger -->
-								</div><!-- /.progress .no-rounded -->
-							
-							</div> <!-- end card box-->
-						</div><!-- end col-->
-						
-						<div class="col-lg-4">
-							<div class="card-box project-box">
-								<div class="dropdown float-right">
-									<a href="#" class="dropdown-toggle card-drop arrow-none" data-toggle="dropdown" aria-expanded="false">
-										<i class="mdi mdi-dots-horizontal m-0 text-muted h3"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#">Edit</a>
-										<a class="dropdown-item" href="#">Delete</a>
-										<a class="dropdown-item" href="#">Add Members</a>
-										<a class="dropdown-item" href="#">Add Due Date</a>
-									</div>
-								</div> <!-- end dropdown -->
-								<!-- Title-->
-								<h4 class="mt-0"><a href="project-detail.html" class="text-dark">Multipurpose Landing Template</a></h4>
-								<p class="text-muted text-uppercase"><i class="mdi mdi-account-circle"></i> <small>Pride Softwares</small></p>
-								<div class="badge bg-soft-success text-success mb-3">Finished</div>
-								<!-- Desc-->
-								<p class="text-muted font-13 mb-3 sp-line-2">With supporting text below as a natural lead-in to additional contenposuere erat a
-									ante...<a href="javascript:void(0);" class="font-weight-bold text-muted">view more</a>
-								</p>
-								<!-- Task info-->
-								<p class="mb-1">
-                                        <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
-                                            <b>30</b> Tasks
-                                        </span>
-									<span class="text-nowrap mb-2 d-inline-block">
-                                            <i class="mdi mdi-comment-multiple-outline text-muted"></i>
-                                            <b>148</b> Comments
-                                        </span>
-								</p>
-								<!-- Team-->
-								<div class="avatar-group mb-3">
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme">
-										<img src="../assets/images/users/user-6.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Michael Zenaty">
-										<img src="../assets/images/users/user-7.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-									
-									<a href="javascript: void(0);" class="avatar-group-item" data-toggle="tooltip" data-placement="top" title="" data-original-title="James Anderson">
-										<img src="../assets/images/users/user-8.jpg" class="rounded-circle avatar-sm" alt="friend" />
-									</a>
-								</div>
-								<!-- Progress-->
-								<p class="mb-2 font-weight-semibold">Task completed: <span class="float-right">28/30</span></p>
-								<div class="progress mb-1" style="height: 7px;">
-									<div class="progress-bar"
-										 role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"
-										 style="width: 95%;">
-									</div><!-- /.progress-bar .progress-bar-danger -->
-								</div><!-- /.progress .no-rounded -->
-							
-							</div> <!-- end card box-->
-						</div><!-- end col-->
-					</div>
-					<!-- end row -->
+					<?= $pager->links() ?>
 					
-					<div class="row">
-						<div class="col-12">
-							<div class="text-center mb-3">
-								<a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-spin mdi-loading mr-1"></i> Load more </a>
-							</div>
-						</div> <!-- end col-->
-					</div>
-					<!-- end row -->
+					
 				
 				</div> <!-- end card body-->
 			</div> <!-- end card -->
@@ -455,49 +148,64 @@
 
 </div> <!-- container -->
 <!-- Long Content Scroll Modal -->
-<div class="modal fade" id="new-notice" tabindex="-1" role="dialog"
+<!-- Long Content Scroll Modal -->
+<?php foreach ($notices as $notice): ?>
+<div class="modal fade" id="view-notice<?=$notice['n_id'] ?>" tabindex="-1" role="dialog"
 	 aria-labelledby="scrollableModalTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="scrollableModalTitle">New Notice</h5>
+				<h5 class="modal-title" id="scrollableModalTitle"><?=$notice['n_subject'] ?></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<form method="post" action="">
-					<div class="form-group mb-3">
-						<label for="subject">Subject</label>
-						<input type="text" id="subject" class="form-control">
-					</div>
-					
-					<div id="snow-editor" style="height: 300px;">
-					
-					
-					</div> <!-- end Snow-editor-->
-					
-		
-					
-					
-					<div class="row g-3">
-						<div class="col-lg-12 offset-lg-12">
-							<div class="form-group mt-2">
-								<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
-							</div>
+				<?=$notice['n_body']; ?>
+				
+				
+				<div class="row">
+					<div class="col-md-4">
+						<div class="mb-4">
+							<h5>Created By</h5>
+							<p> <small class="text-muted"><?=$notice['created_by']; ?></small></p>
 						</div>
 					</div>
-				</form>
+					<div class="col-md-4">
+						<div class="mb-4">
+							<h5>Signed By</h5>
+							<p> <small class="text-muted"><?=$notice['user_name']; ?></small></p>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-4">
+							<h5> Date:</h5>
+							<p> <small class="text-muted"><?=$notice['created_at'] ?></small></p>
+						</div>
+					</div>
+				
+				</div>
 			</div>
+			
+			
 		
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<?php endforeach; ?>
 <?= $this->endSection() ?>
 
 <script>
-    $("#identifier").on("submit",function(){
-        $("#hiddenArea").val($("#quillArea").html());
-    })
+
+    function submitForm(){
+        console.log('hello');
+    }
+    // $("#notice_button").click(function(e){
+    // // $("#notice_button").on("click",function(e){
+    //     e.preventDefault();
+    //     //$("#notice_body").val($("#snow-editor").html());
+    //    // $('#notice_form').submit()
+	// 	console.log('hello');
+	// 	console.log($("#snow-editor").html());
+    // })
 </script>
