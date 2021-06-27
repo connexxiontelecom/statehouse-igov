@@ -48,7 +48,6 @@ class MessagingSettingController extends BaseController
 				->orWhere('n_status', 3)
 				->join('users', 'notices.n_signed_by = users.user_id')
 				->paginate('9');
-				//->findAll();
 			
 			$new_notices = array();
 			$i = 0;
