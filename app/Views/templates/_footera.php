@@ -3,7 +3,7 @@
 
 <!-- Vendor js -->
 <script src="/assetsa/js/vendor.min.js"></script>
-
+<script src="/assetsa/libs/jquery/jquery.min.js"></script>
 <script src="/assetsa/libs/ladda/spin.min.js"></script>
 <script src="/assetsa/libs/ladda/ladda.min.js"></script>
 
@@ -12,30 +12,21 @@
 
 <!-- Plugins js-->
 <script src="/assetsa/libs/flatpickr/flatpickr.min.js"></script>
-<script src="/assetsa/libs/apexcharts/apexcharts.min.js"></script>
+
 
 <script src="/assetsa/libs/selectize/js/standalone/selectize.min.js"></script>
 
 <!-- Dashboar 1 init js-->
-<script src="/assetsa/js/pages/dashboard-1.init.js"></script>
+
 
 <!-- App js-->
 <script src="/assetsa/js/app.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+<!--<script src="/assetsa/libs/jquery/jquery.min.js"></script>-->
+<!--<script src="/assetsa/libs/jquery/jquery.slim.min.js"></script>-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>-->
 
-<!-- Tost-->
-<script src=/assetsa/libs/jquery-toast-plugin/jquery.toast.min.js"></script>
-
-<!-- toastr init js-->
-<script src="/assetsa/js/pages/toastr.init.js"></script>
-
-
-<!-- Footable js -->
-<script src="/assetsa/libs/footable/footable.all.min.js"></script>
-
-<!-- Init js -->
-<script src="/assetsa/js/pages/foo-tables.init.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
 
 <!-- third party js -->
 <script src="/assetsa/libs/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -70,18 +61,15 @@
 <!-- Init js-->
 <script src="/assetsa/js/pages/form-advanced.init.js"></script>
 
-<!-- Plugins js -->
-<script src="/assets/libs/quill/quill.min.js"></script>
-
-<!-- Init js-->
-<script src="/assets/js/pages/form-quilljs.init.js"></script>
-
 <script>
-    $(window).load(function() {
+    $(document).ready(function(){
         $(".se-pre-con").delay(3000).fadeOut('5000');
 
     });
 </script>
+
+<?= $this->renderSection('extra-scripts') ?>
+
 
 </body>
 </html>

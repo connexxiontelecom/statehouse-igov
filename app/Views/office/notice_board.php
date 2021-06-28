@@ -13,13 +13,17 @@
 	<!-- start page title -->
 	<div class="row">
 		<div class="col-12">
+			
 			<div class="page-title-box">
+			
 				<div class="page-title-right">
+					
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url('office') ?>">iGov</a></li>
 						<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging Settings</a></li>
 						<li class="breadcrumb-item active">Notice Board</li>
 					</ol>
+					
 				</div>
 				<h4 class="page-title">Notice Board</h4>
 			</div>
@@ -28,13 +32,48 @@
 	<!-- end page title -->
 	
 	
-
-	
-	<div class="row">
-		<div class="col-12">
+	<div class="row" style="margin-top: -50px">
+		
+		<div class="col-12 order-xl-1 order-2">
+			<div class="card mb-2" >
+				<div class="card-body" style="padding-bottom: 0px; max-height: 20%">
+					<div class="row">
+						<div class="col-lg-3">
+							<form class="form-inline" method="get">
+								<div class="input-group input-group-sm">
+									<input type="text" name="search_params" class="form-control border">
+									<div class="input-group-append">
+										<button type="submit"  class="input-group-text bg-blue border-blue text-white">
+											<i class="mdi mdi-card-search"></i>
+										</button>
+									</div>
+								
+								</div>
+							</form>
+						
+						</div>
+						<div class="col-lg-3 offset-6">
+							<div class="text-lg-right mt-3 mt-lg-0">
+								<form id="filterForm" class="form-inline" method="get">
+									<div class="form-group mx-sm-3">
+									
+										<select name="filter_params" class="custom-select" id="filter-select">
+											<option selected disabled>Filter</option>
+											<option value="a">All</option>
+											<option value="2">Active Notices</option>
+											<option value="3">Deactivated Notices</option>
+											
+										</select>
+									</div>
+								</form>
+							</div>
+						</div><!-- end col-->
+					</div> <!-- end row -->
+				</div> <!-- end card-body-->
+			</div> <!-- end card-->
 			<div class="card">
 				<div class="card-body">
-					
+	
 					<?php if(session()->has('action')): ?>
 						<div class="alert alert-success alert-dismissible fade show" role="alert">
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -46,8 +85,8 @@
 					
 					
 					<div class="row">
-						
-						<?php foreach ($notices as $notice):  ?>
+					
+						<?php if(!empty($notices)): foreach ($notices as $notice):  ?>
 						<div class="col-lg-4" style="padding-bottom: 5px; max-height: 100%" >
 							<div class="card-box project-box" style=" <?php if($notice['n_status'] == 3): ?>background-color: lavenderblush; <?php endif; ?>;" >
 								<div class="dropdown float-right">
@@ -58,6 +97,7 @@
 									<div class="dropdown-menu dropdown-menu-right">
 										<?php if($notice['n_status'] == 3): ?>
 											<form action="" method="post">
+												
 												<input type="hidden" name="n_status" value="2">
 												<input type="hidden" name="n_id" value="<?=$notice['n_id']; ?>">
 												<button type="submit" class="dropdown-item">Activate</button>
@@ -67,6 +107,7 @@
 										<?php if($notice['n_status'] == 2): ?>
 											<form action="" method="post">
 											<input type="hidden" name="n_status" value="3">
+												
 												<input type="hidden" name="n_id" value="<?=$notice['n_id']; ?>">
 												<button type="submit" class="dropdown-item">Deactivate</button>
 											
@@ -116,7 +157,47 @@
 							</div> <!-- end card box-->
 						</div><!-- end col-->
 						
-						<?php endforeach; ?>
+						<?php endforeach;
+						
+						else: ?>
+							
+								<div class="col-md-12 col-lg-12 col-xl-12">
+									<div class="card bg-pattern">
+										
+										<div class="card-body p-4">
+											
+											<div class="auth-logo">
+												<a href="/" class="logo logo-dark text-center">
+                                        <span class="logo-lg">
+                                            <img src="../assets/images/logo-sm.png" alt="" height="22">
+                                        </span>
+												</a>
+												
+												<a href="/" class="logo logo-light text-center">
+                                        <span class="logo-lg">
+                                            <img src="../assets/images/logo-sm.png" alt="" height="22">
+                                        </span>
+												</a>
+											</div>
+											
+											<div class="text-center mt-4">
+												<h1 class="text-error">Oops</h1>
+												<h3 class="mt-3 mb-2">No Notice Found</h3>
+											
+												<a href="/" class="btn btn-success waves-effect waves-light">Back to Home</a>
+											</div>
+										
+										</div> <!-- end card-body -->
+									</div>
+									<!-- end card -->
+								
+								</div> <!-- end col -->
+						
+							
+						<?php
+						
+						
+						endif; ?>
 						
 						
 					</div>
@@ -193,19 +274,19 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php endforeach; ?>
+
+
+
 <?= $this->endSection() ?>
 
-<script>
+<?= $this->section('extra-scripts') ?>
+	<script>
+        $(document).ready(function(){
+            $('#filter-select').change(function(){
+                $('#filterForm').submit();
+            });
 
-    function submitForm(){
-        console.log('hello');
-    }
-    // $("#notice_button").click(function(e){
-    // // $("#notice_button").on("click",function(e){
-    //     e.preventDefault();
-    //     //$("#notice_body").val($("#snow-editor").html());
-    //    // $('#notice_form').submit()
-	// 	console.log('hello');
-	// 	console.log($("#snow-editor").html());
-    // })
-</script>
+        });
+	</script>
+	
+<?= $this->endSection() ?>
