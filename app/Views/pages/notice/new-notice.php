@@ -19,7 +19,13 @@
 		</div>
 	</div>
 	<!-- end page title -->
-  <div class="row">
+  <div class="row mt-n4">
+    <div class="col-lg-10"></div>
+    <div class="col-lg-2">
+      <a href="<?=site_url('/notices')?>" type="button" class="btn btn-dark btn-block float-right"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
+    </div>
+  </div>
+  <div class="row mt-n4">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
