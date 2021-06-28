@@ -534,39 +534,18 @@
 			
 			<!--- Sidemenu -->
 			<div id="sidebar-menu">
-				
 				<ul id="side-menu">
-					
 					<li class="menu-title">Navigation</li>
-					
 					<li>
 						<a href="/">
 							<i data-feather="airplay"></i>
-							
 							<span> Dashboard </span>
 						</a>
-						
 					</li>
-					
-				
-					
 					<li>
 						<a href="apps-calendar.html">
 							<i data-feather="calendar"></i>
 							<span> Workflows </span>
-						</a>
-					</li>
-					
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="file-minus"></i>
-							<span> Memo </span>
-						</a>
-					</li>
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="file-text"></i>
-							<span> Circular </span>
 						</a>
 					</li>
 					<li>
@@ -589,14 +568,24 @@
 							<span> Trainings </span>
 						</a>
 					</li>
-					
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="message-square"></i>
-							<span> Messaging </span>
-						</a>
-					</li>
-					
+
+          <li>
+            <a href="#messaging" data-toggle="collapse">
+              <i data-feather="message-square"></i>
+              <span> Messaging </span>
+              <span class="menu-arrow"></span>
+            </a>
+            <div class="collapse" id="messaging">
+              <ul class="nav-second-level">
+                <li><a href="javascript:void(0)">Memo</a></li>
+                <li><a href="javascript:void(0)">Circular</a></li>
+                <li><a href="<?=site_url('notices')?>">Notices</a></li>
+                <li><a href="javascript:void(0)">Email</a></li>
+                <li><a href="javascript:void(0)">Chat</a></li>
+              </ul>
+            </div>
+          </li>
+
 					<li>
 						<a href="apps-chat.html">
 							<i data-feather="credit-card"></i>
