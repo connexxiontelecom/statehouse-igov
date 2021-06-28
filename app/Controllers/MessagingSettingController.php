@@ -27,28 +27,81 @@ class MessagingSettingController extends BaseController
 	public function notice_board()
 	{
 		if($this->request->getMethod() == 'post'):
-		
-	
-		$this->notice->save($_POST);
-		
-			session()->setFlashData("action","action successful");
-			return redirect()->to(base_url('/notice-board'));
+				$this->notice->save($_POST);
+				session()->setFlashData("action","action successful");
+				return redirect()->to(base_url('/notice-board'));
+			
 		
 		endif;
 		
-		
-		
 		if($this->request->getMethod() == 'get'):
-			
-		
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$notices= $this->notice
-				->where('n_status', 2)
-				->orWhere('n_status', 3)
-				->join('users', 'notices.n_signed_by = users.user_id')
-				->paginate('9');
+			$search_params = @$_GET['search_params'];
+			$filter_params = @$_GET['filter_params'];
 			
+			if(empty($search_params) && empty($filter_params)):
+				$notices= $this->notice
+					->where('n_status', 2)
+					->orWhere('n_status', 3)
+					->join('users', 'notices.n_signed_by = users.user_id')
+					->orderBy('created_at', 'DESC')
+					->paginate('9');
+			
+			else:
+				if($search_params):
+					$notices= $this->notice
+						->groupStart()
+							->where('n_status', 2)
+							->orWhere('n_status', 3)
+						->groupEnd()
+						->groupStart()
+							->like('n_subject', $search_params)
+							->orLike('n_body', $search_params)
+						->groupEnd()
+						->join('users', 'notices.n_signed_by = users.user_id')
+						->orderBy('created_at', 'DESC')
+						->paginate('9');
+				endif;
+				
+				if($filter_params):
+					
+						switch ($filter_params):
+							case 'a':
+								$notices= $this->notice
+									->where('n_status', 2)
+									->orWhere('n_status', 3)
+									->join('users', 'notices.n_signed_by = users.user_id')
+									->orderBy('created_at', 'DESC')
+									->paginate('9');
+								break;
+							case 2:
+								$notices= $this->notice
+									->where('n_status', 2)
+									->join('users', 'notices.n_signed_by = users.user_id')
+									->orderBy('created_at', 'DESC')
+									->paginate('9');
+								break;
+							case 3:
+								$notices= $this->notice
+									->where('n_status', 3)
+									->join('users', 'notices.n_signed_by = users.user_id')
+									->orderBy('created_at', 'DESC')
+									->paginate('9');
+								break;
+							default:
+								$notices= $this->notice
+								->where('n_status', 2)
+								->orWhere('n_status', 3)
+								->join('users', 'notices.n_signed_by = users.user_id')
+								->orderBy('created_at', 'DESC')
+								->paginate('9');
+						endswitch;
+					
+					endif;
+			
+		
+			endif;
 			$new_notices = array();
 			$i = 0;
 			foreach ($notices as $notice):
@@ -57,10 +110,9 @@ class MessagingSettingController extends BaseController
 				$new_notices[$i] = $notice;
 				$i++;
 			endforeach;
-			
 			$data['notices'] = $new_notices;
 			$data['pager'] = $this->notice->pager;
-				return view('office/notice_board', $data);
+			return view('office/notice_board', $data);
 			
 		endif;
 	}
