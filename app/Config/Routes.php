@@ -34,7 +34,7 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 
 //normal route
-$routes->match(['get', 'post'], 'register', 'User::register', ['filter' => 'noauth']);
+$routes->match(['get', 'post'], 'register', 'Auth::register', ['filter' => 'noauth']);
 $routes->match(['get', 'post'], 'login', 'Auth::login', ['filter' => 'noauth']);
 $routes->get('/', 'Home::index', ['filter' => 'auth']);
 $routes->get('/logout', 'Auth::logout', ['filter' => 'auth']);
@@ -49,6 +49,10 @@ $routes->match(['get', 'post'], 'organization-profile', 'GeneralSettingControlle
 $routes->match(['get', 'post'], 'departments', 'GeneralSettingController::departments', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'positions', 'GeneralSettingController::positions', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'notice-board', 'MessagingSettingController::notice_board', ['filter' => 'auth']);
+
+// notices route
+$routes->get('notices', 'NoticeController::index', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'new_notice', 'NoticeController::new_notice', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing

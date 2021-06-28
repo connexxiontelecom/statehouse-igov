@@ -589,14 +589,24 @@
 							<span> Trainings </span>
 						</a>
 					</li>
-					
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="message-square"></i>
-							<span> Messaging </span>
-						</a>
-					</li>
-					
+
+          <li>
+            <a href="#messaging" data-toggle="collapse">
+              <i data-feather="message-square"></i>
+              <span> Messaging </span>
+              <span class="menu-arrow"></span>
+            </a>
+            <div class="collapse" id="messaging">
+              <ul class="nav-second-level">
+                <li><a href="javascript:void(0)">Memo</a></li>
+                <li><a href="javascript:void(0)">Circular</a></li>
+                <li><a href="<?=site_url('notices')?>">Notices</a></li>
+                <li><a href="javascript:void(0)">Email</a></li>
+                <li><a href="javascript:void(0)">Chat</a></li>
+              </ul>
+            </div>
+          </li>
+
 					<li>
 						<a href="apps-chat.html">
 							<i data-feather="credit-card"></i>
