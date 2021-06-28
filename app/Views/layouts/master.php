@@ -1062,4 +1062,4 @@
 	
 	
 	
- <?php echo view('templates/_footer'); ?>
+<?php echo view('templates/_footer'); ?>

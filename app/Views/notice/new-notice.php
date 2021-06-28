@@ -23,33 +23,42 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <form method="post" action="">
+          <form class="needs-validation" method="post" id="new-notice-form" novalidate>
             <div class="row">
               <div class="col-lg-8">
                 <div class="form-group">
                   <label for="subject">Subject</label>
-                  <input type="text" id="subject" class="form-control">
+                  <input type="text" id="subject" class="form-control" name="subject" required>
+                  <div class="invalid-feedback">
+                    Please enter a subject.
+                  </div>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="signed-by">Signed By</label>
-                  <select class="form-control" id="signed-by">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                  <select class="form-control" id="signed-by" name="signed_by" required>
+                    <option value="">Select user</option>
+                    <?php foreach($signed_by as $user): ?>
+                      <option value="<?=$user['user_id']?>">
+                        <?=$user['user_name'];?>
+                      </option>
+                    <?php endforeach;?>
                   </select>
+                  <div class="invalid-feedback">
+                    Please select the signer.
+                  </div>
                 </div>
               </div>
             </div>
             <div class="row mt-n4">
               <div class="col-12">
                 <div class="form-group">
-                  <label for="">Body</label>
-                  <div id="snow-editor" style="height: 300px;">
-                  </div> <!-- end Snow-editor-->
+                  <label for="snow-editor">Body</label>
+                  <textarea id="snow-editor" class="form-control body" style="height: 500px;" name="body" required></textarea> <!-- end Snow-editor-->
+                  <div class="invalid-feedback">
+                    Please enter a body.
+                  </div>
                 </div>
               </div>
             </div>
