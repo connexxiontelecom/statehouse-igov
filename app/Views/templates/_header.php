@@ -14,7 +14,14 @@
 	<!-- Plugins css -->
 	<link href="/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
 	<link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
-	
+
+  <!-- third party css -->
+  <link href="/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+  <!-- third party css end -->
+
 	<!-- App css -->
 	<link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
 	<link href="/assets/css/app.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
@@ -25,6 +32,11 @@
 	<!-- icons -->
 	<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 	<link href="/assets/css/custom.css" rel="stylesheet" type="text/css"  />
+
+  <!-- Plugins css -->
+  <link href="/assets/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
 
 </head>
 

@@ -39,7 +39,7 @@ class Notice extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-	
+
 	public function get_notices_ad($paginate){
 		$builder = $this->db->table('notices');
 		$builder->where('n_status', 2);
@@ -56,8 +56,8 @@ class Notice extends Model
 			$new_notices[$i] = $notice;
 			$i++;
 		endforeach;
-		
+
 		return $new_notices->paginate(5);
-	
+
 	}
 }

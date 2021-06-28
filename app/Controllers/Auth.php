@@ -114,6 +114,7 @@ class Auth extends BaseController
 		 'user_email' => 'admin@admin.co',
 		 'user_phone' => '08090000000',
 		 'user_employee_id' => '',
+		 'user_type'=> 3,
 		 'user_status' => 1
 	 );
 	 
