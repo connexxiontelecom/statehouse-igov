@@ -20,39 +20,34 @@
 		<!-- end page title -->
     <div class="row mt-n4">
       <div class="col-lg-6">
-        <div class="form-group">
-          <div class="input-group">
-            <input type="text" class="form-control">
-            <div class="input-group-append">
-              <button class="btn btn-dark waves-effect waves-light" type="button">Search</button>
+        <form method="get">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" name="search_params">
+              <div class="input-group-append">
+                <button class="btn btn-dark waves-effect waves-light" type="submit">Search</button>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
       <div class="col-lg-2">
         <div class="btn-group btn-block mb-2">
-          <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Status <i class="mdi mdi-chevron-down float-right"></i></button>
+          <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter Notices <i class="mdi mdi-filter-menu float-right"></i></button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="#">All Notices</a>
+            <a class="dropdown-item" href="#">Pending Notices</a>
+            <a class="dropdown-item" href="#">Confirmed Notices</a>
+            <a class="dropdown-item" href="#">Activated Notices</a>
+            <a class="dropdown-item text-danger" href="#">Deactivated Notices</a>
+            <a class="dropdown-item text-danger" href="#">Rejected Notices</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+            <a class="dropdown-item" href="#">Created Notices</a>
+            <a class="dropdown-item" href="#">Signed Notices</a>
           </div>
         </div><!-- /btn-group -->
       </div>
-      <div class="col-lg-2">
-        <div class="btn-group btn-block mb-2">
-          <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Role <i class="mdi mdi-chevron-down float-right"></i></button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div><!-- /btn-group -->
-      </div>
+      <div class="col-lg-2"></div>
       <div class="col-lg-2">
         <a href="<?=site_url('/new_notice')?>" type="button" class="btn btn-dark btn-block"> <i class="mdi mdi-plus mr-2"></i>New Notice</a>
       </div>
@@ -60,7 +55,7 @@
     <div class="row mt-n4">
       <div class="col-12">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body mb-n5">
 						<?php if(session()->has('success')): ?>
               <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -83,7 +78,32 @@
               </div>
 						<?php endif; ?>
 
-            <div class="row">
+            <div class="row ">
+              <?php if(empty($notices)):?>
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                  <div class="card bg-pattern">
+                    <div class="card-body p-4">
+                      <div class="auth-logo">
+                        <a href="/" class="logo logo-dark text-center">
+                          <span class="logo-lg">
+                            <img src="../assets/images/logo-sm.png" alt="" height="50">
+                          </span>
+                        </a>
+                        <a href="/" class="logo logo-light text-center">
+                          <span class="logo-lg">
+                            <img src="../assets/images/logo-sm.png" alt="" height="50">
+                          </span>
+                        </a>
+                      </div>
+                      <div class="text-center mt-4">
+                        <h3 class="mt-3 mb-2">No Notice Found</h3>
+                        <a href="/" class="btn btn-success waves-effect waves-light">Back to Home</a>
+                      </div>
+                    </div> <!-- end card-body -->
+                  </div>
+                  <!-- end card -->
+                </div> <!-- end col -->
+              <?php else: ?>
 	            <?php foreach ($notices as $notice): ?>
                 <div class="col-lg-4" style="padding-bottom: 5px; max-height: 100%" >
                   <div class="card-box project-box mb-n5" style=" <?php if($notice['n_status'] == 3): ?>background-color: lavenderblush; <?php endif; ?>;" >
@@ -151,7 +171,7 @@
                     </div>
                   </div> <!-- end card box-->
                 </div><!-- end col-->
-	            <?php endforeach;?>
+	            <?php endforeach; endif?>
             </div>
 	          <?= $pager->links() ?>
           </div> <!-- end card body-->
