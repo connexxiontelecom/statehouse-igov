@@ -35,7 +35,7 @@
         <div class="btn-group btn-block mb-2">
           <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter Notices <i class="mdi mdi-filter-menu float-right"></i></button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">All Notices</a>
+            <a class="dropdown-item" href="<?=site_url('/notices')?>">All Notices</a>
             <a class="dropdown-item" href="#">Pending Notices</a>
             <a class="dropdown-item" href="#">Confirmed Notices</a>
             <a class="dropdown-item" href="#">Activated Notices</a>
