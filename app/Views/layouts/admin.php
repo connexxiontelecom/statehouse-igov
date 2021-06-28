@@ -545,6 +545,7 @@
 							<i data-feather="airplay"></i>
 							
 							<span> General Settings </span>
+							<span class="menu-arrow"></span>
 						</a>
 						<div class="collapse" id="generalSettings">
 							<ul class="nav-second-level">
@@ -566,9 +567,10 @@
 					
 					<li>
 						<a href="#messagingSettings" data-toggle="collapse">
-							<i data-feather="airplay"></i>
+							<i data-feather="message-square"></i>
 							
 							<span> Messaging Settings </span>
+							<span class="menu-arrow"></span>
 						</a>
 						<div class="collapse" id="messagingSettings">
 							<ul class="nav-second-level">
@@ -660,7 +662,7 @@
 	<!-- Start Page Content here -->
 	<!-- ============================================================== -->
 	
-	<div class="content-page">
+	<div class="content-page" >
 		<div class="content">
 			
 			<!-- Start Content-->

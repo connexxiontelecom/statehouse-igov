@@ -46,12 +46,14 @@
 <!-- Init js-->
 <script src="/assets/js/pages/form-quilljs.init.js"></script>
 
+<!--Custom scripts-->
+<?php include('_master-scripts.php')?>
+
 <script>
     $(window).load(function() {
         $(".se-pre-con").delay(3000).fadeOut('5000');
 
     });
 </script>
-
 </body>
 </html>
