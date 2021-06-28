@@ -27,8 +27,23 @@ class NoticeController extends BaseController
 		if ($this->request->getMethod() == 'get') {
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
+			$data['signed_by'] = $this->user->findAll();
 			return view('notice/new-notice', $data);
 		}
+		$post_data = $this->request->getPost();
+		$notice_data = [
+			'n_subject' => $post_data['subject'],
+			'n_body' => $post_data['body'],
+			'n_status' => 0,
+			'n_by' => $this->session->user_id,
+			'n_signed_by' => $post_data['signed_by']
+		];
+		if ($this->notice->save($notice_data)) {
+			session()->setFlashdata('success', 'Successfully created the notice!');
+		} else {
+			session()->setFlashdata('error', 'Sorry, there was an error while creating the notice!');
+		}
+		return redirect()->to(base_url('/notices'));
 	}
 
 	private function _get_notices() {
