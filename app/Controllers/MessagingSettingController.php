@@ -45,7 +45,7 @@ class MessagingSettingController extends BaseController
 					->where('n_status', 2)
 					->orWhere('n_status', 3)
 					->join('users', 'notices.n_signed_by = users.user_id')
-					->orderBy('created_at', 'DESC')
+					->orderBy('notices.created_at', 'DESC')
 					->paginate('9');
 			
 			else:
@@ -60,7 +60,7 @@ class MessagingSettingController extends BaseController
 							->orLike('n_body', $search_params)
 						->groupEnd()
 						->join('users', 'notices.n_signed_by = users.user_id')
-						->orderBy('created_at', 'DESC')
+						->orderBy('notices.created_at', 'DESC')
 						->paginate('9');
 				endif;
 				
@@ -72,21 +72,21 @@ class MessagingSettingController extends BaseController
 									->where('n_status', 2)
 									->orWhere('n_status', 3)
 									->join('users', 'notices.n_signed_by = users.user_id')
-									->orderBy('created_at', 'DESC')
+									->orderBy('notices.created_at', 'DESC')
 									->paginate('9');
 								break;
 							case 2:
 								$notices= $this->notice
 									->where('n_status', 2)
 									->join('users', 'notices.n_signed_by = users.user_id')
-									->orderBy('created_at', 'DESC')
+									->orderBy('notices.created_at', 'DESC')
 									->paginate('9');
 								break;
 							case 3:
 								$notices= $this->notice
 									->where('n_status', 3)
 									->join('users', 'notices.n_signed_by = users.user_id')
-									->orderBy('created_at', 'DESC')
+									->orderBy('notices.created_at', 'DESC')
 									->paginate('9');
 								break;
 							default:
@@ -94,7 +94,7 @@ class MessagingSettingController extends BaseController
 								->where('n_status', 2)
 								->orWhere('n_status', 3)
 								->join('users', 'notices.n_signed_by = users.user_id')
-								->orderBy('created_at', 'DESC')
+								->orderBy('notices.created_at', 'DESC')
 								->paginate('9');
 						endswitch;
 					
