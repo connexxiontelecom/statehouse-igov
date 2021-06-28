@@ -534,39 +534,18 @@
 			
 			<!--- Sidemenu -->
 			<div id="sidebar-menu">
-				
 				<ul id="side-menu">
-					
 					<li class="menu-title">Navigation</li>
-					
 					<li>
 						<a href="/">
 							<i data-feather="airplay"></i>
-							
 							<span> Dashboard </span>
 						</a>
-						
 					</li>
-					
-				
-					
 					<li>
 						<a href="apps-calendar.html">
 							<i data-feather="calendar"></i>
 							<span> Workflows </span>
-						</a>
-					</li>
-					
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="file-minus"></i>
-							<span> Memo </span>
-						</a>
-					</li>
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="file-text"></i>
-							<span> Circular </span>
 						</a>
 					</li>
 					<li>
