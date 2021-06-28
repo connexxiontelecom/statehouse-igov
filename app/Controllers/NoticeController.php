@@ -20,7 +20,7 @@ class NoticeController extends BaseController
 		$data['username'] = $this->session->user_username;
 		$data['notices'] = $this->_get_notices();
 		$data['pager'] = $this->notice->pager;
-		return view('notice/index', $data);
+		return view('/pages/notice/index', $data);
 	}
 
 	public function new_notice() {
@@ -28,7 +28,7 @@ class NoticeController extends BaseController
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
 			$data['signed_by'] = $this->user->findAll();
-			return view('notice/new-notice', $data);
+			return view('/pages/notice/new-notice', $data);
 		}
 		$post_data = $this->request->getPost();
 		$notice_data = [
