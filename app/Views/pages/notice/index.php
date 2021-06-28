@@ -18,14 +18,46 @@
 			</div>
 		</div>
 		<!-- end page title -->
-    <div class="row">
-      <div class="col-12">
-        <div class="text-right">
-          <a href="<?=site_url('/new_notice')?>" type="button" class="btn btn-primary" style="float: right"> <i class="mdi mdi-plus mr-2"></i>New Notice</a>
+    <div class="row mt-n4">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control">
+            <div class="input-group-append">
+              <button class="btn btn-dark waves-effect waves-light" type="button">Search</button>
+            </div>
+          </div>
         </div>
       </div>
+      <div class="col-lg-2">
+        <div class="btn-group btn-block mb-2">
+          <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Status <i class="mdi mdi-chevron-down float-right"></i></button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
+          </div>
+        </div><!-- /btn-group -->
+      </div>
+      <div class="col-lg-2">
+        <div class="btn-group btn-block mb-2">
+          <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Role <i class="mdi mdi-chevron-down float-right"></i></button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
+          </div>
+        </div><!-- /btn-group -->
+      </div>
+      <div class="col-lg-2">
+        <a href="<?=site_url('/new_notice')?>" type="button" class="btn btn-dark btn-block"> <i class="mdi mdi-plus mr-2"></i>New Notice</a>
+      </div>
     </div>
-    <div class="row">
+    <div class="row mt-n4">
       <div class="col-12">
         <div class="card">
           <div class="card-body">
@@ -54,7 +86,7 @@
             <div class="row">
 	            <?php foreach ($notices as $notice): ?>
                 <div class="col-lg-4" style="padding-bottom: 5px; max-height: 100%" >
-                  <div class="card-box project-box" style=" <?php if($notice['n_status'] == 3): ?>background-color: lavenderblush; <?php endif; ?>;" >
+                  <div class="card-box project-box mb-n5" style=" <?php if($notice['n_status'] == 3): ?>background-color: lavenderblush; <?php endif; ?>;" >
 <!--                    <div class="dropdown float-right">-->
 <!--                      <a href="#" class="dropdown-toggle card-drop arrow-none" data-toggle="dropdown" aria-expanded="false">-->
 <!--                        <i class="mdi mdi-dots-horizontal m-0 text-muted h3"></i>-->
