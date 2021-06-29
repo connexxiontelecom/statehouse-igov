@@ -20,16 +20,18 @@
 		</div>
 	</div>
 	<!-- end page title -->
-  <div class="row mb-3">
-    <div class="col-lg-10"></div>
-    <div class="col-lg-2">
-      <a href="<?=site_url('/my-notices')?>" type="button" class="btn btn-dark btn-block float-right"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
-    </div>
-  </div>
   <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
+          <div class="row">
+            <div class="col-lg-8">
+              <h4 class="header-title mt-2 mb-4">Create Notice Form</h4>
+            </div>
+            <div class="col-lg-4">
+              <a href="<?=site_url('/my-notices')?>" type="button" class="btn btn-sm btn-primary float-right"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
+            </div>
+          </div>
           <form class="needs-validation" id="new-notice-form" novalidate>
             <div class="row">
               <div class="col-lg-8">
