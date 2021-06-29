@@ -579,7 +579,7 @@
               <ul class="nav-second-level">
                 <li><a href="javascript:void(0)">Memo</a></li>
                 <li><a href="javascript:void(0)">Circular</a></li>
-                <li><a href="<?=site_url('notices')?>">Notices</a></li>
+                <li><a href="<?=site_url('notices')?>">Notice Board</a></li>
                 <li><a href="javascript:void(0)">Email</a></li>
                 <li><a href="javascript:void(0)">Chat</a></li>
               </ul>
