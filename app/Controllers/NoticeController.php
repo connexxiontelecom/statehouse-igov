@@ -33,6 +33,14 @@ class NoticeController extends BaseController
 		return view('/pages/notice/index', $data);
 	}
 
+	public function user_notices() {
+		$data['notices'] = $this->_get_user_notices();
+		$data['pager'] = $this->notice->pager;
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		return view('/pages/notice/my-notices', $data);
+	}
+
 	public function new_notice() {
 		if ($this->request->getMethod() == 'get') {
 			$data['firstTime'] = $this->session->firstTime;
@@ -53,10 +61,22 @@ class NoticeController extends BaseController
 		} else {
 			session()->setFlashdata('error', 'Sorry, there was an error while creating the notice!');
 		}
-		return redirect()->to(base_url('/notices'));
+		return redirect()->to(base_url('/my-notices'));
 	}
 
 	private function _get_notices() {
+		$notices = $this->notice
+			->where('n_status', 2)
+			->orderBy('created_at', 'DESC')
+			->paginate('9');
+		foreach($notices as $key => $notice) {
+			$signed_by = $this->user->find($notice['n_signed_by']);
+			$notices[$key]['signed_by'] = $signed_by;
+		}
+		return $notices;
+	}
+
+	private function _get_user_notices() {
 		$notices = $this->notice
 			->where('n_by', $this->session->user_id)
 			->orderBy('created_at', 'DESC')
@@ -70,7 +90,7 @@ class NoticeController extends BaseController
 
 	private function _get_searched_notices($search_params) {
 		$notices = $this->notice
-			->where('n_by', $this->session->user_id)
+			->where('n_status', 2)
 			->groupStart()
 				->like('n_subject', $search_params)
 				->orLike('n_body', $search_params)
