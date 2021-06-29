@@ -57,11 +57,23 @@ class NoticeController extends BaseController
 			'n_signed_by' => $post_data['signed_by']
 		];
 		if ($this->notice->save($notice_data)) {
-			session()->setFlashdata('success', 'Successfully created the notice!');
+			$response['success'] = true;
+			$response['message'] = 'Successfully created notice';
 		} else {
-			session()->setFlashdata('error', 'Sorry, there was an error while creating the notice!');
+			$response['success'] = false;
+			$response['message'] = 'There was an error while creating notice';
 		}
-		return redirect()->to(base_url('/my-notices'));
+		return $this->response->setJSON($response);
+	}
+
+	public function edit_notice($notice_id = null) {
+		if ($this->request->getMethod() == 'get') {
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['signed_by'] = $this->user->findAll();
+			$data['notice'] = $this->notice->find($notice_id);
+			return view('/pages/notice/edit-notice', $data);
+		}
 	}
 
 	private function _get_notices() {

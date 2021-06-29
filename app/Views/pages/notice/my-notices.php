@@ -32,28 +32,6 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body">
-					<?php if(session()->has('success')): ?>
-						<div class="alert alert-success alert-dismissible fade show" role="alert">
-							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<i class="mdi mdi-check-all mr-2"></i>
-							<strong>
-								<?=session()->get('success')?>
-							</strong>
-						</div>
-					<?php elseif (session()->has('error')): ?>
-						<div class="alert alert-warning alert-dismissible fade show" role="alert">
-							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<i class="mdi mdi-check-all mr-2"></i>
-							<strong>
-								<?=session()->get('error')?>
-							</strong>
-						</div>
-					<?php endif; ?>
-
           <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap w-100">
             <thead>
             <tr>
@@ -88,7 +66,7 @@
                   <td class="text-center">
                     <a href="" class="mr-2">View</a>
                     <?php if($notice['n_status'] == 0):?>
-                      <a href="">Edit</a>
+                      <a href="<?=site_url('edit-notice/').$notice['n_id']?>">Edit</a>
                     <?php endif;?>
                   </td>
                 </tr>

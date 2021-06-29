@@ -30,7 +30,7 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <form class="needs-validation" method="post" id="new-notice-form" novalidate>
+          <form class="needs-validation" id="new-notice-form" novalidate>
             <div class="row">
               <div class="col-lg-8">
                 <div class="form-group">
@@ -62,7 +62,7 @@
               <div class="col-12">
                 <div class="form-group">
                   <label for="snow-editor">Body</label>
-                  <textarea id="snow-editor" class="form-control body" style="height: 500px;" name="body" required></textarea> <!-- end Snow-editor-->
+                  <div id="snow-editor" class="form-control body" style="height: 300px;"></div> <!-- end Snow-editor-->
                   <div class="invalid-feedback">
                     Please enter a body.
                   </div>
