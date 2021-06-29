@@ -10,15 +10,15 @@
 						<ol class="breadcrumb m-0">
 							<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
 							<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
-							<li class="breadcrumb-item active">Notices</li>
+							<li class="breadcrumb-item active">Notice Board</li>
 						</ol>
 					</div>
-					<h4 class="page-title">Notices</h4>
+					<h4 class="page-title">Notice Board</h4>
 				</div>
 			</div>
 		</div>
 		<!-- end page title -->
-    <div class="row mt-n4">
+    <div class="row">
       <div class="col-lg-6">
         <form method="get">
           <div class="form-group">
@@ -32,30 +32,30 @@
         </form>
       </div>
       <div class="col-lg-2">
-        <div class="btn-group btn-block mb-2">
-          <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter Notices <i class="mdi mdi-filter-menu float-right"></i></button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="<?=site_url('/notices')?>">All Notices</a>
-            <a class="dropdown-item" href="#">Pending Notices</a>
-            <a class="dropdown-item" href="#">Confirmed Notices</a>
-            <a class="dropdown-item" href="#">Activated Notices</a>
-            <a class="dropdown-item text-danger" href="#">Deactivated Notices</a>
-            <a class="dropdown-item text-danger" href="#">Rejected Notices</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Created Notices</a>
-            <a class="dropdown-item" href="#">Signed Notices</a>
-          </div>
-        </div><!-- /btn-group -->
+<!--        <div class="btn-group btn-block mb-2">-->
+<!--          <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter Notices <i class="mdi mdi-filter-menu float-right"></i></button>-->
+<!--          <div class="dropdown-menu">-->
+<!--            <a class="dropdown-item" href="--><?//=site_url('/notices')?><!--">All Notices</a>-->
+<!--            <a class="dropdown-item" href="#">Pending Notices</a>-->
+<!--            <a class="dropdown-item" href="#">Confirmed Notices</a>-->
+<!--            <a class="dropdown-item" href="#">Activated Notices</a>-->
+<!--            <a class="dropdown-item text-danger" href="#">Deactivated Notices</a>-->
+<!--            <a class="dropdown-item text-danger" href="#">Rejected Notices</a>-->
+<!--            <div class="dropdown-divider"></div>-->
+<!--            <a class="dropdown-item" href="#">Created Notices</a>-->
+<!--            <a class="dropdown-item" href="#">Signed Notices</a>-->
+<!--          </div>-->
+<!--        </div> /btn-group -->
       </div>
       <div class="col-lg-2"></div>
       <div class="col-lg-2">
-        <a href="<?=site_url('/new_notice')?>" type="button" class="btn btn-dark btn-block"> <i class="mdi mdi-plus mr-2"></i>New Notice</a>
+        <a href="<?=site_url('/my-notices')?>" type="button" class="btn btn-dark btn-block"> <i class="mdi mdi-plus mr-2"></i>My Notices</a>
       </div>
     </div>
-    <div class="row mt-n4">
+    <div class="row">
       <div class="col-12">
         <div class="card">
-          <div class="card-body mb-n5">
+          <div class="card-body">
 						<?php if(session()->has('success')): ?>
               <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -146,7 +146,7 @@
                     <!-- Progress-->
                     <div class="row">
                       <div class="col-6">
-                        <div class="mb-1">
+                        <div class="mb-5">
                           <h5>Signed By:</h5>
                           <p>
                             <small class="text-muted">
@@ -156,7 +156,7 @@
                         </div>
                       </div>
                       <div class="col-6">
-                        <div class="mb-1">
+                        <div class="mb-5">
                           <h5> Date:</h5>
                           <p>
                             <small class="text-muted">
@@ -173,7 +173,9 @@
                 </div><!-- end col-->
 	            <?php endforeach; endif?>
             </div>
-	          <?= $pager->links() ?>
+            <div class="mt-4">
+	            <?= $pager->links() ?>
+            </div>
           </div> <!-- end card body-->
         </div> <!-- end card -->
       </div><!-- end col-->
