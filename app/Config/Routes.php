@@ -49,6 +49,7 @@ $routes->match(['get', 'post'], 'organization-profile', 'GeneralSettingControlle
 $routes->match(['get', 'post'], 'departments', 'GeneralSettingController::departments', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'positions', 'GeneralSettingController::positions', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'notice-board', 'MessagingSettingController::notice_board', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'new-employee', 'EmployeeSettingController::new_employee', ['filter' => 'auth']);
 
 // notices route
 $routes->get('notices', 'NoticeController::index', ['filter' => 'auth']);

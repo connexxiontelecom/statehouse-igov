@@ -13,43 +13,60 @@ class Memo extends Migration
 		
 		$this->forge->addField(
 			[
-				'm_id' =>[
+				'p_id' =>[
 					'type' => 'INT',
 					'constraint' => 11,
 					'auto_increment' => true,
 				],
 				
-				'm_subject' =>[
+				'p_ref_no' =>[
 					'type' => 'TEXT',
 				],
 				
-				'm_body' =>[
+				
+				'p_subject' =>[
+					'type' => 'TEXT',
+				],
+				
+				
+				'p_body' =>[
+					'type' => 'TEXT',
+				],
+				
+				'p_status' =>[
 					'type' => 'INT',
 				],
 				
-				'm_status' =>[
+				'p_by' =>[
 					'type' => 'INT',
 				],
 				
-				'm_by' =>[
-					'type' => 'INT',
+				'p_signed_by' =>[
+					'type' => 'TEXT',
 				],
 				
+				'p_direction' =>[
+					'type' => 'INT'
+				],
+				
+				'p_department_id' =>[
+					'type' => 'INT'
+				],
 				
 				'updated_at' => [
 					'type' => 'datetime',
 					'null' => true,
 				],
-				'created_at datetime default current_timestamp',
-				'm_date datetime default current_timestamp',
+				
+				'p_date datetime default current_timestamp',
 			
 			
 			
 			
 			]
 		);
-		$this->forge->addKey('m_id', true);
-		$this->forge->createTable('memos');
+		$this->forge->addKey('p_id', true);
+		$this->forge->createTable('posts');
 	}
 
 	public function down()
