@@ -74,6 +74,21 @@ class NoticeController extends BaseController
 			$data['notice'] = $this->notice->find($notice_id);
 			return view('/pages/notice/edit-notice', $data);
 		}
+		$post_data = $this->request->getPost();
+		$notice_data = [
+			'n_id' => $post_data['n_id'],
+			'n_subject' => $post_data['subject'],
+			'n_body' => $post_data['body'],
+			'n_signed_by' => $post_data['signed_by']
+		];
+		if ($this->notice->save($notice_data)) {
+			$response['success'] = true;
+			$response['message'] = 'Successfully edited notice';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'There was an error while editing notice';
+		}
+		return $this->response->setJSON($response);
 	}
 
 	private function _get_notices() {

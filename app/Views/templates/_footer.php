@@ -53,7 +53,7 @@
 <script src="../assets/js/pages/sweet-alerts.init.js"></script>
 
 <!--Custom scripts-->
-<?php include('_master-scripts.php')?>
+<?=view('pages/notice/_notice-scripts.php')?>
 
 <script>
     $(window).load(function() {

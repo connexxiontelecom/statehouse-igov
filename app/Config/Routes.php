@@ -54,6 +54,7 @@ $routes->match(['get', 'post'], 'notice-board', 'MessagingSettingController::not
 $routes->get('notices', 'NoticeController::index', ['filter' => 'auth']);
 $routes->get('my-notices', 'NoticeController::user_notices', ['filter' => 'auth']);
 $routes->get('edit-notice/(:num)', 'NoticeController::edit_notice/$1', ['filter' => 'auth']);
+$routes->post('edit-notice', 'NoticeController::edit_notice', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-notice', 'NoticeController::new_notice', ['filter' => 'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 /*

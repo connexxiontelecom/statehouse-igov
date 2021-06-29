@@ -19,19 +19,19 @@
 		</div>
 	</div>
 	<!-- end page title -->
-	<div class="row mb-2">
-		<div class="col-lg-8"></div>
-		<div class="col-lg-2">
-      <a href="<?=site_url('/notices')?>" type="button" class="btn btn-dark btn-block"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
-    </div>
-		<div class="col-lg-2">
-			<a href="<?=site_url('/new-notice')?>" type="button" class="btn btn-dark btn-block"> <i class="mdi mdi-plus mr-2"></i>New Notice</a>
-		</div>
-	</div>
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body">
+          <div class="row">
+            <div class="col-lg-8">
+              <h4 class="header-title mt-2 mb-4">All My Notices</h4>
+            </div>
+            <div class="col-lg-4">
+              <a href="<?=site_url('/new-notice')?>" type="button" class="btn btn-primary btn-sm float-right"> <i class="mdi mdi-plus mr-2"></i>New Notice</a>
+              <a href="<?=site_url('/notices')?>" type="button" class="btn btn-primary btn-sm float-right mr-2"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
+            </div>
+          </div>
           <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap w-100">
             <thead>
             <tr>
