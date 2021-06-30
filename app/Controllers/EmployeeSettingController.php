@@ -25,9 +25,10 @@ class EmployeeSettingController extends BaseController
 		
 		if($this->request->getMethod() == 'post'):
 			
-			$this->organization->save($_POST);
-			session()->setFlashData("action","action successful");
-			return redirect()->to(base_url('/organization-profile'));
+//			$this->organization->save($_POST);
+//			session()->setFlashData("action","action successful");
+//			return redirect()->to(base_url('/organization-profile'));
+		print_r($_POST);
 		
 		endif;
 		

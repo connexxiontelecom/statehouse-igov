@@ -38,8 +38,8 @@
 					
 				
 					
-					<form>
-						<div id="progressbarwizard">
+					<form id="new-employee-form" method="post" class="needs-validation" novalidate>
+						<div id="newemployeewizard">
 							
 							<ul class="nav nav-pills bg-light nav-justified form-wizard-header mb-3">
 								<li class="nav-item">
@@ -75,7 +75,11 @@
 												<label class="col-md-3 col-form-label" for="firstName">First Name</label>
 												<div class="col-md-9">
 													<input type="text" class="form-control" id="firstName" name="employee_f_name" required>
+													<div class="valid-feedback">
+														Looks good!
+													</div>
 												</div>
+												
 											</div>
 											
 											
@@ -83,13 +87,19 @@
 												<label class="col-md-3 col-form-label" for="otherName">Other Name</label>
 												<div class="col-md-9">
 													<input type="text" class="form-control" id="otherName" name="employee_o_name" >
+													<div class="valid-feedback">
+														Looks good!
+													</div>
 												</div>
 											</div>
 											
 											<div class="form-group row mb-3">
 												<label class="col-md-3 col-form-label" for="dob">Date of Birth</label>
 												<div class="col-md-9">
-													<input type="date" class="form-control" id="dob" name="employee_dob" >
+													<input type="date" class="form-control" id="dob" name="employee_dob" required>
+													<div class="valid-feedback">
+														Looks good!
+													</div>
 												</div>
 											</div>
 											
@@ -101,7 +111,10 @@
 											<div class="form-group row mb-3">
 												<label class="col-md-3 col-form-label" for="lastName">Surname</label>
 												<div class="col-md-9">
-													<input type="text" class="form-control" id="lastName" name="employee_l_name" >
+													<input type="text" class="form-control" id="lastName" name="employee_l_name" required>
+													<div class="valid-feedback">
+														Looks good!
+													</div>
 												</div>
 											</div>
 											
@@ -109,12 +122,15 @@
 											<div class="form-group row mb-3">
 												<label class="col-md-3 col-form-label" for="sex">Sex</label>
 												<div class="col-md-9">
-													<select class="form-control" id="sex">
+													<select class="form-control" id="sex" required>
 														<option disabled selected></option>
 														<option>Male</option>
 														<option>Female</option>
 													
 													</select>
+													<div class="valid-feedback">
+														Looks good!
+													</div>
 												</div>
 											</div>
 											
@@ -130,7 +146,7 @@
 											<div class="form-group row mb-3">
 												<label class="col-md-3 col-form-label" for="department"> Department</label>
 												<div class="col-md-9">
-													<select class="form-control" name="employee_department_id" id="department" onchange="get_positions()">
+													<select class="form-control" name="employee_department_id" id="department" onchange="get_positions()" required>
 														<option disabled selected> --Select Department --</option>
 														<?php foreach ($departments as $department): ?>
 															<option value="<?=$department['dpt_id'] ?>"> <?=$department['dpt_name']; ?></option>
@@ -138,17 +154,23 @@
 													
 													
 													</select>
+													<div class="valid-feedback">
+														Looks good!
+													</div>
 												</div>
 											</div>
 											<div class="form-group row mb-3">
 												<label class="col-md-3 col-form-label" for="level"> Level</label>
 												<div class="col-md-9">
-													<select class="form-control" name="employee_level" id="level">
+													<select class="form-control" name="employee_level" id="level" required>
 														<?php for($i = 1; $i <= 16; $i++): ?>
 															<option value="<?='Level '.$i; ?>"> <?='Level '.$i; ?></option>
 														<?php  endfor;?>
 													
 													</select>
+													<div class="valid-feedback">
+														Looks good!
+													</div>
 												</div>
 											</div>
 										
@@ -160,18 +182,24 @@
 											<div class="form-group row mb-3">
 												<label class="col-md-3 col-form-label" for="surname1"> Position/Title</label>
 												<div class="col-md-9">
-													<select class="form-control" name="employee_postion_id" id="position">
+													<select class="form-control" name="employee_postion_id" id="position" required>
 													
 													
 													
 													</select>
+													<div class="valid-feedback">
+														Looks good!
+													</div>
 												</div>
 											</div>
 											
 											<div class="form-group row mb-3">
 												<label class="col-md-3 col-form-label" for="step"> Step</label>
 												<div class="col-md-9">
-													<input id="step" type="number" min="1" class="form-control" name="employee_step">
+													<input id="step" type="number" min="1" class="form-control" name="employee_step" required>
+												</div>
+												<div class="valid-feedback">
+													Looks good!
 												</div>
 											</div>
 										
@@ -187,16 +215,19 @@
 											<div class="form-group mb-3">
 												
 												<label class="col-form-label" for="address"> Address</label>
-												<textarea class="col-md-12 form-control" id="address" rows="5" name="employee_address">
+												<textarea class="col-md-12 form-control" id="address" rows="5" name="employee_address" required>
 												
 												</textarea>
+												<div class="valid-feedback">
+													Looks good!
+												</div>
 													</div>
 											</div>
 									
 										
 										
 										</div> <!-- end col -->
-									</div>
+								
 										<div class="row">
 										<div class="col-6">
 											
@@ -204,6 +235,9 @@
 												<label class="col-md-3 col-form-label" for="phone"> Phone Number</label>
 												<div class="col-md-9">
 													<input type="text" id="phone" class="form-control" name="employee_phone" placeholder="000-0000-0000" data-toggle="input-mask" data-mask-format="000-0000-0000" required>
+												</div>
+												<div class="valid-feedback">
+													Looks good!
 												</div>
 											</div>
 											
@@ -218,6 +252,9 @@
 													<div class="col-md-9">
 														<input type="email" class="form-control" id="e-mail" name="employee_mail" required>
 													</div>
+													<div class="valid-feedback">
+														Looks good!
+													</div>
 												</div>
 											
 											
@@ -231,10 +268,16 @@
 									<li class="previous list-inline-item">
 										<a href="javascript: void(0);" class="btn btn-secondary">Previous</a>
 									</li>
-									<li class="next list-inline-item float-right">
+									<li class="next list-inline-item float-right" id="next">
 										<a href="javascript: void(0);" class="btn btn-secondary">Next</a>
 									</li>
-								</ul>
+									<li class="next last list-inline-item float-right" id="last" style="display:none;">
+										<button type="submit" class="btn btn-secondary"> Submit </button>
+<!--										<a href="javascript: void(0);" class="btn btn-secondary">Submit</a>-->
+									</li>
+						</ul>
+								
+								
 							
 							</div> <!-- tab-content -->
 						</div> <!-- end #progressbarwizard-->
@@ -279,6 +322,37 @@
 	
 	</script>
 	<script src="/assetsa/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+	<script>
+        $(document).ready(function() {
+            $('#newemployeewizard').bootstrapWizard({
+				onTabShow: function(tab, navigation, index) {
+                    var $total = navigation.find('li').length;
+                    var $current = index+1;
+                    var $percent = ($current/$total) * 100;
+                    $('#newemployeewizard .progress-bar').css({width:$percent+'%'});
+                  if($current === $total){
+                      $('#next').css({display: 'none'})
+                      $('#last').css({display: 'block'})
+                  } else{
+                      $('#next').css({display: 'block'})
+                      $('#last').css({display: 'none'})
+				  }
+                  
+                },
+				
+                // onLast: function(tab, navigation, index){
+				// 	$('#new-employee-form').submit()
+                // }
+            });
+            
+            
+
+            
+           
+            
+        });
+	</script>
+	
 	<script src="/assetsa/js/pages/form-wizard.init.js"></script>
 	
 <?= $this->endSection() ?>

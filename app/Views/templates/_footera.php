@@ -69,7 +69,7 @@
 <!-- Init js-->
 <script src="/assetsa/js/pages/form-masks.init.js"></script>
 <!-- Init js-->
-
+<script src="/assetsa/js/pages/form-validation.init.js"></script>
 <!--<script src="/assetsa/js/pages/form-advanced.init.js"></script>-->
 
 
