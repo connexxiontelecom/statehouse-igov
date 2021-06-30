@@ -36,7 +36,26 @@
 			<div class="card">
 				<div class="card-body">
 					
-				
+					<?php if(session()->has('action')): ?>
+						<div class="alert alert-success alert-dismissible fade show" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<i class="mdi mdi-check-all mr-2"></i><strong>Action Successful !</strong>
+						</div>
+					<?php endif; ?>
+					
+					<?php if(session()->has('errors')):
+						$errors = session()->get('errors');
+						foreach ($errors as $error):
+						?>
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<i class="mdi mdi-check-all mr-2"></i><strong><?php print_r($error); ?> !</strong>
+						</div>
+					<?php endforeach; endif; ?>
 					
 					<form id="new-employee-form" method="post" class="needs-validation" novalidate>
 						<div id="newemployeewizard">
@@ -147,7 +166,7 @@
 												<label class="col-md-3 col-form-label" for="department"> Department</label>
 												<div class="col-md-9">
 													<select class="form-control" name="employee_department_id" id="department" onchange="get_positions()" required>
-														<option disabled selected> --Select Department --</option>
+														<option disabled selected> </option>
 														<?php foreach ($departments as $department): ?>
 															<option value="<?=$department['dpt_id'] ?>"> <?=$department['dpt_name']; ?></option>
 														<?php endforeach; ?>
@@ -182,7 +201,7 @@
 											<div class="form-group row mb-3">
 												<label class="col-md-3 col-form-label" for="surname1"> Position/Title</label>
 												<div class="col-md-9">
-													<select class="form-control" name="employee_postion_id" id="position" required>
+													<select class="form-control" name="employee_position_id" id="position" required>
 													
 													
 													
@@ -311,7 +330,7 @@
                 dataType: 'json',
                 success:function(response){
                     $("#position").empty();
-                    $("#position").append('<option> -- Select Position --</option>');
+                    $("#position").append('<option selected disabled> </option>');
                     for (var i=0; i<response.length; i++) {
                         $("#position").append('<option value="' + response[i].pos_id + '">' + response[i].pos_name + '</option>');
                     }
