@@ -126,48 +126,104 @@
 								
 								<div class="tab-pane" id="workInformation">
 									<div class="row">
-										<div class="col-12">
+										<div class="col-6">
 											<div class="form-group row mb-3">
-												<label class="col-md-3 col-form-label" for="name1"> Department</label>
+												<label class="col-md-3 col-form-label" for="department"> Department</label>
 												<div class="col-md-9">
-													<input type="text" id="name1" name="name1" class="form-control" value="Francis">
+													<select class="form-control" name="employee_department_id" id="department" onchange="get_positions()">
+														<option disabled selected> --Select Department --</option>
+														<?php foreach ($departments as $department): ?>
+															<option value="<?=$department['dpt_id'] ?>"> <?=$department['dpt_name']; ?></option>
+														<?php endforeach; ?>
+													
+													
+													</select>
 												</div>
 											</div>
 											<div class="form-group row mb-3">
-												<label class="col-md-3 col-form-label" for="surname1"> Last name</label>
+												<label class="col-md-3 col-form-label" for="level"> Level</label>
 												<div class="col-md-9">
-													<input type="text" id="surname1" name="surname1" class="form-control" value="Brinkman">
+													<select class="form-control" name="employee_level" id="level">
+														<?php for($i = 1; $i <= 16; $i++): ?>
+															<option value="<?='Level '.$i; ?>"> <?='Level '.$i; ?></option>
+														<?php  endfor;?>
+													
+													</select>
+												</div>
+											</div>
+										
+										
+										</div> <!-- end col -->
+										
+										<div class="col-6">
+											
+											<div class="form-group row mb-3">
+												<label class="col-md-3 col-form-label" for="surname1"> Position/Title</label>
+												<div class="col-md-9">
+													<select class="form-control" name="employee_postion_id" id="position">
+													
+													
+													
+													</select>
 												</div>
 											</div>
 											
 											<div class="form-group row mb-3">
-												<label class="col-md-3 col-form-label" for="email1">Email</label>
+												<label class="col-md-3 col-form-label" for="step"> Step</label>
 												<div class="col-md-9">
-													<input type="email" id="email1" name="email1" class="form-control" value="cory1979@hotmail.com">
+													<input id="step" type="number" min="1" class="form-control" name="employee_step">
 												</div>
 											</div>
+										
+										
 										</div> <!-- end col -->
-									</div> <!-- end row -->
+									</div> <!-- end row --><!-- end row -->
 								</div>
 								
 								<div class="tab-pane" id="contactInformation">
 									<div class="row">
 										<div class="col-12">
-											<div class="text-center">
-												<h2 class="mt-0"><i class="mdi mdi-check-all"></i></h2>
-												<h3 class="mt-0">Thank you !</h3>
+										
+											<div class="form-group mb-3">
 												
-												<p class="w-75 mb-2 mx-auto">Quisque nec turpis at urna dictum luctus. Suspendisse convallis dignissim eros at volutpat. In egestas mattis dui. Aliquam
-													mattis dictum aliquet.</p>
+												<label class="col-form-label" for="address"> Address</label>
+												<textarea class="col-md-12 form-control" id="address" rows="5" name="employee_address">
 												
-												<div class="mb-3">
-													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input" id="customCheck3">
-														<label class="custom-control-label" for="customCheck3">I agree with the Terms and Conditions</label>
+												</textarea>
 													</div>
+											</div>
+									
+										
+										
+										</div> <!-- end col -->
+									</div>
+										<div class="row">
+										<div class="col-6">
+											
+											<div class="form-group row mb-3">
+												<label class="col-md-3 col-form-label" for="phone"> Phone Number</label>
+												<div class="col-md-9">
+													<input type="text" id="phone" class="form-control" name="employee_phone" placeholder="000-0000-0000" data-toggle="input-mask" data-mask-format="000-0000-0000" required>
 												</div>
 											</div>
+											
+										
+										
+										
 										</div> <!-- end col -->
+											<div class="col-6">
+												
+												<div class="form-group row mb-3">
+													<label class="col-md-3 col-form-label" for="e-mail"> E-Mail</label>
+													<div class="col-md-9">
+														<input type="email" class="form-control" id="e-mail" name="employee_mail" required>
+													</div>
+												</div>
+											
+											
+											
+											
+											</div> <!-- end col -->
 									</div> <!-- end row -->
 								</div>
 								
@@ -200,6 +256,28 @@
 	<?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
+	<script>
+        function get_positions(){
+            let department_id =  $("#department").val();
+           $.ajax({
+                url: '<?php echo site_url('fetch-positions') ?>',
+                type: 'post',
+                data: {
+                    'dpt_id': department_id,
+                },
+                dataType: 'json',
+                success:function(response){
+                    $("#position").empty();
+                    $("#position").append('<option> -- Select Position --</option>');
+                    for (var i=0; i<response.length; i++) {
+                        $("#position").append('<option value="' + response[i].pos_id + '">' + response[i].pos_name + '</option>');
+                    }
+                  }
+            });
+
+        }
+	
+	</script>
 	<script src="/assetsa/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 	<script src="/assetsa/js/pages/form-wizard.init.js"></script>
 	

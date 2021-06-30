@@ -8,6 +8,12 @@
 </body>
 </html>
 <script src="/assetsa/libs/jquery/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".se-pre-con").delay(3000).fadeOut('5000');
+
+    });
+</script>
 <script src="/assetsa/js/vendor.min.js"></script>
 <script src="/assetsa/libs/ladda/spin.min.js"></script>
 <script src="/assetsa/libs/ladda/ladda.min.js"></script>
@@ -56,14 +62,16 @@
 <script src="/assetsa/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
 <script src="/assetsa/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
 
+<!-- Plugins js -->
+<script src="/assetsa/libs/jquery-mask-plugin/jquery.mask.min.js"></script>
+<script src="/assetsa/libs/autonumeric/autoNumeric-min.js"></script>
+
 <!-- Init js-->
-<script src="/assetsa/js/pages/form-advanced.init.js"></script>
+<script src="/assetsa/js/pages/form-masks.init.js"></script>
+<!-- Init js-->
 
-<script>
-    $(document).ready(function(){
-        $(".se-pre-con").delay(3000).fadeOut('5000');
+<!--<script src="/assetsa/js/pages/form-advanced.init.js"></script>-->
 
-    });
-</script>
+
 
 <?=$this->renderSection('extra-scripts') ?>

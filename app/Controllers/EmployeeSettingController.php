@@ -43,5 +43,11 @@ class EmployeeSettingController extends BaseController
 		endif;
 	}
 	
+	public function fetch_positions(){
+		$dpt_id = $_POST['dpt_id'];
+		$positions = $this->position->where('pos_dpt_id', $dpt_id)->findAll();
+		echo json_encode($positions);
+	}
+	
 	
 }
