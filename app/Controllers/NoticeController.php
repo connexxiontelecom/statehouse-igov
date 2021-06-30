@@ -91,6 +91,18 @@ class NoticeController extends BaseController
 		return $this->response->setJSON($response);
 	}
 
+	public function view_notice($notice_id) {
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$data['notice'] = $this->_get_notice($notice_id);
+		return view('/pages/notice/view-notice', $data);
+	}
+
+	private function _get_notice($notice_id) {
+		$notice = $this->notice->find($notice_id);
+		$notice['signed_by'] = $this->user->find($notice['n_signed_by']);
+		return $notice;
+	}
 	private function _get_notices() {
 		$notices = $this->notice
 			->where('n_status', 2)
