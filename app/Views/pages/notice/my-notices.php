@@ -64,7 +64,7 @@
                     ?>
                   </td>
                   <td class="text-center">
-                    <a href="" class="mr-2">View</a>
+                    <a href="<?=site_url('view-notice/').$notice['n_id']?>" class="mr-2">View</a>
                     <?php if($notice['n_status'] == 0):?>
                       <a href="<?=site_url('edit-notice/').$notice['n_id']?>">Edit</a>
                     <?php endif;?>
