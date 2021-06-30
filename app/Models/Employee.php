@@ -14,7 +14,7 @@ class Employee extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['employee_id', 'employee_f_name', 'employee_l_name', 'employee_o_name', 'employee_sex', 'employee_dob', 'employee_level', 'employee_step', 'employee_department_id', 'employee_position_id', 'employee_email', 'employee_phone', 'employee_signature' ];
+	protected $allowedFields        = ['employee_id', 'employee_f_name', 'employee_l_name', 'employee_o_name', 'employee_sex', 'employee_dob', 'employee_level', 'employee_step', 'employee_department_id', 'employee_position_id', 'employee_mail', 'employee_phone', 'employee_signature' ];
 
 	// Dates
 	protected $useTimestamps        = false;

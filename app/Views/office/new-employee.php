@@ -122,7 +122,7 @@
 											<div class="form-group row mb-3">
 												<label class="col-md-3 col-form-label" for="sex">Sex</label>
 												<div class="col-md-9">
-													<select class="form-control" id="sex" required>
+													<select class="form-control" name="employee_sex" id="sex" required>
 														<option disabled selected></option>
 														<option>Male</option>
 														<option>Female</option>

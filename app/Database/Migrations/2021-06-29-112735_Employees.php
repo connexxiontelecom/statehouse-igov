@@ -38,7 +38,7 @@ class Employees extends Migration
 				],
 				
 				'employee_sex' =>[
-					'type' => 'INT',
+					'type' => 'TEXT',
 				],
 				
 				'employee_dob' =>[
