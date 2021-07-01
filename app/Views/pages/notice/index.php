@@ -23,10 +23,10 @@
       <div class="col-12">
         <div class="card-box">
           <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-5">
               <h4 class="header-title mt-2 mb-4">All Notices</h4>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
               <form method="get">
                 <div class="form-group">
                   <div class="input-group input-group-sm">
@@ -39,8 +39,16 @@
               </form>
             </div>
             <div class="col-lg-2">
-              <a href="<?=site_url('/my-notices')?>" type="button" class="btn btn-primary btn-sm btn-block">My Notices</a>
-            </div>
+				
+              <a href="<?=site_url('/my-notices')?>" type="button" class="btn btn-primary btn-sm btn-block float-right">My Notices</a>
+			
+			</div>
+			  <div class="col-lg-2">
+		
+		
+				  <a href="<?=site_url('/new-notice')?>" type="button" class="btn btn-primary btn-sm btn-block float-right"> <i class="mdi mdi-plus mr-2"></i>New Notice</a>
+	
+			  </div>
           </div>
           <div class="row mt-2">
 			      <?php if(empty($notices)):?>
