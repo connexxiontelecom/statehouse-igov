@@ -37,7 +37,7 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="subject">Subject</label>
-                  <input type="text" id="subject" class="form-control" name="subject" required>
+                  <input type="text" id="subject" class="form-control" name="p_subject" required>
                   <div class="invalid-feedback">
                     Please enter a subject.
                   </div>
@@ -46,7 +46,7 @@
 				<div class="col-lg-3">
 					<div class="form-group">
 						<label for="signed-by">Memo Type</label>
-						<select class="form-control" id="signed-by" name="signed_by" required>
+						<select class="form-control" id="memo-type" name="p_direction" required>
 							<option value="">Select Memo Type</option>
 				           <option value="1"> Internal </option>
 							<option value="2"> External </option>
@@ -59,7 +59,7 @@
               <div class="col-lg-3">
                 <div class="form-group">
                   <label for="signed-by">Signed By</label>
-                  <select class="form-control" id="signed-by" name="signed_by" required>
+                  <select class="form-control" id="signed-by" name="p_signed_by" required>
                     <option value="">Select user</option>
                     <?php foreach($signed_by as $user):
 						if($user['user_username'] !== $username):
