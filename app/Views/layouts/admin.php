@@ -584,6 +584,29 @@
 					</li>
 					
 					<li>
+						<a href="#employeeSettings" data-toggle="collapse">
+							<i data-feather="users"></i>
+							
+							<span> Employees </span>
+							<span class="menu-arrow"></span>
+						</a>
+						<div class="collapse" id="employeeSettings">
+							<ul class="nav-second-level">
+								<li>
+									<a href="<?=site_url('employees'); ?>">All Employees</a>
+								</li>
+								<li>
+									<a href="<?=site_url('new-employee'); ?>">New Employee</a>
+								</li>
+								<li>
+									<a href="<?= site_url('positions'); ?>">Position/Title</a>
+								</li>
+							
+							</ul>
+						</div>
+					</li>
+					
+					<li>
 						<a href="apps-chat.html">
 							<i data-feather="file-minus"></i>
 							<span> Memo </span>

@@ -39,10 +39,8 @@
 	<link href="/assetsa/css/icons.min.css" rel="stylesheet" type="text/css" />
 	<link href="/assetsa/css/custom.css" rel="stylesheet" type="text/css"  />
 	
-	<!-- Plugins css -->
-	<link href="/assetsa/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
-	<link href="/assetsa/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
-	<link href="/assetsa/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
 
+	
+	<?=$this->renderSection('extra-styles') ?>
 </head>
 
