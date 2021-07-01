@@ -60,6 +60,8 @@ $routes->get('view-notice/(:num)', 'NoticeController::view_notice/$1', ['filter'
 $routes->get('edit-notice/(:num)', 'NoticeController::edit_notice/$1', ['filter' => 'auth']);
 $routes->post('edit-notice', 'NoticeController::edit_notice', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-notice', 'NoticeController::new_notice', ['filter' => 'auth']);
+$routes->match(['get'], 'memos', 'PostController::memos', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'new-memo', 'PostController::new_memo', ['filter' => 'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
