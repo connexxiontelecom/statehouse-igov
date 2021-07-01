@@ -2,8 +2,19 @@
 <div class="rightbar-overlay"></div>
 
 <!-- Vendor js -->
-<script src="/assetsa/js/vendor.min.js"></script>
+
+
+
+</body>
+</html>
 <script src="/assetsa/libs/jquery/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".se-pre-con").delay(3000).fadeOut('5000');
+
+    });
+</script>
+<script src="/assetsa/js/vendor.min.js"></script>
 <script src="/assetsa/libs/ladda/spin.min.js"></script>
 <script src="/assetsa/libs/ladda/ladda.min.js"></script>
 
@@ -21,13 +32,6 @@
 
 <!-- App js-->
 <script src="/assetsa/js/app.min.js"></script>
-<!--<script src="/assetsa/libs/jquery/jquery.min.js"></script>-->
-<!--<script src="/assetsa/libs/jquery/jquery.slim.min.js"></script>-->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>-->
-
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
-
 <!-- third party js -->
 <script src="/assetsa/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/assetsa/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -58,18 +62,16 @@
 <script src="/assetsa/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
 <script src="/assetsa/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
 
+<!-- Plugins js -->
+<script src="/assetsa/libs/jquery-mask-plugin/jquery.mask.min.js"></script>
+<script src="/assetsa/libs/autonumeric/autoNumeric-min.js"></script>
+
 <!-- Init js-->
-<script src="/assetsa/js/pages/form-advanced.init.js"></script>
-
-<script>
-    $(document).ready(function(){
-        $(".se-pre-con").delay(3000).fadeOut('5000');
-
-    });
-</script>
-
-<?= $this->renderSection('extra-scripts') ?>
+<script src="/assetsa/js/pages/form-masks.init.js"></script>
+<!-- Init js-->
+<script src="/assetsa/js/pages/form-validation.init.js"></script>
+<!--<script src="/assetsa/js/pages/form-advanced.init.js"></script>-->
 
 
-</body>
-</html>
+
+<?=$this->renderSection('extra-scripts') ?>
