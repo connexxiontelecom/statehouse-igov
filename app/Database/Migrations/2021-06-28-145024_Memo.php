@@ -52,7 +52,7 @@ class Memo extends Migration
 				],
 				
 				'p_department_id' =>[
-					'type' => 'INT'
+					'type' => 'TEXT'
 				],
 				
 				'updated_at' => [
