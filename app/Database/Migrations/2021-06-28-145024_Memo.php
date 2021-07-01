@@ -23,11 +23,13 @@ class Memo extends Migration
 					'type' => 'TEXT',
 				],
 				
-				
 				'p_subject' =>[
 					'type' => 'TEXT',
 				],
 				
+				'p_type' =>[
+					'type' => 'TEXT'
+				],
 				
 				'p_body' =>[
 					'type' => 'TEXT',
