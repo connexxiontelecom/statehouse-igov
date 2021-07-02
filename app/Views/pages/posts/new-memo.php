@@ -32,96 +32,75 @@
               <a href="<?=site_url('/my-memos')?>" type="button" class="btn btn-sm btn-primary float-right"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
             </div>
           </div>
-          <form class="needs-validation" id="new-memo-form" novalidate>
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="subject">Subject</label>
-                  <input type="text" id="subject" class="form-control" name="p_subject" required>
-                  <div class="invalid-feedback">
-                    Please enter a subject.
-                  </div>
-                </div>
-              </div>
-				<div class="col-lg-3">
-					<div class="form-group">
-						<label for="signed-by">Memo Type</label>
-						<select class="form-control" id="memo-type" name="p_direction" required>
-							<option value="" disabled selected>Select Memo Type</option>
-				           <option value="1"> Internal </option>
-							<option value="2"> External </option>
-						</select>
-						<div class="invalid-feedback">
-							Please select the signer.
-						</div>
+         
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card bg-pattern">
+						
+						<div class="card-body p-4">
+							
+							<div class="text-center w-75 m-auto">
+								<div class="auth-logo">
+									<a href="<?=site_url('internal-memo'); ?>" class="logo logo-dark text-center">
+                                            <span class="logo-lg">
+                                                <i data-feather="download"></i>
+                                            </span>
+									</a>
+									
+									<a href="<?=site_url('internal-memo'); ?>" class="logo logo-light text-center">
+                                             <span class="logo-lg">
+                                                <i data-feather="download"></i>
+                                            </span>
+									</a>
+								</div>
+								<p class="text-muted mb-4 mt-3"> Internal Memo</p>
+							
+							
+							</div>
+						
+						
+						
+						
+						
+						</div> <!-- end card-body -->
 					</div>
 				</div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="signed-by">Signed By</label>
-                  <select class="form-control" id="signed-by" name="p_signed_by" required>
-                    <option value="">Select user</option>
-                    <?php foreach($signed_by as $user):
-						if($user['user_username'] !== $username):
-						?>
+				
+				<div class="col-sm-6">
+					<div class="card bg-pattern">
 						
-                      <option value="<?=$user['user_id']?>">  <?=$user['user_name'];?> </option>
-                    <?php endif; endforeach;?>
-                  </select>
-                  <div class="invalid-feedback">
-                    Please select the signer.
-                  </div>
-                </div>
-              </div>
-            </div>
-	
-			  <div class="row">
-				  <div class="col-lg-6">
-					  <div class="form-group" id="department-div">
-						  <label for="subject">Department</label>
-						  <select class="form-control" id="memo-type" name="p_department_id" required>
-							  <option value="" disabled selected>Select Department</option>
-							  <option value="a">All Departments</option>
-							 <?php foreach ($departments as $department): ?>
-						  	<option value="<?=$department['dpt_id']; ?>"> <?=$department['dpt_name']; ?></option>
-						  	<?php endforeach; ?>
-						  </select>
-					  </div>
-					
-					  <div class="form-group" id="department-div">
-						  <label for="subject">Offices</label>
-						  <select class="form-control" id="memo-type" name="p_direction" required>
-							  <option value="" disabled selected>Select Department</option>
-							  <?php foreach ($departments as $department): ?>
-								  <option value="<?=$department['dpt_id']; ?>"> <?=$department['dpt_name']; ?></option>
-							  <?php endforeach; ?>
-						  </select>
-					  </div>
-				  </div>
-				 
-			  </div>
-     
-			  
-			  
-			  <div class="row">
-              <div class="col-12">
-                <div class="form-group">
-                  <label for="snow-editor">Body</label>
-                  <div id="snow-editor" class="form-control body" style="height: 300px;"></div> <!-- end Snow-editor-->
-                  <div class="invalid-feedback">
-                    Please enter a body.
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row g-3">
-              <div class="col-lg-12 offset-lg-12">
-                <div class="form-group mt-2">
-                  <button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
-                </div>
-              </div>
-            </div>
-          </form>
+						<div class="card-body p-4">
+							
+							<div class="text-center w-75 m-auto">
+								<div class="auth-logo">
+									<a href="<?=site_url('external-memo'); ?>" class="logo logo-dark text-center">
+                                             <span class="logo-lg">
+                                                <i data-feather="upload"></i>
+                                            </span>
+									</a>
+									
+									<a href="<?=site_url('external-memo'); ?>" class="logo logo-light text-center">
+                                             <span class="logo-lg">
+                                                <i data-feather="upload"></i>
+                                            </span>
+									</a>
+								</div>
+								<p class="text-muted mb-4 mt-3"> External Memo</p>
+							
+							
+							</div>
+						
+						
+						
+						
+						
+						</div> <!-- end card-body -->
+					</div>
+				</div>
+				
+			</div>
+        
+        
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <script>
 	$(document).ready(function () {
-		$('form#new-memo-form').submit(function (e) {
+		$('form#new-internal-memo-form').submit(function (e) {
 			e.preventDefault()
 			let body = quillEditor.root.innerHTML
 			let formData = new FormData(this)
@@ -15,23 +15,22 @@
         cancelButtonColor: "#d33"
       }).then(confirm => {
         if (confirm.value) {
-            
-            console.log(body)
-          //$.ajax({
-          //  url: '<?//=site_url('/new-memo')?>//',
-          //  type: 'post',
-          //  data: formData,
-          //  success: response => {
-          //    if (response.success) {
-          //      Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?//=site_url('/my-memos')?>//')
-          //    } else {
-          //      Swal.fire('Sorry!', response.message, 'error')
-          //    }
-          //  },
-          //  cache: false,
-          //  contentType: false,
-          //  processData: false
-          //})
+        
+          $.ajax({
+            url: '<?=site_url('/internal-memo')?>',
+            type: 'post',
+            data: formData,
+            success: response => {
+              if (response.success) {
+                Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/my-memos')?>')
+              } else {
+                Swal.fire('Sorry!', response.message, 'error')
+              }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+          })
         }
       })
     })
