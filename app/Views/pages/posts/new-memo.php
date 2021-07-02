@@ -47,7 +47,7 @@
 					<div class="form-group">
 						<label for="signed-by">Memo Type</label>
 						<select class="form-control" id="memo-type" name="p_direction" required>
-							<option value="">Select Memo Type</option>
+							<option value="" disabled selected>Select Memo Type</option>
 				           <option value="1"> Internal </option>
 							<option value="2"> External </option>
 						</select>
@@ -74,7 +74,36 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+	
+			  <div class="row">
+				  <div class="col-lg-6">
+					  <div class="form-group" id="department-div">
+						  <label for="subject">Department</label>
+						  <select class="form-control" id="memo-type" name="p_department_id" required>
+							  <option value="" disabled selected>Select Department</option>
+							  <option value="a">All Departments</option>
+							 <?php foreach ($departments as $department): ?>
+						  	<option value="<?=$department['dpt_id']; ?>"> <?=$department['dpt_name']; ?></option>
+						  	<?php endforeach; ?>
+						  </select>
+					  </div>
+					
+					  <div class="form-group" id="department-div">
+						  <label for="subject">Offices</label>
+						  <select class="form-control" id="memo-type" name="p_direction" required>
+							  <option value="" disabled selected>Select Department</option>
+							  <?php foreach ($departments as $department): ?>
+								  <option value="<?=$department['dpt_id']; ?>"> <?=$department['dpt_name']; ?></option>
+							  <?php endforeach; ?>
+						  </select>
+					  </div>
+				  </div>
+				 
+			  </div>
+     
+			  
+			  
+			  <div class="row">
               <div class="col-12">
                 <div class="form-group">
                   <label for="snow-editor">Body</label>
@@ -99,4 +128,6 @@
   </div>
 </div>
 <?= $this->endSection(); ?>
-
+<?= $this->section('extra-scripts'); ?>
+<?=view('pages/posts/_memo-scripts.php')?>
+<?= $this->endSection(); ?>

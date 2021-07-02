@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Notice;
 use App\Models\Post;
@@ -20,6 +21,7 @@ class PostController extends BaseController
 		$this->user = new UserModel();
 		$this->post = new Post();
 		$this->employee = new Employee();
+		$this->department = new Department();
 		
 	}
 	
@@ -89,7 +91,7 @@ class PostController extends BaseController
 				->orWhere('user_type', 3)
 				->groupEnd()
 				->findAll();
-			
+			$data['departments']= $this->department->findAll();
 			$data['pager'] = $this->post->pager;
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
