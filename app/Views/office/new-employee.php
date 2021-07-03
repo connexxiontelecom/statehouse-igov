@@ -68,17 +68,18 @@
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="#workInformation" data-toggle="tab" class="nav-link rounded-0 pt-2 pb-2">
-										<i class="mdi mdi-face-profile mr-1"></i>
-										<span class="d-none d-sm-inline">Work Information</span>
-									</a>
-								</li>
-								<li class="nav-item">
 									<a href="#contactInformation" data-toggle="tab" class="nav-link rounded-0 pt-2 pb-2">
 										<i class="mdi mdi-checkbox-marked-circle-outline mr-1"></i>
 										<span class="d-none d-sm-inline">Contact Information</span>
 									</a>
 								</li>
+								<li class="nav-item">
+									<a href="#workInformation" data-toggle="tab" class="nav-link rounded-0 pt-2 pb-2">
+										<i class="mdi mdi-face-profile mr-1"></i>
+										<span class="d-none d-sm-inline">Work Information</span>
+									</a>
+								</li>
+								
 							</ul>
 							
 							<div class="tab-content b-0 mb-0 pt-0">
@@ -91,14 +92,13 @@
 									<div class="row">
 										<div class="col-6">
 											<div class="form-group row mb-3">
-												<label class="col-md-3 col-form-label" for="firstName">First Name</label>
+												<label class="col-md-3 col-form-label" for="lastName">Surname</label>
 												<div class="col-md-9">
-													<input type="text" class="form-control" id="firstName" name="employee_f_name" required>
+													<input type="text" class="form-control" id="lastName" name="employee_l_name" required>
 													<div class="valid-feedback">
 														Looks good!
 													</div>
 												</div>
-												
 											</div>
 											
 											
@@ -128,14 +128,16 @@
 										
 										<div class="col-6">
 											<div class="form-group row mb-3">
-												<label class="col-md-3 col-form-label" for="lastName">Surname</label>
+												<label class="col-md-3 col-form-label" for="firstName">First Name</label>
 												<div class="col-md-9">
-													<input type="text" class="form-control" id="lastName" name="employee_l_name" required>
+													<input type="text" class="form-control" id="firstName" name="employee_f_name" required>
 													<div class="valid-feedback">
 														Looks good!
 													</div>
 												</div>
+											
 											</div>
+											
 											
 											
 											<div class="form-group row mb-3">
@@ -153,6 +155,62 @@
 												</div>
 											</div>
 											
+										
+										
+										</div> <!-- end col -->
+									</div> <!-- end row -->
+								</div>
+								
+								<div class="tab-pane" id="contactInformation">
+									<div class="row">
+										<div class="col-12">
+											
+											<div class="form-group mb-3">
+												
+												<label class="col-form-label" for="address"> Address</label>
+												<textarea class="col-md-12 form-control" id="address" rows="5" name="employee_address" required>
+												
+												</textarea>
+												<div class="valid-feedback">
+													Looks good!
+												</div>
+											</div>
+										</div>
+									
+									
+									
+									</div> <!-- end col -->
+									
+									<div class="row">
+										<div class="col-6">
+											
+											<div class="form-group row mb-3">
+												<label class="col-md-3 col-form-label" for="phone"> Phone Number</label>
+												<div class="col-md-9">
+													<input type="text" id="phone" class="form-control" name="employee_phone" placeholder="000-0000-0000" data-toggle="input-mask" data-mask-format="000-0000-0000" required>
+												</div>
+												<div class="valid-feedback">
+													Looks good!
+												</div>
+											</div>
+										
+										
+										
+										
+										</div> <!-- end col -->
+										<div class="col-6">
+											
+											<div class="form-group row mb-3">
+												<label class="col-md-3 col-form-label" for="e-mail"> E-Mail</label>
+												<div class="col-md-9">
+													<input type="email" class="form-control" id="e-mail" name="employee_mail" required>
+												</div>
+												<div class="valid-feedback">
+													Looks good!
+												</div>
+											</div>
+										
+										
 										
 										
 										</div> <!-- end col -->
@@ -179,10 +237,10 @@
 												</div>
 											</div>
 											<div class="form-group row mb-3">
-												<label class="col-md-3 col-form-label" for="level"> Level</label>
+												<label class="col-md-3 col-form-label" for="level"> Grade Level</label>
 												<div class="col-md-9">
 													<select class="form-control" name="employee_level" id="level" required>
-														<?php for($i = 1; $i <= 16; $i++): ?>
+														<?php for($i = 1; $i <= 17; $i++): ?>
 															<option value="<?='Level '.$i; ?>"> <?='Level '.$i; ?></option>
 														<?php  endfor;?>
 													
@@ -215,7 +273,7 @@
 											<div class="form-group row mb-3">
 												<label class="col-md-3 col-form-label" for="step"> Step</label>
 												<div class="col-md-9">
-													<input id="step" type="number" min="1" class="form-control" name="employee_step" required>
+													<input id="step" type="number" min="1" max="15" class="form-control" name="employee_step" required>
 												</div>
 												<div class="valid-feedback">
 													Looks good!
@@ -227,61 +285,7 @@
 									</div> <!-- end row --><!-- end row -->
 								</div>
 								
-								<div class="tab-pane" id="contactInformation">
-									<div class="row">
-										<div class="col-12">
-										
-											<div class="form-group mb-3">
-												
-												<label class="col-form-label" for="address"> Address</label>
-												<textarea class="col-md-12 form-control" id="address" rows="5" name="employee_address" required>
-												
-												</textarea>
-												<div class="valid-feedback">
-													Looks good!
-												</div>
-													</div>
-											</div>
-									
-										
-										
-										</div> <!-- end col -->
 								
-										<div class="row">
-										<div class="col-6">
-											
-											<div class="form-group row mb-3">
-												<label class="col-md-3 col-form-label" for="phone"> Phone Number</label>
-												<div class="col-md-9">
-													<input type="text" id="phone" class="form-control" name="employee_phone" placeholder="000-0000-0000" data-toggle="input-mask" data-mask-format="000-0000-0000" required>
-												</div>
-												<div class="valid-feedback">
-													Looks good!
-												</div>
-											</div>
-											
-										
-										
-										
-										</div> <!-- end col -->
-											<div class="col-6">
-												
-												<div class="form-group row mb-3">
-													<label class="col-md-3 col-form-label" for="e-mail"> E-Mail</label>
-													<div class="col-md-9">
-														<input type="email" class="form-control" id="e-mail" name="employee_mail" required>
-													</div>
-													<div class="valid-feedback">
-														Looks good!
-													</div>
-												</div>
-											
-											
-											
-											
-											</div> <!-- end col -->
-									</div> <!-- end row -->
-								</div>
 								
 								<ul class="list-inline mb-0 wizard">
 									<li class="previous list-inline-item">

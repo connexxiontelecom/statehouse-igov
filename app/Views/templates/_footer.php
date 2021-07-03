@@ -53,7 +53,6 @@
 <script src="../assets/js/pages/sweet-alerts.init.js"></script>
 
 <!--Custom scripts-->
-<?=view('pages/notice/_notice-scripts.php')?>
 
 <script>
     $(window).load(function() {
@@ -61,5 +60,7 @@
 
     });
 </script>
+
+<?=$this->renderSection('extra-scripts') ?>
 </body>
 </html>
