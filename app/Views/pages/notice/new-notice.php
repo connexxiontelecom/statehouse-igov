@@ -43,22 +43,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="signed-by">Signed By</label>
-                  <select class="form-control" id="signed-by" name="signed_by" required>
-                    <option value="">Select user</option>
-                    <?php foreach($signed_by as $user): ?>
-                      <option value="<?=$user['user_id']?>">
-                        <?=$user['user_name'];?>
-                      </option>
-                    <?php endforeach;?>
-                  </select>
-                  <div class="invalid-feedback">
-                    Please select the signer.
-                  </div>
-                </div>
-              </div>
+             
             </div>
             <div class="row">
               <div class="col-12">
@@ -71,6 +56,24 @@
                 </div>
               </div>
             </div>
+			  <div class="row">
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						  <label for="signed-by">Signed By</label>
+						  <select class="form-control" id="signed-by" name="signed_by" required>
+							  <option value="">Select user</option>
+					          <?php foreach($signed_by as $user): ?>
+								  <option value="<?=$user['user_id']?>">
+							          <?=$user['user_name'];?>
+								  </option>
+					          <?php endforeach;?>
+						  </select>
+						  <div class="invalid-feedback">
+							  Please select the signer.
+						  </div>
+					  </div>
+				  </div>
+			  </div>
             <div class="row g-3">
               <div class="col-lg-12 offset-lg-12">
                 <div class="form-group mt-2">
@@ -85,4 +88,10 @@
   </div>
 </div>
 <?= $this->endSection(); ?>
+<?= $this->section('extra-scripts'); ?>
+<?=view('pages/notice/_notice-scripts.php')?>
+<?= $this->endSection(); ?>
+
+
+
 

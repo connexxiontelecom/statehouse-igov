@@ -45,7 +45,12 @@ class NoticeController extends BaseController
 		if ($this->request->getMethod() == 'get') {
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$data['signed_by'] = $this->user->findAll();
+			$data['signed_by'] = $this->user->where('user_status', 1)
+											->groupStart()
+												->where('user_type', 2)
+												->orWhere('user_type', 3)
+											->groupEnd()
+											->findAll();
 			return view('/pages/notice/new-notice', $data);
 		}
 		$post_data = $this->request->getPost();

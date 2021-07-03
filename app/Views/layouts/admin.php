@@ -593,14 +593,12 @@
 						<div class="collapse" id="employeeSettings">
 							<ul class="nav-second-level">
 								<li>
-									<a href="<?=site_url('employees'); ?>">All Employees</a>
-								</li>
-								<li>
 									<a href="<?=site_url('new-employee'); ?>">New Employee</a>
 								</li>
 								<li>
-									<a href="<?= site_url('positions'); ?>">Position/Title</a>
+									<a href="<?=site_url('employees'); ?>">All Employees</a>
 								</li>
+							
 							
 							</ul>
 						</div>
