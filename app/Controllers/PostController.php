@@ -25,7 +25,7 @@ class PostController extends BaseController
 		
 	}
 	
-	public function memos() {
+	public function circulars() {
 		$search_params = @$_GET['search_params'];
 		$user_id = session()->get('user_id');
 		$user_data = $this->user->where('user_id', $user_id)->first();
@@ -34,7 +34,7 @@ class PostController extends BaseController
 		$department_id = $employee_data['employee_department_id'];
 		
 		if (empty($search_params)):
-			$memos = $this->post->where('p_status', 2 )
+			$circulars = $this->post->where('p_status', 2 )
 				->groupStart()
 					->where('p_department_id', $department_id)
 					->orWhere('p_department_id', 'a')
@@ -46,7 +46,7 @@ class PostController extends BaseController
 		 
 		else:
 			if (!empty($search_params)):
-				$memos = $this->post->where('p_status', 2 )
+				$circulars = $this->post->where('p_status', 2 )
 					->groupStart()
 						->where('p_department_id', $department_id)
 						->orWhere('p_department_id', 'a')
@@ -61,6 +61,122 @@ class PostController extends BaseController
 					->paginate(9);
 			endif;
 			
+		endif;
+		$new_circulars = array();
+		$i = 0;
+		foreach ($circulars as $circular):
+			$user = $this->user->where('user_id', $circular['p_by'])->first();
+			$circular['created_by'] = $user['user_name'];
+			$new_circulars[$i] = $circular;
+			$i++;
+		endforeach;
+		$data['circulars'] = $new_circulars;
+		$data['pager'] = $this->post->pager;
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		return view('/pages/posts/circulars', $data);
+	}
+	
+	public function new_circular() {
+		
+		if($this->request->getMethod() == 'post'):
+		
+		
+		endif;
+		
+		if($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			return view('/pages/posts/new-circular', $data);
+		
+			endif;
+		
+		
+	}
+	
+	public function internal_circular(){
+		if($this->request->getMethod() == 'get'):
+			$data['signed_by'] = $this->user->where('user_status', 1)
+				->groupStart()
+				->where('user_type', 2)
+				->orWhere('user_type', 3)
+				->groupEnd()
+				->findAll();
+			$data['departments']= $this->department->findAll();
+			$data['pager'] = $this->post->pager;
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			return view('/pages/posts/new-internal-circular', $data);
+		endif;
+		
+		if($this->request->getMethod() == 'post'):
+			$_POST['p_by'] = $this->session->user_id;
+			$_POST['p_direction'] = 1;
+			$_POST['p_status'] = 0;
+			
+			if ($this->post->save($_POST)):
+				$response['success'] = true;
+				$response['message'] = 'Successfully created notice';
+			 else:
+				$response['success'] = false;
+				$response['message'] = 'There was an error while creating notice';
+			endif;
+			return $this->response->setJSON($response);
+		
+		endif;
+	}
+	
+	public function external_circular(){
+		
+		$data['signed_by'] = $this->user->where('user_status', 1)
+			->groupStart()
+			->where('user_type', 2)
+			->orWhere('user_type', 3)
+			->groupEnd()
+			->findAll();
+		$data['departments']= $this->department->findAll();
+		$data['pager'] = $this->post->pager;
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		return view('/pages/posts/new-external-circular', $data);
+	}
+	
+	public function memos() {
+		$search_params = @$_GET['search_params'];
+		$user_id = session()->get('user_id');
+		$user_data = $this->user->where('user_id', $user_id)->first();
+		$employee_id = $user_data['user_employee_id'];
+		$employee_data = $this->employee->where('employee_id', $employee_id)->first();
+		$department_id = $employee_data['employee_department_id'];
+		
+		if (empty($search_params)):
+			$memos = $this->post->where('p_status', 2 )
+				->groupStart()
+				->where('p_department_id', $department_id)
+				->orWhere('p_department_id', 'a')
+				->groupEnd()
+				->where('p_type', 1)
+				->join('users', 'posts.p_signed_by = users.user_id')
+				->orderBy('p_date', 'DESC')
+				->paginate(9);
+		
+		else:
+			if (!empty($search_params)):
+				$memos = $this->post->where('p_status', 2 )
+					->groupStart()
+					->where('p_department_id', $department_id)
+					->orWhere('p_department_id', 'a')
+					->groupEnd()
+					->groupStart()
+					->like('p_subject', $search_params)
+					->orLike('p_body', $search_params)
+					->groupEnd()
+					->where('p_type', 1)
+					->join('users', 'posts.p_signed_by = users.user_id')
+					->orderBy('p_date', 'DESC')
+					->paginate(9);
+			endif;
+		
 		endif;
 		$new_memos = array();
 		$i = 0;
@@ -89,7 +205,7 @@ class PostController extends BaseController
 			$data['username'] = $this->session->user_username;
 			return view('/pages/posts/new-memo', $data);
 		
-			endif;
+		endif;
 		
 		
 	}
@@ -117,7 +233,7 @@ class PostController extends BaseController
 			if ($this->post->save($_POST)):
 				$response['success'] = true;
 				$response['message'] = 'Successfully created notice';
-			 else:
+			else:
 				$response['success'] = false;
 				$response['message'] = 'There was an error while creating notice';
 			endif;
