@@ -12,10 +12,11 @@
 						<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
 						<li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">Memo Board</a></li>
 						<li class="breadcrumb-item"><a href="<?= site_url('/my-memos')?>">My Memos</a></li>
-						<li class="breadcrumb-item active">New memo</li>
+						<li class="breadcrumb-item"><a href="<?= site_url('/new-memo')?>">New Memo</a></li>
+						<li class="breadcrumb-item active">New Internal Memo</li>
 					</ol>
 				</div>
-				<h4 class="page-title">New memo</h4>
+				<h4 class="page-title">New Internal Memo</h4>
 			</div>
 		</div>
 	</div>
@@ -29,7 +30,7 @@
               <h4 class="header-title mt-2 mb-4">Create Internal Memo Form</h4>
             </div>
             <div class="col-lg-4">
-              <a href="<?=site_url('/my-memos')?>" type="button" class="btn btn-sm btn-primary float-right"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
+              <a href="<?=site_url('/new-memo')?>" type="button" class="btn btn-sm btn-primary float-right"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
             </div>
           </div>
           <form class="needs-validation" id="new-internal-memo-form" novalidate>
@@ -43,33 +44,30 @@
                   </div>
                 </div>
               </div>
-				<div class="col-lg-3">
-					<div class="form-group">
-						<label for="subject">Ref No</label>
-						<input type="text"  class="form-control" name="p_ref_no" required>
-						<div class="invalid-feedback">
-							Please enter a reference number.
-						</div>
-					</div>
-	
-	
-				</div>
-	
-				<div class="col-lg-3">
-					
-					<div class="form-group mb-3">
-						<label>Offices</label>
-						<input type="text" id="selectize-tags" value="Awesome, Admin, Dashboard">
-					</div>
-	
-				</div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="ref-no">Ref No</label>
+                  <input type="text" class="form-control" id="ref-no" name="p_ref_no" required>
+                  <div class="invalid-feedback">
+                    Please enter a reference number.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group" id="department-div">
+                  <label for="positions">Offices</label>
+                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" data-placeholder="Please select all..." required>
+                    <?php foreach ($positions as $position): ?>
+                      <option value="<?=$position['pos_id']; ?>"> <?=$position['pos_name']; ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select all applicable offices.
+                  </div>
+                </div>
+              </div>
             </div>
-	
-	
-     
-			  
-			  
-			  <div class="row">
+			      <div class="row">
               <div class="col-12">
                 <div class="form-group">
                   <label for="snow-editor">Body</label>
@@ -80,27 +78,23 @@
                 </div>
               </div>
             </div>
-	
-			  <div class="row">
-					
-				  <div class="col-lg-3">
-					  <div class="form-group">
-						  <label for="signed-by">Signed By</label>
-						  <select class="form-control" id="signed-by" name="p_signed_by" required>
-							  <option value="">Select user</option>
-					          <?php foreach($signed_by as $user):
-						          if($user['user_username'] !== $username):
-							          ?>
-							
-									  <option value="<?=$user['user_id']?>">  <?=$user['user_name'];?> </option>
-						          <?php endif; endforeach;?>
-						  </select>
-						  <div class="invalid-feedback">
-							  Please select the signer.
-						  </div>
-					  </div>
-				  </div>
-			  </div>
+            <div class="row">
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="signed-by">Signed By</label>
+                  <select class="form-control" id="signed-by" name="p_signed_by" required>
+                    <option value="">Select user</option>
+                    <?php foreach($signed_by as $user):
+                    if($user['user_username'] !== $username):?>
+                      <option value="<?=$user['user_id']?>">  <?=$user['user_name'];?> </option>
+                    <?php endif; endforeach;?>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select the signer.
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row g-3">
               <div class="col-lg-12 offset-lg-12">
                 <div class="form-group mt-2">

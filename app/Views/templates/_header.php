@@ -14,6 +14,7 @@
 	<!-- Plugins css -->
 	<link href="/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
 	<link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
 
   <!-- Sweet Alert-->
   <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />

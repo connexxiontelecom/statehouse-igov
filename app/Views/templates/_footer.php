@@ -37,6 +37,8 @@
 <!-- Datatables init -->
 <script src="/assets/js/pages/datatables.init.js"></script>
 
+<script src="/assets/libs/select2/js/select2.min.js"></script>
+
 <!-- Init js-->
 <script src="/assets/js/pages/form-advanced.init.js"></script>
 
@@ -47,10 +49,10 @@
 <script src="/assets/js/pages/form-quilljs.init.js"></script>
 
 <!-- Sweet Alerts js -->
-<script src="../assets/libs/sweetalert2/sweetalert2.min.js"></script>
+<script src="/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
 <!-- Sweet alert init js-->
-<script src="../assets/js/pages/sweet-alerts.init.js"></script>
+<script src="/assets/js/pages/sweet-alerts.init.js"></script>
 
 <!--Custom scripts-->
 
