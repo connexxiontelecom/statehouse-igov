@@ -26,63 +26,6 @@ class PostController extends BaseController
 	}
 	
 	public function circulars() {
-//		$search_params = @$_GET['search_params'];
-//		$user_id = session()->get('user_id');
-//		$user_data = $this->user->where('user_id', $user_id)->first();
-//		$employee_id = $user_data['user_employee_id'];
-//		$employee_data = $this->employee->where('employee_id', $employee_id)->first();
-//		$department_id = $employee_data['employee_department_id'];
-//
-//		if (empty($search_params)):
-//			$circulars = $this->post->where('p_status', 2 )
-//				->groupStart()
-//					->where('p_department_id', $department_id)
-//					->orWhere('p_department_id', 'a')
-//				->groupEnd()
-//				->where('p_type', 1)
-//				->join('users', 'posts.p_signed_by = users.user_id')
-//				->orderBy('p_date', 'DESC')
-//				->paginate(9);
-//
-//		else:
-//			if (!empty($search_params)):
-//				$circulars = $this->post->where('p_status', 2 )
-//					->groupStart()
-//						->where('p_department_id', $department_id)
-//						->orWhere('p_department_id', 'a')
-//					->groupEnd()
-//					->groupStart()
-//						->like('p_subject', $search_params)
-//						->orLike('p_body', $search_params)
-//					->groupEnd()
-//					->where('p_type', 1)
-//					->join('users', 'posts.p_signed_by = users.user_id')
-//					->orderBy('p_date', 'DESC')
-//					->paginate(9);
-//			endif;
-//
-//		endif;
-//		$new_circulars = array();
-//		$i = 0;
-//		foreach ($circulars as $circular):
-//			$user = $this->user->where('user_id', $circular['p_by'])->first();
-//			$circular['created_by'] = $user['user_name'];
-//			$new_circulars[$i] = $circular;
-//			$i++;
-//		endforeach;
-//		$data['circulars'] = $new_circulars;
-//		$data['pager'] = $this->post->pager;
-//		$data['firstTime'] = $this->session->firstTime;
-//		$data['username'] = $this->session->user_username;
-//
-//
-		
-		
-		
-		
-		
-		
-		
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$circulars = array();
@@ -114,7 +57,6 @@ class PostController extends BaseController
 		endforeach;
 		$data['pager'] = $this->post->pager;
 		$data['circulars'] = $new_circulars;
-		//return view('/pages/posts/circulars', $data);
 		return view('/pages/posts/circulars', $data);
 	}
 	
@@ -200,6 +142,48 @@ class PostController extends BaseController
 		return view('/pages/posts/new-external-circular', $data);
 	}
 	
+	public function my_circulars(){
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$l_user = $this->user->where('user_username', $this->session->user_username)
+			->join('employees', 'users.user_employee_id = employees.employee_id')
+			->first();
+		$circulars = $this->post->where('p_type', 2)
+								->where('p_by', $l_user['user_id'])
+								->join('users', 'posts.p_signed_by = users.user_id')
+								->paginate('9');
+		$new_circulars = array();
+		$i = 0;
+		foreach ($circulars as $circular):
+			$user = $this->user->where('user_id', $circular['p_by'])->first();
+			$circular['created_by'] = $user['user_name'];
+			$new_circulars[$i] = $circular;
+			$i++;
+		endforeach;
+		$data['pager_cir'] = $this->post->pager;
+		$data['circulars'] = $new_circulars;
+		
+		
+		$circulars = $this->post->where('p_type', 2)
+			->where('p_signed_by', $l_user['user_id'])
+			->join('users', 'posts.p_signed_by = users.user_id')
+			->paginate('9');
+		$new_circulars = array();
+		$i = 0;
+		foreach ($circulars as $circular):
+			$user = $this->user->where('user_id', $circular['p_by'])->first();
+			$circular['created_by'] = $user['user_name'];
+			$new_circulars[$i] = $circular;
+			$i++;
+		endforeach;
+		$data['pager_scir'] = $this->post->pager;
+		$data['s_circulars'] = $new_circulars;
+		
+		return view('/pages/posts/my-circulars', $data);
+	}
+	
+
+
 	public function memos() {
 		$search_params = @$_GET['search_params'];
 		$user_id = session()->get('user_id');

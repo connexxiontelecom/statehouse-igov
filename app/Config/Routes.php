@@ -70,7 +70,7 @@ $routes->match(['get'], 'circulars', 'PostController::circulars', ['filter' => '
 $routes->match(['get', 'post'], 'new-circular', 'PostController::new_circular', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'internal-circular', 'PostController::internal_circular', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'external-circular', 'PostController::external_circular', ['filter' => 'auth']);
-$routes->match(['get'], 'my-circulars', 'PostController::circulars', ['filter' => 'auth']);
+$routes->match(['get'], 'my-circulars', 'PostController::my_circulars', ['filter' => 'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
