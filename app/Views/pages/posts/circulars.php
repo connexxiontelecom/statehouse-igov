@@ -78,7 +78,7 @@
 					<?php else: ?>
 						<?php foreach ($circulars as $circular): ?>
 							<div class="col-lg-4" style="padding-bottom: 5px; max-height: 100%" >
-								<div class="card-box project-box mb-n5" style=" <?php if($circular['p_status'] == 3): ?>background-color: lavenderblush; <?php endif; ?>;" >
+								<div class="card-box project-box mb-n5" >
 									<!-- Title-->
 									<h4 class="mt-0"><a href="#" data-toggle="modal" data-target="#view-circular<?=$circular['p_id'] ?>" class="text-dark"><?=$circular['p_subject'] ?></a></h4>
 									<!-- Desc-->

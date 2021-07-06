@@ -63,6 +63,26 @@
                   </select>
                 </div>
               </div>
+				<div class="col-lg-3">
+					<div class="form-group">
+						<label for="subject">Ref No</label>
+						<input type="text"  class="form-control" name="p_ref_no" required>
+						<div class="invalid-feedback">
+							Please enter a reference number.
+						</div>
+					</div>
+
+
+				</div>
+
+				<div class="col-lg-3">
+
+					<div class="form-group mb-3">
+						<label>Offices</label>
+						<input type="text" id="selectize-tags" value="Awesome, Admin, Dashboard">
+					</div>
+
+				</div>
             </div>
 			      <div class="row">
               <div class="col-12">
