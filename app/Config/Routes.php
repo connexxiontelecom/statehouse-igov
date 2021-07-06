@@ -52,6 +52,7 @@ $routes->match(['get', 'post'], 'notice-board', 'MessagingSettingController::not
 $routes->match(['get', 'post'], 'new-employee', 'EmployeeSettingController::new_employee', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'fetch-positions', 'EmployeeSettingController::fetch_positions', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'employees', 'EmployeeSettingController::all_employees', ['filter' => 'auth']);
+$routes->match(['post'], 'check-username', 'EmployeeSettingController::check_username', ['filter' => 'auth']);
 
 // notices route
 $routes->get('notices', 'NoticeController::index', ['filter' => 'auth']);

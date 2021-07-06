@@ -303,7 +303,7 @@
 													<div class="valid-feedback">
 														Looks good!
 													</div>
-													<div class="alert alert-danger bg-danger text-white border-0" role="alert" style="margin-top: 10px">
+													<div class="alert alert-danger bg-danger text-white border-0" role="alert" style="margin-top: 10px" id="usernameError">
 														<i class="mdi mdi-block-helper mr-2"></i>
 														<strong>Error </strong> Username Already Exists/Less than 5 alphabets
 													</div>
@@ -461,20 +461,22 @@
         }
 
         function checkUsername(){
-            let department_id =  $("#department").val();
+            let username =  $("#user_username").val();
             $.ajax({
-                url: '<?php echo site_url('fetch-positions') ?>',
+                url: '<?php echo site_url('check-username') ?>',
                 type: 'post',
                 data: {
-                    'dpt_id': department_id,
+                    'username': username,
                 },
                 dataType: 'json',
                 success:function(response){
-                    $("#position").empty();
-                    $("#position").append('<option selected disabled> </option>');
-                    for (var i=0; i<response.length; i++) {
-                        $("#position").append('<option value="' + response[i].pos_id + '">' + response[i].pos_name + '</option>');
-                    }
+                   if(response.success && username.length > 5){
+                       $("#usernameError").hide();
+                       $('#last').css({display: 'block'})
+				   } else{
+                       $("#usernameError").show();
+                       $('#last').css({display: 'none'})
+				   }
                 }
             });
 
@@ -498,7 +500,7 @@
 	<script>
         $(document).ready(function() {
             $('#permission').hide()
-			
+            $("#usernameError").hide();
 			
             $('#newemployeewizard').bootstrapWizard({
 				onTabShow: function(tab, navigation, index) {
