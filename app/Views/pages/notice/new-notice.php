@@ -34,7 +34,7 @@
           </div>
           <form class="needs-validation" id="new-notice-form" novalidate>
             <div class="row">
-              <div class="col-lg-8">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="subject">Subject</label>
                   <input type="text" id="subject" class="form-control" name="subject" required>
@@ -43,7 +43,6 @@
                   </div>
                 </div>
               </div>
-             
             </div>
             <div class="row">
               <div class="col-12">
@@ -56,24 +55,24 @@
                 </div>
               </div>
             </div>
-			  <div class="row">
-				  <div class="col-lg-4">
-					  <div class="form-group">
-						  <label for="signed-by">Signed By</label>
-						  <select class="form-control" id="signed-by" name="signed_by" required>
-							  <option value="">Select user</option>
-					          <?php foreach($signed_by as $user): ?>
-								  <option value="<?=$user['user_id']?>">
-							          <?=$user['user_name'];?>
-								  </option>
-					          <?php endforeach;?>
-						  </select>
-						  <div class="invalid-feedback">
-							  Please select the signer.
-						  </div>
-					  </div>
-				  </div>
-			  </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="signed-by">Signed By</label>
+                  <select class="form-control" id="signed-by" name="signed_by" required>
+                    <option value="">Select user</option>
+                    <?php foreach($signed_by as $user): ?>
+                    <option value="<?=$user['user_id']?>">
+                      <?=$user['user_name'];?>
+                    </option>
+                    <?php endforeach;?>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select the signer.
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row g-3">
               <div class="col-lg-12 offset-lg-12">
                 <div class="form-group mt-2">
