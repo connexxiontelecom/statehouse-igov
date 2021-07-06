@@ -101,22 +101,25 @@ class EmployeeSettingController extends BaseController
 		
 			]);
 			if ($this->validator->withRequest($this->request)->run()):
-					$_POST['employee_phone'] = str_replace('-', '', $_POST['employee_phone']);
-					$employee_id = $this->employee->insert($_POST);
-					$full_name = $_POST['employee_f_name']." ".$_POST['employee_l_name'];
-					$user_username = $this->generate_unique_username($full_name, $employee_id);
-					$user = array(
-						'user_name' => $full_name,
-						'user_password' => 'password1234',
-						'user_username' => $user_username,
-						'user_email' => $_POST['employee_mail'],
-						'user_phone' => $_POST['employee_phone'],
-						'user_employee_id' => $employee_id,
-						'user_type'=> 2,
-						'user_status' => 1
-					);
-		
-					$this->user->save($user);
+				$user_username = $_POST['user_username'];
+				$user_type = $_POST['user_type'];
+				unset($_POST['user_username']);
+				unset($_POST['user_type']);
+				$_POST['employee_phone'] = str_replace('-', '', $_POST['employee_phone']);
+				$employee_id = $this->employee->insert($_POST);
+				$full_name = $_POST['employee_f_name']." ".$_POST['employee_l_name'];
+				//$user_username = $this->generate_unique_username($full_name, $employee_id);
+				$user = array(
+					'user_name' => $full_name,
+					'user_password' => 'password1234',
+					'user_username' => $user_username,
+					'user_email' => $_POST['employee_mail'],
+					'user_phone' => $_POST['employee_phone'],
+					'user_employee_id' => $employee_id,
+					'user_type'=> $user_type,
+					'user_status' => 1
+				);
+				$this->user->save($user);
 				
 				session()->setFlashData("action","action successful");
 				return redirect()->to(base_url('/new-employee'));
@@ -220,10 +223,15 @@ class EmployeeSettingController extends BaseController
 			
 			]);
 			if ($this->validator->withRequest($this->request)->run()):
+				$user_username = $_POST['user_username'];
+				$user_type = $_POST['user_type'];
+				
+				unset($_POST['user_username']);
+				unset($_POST['user_type']);
 				$_POST['employee_phone'] = str_replace('-', '', $_POST['employee_phone']);
 				$employee_id = $this->employee->insert($_POST);
 				$full_name = $_POST['employee_f_name']." ".$_POST['employee_l_name'];
-				$user_username = $this->generate_unique_username($full_name, $employee_id);
+				//$user_username = $this->generate_unique_username($full_name, $employee_id);
 				$user = array(
 					'user_name' => $full_name,
 					'user_password' => 'password1234',
@@ -231,14 +239,16 @@ class EmployeeSettingController extends BaseController
 					'user_email' => $_POST['employee_mail'],
 					'user_phone' => $_POST['employee_phone'],
 					'user_employee_id' => $employee_id,
-					'user_type'=> 2,
+					'user_type'=> $user_type,
 					'user_status' => 1
 				);
 				
-				$this->user->save($user);
+				print_r($user);
+				
+				//$this->user->save($user);
 				
 				session()->setFlashData("action","action successful");
-				return redirect()->to(base_url('/new-employee'));
+				//return redirect()->to(base_url('/new-employee'));
 			
 			else:
 				$arr = $this->validator->getErrors();
@@ -287,6 +297,21 @@ class EmployeeSettingController extends BaseController
 				return $username;
 			endif;
 		}
+	}
+	
+	public function check_username(){
+		$username = $_POST['username'];
+		
+		$user = $this->user->where('user_username', $username)->first();
+		
+		if ($user):
+			$response['success'] = false;
+
+		else:
+			$response['success'] = true;
+			
+		endif;
+		return $this->response->setJSON($response);
 	}
 	
 	

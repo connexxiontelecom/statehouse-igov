@@ -13,7 +13,7 @@
 						<li class="breadcrumb-item active">circular Board</li>
 					</ol>
 				</div>
-				<h4 class="page-title">circular Board</h4>
+				<h4 class="page-title">Circular Board</h4>
 			</div>
 		</div>
 	</div>

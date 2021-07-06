@@ -80,6 +80,13 @@
 									</a>
 								</li>
 								
+								<li class="nav-item">
+									<a href="#accountInformation" data-toggle="tab" class="nav-link rounded-0 pt-2 pb-2">
+										<i class="mdi mdi-face-profile mr-1"></i>
+										<span class="d-none d-sm-inline">Account Information</span>
+									</a>
+								</li>
+								
 							</ul>
 							
 							<div class="tab-content b-0 mb-0 pt-0">
@@ -285,6 +292,116 @@
 									</div> <!-- end row --><!-- end row -->
 								</div>
 								
+								<div class="tab-pane" id="accountInformation">
+									<div class="row">
+										<div class="col-6">
+											<div class="form-group row mb-3">
+												<label class="col-md-3 col-form-label" for="username"> Username:</label>
+												<div class="col-md-9">
+													<input type="text" id="user_username" onkeyup="checkUsername()" class="form-control" name="user_username" placeholder="Unique Username" required>
+													
+													<div class="valid-feedback">
+														Looks good!
+													</div>
+													<div class="alert alert-danger bg-danger text-white border-0" role="alert" style="margin-top: 10px" id="usernameError">
+														<i class="mdi mdi-block-helper mr-2"></i>
+														<strong>Error </strong> Username Already Exists/Less than 5 alphabets
+													</div>
+													
+												</div>
+												
+											</div>
+											
+											<div class="form-group row mb-3">
+												<label class="col-md-3 col-form-label" for="usertype"> User Type</label>
+												<div class="col-md-9">
+													<select class="form-control" name="user_type" id="user_type" onchange="togglePermission()"  required>
+														<option value="2"> Employee </option>
+														<option value="3"> Moderator </option>
+													
+													</select>
+													<div class="valid-feedback">
+														Looks good!
+													</div>
+												</div>
+											</div>
+											
+										
+										
+										</div> <!-- end col -->
+										
+										<div class="col-6" id="permission">
+											
+											<h4 class="header-title mt-3 mt-md-0">Permissions</h4>
+											<div class="checkbox checkbox-circle mb-2 form-check-inline">
+												<input id="checkbox7" type="checkbox">
+												<label for="checkbox7">
+													Internal Circular
+												</label>
+											</div>
+											
+											<div class="checkbox checkbox-info checkbox-circle mb-2 form-check-inline">
+												<input id="checkbox8" type="checkbox" checked>
+												<label for="checkbox8">
+													External Circular
+												</label>
+											</div>
+											<div class="checkbox checkbox-primary checkbox-circle mb-2 form-check-inline">
+												<input id="checkbox-9" type="checkbox">
+												<label for="checkbox-9">
+													Internal Memo
+												</label>
+											</div>
+											<div class="checkbox checkbox-success checkbox-circle mb-2 form-check-inline">
+												<input id="checkbox-10" type="checkbox" checked>
+												<label for="checkbox-10">
+													External Memo
+												</label>
+											</div>
+											<div class="checkbox checkbox-warning checkbox-circle mb-2 form-check-inline">
+												<input id="checkbox-11" type="checkbox">
+												<label for="checkbox-11">
+													Warning
+												</label>
+											</div>
+											<div class="checkbox checkbox-danger checkbox-circle mb-2 form-check-inline">
+												<input id="checkbox-12" type="checkbox" checked>
+												<label for="checkbox-12">
+													Danger
+												</label>
+											</div>
+											
+											<div class="checkbox checkbox-blue checkbox-circle mb-2 form-check-inline">
+												<input id="checkbox-13" type="checkbox" checked>
+												<label for="checkbox-13">
+													Blue
+												</label>
+											</div>
+											
+											<div class="checkbox checkbox-pink checkbox-circle mb-2 form-check-inline">
+												<input id="checkbox-14" type="checkbox">
+												<label for="checkbox-14">
+													Pink
+												</label>
+											</div>
+											
+											<div class="checkbox checkbox-dark checkbox-circle mb-2 form-check-inline">
+												<input id="checkbox-15" type="checkbox">
+												<label for="checkbox-15">
+													Dark
+												</label>
+											</div>
+									
+										
+										
+										</div> <!-- end col -->
+										
+										
+									</div> <!-- end row --><!-- end row -->
+									
+									
+								</div>
+								
 								
 								
 								<ul class="list-inline mb-0 wizard">
@@ -342,11 +459,49 @@
             });
 
         }
+
+        function checkUsername(){
+            let username =  $("#user_username").val();
+            $.ajax({
+                url: '<?php echo site_url('check-username') ?>',
+                type: 'post',
+                data: {
+                    'username': username,
+                },
+                dataType: 'json',
+                success:function(response){
+                   if(response.success && username.length > 5){
+                       $("#usernameError").hide();
+                       $('#last').css({display: 'block'})
+				   } else{
+                       $("#usernameError").show();
+                       $('#last').css({display: 'none'})
+				   }
+                }
+            });
+
+        }
+        
+        function togglePermission(){
+         
+            let user_type = $("#user_type").val();
+            if(user_type == 2){
+                $('#permission').hide()
+			}
+
+            if(user_type == 3){
+                $('#permission').show()
+            }
+            
+		}
 	
 	</script>
 	<script src="/assetsa/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 	<script>
         $(document).ready(function() {
+            $('#permission').hide()
+            $("#usernameError").hide();
+			
             $('#newemployeewizard').bootstrapWizard({
 				onTabShow: function(tab, navigation, index) {
                     var $total = navigation.find('li').length;
@@ -375,7 +530,6 @@
             
         });
 	</script>
-	
 	<script src="/assetsa/js/pages/form-wizard.init.js"></script>
 	
 <?= $this->endSection() ?>
