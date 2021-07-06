@@ -1,28 +1,27 @@
 <script>
 	$(document).ready(function () {
-		$('form#new-internal-memo-form').submit(function (e) {
+		$('#new-internal-circular-form').submit(function (e) {
 			e.preventDefault()
 			let body = quillEditor.root.innerHTML
 			let formData = new FormData(this)
       formData.set('p_body', body)
       Swal.fire({
         title: 'Are you sure?',
-        text: 'This will submit your memo to the iGov system',
+        text: 'This will submit your circular to the iGov system',
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Confirm',
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33"
       }).then(confirm => {
-        if (confirm.value) {
-        
-          $.ajax({
-            url: '<?=site_url('/internal-memo')?>',
+        // if (confirm.value) {
+         $.ajax({
+            url: '<?=site_url('/internal-circular')?>',
             type: 'post',
             data: formData,
             success: response => {
               if (response.success) {
-                Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/my-memos')?>')
+                Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/my-circulars')?>')
               } else {
                 Swal.fire('Sorry!', response.message, 'error')
               }
@@ -31,18 +30,18 @@
             contentType: false,
             processData: false
           })
-        }
+        // }
       })
     })
 
-    $('form#edit-memo-form').submit(function (e) {
+    $('form#edit-circular-form').submit(function (e) {
       e.preventDefault()
       let body = quillEditor.root.innerHTML
       let formData = new FormData(this)
-      formData.set('n_body', body)
+      formData.set('p_body', body)
       Swal.fire({
         title: 'Are you sure?',
-        text: 'This will submit new changes to your memo to the iGov system',
+        text: 'This will submit new changes to your circular to the iGov system',
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Confirm',
@@ -51,12 +50,12 @@
       }).then(confirm => {
         if (confirm.value) {
           $.ajax({
-            url: '<?=site_url('/edit-memo')?>',
+            url: '<?=site_url('/edit-circular')?>',
             type: 'post',
             data: formData,
             success: response => {
               if (response.success) {
-                Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/my-memos')?>')
+                Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/my-circulars')?>')
               } else {
                 Swal.fire('Sorry!', response.message, 'error')
               }
