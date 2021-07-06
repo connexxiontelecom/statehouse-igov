@@ -55,34 +55,17 @@
               </div>
               <div class="col-lg-3">
                 <div class="form-group" id="department-div">
-                  <label for="positions">Positions</label>
-                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" data-placeholder="Choose all..." required>
+                  <label for="positions">Offices</label>
+                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" data-placeholder="Please select all..." required>
                     <?php foreach ($positions as $position): ?>
                       <option value="<?=$position['pos_id']; ?>"> <?=$position['pos_name']; ?></option>
                     <?php endforeach; ?>
                   </select>
+                  <div class="invalid-feedback">
+                    Please select all applicable offices.
+                  </div>
                 </div>
               </div>
-				<div class="col-lg-3">
-					<div class="form-group">
-						<label for="subject">Ref No</label>
-						<input type="text"  class="form-control" name="p_ref_no" required>
-						<div class="invalid-feedback">
-							Please enter a reference number.
-						</div>
-					</div>
-
-
-				</div>
-
-				<div class="col-lg-3">
-
-					<div class="form-group mb-3">
-						<label>Offices</label>
-						<input type="text" id="selectize-tags" value="Awesome, Admin, Dashboard">
-					</div>
-
-				</div>
             </div>
 			      <div class="row">
               <div class="col-12">

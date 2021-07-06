@@ -4,11 +4,10 @@
 			e.preventDefault()
       let subject = $('#subject').val()
       let signedBy = $('#signed-by').val()
-			let body = quillEditor.root.innerHTML
-      console.log(quillEditor.root.innerText.length)
       if (!subject || !signedBy || quillEditor.root.innerText.length < 2) {
         Swal.fire('Invalid Submission!', 'Please fill in all required fields', 'error')
       } else {
+        let body = quillEditor.root.innerHTML
         let formData = new FormData(this)
         formData.set('body', body)
         Swal.fire({

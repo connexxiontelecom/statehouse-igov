@@ -285,22 +285,26 @@ class PostController extends BaseController
 			$data['username'] = $this->session->user_username;
 			return view('/pages/posts/new-internal-memo', $data);
 		endif;
-		
-		if($this->request->getMethod() == 'post'):
-			$_POST['p_by'] = $this->session->user_id;
-			$_POST['p_direction'] = 1;
-			$_POST['p_status'] = 0;
-			
-			if ($this->post->save($_POST)):
-				$response['success'] = true;
-				$response['message'] = 'Successfully created notice';
-			else:
-				$response['success'] = false;
-				$response['message'] = 'There was an error while creating notice';
-			endif;
-			return $this->response->setJSON($response);
-		
-		endif;
+		$post_data = $this->request->getPost();
+		$memo_data = [
+			'p_ref_no' => $post_data['p_ref_no'],
+			'p_subject' => $post_data['p_subject'],
+			'p_type' => 1,
+			'p_body' => $post_data['p_body'],
+			'p_status' => 0,
+			'p_by' => $this->session->user_id,
+			'p_signed_by' => $post_data['p_signed_by'],
+			'p_direction' => 1,
+			'p_recipients_id' => json_encode($post_data['positions'])
+		];
+		if ($this->post->save($memo_data)) {
+			$response['success'] = true;
+			$response['message'] = 'Successfully created the internal memo';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'There was an error while creating the internal memo';
+		}
+		return $this->response->setJSON($response);
 	}
 	
 	public function external_memo(){
