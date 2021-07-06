@@ -1,6 +1,9 @@
 <?= $this->extend('layouts/master'); ?>
 <?=$this->section('extra-styles'); ?>
-
+<link href="/assets/libs/multiselect/css/multi-select.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
 <?=$this->endSection() ?>
 <?= $this->section('content'); ?>
@@ -61,22 +64,27 @@
 			
 	
 				<div class="col-lg-3">
-					<div class="form-group mb-3">
-						<label>Default</label>
-						<input type="text" id="selectize-tags" value="Awesome, Admin, Dashboard">
-					</div>
-					<div class="form-group" id="department-div">
-						<label for="subject">Department</label>
-						<select class="form-control" id="circular-type" name="p_department_id" required>
-							<option value="" disabled selected>Select Department</option>
+					
+					<div class="form-group mb-3" id="department">
+					
+						<label for="department">Departments</label>
+						<select  class="form-control select2-multiple"  data-toggle="select2" multiple="multiple" data-placeholder="Choose Department ...">
+							
 							<option value="a">All Departments</option>
-				            <?php foreach ($departments as $department): ?>
+							<?php foreach ($departments as $department): ?>
 								<option value="<?=$department['dpt_id']; ?>"> <?=$department['dpt_name']; ?></option>
-				            <?php endforeach; ?>
+							<?php endforeach; ?>
 						</select>
+			
+						
 					</div>
-	
-	
+					<div class="form-group mb-3" style="margin-top: 30px">
+						<div class="custom-control custom-switch">
+							<input type="checkbox" class="custom-control-input"  name="all_department" value="1" id="allDepartment" >
+							<label class="custom-control-label" for="allDepartment">Select All Departments</label>
+						</div>
+					</div>
+					
 				</div>
             </div>
 	
@@ -131,6 +139,16 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
+<?=view('pages/posts/_circular-scripts.php')?>
+<script>
+    $("#allDepartment").click(function(){
+        if($("#allDepartment").is(':checked')){
+           $("#department").hide();
+        }else{
+           $("#department").show();
+        }
+    });
+</script>
 <script src="/assets/libs/selectize/js/standalone/selectize.min.js"></script>
 <script src="/assets/libs/mohithg-switchery/switchery.min.js"></script>
 <script src="/assets/libs/multiselect/js/jquery.multi-select.js"></script>
@@ -141,5 +159,5 @@
 <script src="/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
 <script src="/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
 <script src="/assets/js/pages/form-advanced.init.js"></script>
-<?=view('pages/posts/_circular-scripts.php')?>
+
 <?= $this->endSection(); ?>

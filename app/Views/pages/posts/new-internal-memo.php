@@ -56,17 +56,11 @@
 				</div>
 	
 				<div class="col-lg-3">
-					<div class="form-group" id="department-div">
-						<label for="subject">Department</label>
-						<select class="form-control" id="memo-type" name="p_department_id" required>
-							<option value="" disabled selected>Select Department</option>
-							<option value="a">All Departments</option>
-				            <?php foreach ($departments as $department): ?>
-								<option value="<?=$department['dpt_id']; ?>"> <?=$department['dpt_name']; ?></option>
-				            <?php endforeach; ?>
-						</select>
+					
+					<div class="form-group mb-3">
+						<label>Offices</label>
+						<input type="text" id="selectize-tags" value="Awesome, Admin, Dashboard">
 					</div>
-	
 	
 				</div>
             </div>
