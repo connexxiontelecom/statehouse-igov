@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Notice;
+use App\Models\Position;
 use App\Models\Post;
 use App\Models\UserModel;
 
@@ -22,7 +23,7 @@ class PostController extends BaseController
 		$this->post = new Post();
 		$this->employee = new Employee();
 		$this->department = new Department();
-		
+		$this->position = new Position();
 	}
 	
 	public function circulars() {
@@ -219,6 +220,7 @@ class PostController extends BaseController
 				->groupEnd()
 				->findAll();
 			$data['departments']= $this->department->findAll();
+			$data['positions'] = $this->position->findAll();
 			$data['pager'] = $this->post->pager;
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;

@@ -12,10 +12,11 @@
 						<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
 						<li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">Memo Board</a></li>
 						<li class="breadcrumb-item"><a href="<?= site_url('/my-memos')?>">My Memos</a></li>
-						<li class="breadcrumb-item active">New memo</li>
+						<li class="breadcrumb-item"><a href="<?= site_url('/new-memo')?>">New Memo</a></li>
+						<li class="breadcrumb-item active">New Internal Memo</li>
 					</ol>
 				</div>
-				<h4 class="page-title">New memo</h4>
+				<h4 class="page-title">New Internal Memo</h4>
 			</div>
 		</div>
 	</div>
@@ -29,7 +30,7 @@
               <h4 class="header-title mt-2 mb-4">Create Internal Memo Form</h4>
             </div>
             <div class="col-lg-4">
-              <a href="<?=site_url('/my-memos')?>" type="button" class="btn btn-sm btn-primary float-right"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
+              <a href="<?=site_url('/new-memo')?>" type="button" class="btn btn-sm btn-primary float-right"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
             </div>
           </div>
           <form class="needs-validation" id="new-internal-memo-form" novalidate>
