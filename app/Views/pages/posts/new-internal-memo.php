@@ -44,39 +44,27 @@
                   </div>
                 </div>
               </div>
-				<div class="col-lg-3">
-					<div class="form-group">
-						<label for="subject">Ref No</label>
-						<input type="text"  class="form-control" name="p_ref_no" required>
-						<div class="invalid-feedback">
-							Please enter a reference number.
-						</div>
-					</div>
-	
-	
-				</div>
-	
-				<div class="col-lg-3">
-					<div class="form-group" id="department-div">
-						<label for="subject">Department</label>
-						<select class="form-control" id="memo-type" name="p_department_id" required>
-							<option value="" disabled selected>Select Department</option>
-							<option value="a">All Departments</option>
-				            <?php foreach ($departments as $department): ?>
-								<option value="<?=$department['dpt_id']; ?>"> <?=$department['dpt_name']; ?></option>
-				            <?php endforeach; ?>
-						</select>
-					</div>
-	
-	
-				</div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="ref-no">Ref No</label>
+                  <input type="text" class="form-control" id="ref-no" name="p_ref_no" required>
+                  <div class="invalid-feedback">
+                    Please enter a reference number.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group" id="department-div">
+                  <label for="positions">Positions</label>
+                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" data-placeholder="Choose all..." required>
+                    <?php foreach ($positions as $position): ?>
+                      <option value="<?=$position['pos_id']; ?>"> <?=$position['pos_name']; ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+              </div>
             </div>
-	
-	
-     
-			  
-			  
-			  <div class="row">
+			      <div class="row">
               <div class="col-12">
                 <div class="form-group">
                   <label for="snow-editor">Body</label>
@@ -87,27 +75,23 @@
                 </div>
               </div>
             </div>
-	
-			  <div class="row">
-					
-				  <div class="col-lg-3">
-					  <div class="form-group">
-						  <label for="signed-by">Signed By</label>
-						  <select class="form-control" id="signed-by" name="p_signed_by" required>
-							  <option value="">Select user</option>
-					          <?php foreach($signed_by as $user):
-						          if($user['user_username'] !== $username):
-							          ?>
-							
-									  <option value="<?=$user['user_id']?>">  <?=$user['user_name'];?> </option>
-						          <?php endif; endforeach;?>
-						  </select>
-						  <div class="invalid-feedback">
-							  Please select the signer.
-						  </div>
-					  </div>
-				  </div>
-			  </div>
+            <div class="row">
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="signed-by">Signed By</label>
+                  <select class="form-control" id="signed-by" name="p_signed_by" required>
+                    <option value="">Select user</option>
+                    <?php foreach($signed_by as $user):
+                    if($user['user_username'] !== $username):?>
+                      <option value="<?=$user['user_id']?>">  <?=$user['user_name'];?> </option>
+                    <?php endif; endforeach;?>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select the signer.
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row g-3">
               <div class="col-lg-12 offset-lg-12">
                 <div class="form-group mt-2">
