@@ -42,13 +42,16 @@ class PostController extends BaseController
 		$i = 0;
 		foreach ($posts as $post):
 			$posts_dpts = json_decode($post['p_recipients_id']);
-			if(in_array($department_id, $posts_dpts)):
+		
+		if(in_array($department_id, $posts_dpts)):
 				$circulars[$i] = $post;
 				$i++;
 			endif;
 		endforeach;
 		
 		$i =0;
+		
+		$new_circulars = array();
 		foreach ($circulars as $circular):
 			$user = $this->user->where('user_id', $circular['p_by'])->first();
 			$circular['created_by'] = $user['user_name'];
