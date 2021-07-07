@@ -68,8 +68,10 @@ $routes->match(['get', 'post'], 'external-memo', 'PostController::external_memo'
 $routes->match(['get'], 'my-memos', 'PostController::memos', ['filter' => 'auth']);
 
 $routes->match(['get'], 'circulars', 'PostController::circulars', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'new-circular', 'PostController::new_circular', ['filter' => 'auth']);
+$routes->match(['get'], 'new-circular', 'PostController::new_circular', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'internal-circular', 'PostController::internal_circular', ['filter' => 'auth']);
+$routes->match(['post'], 'upload-post-attachments', 'PostController::upload_post_attachments', ['filter' => 'auth']);
+$routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::delete_post_attachments', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'external-circular', 'PostController::external_circular', ['filter' => 'auth']);
 $routes->match(['get'], 'my-circulars', 'PostController::my_circulars', ['filter' => 'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);

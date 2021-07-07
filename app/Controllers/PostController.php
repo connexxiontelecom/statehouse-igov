@@ -65,21 +65,37 @@ class PostController extends BaseController
 	}
 	
 	public function new_circular() {
-		
-		if($this->request->getMethod() == 'post'):
-		
-		
-		endif;
-		
 		if($this->request->getMethod() == 'get'):
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
 		
 			return view('/pages/posts/new-circular', $data);
 		
+		endif;
+	}
+	
+	public function upload_post_attachments(){
+		$file = $this->request->getFile('file');
+		if($file->isValid() && !$file->hasMoved()):
+			$file_name = $file->getClientName();
+			$file->move('uploads/posts', $file_name);
+			echo $file_name;
+		endif;
+		
+	}
+	
+	public function delete_post_attachments(){
+	$file = $this->request->getPostGet('files');
+//		$response['message'] = $file;
+//		return $this->response->setJSON($response);
+	$directory = 'uploads/posts/'.$file;
+		if(unlink($directory)):
+
+			$response['message'] = 'Deleted Successful';
+		else:
+			$response['message'] = 'An error Occurred';
 			endif;
-		
-		
+		return $this->response->setJSON($response);
 	}
 	
 	public function internal_circular(){

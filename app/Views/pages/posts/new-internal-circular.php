@@ -5,6 +5,10 @@
 <link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+<link href="/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
+
 <?=$this->endSection() ?>
 <?= $this->section('content'); ?>
 <div class="container-fluid">
@@ -105,9 +109,9 @@
             </div>
 	
 			  <div class="row">
-					
-				  <div class="col-lg-3">
-					  <div class="form-group">
+		
+				  <div class="col-lg-3" style="position: relative">
+					  <div class="form-group" style="position: absolute; bottom: 0px">
 						  <label for="signed-by">Signed By</label>
 						  <select class="form-control" id="signed-by" name="p_signed_by" required>
 							  <option value="">Select user</option>
@@ -123,6 +127,21 @@
 						  </div>
 					  </div>
 				  </div>
+				
+				  <div class="col-lg-9">
+					  <div id="myId" class="dropzone">
+						  <div class="dz-message needsclick">
+							  <i class="hi text-muted dripicons-cloud-upload"></i>
+							  <h3>Drop all other relevant documents here...</h3>
+						  </div>
+					  </div>
+				  </div>
+		
+				 
+			  </div>
+	
+			  <div class="row">
+				 
 			  </div>
             <div class="row g-3">
               <div class="col-lg-12 offset-lg-12">
@@ -139,7 +158,14 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
+
+
+
+
 <?=view('pages/posts/_circular-scripts.php')?>
+
+<script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
+<script src="/assets/libs/dropify/js/dropify.min.js"></script>
 <script>
     $("#allDepartment").click(function(){
         if($("#allDepartment").is(':checked')){
@@ -149,6 +175,8 @@
         }
     });
 </script>
+
+
 <script src="/assets/libs/selectize/js/standalone/selectize.min.js"></script>
 <script src="/assets/libs/mohithg-switchery/switchery.min.js"></script>
 <script src="/assets/libs/multiselect/js/jquery.multi-select.js"></script>
@@ -158,6 +186,6 @@
 <script src="/assets/libs/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
 <script src="/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
-<script src="/assets/js/pages/form-advanced.init.js"></script>
+<!--<script src="/assets/js/pages/form-advanced.init.js"></script>-->
 
 <?= $this->endSection(); ?>
