@@ -80,13 +80,13 @@
 							<div class="col-lg-4" style="padding-bottom: 5px; max-height: 100%" >
 								<div class="card-box project-box mb-n5" >
 									<!-- Title-->
-									<h4 class="mt-0"><a href="#" data-toggle="modal" data-target="#view-circular<?=$circular['p_id'] ?>" class="text-dark"><?=$circular['p_subject'] ?></a></h4>
+									<h4 class="mt-0"><a href="<?=site_url('view-circular')."/".$circular['p_id']; ?>"  class="text-dark"><?=$circular['p_subject'] ?></a></h4>
 									<!-- Desc-->
 									<p class="text-muted font-13 mb-3 sp-line-2">
 										<?=word_limiter($circular['p_body'], 70) ?>
 									</p>
 									<p class="text-muted font-13 mb-3 sp-line-2">
-										<a href="#" data-toggle="modal" data-target="#view-circular<?=$circular['p_id'] ?>" class="font-weight-bold text-muted">view more</a></p>
+										<a href="<?=site_url('view-circular')."/".$circular['p_id']; ?>"  class="font-weight-bold text-muted">view more</a></p>
 									<!-- Task info-->
 									<!-- Team-->
 									<div class="avatar-group mb-1">
