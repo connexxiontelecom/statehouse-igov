@@ -110,29 +110,12 @@
 	
 			  <div class="row">
 		
-				  <div class="col-lg-3" style="position: relative">
-					  <div class="form-group" style="position: absolute; bottom: 0px">
-						  <label for="signed-by">Signed By</label>
-						  <select class="form-control" id="signed-by" name="p_signed_by" required>
-							  <option value="">Select user</option>
-					          <?php foreach($signed_by as $user):
-						          if($user['user_username'] !== $username):
-							          ?>
-							
-									  <option value="<?=$user['user_id']?>">  <?=$user['user_name'];?> </option>
-						          <?php endif; endforeach;?>
-						  </select>
-						  <div class="invalid-feedback">
-							  Please select the signer.
-						  </div>
-					  </div>
-				  </div>
-				
-				  <div class="col-lg-9">
+				 
+				  <div class="col-lg-12">
 					  <div id="myId" class="dropzone">
 						  <div class="dz-message needsclick">
 							  <i class="hi text-muted dripicons-cloud-upload"></i>
-							  <h3>Drop all other relevant documents here...</h3>
+							  <h3>Drop all other relevant attachments here...</h3>
 						  </div>
 					  </div>
 				  </div>
@@ -140,8 +123,25 @@
 				 
 			  </div>
 	
-			  <div class="row">
-				 
+			  <div class="row" style="margin-top: 15px">
+				  <div class="col-lg-3" >
+					  <div class="form-group">
+						  <label for="signed-by">Signed By</label>
+						  <select class="form-control" id="signed-by" name="p_signed_by" required>
+							  <option value="">Select user</option>
+							  <?php foreach($signed_by as $user):
+								  if($user['user_username'] !== $username):
+									  ?>
+									
+									  <option value="<?=$user['user_id']?>">  <?=$user['user_name'];?> </option>
+								  <?php endif; endforeach;?>
+						  </select>
+						  <div class="invalid-feedback">
+							  Please select the signer.
+						  </div>
+					  </div>
+				  </div>
+			
 			  </div>
             <div class="row g-3">
               <div class="col-lg-12 offset-lg-12">

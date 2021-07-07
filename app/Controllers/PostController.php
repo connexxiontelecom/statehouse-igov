@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\Notice;
 use App\Models\Position;
 use App\Models\Post;
+use App\Models\PostAttachment;
 use App\Models\UserModel;
 
 class PostController extends BaseController
@@ -24,6 +25,7 @@ class PostController extends BaseController
 		$this->employee = new Employee();
 		$this->department = new Department();
 		$this->position = new Position();
+		$this->pa = new PostAttachment();
 	}
 	
 	public function circulars() {
@@ -86,8 +88,6 @@ class PostController extends BaseController
 	
 	public function delete_post_attachments(){
 	$file = $this->request->getPostGet('files');
-//		$response['message'] = $file;
-//		return $this->response->setJSON($response);
 	$directory = 'uploads/posts/'.$file;
 		if(unlink($directory)):
 
@@ -114,6 +114,11 @@ class PostController extends BaseController
 		endif;
 		
 		if($this->request->getMethod() == 'post'):
+			$p_attachments = array();
+			if(isset($_POST['p_attachment'])):
+				$p_attachments = $_POST['p_attachment'];
+				unset($_POST['p_attachment']);
+			endif;
 			$_POST['p_by'] = $this->session->user_id;
 			$_POST['p_direction'] = 1;
 			$_POST['p_status'] = 0;
@@ -134,8 +139,19 @@ class PostController extends BaseController
 				$_POST['p_recipients_id'] = json_encode($_POST['p_recipients_id']);
 				
 			endif;
+			$p_id = $this->post->insert($_POST);
 			
-			if ($this->post->save($_POST)):
+			if ($p_id):
+				
+				if(count($p_attachments) > 0):
+					foreach ($p_attachments as $attachment):
+						$attachment_array = array(
+							'pa_post_id'=> $p_id,
+							'pa_link' => $attachment
+						);
+						$this->pa->save($attachment_array);
+					endforeach;
+				endif;
 				$response['success'] = true;
 				$response['message'] = 'Successfully created Circular';
 			 else:

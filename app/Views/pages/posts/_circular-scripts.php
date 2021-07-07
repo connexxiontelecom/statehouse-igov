@@ -7,7 +7,8 @@
             renameFile: function(file) {
                 // console.log(name + '_' + file.name);
                // return new Date().getTime() + '_' + file.upload.filename;
-                return name + '_' + file.name;
+                return name + '_' + file.name.replace(/\s/g, '');
+                //return name + '_' + file.name;
                 //return newName;
             },
             url: '<?=site_url('upload-post-attachments'); ?>',
@@ -27,8 +28,6 @@
             },
             removedfile: function(file) {
                 file.previewElement.remove();
-                
-                //console.log(name + '_' + file.name);
                 $('form').find('input[name="p_attachment[]"][value="' + name + '_' + file.name + '"]').remove()
 				let p_name = name + "_" + file.name;
                 $.ajax({
@@ -37,8 +36,7 @@
                     data:  'files='+p_name,
                     dataType: 'json',
                     success: response => {
-                      console.log(response.message);
-                        // $('form').find('input[name="p_attachment[]"][value="' + name + '_' + file.name + '"]').remove()
+                     // console.log(response.message);
                     },
                     cache: false,
                     contentType: false,
