@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/master'); ?>
 
+
 <?= $this->section('content'); ?>
 <div class="container-fluid">
 	<!-- start page title -->
@@ -108,5 +109,5 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?=view('pages/posts/_circular-scripts.php')?>
+
 <?= $this->endSection(); ?>
