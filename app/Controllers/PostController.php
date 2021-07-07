@@ -163,6 +163,35 @@ class PostController extends BaseController
 		endif;
 	}
 	
+	public function view_post($p_id){
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$attachments = array();
+		$post = $this->post->where('p_id', $p_id)
+			->join('users', 'posts.p_signed_by = users.user_id')
+			->first();
+		
+		$user = $this->user->where('user_id', $post['p_by'])->first();
+		$post['created_by'] = $user['user_name'];
+		$_attachments = $this->pa->where('pa_post_id', $p_id)->findAll();
+			if(!empty($_attachments)):
+				$attachments = $_attachments;
+			endif;
+		if($post['p_type'] == 1):
+			$data['type'] = 1;
+		endif;
+		
+		if($post['p_type'] == 2):
+			$data['type'] = 2;
+		endif;
+		$data['post'] = $post;
+		$data['attachments'] = $attachments;
+		
+		
+	
+		return view('/pages/posts/view-post', $data);
+	}
+	
 	public function external_circular(){
 		
 		$data['signed_by'] = $this->user->where('user_status', 1)
