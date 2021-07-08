@@ -163,7 +163,7 @@ class PostController extends BaseController
 		endif;
 	}
 	
-	public function view_post($p_id){
+	public function view_circular($p_id){
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$attachments = array();
@@ -177,19 +177,23 @@ class PostController extends BaseController
 			if(!empty($_attachments)):
 				$attachments = $_attachments;
 			endif;
-		if($post['p_type'] == 1):
-			$data['type'] = 1;
-		endif;
-		
-		if($post['p_type'] == 2):
-			$data['type'] = 2;
-		endif;
+			
+			$dpts = json_decode($post['p_recipients_id']);
+			$departments = array();
+			$i = 0;
+			foreach ($dpts as $dpt):
+				$_dpt = $this->department->where('dpt_id', $dpt)->first();
+				$departments[$i] = $_dpt['dpt_name'];
+				$i++;
+			endforeach;
+			
+		$data['departments'] = $departments;
 		$data['post'] = $post;
 		$data['attachments'] = $attachments;
 		
 		
 	
-		return view('/pages/posts/view-post', $data);
+		return view('/pages/posts/view-circular', $data);
 	}
 	
 	public function external_circular(){
