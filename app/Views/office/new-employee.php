@@ -3,7 +3,12 @@
 ?>
 
 
+<?=$this->section('extra-styles'); ?>
 
+<link href="/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
+
+<?=$this->endSection() ?>
 
 <?= $this->section('content') ?>
 
@@ -290,6 +295,21 @@
 										
 										</div> <!-- end col -->
 									</div> <!-- end row --><!-- end row -->
+									
+									<div class="row">
+										
+										
+										<div class="col-lg-12">
+											<div id="myId" class="dropzone">
+												<div class="dz-message needsclick">
+													<i class="hi text-muted dripicons-cloud-upload"></i>
+													<h3>Drop all other relevant attachments here...</h3>
+												</div>
+											</div>
+										</div>
+									
+									
+									</div>
 								</div>
 								
 								<div class="tab-pane" id="accountInformation">
@@ -400,6 +420,8 @@
 									</div> <!-- end row --><!-- end row -->
 									
 									
+									
+									
 								</div>
 								
 								
@@ -439,6 +461,17 @@
 	<?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
+	<script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
+	<script src="/assets/libs/dropify/js/dropify.min.js"></script>
+	<script>
+        $(document).ready(function () {
+        
+           
+        })
+		
+	</script>
+	
+	
 	<script>
         function get_positions(){
             let department_id =  $("#department").val();
@@ -522,12 +555,65 @@
 				// 	$('#new-employee-form').submit()
                 // }
             });
-            
-            
 
-            
-           
-            
+
+
+            Dropzone.autoDiscover = false;
+            let name = new Date().getTime();
+            let myDropzone = this;
+            $("div#myId").dropzone({
+                renameFile: function(file) {
+                    // console.log(name + '_' + file.name);
+                    // return new Date().getTime() + '_' + file.upload.filename;
+                    return name + '_' + file.name.replace(/\s/g, '');
+                    //return name + '_' + file.name;
+                    //return newName;
+                },
+                url: '<?=site_url('upload-post-attachments'); ?>',
+                method: 'post',
+                addRemoveLinks: 'true',
+                dictRemoveFile: 'Remove',
+
+                success: function(file, response) {
+
+                    $('form').append('<input type="hidden" name="p_attachment[]" value="' + response + '">');
+
+                    console.log(response);
+                },
+
+                error: function(file, response) {
+                    console.log(response);
+                },
+                removedfile: function(file) {
+                    file.previewElement.remove();
+                    $('form').find('input[name="p_attachment[]"][value="' + name + '_' + file.name + '"]').remove()
+                    let p_name = name + "_" + file.name;
+                    $.ajax({
+                        url: '<?=site_url('delete-post-attachments')?>',
+                        type: 'GET',
+                        data:  'files='+p_name,
+                        dataType: 'json',
+                        success: response => {
+                            // console.log(response.message);
+                        },
+                        cache: false,
+                        contentType: false,
+                        processData: false
+                    });
+                    //                    var name = '';
+                    //                    if (typeof file.file_name !== 'undefined') {
+                    //                        name = file.file_name
+                    //                    } else {
+                    //                        name = uploadedDocumentMap[file.name]
+                    //                    }
+                    // $('form').find('input[name="p_attachment[]"][value="' + name + '_' + file.name + '"]').remove()
+
+                }
+            });
+
+
+
+
         });
 	</script>
 	<script src="/assetsa/js/pages/form-wizard.init.js"></script>

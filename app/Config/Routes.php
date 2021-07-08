@@ -74,7 +74,7 @@ $routes->match(['post'], 'upload-post-attachments', 'PostController::upload_post
 $routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::delete_post_attachments', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'external-circular', 'PostController::external_circular', ['filter' => 'auth']);
 $routes->match(['get'], 'my-circulars', 'PostController::my_circulars', ['filter' => 'auth']);
-$routes->match(['get'], 'view-circular/(:num)', 'PostController::view_post/$1', ['filter' => 'auth']);
+$routes->match(['get'], 'view-circular/(:num)', 'PostController::view_circular/$1', ['filter' => 'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
