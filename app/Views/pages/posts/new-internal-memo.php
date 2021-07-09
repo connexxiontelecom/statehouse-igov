@@ -79,7 +79,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-3">
+              <div class="col-lg-4">
                 <div class="form-group">
                   <label for="signed-by">Signed By</label>
                   <select class="form-control" id="signed-by" name="p_signed_by" required>
@@ -91,6 +91,17 @@
                   </select>
                   <div class="invalid-feedback">
                     Please select the signer.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-8">
+                <div class="form-group">
+                  <label>Attachment</label>
+                  <div class="input-group">
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="attachment">
+                      <label for="attachment" class="custom-file-label">Choose file</label>
+                    </div>
                   </div>
                 </div>
               </div>

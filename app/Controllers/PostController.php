@@ -198,10 +198,10 @@ class PostController extends BaseController
 		
 		if (empty($search_params)):
 			$memos = $this->post->where('p_status', 2 )
-				->groupStart()
-				->where('p_department_id', $department_id)
-				->orWhere('p_department_id', 'a')
-				->groupEnd()
+//				->groupStart()
+//				->where('p_department_id', $department_id)
+//				->orWhere('p_department_id', 'a')
+//				->groupEnd()
 				->where('p_type', 1)
 				->join('users', 'posts.p_signed_by = users.user_id')
 				->orderBy('p_date', 'DESC')
