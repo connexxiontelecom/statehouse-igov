@@ -67,8 +67,26 @@
 								</div>
 							</div>
 							
+							<div class="float-right" >
+								<h5 class="mt-1 font-size-14">
+									<?php
+										$date = date_create($post['p_date']);
+										echo date_format($date,"d M Y H:i a");
+									?>
+								</h5>
+							</div>
+								
+								<div class="float-left" style="margin-left: 2%">
+									<h5 class="mt-1 font-size-14">
+										<?=$post['p_ref_no']
+										?>
+									</h5>
+								</div>
+						
+							
 						</div>
 					</div>
+					
 					<div class="clearfix"></div>
 						<h4>TO:</h4>
 						<?php foreach ($departments as $department): ?>
