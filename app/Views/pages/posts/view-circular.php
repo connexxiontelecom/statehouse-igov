@@ -28,7 +28,47 @@
 			<!-- project card -->
 			<div class="card d-block">
 				<div class="card-body">
-					
+					<div class="row">
+						<div class="clearfix">
+							<div class="float-center" >
+								<div class="auth-logo" style="display: block;
+  margin-left: auto;
+  margin-right: 35%;
+  width: 100%;">
+									<div class="logo logo-dark" style="display: block;  margin-left: auto; margin-right: 35%; width: 100%;">
+                                                    <span class="logo-lg">
+                                                        <img src="/uploads/organization/<?=$organization['org_logo'] ?>" height="50" style="display: block;
+  margin-left: auto;
+  margin-right: 35%;
+  width: 20%;" >
+                                                    </span>
+									</div>
+									
+									<div class="logo logo-light">
+                                                    <span class="logo-lg">
+                                                        <img src="/uploads/organization/<?=$organization['org_logo'] ?>" height="50" style="display: block;
+  margin-left: auto;
+  margin-right: 35%;
+  width: 20%;" >
+                                                    </span>
+									</div>
+								</div>
+							</div>
+							
+							<div class="float-center" style="justify-content: center; align-items: center; align-content: center; margin-left: 10%;
+  margin-right: auto;" >
+								<div>
+									
+									<h3 class="mt-3" style="text-align: center; justify-content: center; align-items: center; align-content: center"><?=$organization['org_name'] ?></h3>
+									
+									<h5 class="mt-3" style="text-align: center; justify-content: center; align-items: center; align-content: center"><?=$organization['org_address'] ?></h5>
+								
+								
+								</div>
+							</div>
+							
+						</div>
+					</div>
 					<div class="clearfix"></div>
 						<h4>TO:</h4>
 						<?php foreach ($departments as $department): ?>
