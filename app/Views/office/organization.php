@@ -3,8 +3,9 @@
 ?>
 
 
-
-
+<?=$this->section('extra-styles'); ?>
+<link href="/assetsa/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
+<?=$this->endSection() ?>
 <?= $this->section('content') ?>
 
 
@@ -45,7 +46,7 @@
 					<?php endif; ?>
 					<?php if(empty($organization)): ?>
 					
-					<form method="post" action="">
+					<form method="post" action="" enctype="multipart/form-data">
 						<div class="row g-3 align-center">
 							<div class="col-lg-5">
 								<div class="form-group">
@@ -124,6 +125,24 @@
 								</div>
 							</div>
 						</div>
+						
+						<div class="row g-3 align-center">
+							<div class="col-lg-5">
+								<div class="form-group">
+									<label class="form-label">Organization's Logo</label>
+									<span class="form-note">Upload Organization's Logo</span>
+								</div>
+							</div>
+							<div class="col-lg-7">
+								<div class="form-group">
+									<div class="form-control-wrap">
+										<input type="file" data-plugins="dropify" name="file" data-default-file="../assets/images/small/img-2.jpg"  />
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
 					
 						<div class="row g-3">
 							<div class="col-lg-7 offset-lg-5">
@@ -136,7 +155,7 @@
 				
 					<?php else: ?>
 						
-						<form method="post" action="">
+						<form method="post" action="" enctype="multipart/form-data">
 							<div class="row g-3 align-center">
 								<div class="col-lg-5">
 									<div class="form-group">
@@ -216,6 +235,22 @@
 								</div>
 							</div>
 							
+							<div class="row g-3 align-center">
+								<div class="col-lg-5">
+									<div class="form-group">
+										<label class="form-label">Organization's Logo</label>
+										<span class="form-note">Upload Organization's Logo</span>
+									</div>
+								</div>
+								<div class="col-lg-7">
+									<div class="form-group">
+										<div class="form-control-wrap">
+											<input type="file" data-plugins="dropify" name="file" data-default-file="/uploads/organization/<?=$organization['org_logo'] ?>"  />
+										</div>
+									</div>
+								</div>
+							</div>
+							
 							<input type="hidden" name="org_id" value="<?=$organization['org_id'] ?>">
 							
 							<div class="row g-3">
@@ -240,4 +275,12 @@
 </div> <!-- container -->
 
 
+<?= $this->endSection() ?>
+
+<?=$this->section('extra-scripts'); ?>
+<script src="/assetsa/libs/dropzone/min/dropzone.min.js"></script>
+<script src="/assetsa/libs/dropify/js/dropify.min.js"></script>
+
+<!-- Init js-->
+<script src="/assetsa/js/pages/form-fileuploads.init.js"></script>
 <?= $this->endSection() ?>
