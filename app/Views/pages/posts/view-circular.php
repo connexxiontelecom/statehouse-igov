@@ -28,6 +28,64 @@
 			<!-- project card -->
 			<div class="card d-block">
 				<div class="card-body">
+					<div class="row">
+						<div class="clearfix">
+							<div class="float-center" >
+								<div class="auth-logo" style="display: block;
+  margin-left: auto;
+  margin-right: 35%;
+  width: 100%;">
+									<div class="logo logo-dark" style="display: block;  margin-left: auto; margin-right: 35%; width: 100%;">
+                                                    <span class="logo-lg">
+                                                        <img src="/uploads/organization/<?=$organization['org_logo'] ?>" height="50" style="display: block;
+  margin-left: auto;
+  margin-right: 35%;
+  width: 20%;" >
+                                                    </span>
+									</div>
+									
+									<div class="logo logo-light">
+                                                    <span class="logo-lg">
+                                                        <img src="/uploads/organization/<?=$organization['org_logo'] ?>" height="50" style="display: block;
+  margin-left: auto;
+  margin-right: 35%;
+  width: 20%;" >
+                                                    </span>
+									</div>
+								</div>
+							</div>
+							
+							<div class="float-center" style="justify-content: center; align-items: center; align-content: center; margin-left: 10%;
+  margin-right: auto;" >
+								<div>
+									
+									<h3 class="mt-3" style="text-align: center; justify-content: center; align-items: center; align-content: center"><?=$organization['org_name'] ?></h3>
+									
+									<h5 class="mt-3" style="text-align: center; justify-content: center; align-items: center; align-content: center"><?=$organization['org_address'] ?></h5>
+								
+								
+								</div>
+							</div>
+							
+							<div class="float-right" >
+								<h5 class="mt-1 font-size-14">
+									<?php
+										$date = date_create($post['p_date']);
+										echo date_format($date,"d M Y H:i a");
+									?>
+								</h5>
+							</div>
+								
+								<div class="float-left" style="margin-left: 2%">
+									<h5 class="mt-1 font-size-14">
+										<?=$post['p_ref_no']
+										?>
+									</h5>
+								</div>
+						
+							
+						</div>
+					</div>
 					
 					<div class="clearfix"></div>
 						<h4>TO:</h4>

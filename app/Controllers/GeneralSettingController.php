@@ -24,6 +24,15 @@ class GeneralSettingController extends BaseController
 	{
 		if($this->request->getMethod() == 'post'):
 			
+			$file = $this->request->getFile('file');
+			if(!empty($file)):
+				if($file->isValid() && !$file->hasMoved()):
+					$file_name = $file->getRandomName();
+					$file->move('uploads/organization', $file_name);
+					$_POST['org_logo'] = $file_name;
+				endif;
+			endif;
+			
 			$this->organization->save($_POST);
 			session()->setFlashData("action","action successful");
 			return redirect()->to(base_url('/organization-profile'));
