@@ -263,51 +263,11 @@ class PostController extends BaseController
 		$user_data = $this->user->where('user_id', $user_id)->first();
 		$employee_id = $user_data['user_employee_id'];
 		$employee_data = $this->employee->where('employee_id', $employee_id)->first();
-		$department_id = $employee_data['employee_department_id'];
 		$position_id = $employee_data['employee_position_id'];
 
 		if (empty($search_params) && empty($sort_params)) {
-
+			$data['memos'] = $this->_get_memos($position_id);
 		}
-		
-		if (empty($search_params)):
-			$memos = $this->post->where('p_status', 2 )
-//				->groupStart()
-//				->where('p_department_id', $department_id)
-//				->orWhere('p_department_id', 'a')
-//				->groupEnd()
-				->where('p_type', 1)
-				->join('users', 'posts.p_signed_by = users.user_id')
-				->orderBy('p_date', 'DESC')
-				->paginate(9);
-		
-		else:
-			if (!empty($search_params)):
-				$memos = $this->post->where('p_status', 2 )
-					->groupStart()
-					->where('p_department_id', $department_id)
-					->orWhere('p_department_id', 'a')
-					->groupEnd()
-					->groupStart()
-					->like('p_subject', $search_params)
-					->orLike('p_body', $search_params)
-					->groupEnd()
-					->where('p_type', 1)
-					->join('users', 'posts.p_signed_by = users.user_id')
-					->orderBy('p_date', 'DESC')
-					->paginate(9);
-			endif;
-		
-		endif;
-		$new_memos = array();
-		$i = 0;
-		foreach ($memos as $memo):
-			$user = $this->user->where('user_id', $memo['p_by'])->first();
-			$memo['created_by'] = $user['user_name'];
-			$new_memos[$i] = $memo;
-			$i++;
-		endforeach;
-		$data['memos'] = $new_memos;
 		$data['pager'] = $this->post->pager;
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
@@ -403,18 +363,20 @@ class PostController extends BaseController
 			->where('p_type', 1)
 			->orderBy('p_date', 'DESC')
 			->paginate(9);
-		foreach ($memos as $key => $memo) {
-			$written_by = $this->user->find($memo['p_by']);
-			$signed_by = $this->user->find($memo['p_signed_by']);
+		$new_memos = [];
+		foreach ($memos as $memo) {
 			$recipient_ids = json_decode($memo['p_recipients_id']);
 			$recipients = [];
 			foreach ($recipient_ids as $recipient_id) {
 				array_push($recipients, $this->position->find($recipient_id));
 			}
-			$memos[$key]['written_by'] = $written_by;
-			$memos[$key]['signed_by'] = $signed_by;
-			$memos[$key]['recipients'] = $recipients;
+			if (in_array($position_id, $recipient_ids)) {
+				$memo['written_by'] = $this->user->find($memo['p_by']);
+				$memo['signed_by'] = $this->user->find($memo['p_signed_by']);
+				$memo['recipients'] = $recipients;
+				array_push($new_memos, $memo);
+			}
 		}
-		return $memos;
+		return $new_memos;
 	}
 }
