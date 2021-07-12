@@ -66,7 +66,7 @@ $routes->match(['get'], 'memos', 'PostController::memos', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-memo', 'PostController::new_memo', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'internal-memo', 'PostController::internal_memo', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'external-memo', 'PostController::external_memo', ['filter' => 'auth']);
-$routes->match(['get'], 'my-memos', 'PostController::memos', ['filter' => 'auth']);
+$routes->match(['get'], 'my-memos', 'PostController::my_memos', ['filter' => 'auth']);
 
 $routes->match(['get'], 'circulars', 'PostController::circulars', ['filter' => 'auth']);
 $routes->match(['get'], 'new-circular', 'PostController::new_circular', ['filter' => 'auth']);
