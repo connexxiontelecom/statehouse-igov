@@ -1,5 +1,8 @@
 <?= $this->extend('layouts/master'); ?>
-
+<?=$this->section('extra-styles'); ?>
+<link href="/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
+<?=$this->endSection() ?>
 <?= $this->section('content'); ?>
 <div class="container-fluid">
 	<!-- start page title -->
@@ -37,32 +40,34 @@
             <div class="row">
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="subject">Subject</label>
-                  <input type="text" id="subject" class="form-control" name="p_subject" required>
-                  <div class="invalid-feedback">
-                    Please enter a subject.
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="ref-no">Ref No</label>
+                  <label for="ref-no">Reference No</label>
                   <input type="text" class="form-control" id="ref-no" name="p_ref_no" required>
                   <div class="invalid-feedback">
                     Please enter a reference number.
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-6">
                 <div class="form-group" id="department-div">
                   <label for="positions">Offices</label>
-                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" data-placeholder="Please select all..." required>
-                    <?php foreach ($positions as $position): ?>
+                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" data-placeholder="Please select..." required>
+				            <?php foreach ($positions as $position): ?>
                       <option value="<?=$position['pos_id']; ?>"> <?=$position['pos_name']; ?></option>
-                    <?php endforeach; ?>
+				            <?php endforeach; ?>
                   </select>
                   <div class="invalid-feedback">
                     Please select all applicable offices.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="subject">Subject</label>
+                  <input type="text" id="subject" class="form-control" name="p_subject" required>
+                  <div class="invalid-feedback">
+                    Please enter a subject.
                   </div>
                 </div>
               </div>
@@ -78,8 +83,18 @@
                 </div>
               </div>
             </div>
+            <div class="row mb-2">
+              <div class="col-lg-12">
+                <div id="myId" class="dropzone">
+                  <div class="dz-message needsclick">
+                    <i class="hi text-muted dripicons-cloud-upload"></i>
+                    <h3>Drop all other relevant attachments here...</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row">
-              <div class="col-lg-3">
+              <div class="col-lg-4">
                 <div class="form-group">
                   <label for="signed-by">Signed By</label>
                   <select class="form-control" id="signed-by" name="p_signed_by" required>
@@ -111,4 +126,6 @@
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
 <?=view('pages/posts/_memo-scripts.php')?>
+<script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
+<script src="/assets/libs/dropify/js/dropify.min.js"></script>
 <?= $this->endSection(); ?>
