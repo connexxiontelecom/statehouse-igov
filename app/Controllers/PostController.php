@@ -263,10 +263,10 @@ class PostController extends BaseController
 		
 		if (empty($search_params)):
 			$memos = $this->post->where('p_status', 2 )
-				->groupStart()
-				->where('p_department_id', $department_id)
-				->orWhere('p_department_id', 'a')
-				->groupEnd()
+//				->groupStart()
+//				->where('p_department_id', $department_id)
+//				->orWhere('p_department_id', 'a')
+//				->groupEnd()
 				->where('p_type', 1)
 				->join('users', 'posts.p_signed_by = users.user_id')
 				->orderBy('p_date', 'DESC')
@@ -349,7 +349,10 @@ class PostController extends BaseController
 			'p_direction' => 1,
 			'p_recipients_id' => json_encode($post_data['positions'])
 		];
-		if ($this->post->save($memo_data)) {
+		$post_id = $this->post->insert($memo_data);
+		$attachments = $post_data['p_attachment'];
+		if ($post_id) {
+			$this->_upload_attachments($attachments, $post_id);
 			$response['success'] = true;
 			$response['message'] = 'Successfully created the internal memo';
 		} else {
@@ -372,5 +375,17 @@ class PostController extends BaseController
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		return view('/pages/posts/new-external-memo', $data);
+	}
+
+	private function _upload_attachments($attachments, $post_id) {
+		if (count($attachments) > 0) {
+			foreach ($attachments as $attachment) {
+				$attachment_data = array(
+					'pa_post_id' => $post_id,
+					'pa_link' => $attachment
+				);
+				$this->pa->save($attachment_data);
+			}
+		}
 	}
 }
