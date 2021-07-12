@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Notice;
+use App\Models\Organization;
 use App\Models\Position;
 use App\Models\Post;
 use App\Models\PostAttachment;
@@ -26,6 +27,7 @@ class PostController extends BaseController
 		$this->department = new Department();
 		$this->position = new Position();
 		$this->pa = new PostAttachment();
+		$this->organization = new Organization();
 	}
 	
 	public function circulars() {
@@ -190,6 +192,7 @@ class PostController extends BaseController
 		$data['departments'] = $departments;
 		$data['post'] = $post;
 		$data['attachments'] = $attachments;
+		$data['organization'] = $this->organization->first();
 		
 		
 	
