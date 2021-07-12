@@ -1,4 +1,3 @@
-<?php print_r($memos)?>
 <?= $this->extend('layouts/master'); ?>
 <?= $this->section('content'); ?>
 <div class="container-fluid">
@@ -37,14 +36,14 @@
           </div>
           <div class="col-lg-4">
             <div class="text-lg-right mt-3 mt-lg-0">
-              <a href="<?=site_url('/my-memos')?>" type="button" class="btn btn-success waves-effect waves-light mr-1">My Memos</a>
-              <div class="btn-group">
+              <div class="btn-group mr-1">
                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-plus-circle mr-1"></i> Add New</button>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="#">New Internal Memo</a>
                   <a class="dropdown-item" href="#">New External Memo</a>
                 </div>
               </div>
+              <a href="<?=site_url('/my-memos')?>" type="button" class="btn btn-success waves-effect waves-light">My Memos</a>
             </div>
           </div><!-- end col-->
         </div> <!-- end row -->
