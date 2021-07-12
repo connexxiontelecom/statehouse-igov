@@ -255,11 +255,17 @@ class PostController extends BaseController
 
 	public function memos() {
 		$search_params = @$_GET['search_params'];
+		$sort_params = @$_GET['sort_params'];
 		$user_id = session()->get('user_id');
 		$user_data = $this->user->where('user_id', $user_id)->first();
 		$employee_id = $user_data['user_employee_id'];
 		$employee_data = $this->employee->where('employee_id', $employee_id)->first();
 		$department_id = $employee_data['employee_department_id'];
+		$position_id = $employee_data['employee_position_id'];
+
+		if (empty($search_params) && empty($sort_params)) {
+
+		}
 		
 		if (empty($search_params)):
 			$memos = $this->post->where('p_status', 2 )
@@ -387,5 +393,25 @@ class PostController extends BaseController
 				$this->pa->save($attachment_data);
 			}
 		}
+	}
+
+	private function _get_memos($position_id) {
+		$memos = $this->post->where('p_status', 2)
+			->where('p_type', 1)
+			->orderBy('p_date', 'DESC')
+			->paginate(9);
+		foreach ($memos as $key => $memo) {
+			$written_by = $this->user->find($memo['p_by']);
+			$signed_by = $this->user->find($memo['p_signed_by']);
+			$recipient_ids = json_decode($memo['p_recipients_id']);
+			$recipients = [];
+			foreach ($recipient_ids as $recipient_id) {
+				array_push($recipients, $this->position->find($recipient_id));
+			}
+			$memos[$key]['written_by'] = $written_by;
+			$memos[$key]['signed_by'] = $signed_by;
+			$memos[$key]['recipients'] = $recipients;
+		}
+		return $memos;
 	}
 }
