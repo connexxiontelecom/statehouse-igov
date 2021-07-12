@@ -75,6 +75,12 @@ $routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::dele
 $routes->match(['get', 'post'], 'external-circular', 'PostController::external_circular', ['filter' => 'auth']);
 $routes->match(['get'], 'my-circulars', 'PostController::my_circulars', ['filter' => 'auth']);
 $routes->match(['get'], 'view-circular/(:num)', 'PostController::view_circular/$1', ['filter' => 'auth']);
+
+
+#GDrive routes
+$routes->get('/g-drive', 'FileController::index');
+$routes->post('/process-upload', 'FileController::processAttachmentUploads');
+$routes->post('/create-folder', 'FileController::createFolder');
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------

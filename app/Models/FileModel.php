@@ -14,7 +14,7 @@ class FileModel extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = ['file_id', 'folder_id', 'uploaded_by', 'file_name', 'name', 'size', 'password', 'slug', 'created_at'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -41,13 +41,31 @@ class FileModel extends Model
 	protected $afterDelete          = [];
 
 
+
+
+	public function getAllFiles(){
+	    return FileModel::findAll();
+    }
+
+    public function getFileById($id){
+
+    }
+
+    public function getFileBySlug($slug){
+
+    }
+
+
 	public function uploadAttachment(){
-        $file = $this->request->getFile('file');
-        if($file->isValid() && !$file->hasMoved()):
-            $file_name = $file->getClientName();
-            $file->move('uploads/posts', $file_name);
-            echo $file_name;
-        endif;
+        //$file = $this->request->getFile('file');
+        foreach($this->request->getFile('attachments') as $attach){
+            if($attach->isValid() && !$attach->hasMoved()):
+                $file_name = $attach->getClientName();
+                $attach->move('uploads/posts', $file_name);
+
+            endif;
+        }
+
     }
 
     public function deleteAttachment(){

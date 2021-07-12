@@ -14,7 +14,7 @@ class FolderModel extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = ['created_by', 'parent_id', 'folder', 'location', 'password', 'name', 'permission', 'slug'];
 
 	// Dates
 	protected $useTimestamps        = false;

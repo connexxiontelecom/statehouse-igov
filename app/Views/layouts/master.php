@@ -449,9 +449,9 @@
 					</li>
 					
 					<li>
-						<a href="apps-file-manager.html">
+						<a href="<?= site_url('g-drive') ?>">
 							<i data-feather="folder-plus"></i>
-							<span> File Manager </span>
+							<span> GDrive </span>
 						</a>
 					</li>
 					
