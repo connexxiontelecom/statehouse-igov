@@ -258,15 +258,15 @@ class PostController extends BaseController
 
 	public function memos() {
 		$search_params = @$_GET['search_params'];
-		$sort_params = @$_GET['sort_params'];
 		$user_id = session()->get('user_id');
 		$user_data = $this->user->where('user_id', $user_id)->first();
 		$employee_id = $user_data['user_employee_id'];
 		$employee_data = $this->employee->where('employee_id', $employee_id)->first();
 		$position_id = $employee_data['employee_position_id'];
-
-		if (empty($search_params) && empty($sort_params)) {
+		if (empty($search_params)) {
 			$data['memos'] = $this->_get_memos($position_id);
+		} else {
+			$data['memos'] = $this->_get_searched_memos($search_params, $position_id);
 		}
 		$data['pager'] = $this->post->pager;
 		$data['firstTime'] = $this->session->firstTime;
@@ -359,7 +359,8 @@ class PostController extends BaseController
 	}
 
 	private function _get_memos($position_id) {
-		$memos = $this->post->where('p_status', 2)
+		$memos = $this->post
+			->where('p_status', 2)
 			->where('p_type', 1)
 			->orderBy('p_date', 'DESC')
 			->paginate(9);
@@ -378,5 +379,28 @@ class PostController extends BaseController
 			}
 		}
 		return $new_memos;
+	}
+
+	private function _get_searched_memos($search_params, $position_id) {
+		$memos = $this->post
+			->where('p_status', 2)
+			->like('p_subject', $search_params)
+			->orderBy('p_date', 'DESC')
+			->paginate(9);
+		$searched_memos = [];
+		foreach ($memos as $memo) {
+			$recipient_ids = json_decode($memo['p_recipients_id']);
+			$recipients = [];
+			foreach ($recipient_ids as $recipient_id) {
+				array_push($recipients, $this->position->find($recipient_id));
+			}
+			if (in_array($position_id, $recipient_ids)) {
+				$memo['written_by'] = $this->user->find($memo['p_by']);
+				$memo['signed_by'] = $this->user->find($memo['p_signed_by']);
+				$memo['recipients'] = $recipients;
+				array_push($searched_memos, $memo);
+			}
+		}
+		return $searched_memos;
 	}
 }

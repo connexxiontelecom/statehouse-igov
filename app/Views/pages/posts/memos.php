@@ -25,16 +25,13 @@
           <div class="col-lg-8">
             <form class="form-inline" method="get">
               <div class="form-group">
-                <label for="inputPassword2" class="sr-only">Search</label>
-                <input type="search" class="form-control" id="inputPassword2" placeholder="Search..." name="search_params">
-              </div>
-              <div class="form-group mx-sm-3">
-                <label for="status-select" class="mr-2">Sort By</label>
-                <select class="custom-select" id="status-select" name="sort_params">
-                  <option selected="">All</option>
-                  <option value="1">Internal Memos</option>
-                  <option value="2">External Memos</option>
-                </select>
+                <div class="input-group">
+                  <label for="inputPassword2" class="sr-only">Search</label>
+                  <input type="search" class="form-control" id="inputPassword2" placeholder="Search..." name="search_params">
+                  <div class="input-group-append">
+                    <button class="btn btn-success waves-effect waves-light" type="submit">Search</button>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
@@ -95,11 +92,11 @@
           <!-- Task info-->
           <p class="mb-1">
             <span class="pr-3 text-nowrap mb-2 d-inline-block">
-              <strong>Signed:</strong> <br>
+              <strong>Signed By</strong> <br>
               <span class="text-muted"><?=$memo['signed_by']['user_name']?></span>
             </span>
             <span class="text-nowrap mb-2 d-inline-block">
-              <strong>Date:</strong> <br>
+              <strong>Date</strong> <br>
               <span class="text-muted">
                 <?php $date = date_create($memo['p_date']);
                 echo date_format($date,"d M Y H:i a");
