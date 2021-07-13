@@ -364,6 +364,13 @@ class PostController extends BaseController
 		return view('/pages/posts/new-external-memo', $data);
 	}
 
+	public function view_memo($memo_id) {
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$data['memo'] = $this->_get_memo($memo_id);
+		return view('/pages/posts/view-memo', $data);
+	}
+
 	private function _upload_attachments($attachments, $post_id) {
 		if (count($attachments) > 0) {
 			foreach ($attachments as $attachment) {
@@ -399,6 +406,23 @@ class PostController extends BaseController
 		return $new_memos;
 	}
 
+	private function _get_memo($memo_id) {
+		$memo = $this->post->find($memo_id);
+		if ($memo) {
+			$memo['written_by'] = $this->user->find($memo['p_by']);
+			$memo['signed_by'] = $this->user->find($memo['p_signed_by']);
+			$memo['attachments'] = $this->pa->where('pa_post_id', $memo_id)->findAll();
+			$recipient_ids = json_decode($memo['p_recipients_id']);
+			$recipients = [];
+			foreach ($recipient_ids as $recipient_id) {
+				array_push($recipients, $this->position->find($recipient_id));
+			}
+			$memo['recipients'] = $recipients;
+			$memo['organization'] = $this->organization->first();
+		}
+		return $memo;
+	}
+
 	private function _get_searched_memos($search_params, $position_id) {
 		$memos = $this->post
 			->where('p_status', 2)
@@ -425,7 +449,6 @@ class PostController extends BaseController
 	private function _get_user_memos($position_id) {
 		$memos = $this->post
 			->where('p_by', $this->session->user_id)
-			->where('p_status', 2)
 			->where('p_type', 1)
 			->orderBy('p_date', 'DESC')
 			->findAll();
@@ -448,7 +471,6 @@ class PostController extends BaseController
 	private function _get_signed_memos($position_id) {
 		$memos = $this->post
 			->where('p_signed_by', $this->session->user_id)
-			->where('p_status', 2)
 			->where('p_type', 1)
 			->orderBy('p_date', 'DESC')
 			->findAll();
