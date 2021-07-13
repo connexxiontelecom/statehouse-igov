@@ -29,6 +29,9 @@
             <div class="col-lg-4">
               <div class="text-lg-right">
                 <a href="javascript:window.print()" type="button" class="btn btn-success waves-effect waves-light mr-2"><i class="mdi mdi-printer"></i></a>
+	              <?php if($memo['p_status'] == 0):?>
+                  <a href="<?=site_url('/edit-memo/').$memo['p_id']?>" type="button" class="btn btn-success">Edit</a>
+	              <?php endif;?>
                 <a href="<?=site_url('/memos')?>" type="button" class="btn btn-success">Go Back</a>
               </div>
             </div>

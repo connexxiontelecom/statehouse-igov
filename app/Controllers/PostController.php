@@ -313,11 +313,10 @@ class PostController extends BaseController
 		if($this->request->getMethod() == 'get'):
 			$data['signed_by'] = $this->user->where('user_status', 1)
 				->groupStart()
-				->where('user_type', 2)
-				->orWhere('user_type', 3)
+					->where('user_type', 2)
+					->orWhere('user_type', 3)
 				->groupEnd()
 				->findAll();
-			$data['departments']= $this->department->findAll();
 			$data['positions'] = $this->position->findAll();
 			$data['pager'] = $this->post->pager;
 			$data['firstTime'] = $this->session->firstTime;
@@ -369,6 +368,40 @@ class PostController extends BaseController
 		$data['username'] = $this->session->user_username;
 		$data['memo'] = $this->_get_memo($memo_id);
 		return view('/pages/posts/view-memo', $data);
+	}
+
+	public function edit_memo($memo_id = null) {
+		if ($this->request->getMethod() == 'get') {
+			$data['signed_by'] = $this->user->where('user_status', 1)
+				->groupStart()
+				->where('user_type', 2)
+				->orWhere('user_type', 3)
+				->groupEnd()
+				->findAll();
+			$data['positions'] = $this->position->findAll();
+			$data['pager'] = $this->post->pager;
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['memo'] = $this->_get_memo($memo_id);
+			return view('/pages/posts/edit-internal-memo', $data);
+		}
+		$post_data = $this->request->getPost();
+		$memo_data = [
+			'p_id' => $post_data['memo_id'],
+			'p_ref_no' => $post_data['p_ref_no'],
+			'p_subject' => $post_data['p_subject'],
+			'p_body' => $post_data['p_body'],
+			'p_signed_by' => $post_data['p_signed_by'],
+			'p_recipients_id' => json_encode($post_data['positions'])
+		];
+		if ($this->post->save($memo_data)) {
+			$response['success'] = true;
+			$response['message'] = 'Successfully edited the memo';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'There was an error while editing the memo';
+		}
+		return $this->response->setJSON($response);
 	}
 
 	private function _upload_attachments($attachments, $post_id) {
