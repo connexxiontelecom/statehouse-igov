@@ -36,6 +36,7 @@
                     <a class="dropdown-item" href="#">New External Memo</a>
                   </div>
                 </div>
+                <a href="<?=site_url('/my-memos/signed')?>" type="button" class="btn btn-success waves-effect waves-light mr-1">My Signed Memos</a>
                 <a href="<?=site_url('/memos')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
               </div>
             </div><!-- end col-->
@@ -43,7 +44,7 @@
           <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap w-100">
             <thead>
             <tr>
-              <th>S/n</th>
+              <th class="text-center" style="width: 5%">S/n</th>
               <th>Subject</th>
               <th>Signed By</th>
               <th>Status</th>
