@@ -81,6 +81,9 @@ $routes->match(['get', 'post'], 'external-circular', 'PostController::external_c
 $routes->match(['get'], 'my-circulars', 'PostController::my_circulars', ['filter' => 'auth']);
 $routes->match(['get'], 'view-circular/(:num)', 'PostController::view_circular/$1', ['filter' => 'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
+
+$routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
