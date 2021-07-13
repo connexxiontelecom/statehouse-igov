@@ -20,7 +20,7 @@
 	</div>
 	<!-- end page title -->
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-7">
       <div class="card d-block">
         <div class="card-body">
           <div class="row d-print-none">
@@ -68,7 +68,7 @@
                 <h5 class="font-size-14">
 			            <?php
                     $date = date_create($memo['p_date']);
-			              echo date_format($date,"d M Y");
+			              echo date_format($date,"d F Y");
 			            ?>
                 </h5>
               </div>
@@ -115,8 +115,47 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-5">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title font-16 mb-3">Attachments</h5>
+			    <?php if(!empty($memo['attachments'])):
+				    foreach ($memo['attachments'] as $attachment):?>
+              <div class="card mb-1 shadow-none border">
+                <div class="p-2">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <div class="avatar-sm">
+                        <span class="avatar-title badge-soft-primary text-primary rounded">
+                           <?php echo strtoupper(substr($attachment['pa_link'], strpos($attachment['pa_link'], ".") + 1)); ?>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col pl-0">
+                      <p class="mb-0 font-12"><?php
+										    $filename = 'uploads/posts/'.$attachment['pa_link'];
+										    //											$handle = fopen($filename, "r");
+										    //											$contents = fread($handle, filesize($filename));
+										    //echo $filename;
+										    $size = round(filesize($filename)/(1024 * 1024), 2);
+										    echo $attachment['pa_link'] .'<br>';
+										    echo $size."MB";
+										    //											fclose($handle);
 
+										    ?></p>
+                    </div>
+                    <div class="col-auto">
+                      <!-- Button -->
+                      <a href="<?='/uploads/posts/'.$attachment['pa_link']; ?>" download="<?=$attachment['pa_link']; ?>" target="_blank" class="btn btn-link font-16 text-muted">
+                        <i class="dripicons-download"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+				    <?php endforeach; else: echo "No Attachments"; endif; ?>
+        </div>
+      </div>
     </div>
   </div>
 </div>
