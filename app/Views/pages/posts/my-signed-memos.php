@@ -69,9 +69,9 @@
 										?>
 									</td>
 									<td class="text-center">
-										<a href="<?=site_url('view-notice/').$memo['p_id']?>" class="mr-2">View</a>
+										<a href="<?=site_url('view-memo/').$memo['p_id']?>" class="mr-2">View</a>
 										<?php if($memo['p_status'] == 0):?>
-											<a href="<?=site_url('edit-notice/').$memo['p_id']?>">Edit</a>
+											<a href="<?=site_url('edit-memo/').$memo['p_id']?>">Edit</a>
 										<?php endif;?>
 									</td>
 								</tr>
