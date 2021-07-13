@@ -33,7 +33,7 @@
                   <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-plus-circle mr-1"></i> Add New</button>
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href="<?=site_url('internal-memo')?>">New Internal Memo</a>
-                    <a class="dropdown-item" href="#">New External Memo</a>
+                    <a class="dropdown-item" href="<?=site_url('external-memo')?>">New External Memo</a>
                   </div>
                 </div>
                 <a href="<?=site_url('/my-memos/signed')?>" type="button" class="btn btn-success waves-effect waves-light mr-1">My Signed Memos</a>
