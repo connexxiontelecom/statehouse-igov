@@ -70,7 +70,7 @@
 									</td>
 									<td class="text-center">
 										<a href="<?=site_url('view-memo/').$memo['p_id']?>" class="mr-2">View</a>
-										<?php if($memo['p_status'] == 0):?>
+										<?php if($memo['p_status'] == 0 && $memo['p_by'] == session()->user_id):?>
 											<a href="<?=site_url('edit-memo/').$memo['p_id']?>">Edit</a>
 										<?php endif;?>
 									</td>
@@ -82,7 +82,5 @@
 				</div> <!-- end card -->
 			</div><!-- end col-->
 		</div>
-
-
 	</div>
 <?= $this->endSection(); ?>
