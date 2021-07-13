@@ -349,18 +349,42 @@ class PostController extends BaseController
 	}
 	
 	public function external_memo(){
-		
-		$data['signed_by'] = $this->user->where('user_status', 1)
-			->groupStart()
-			->where('user_type', 2)
-			->orWhere('user_type', 3)
-			->groupEnd()
-			->findAll();
-		$data['departments']= $this->department->findAll();
-		$data['pager'] = $this->post->pager;
-		$data['firstTime'] = $this->session->firstTime;
-		$data['username'] = $this->session->user_username;
-		return view('/pages/posts/new-external-memo', $data);
+		if($this->request->getMethod() == 'get'):
+			$data['signed_by'] = $this->user->where('user_status', 1)
+				->groupStart()
+				->where('user_type', 2)
+				->orWhere('user_type', 3)
+				->groupEnd()
+				->findAll();
+			$data['positions'] = $this->position->findAll();
+			$data['pager'] = $this->post->pager;
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			return view('/pages/posts/new-external-memo', $data);
+		endif;
+		$post_data = $this->request->getPost();
+		$memo_data = [
+			'p_ref_no' => $post_data['p_ref_no'],
+			'p_subject' => $post_data['p_subject'],
+			'p_type' => 1,
+			'p_body' => $post_data['p_body'],
+			'p_status' => 0,
+			'p_by' => $this->session->user_id,
+			'p_signed_by' => $post_data['p_signed_by'],
+			'p_direction' => 2,
+			'p_recipients_id' => json_encode($post_data['positions'])
+		];
+		$post_id = $this->post->insert($memo_data);
+		$attachments = $post_data['p_attachment'];
+		if ($post_id) {
+			$this->_upload_attachments($attachments, $post_id);
+			$response['success'] = true;
+			$response['message'] = 'Successfully created the external memo';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'There was an error while creating the external memo';
+		}
+		return $this->response->setJSON($response);
 	}
 
 	public function view_memo($memo_id) {
