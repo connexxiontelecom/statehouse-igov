@@ -39,4 +39,20 @@ class FolderModel extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+
+
+	/*
+	 * Use-case methods
+	 */
+
+    public function getAllFolders(){
+        return FolderModel::findAll();
+    }
+
+    public function getFolderContentById($id){
+        $builder = $this->db->table('folder_models');
+        $builder->where('parent_id', $id);
+        return $builder->get()->getResultArray();
+    }
 }

@@ -78,9 +78,16 @@ $routes->match(['get'], 'view-circular/(:num)', 'PostController::view_circular/$
 
 
 #GDrive routes
-$routes->get('/g-drive', 'FileController::index');
-$routes->post('/process-upload', 'FileController::processAttachmentUploads');
-$routes->post('/create-folder', 'FileController::createFolder');
+$routes->get('/g-drive', 'FileController::index',['filter' => 'auth']);
+$routes->post('/process-upload', 'FileController::processAttachmentUploads',['filter' => 'auth']);
+$routes->post('/create-folder', 'FileController::createFolder',['filter' => 'auth']);
+$routes->get('/open-folder/(:num)', 'FileController::openFolder/$1',['filter' => 'auth']);
+$routes->get('/remove-file/(:num)', 'FileController::removeFile/$1',['filter' => 'auth']);
+$routes->post('share-file-with', 'FileController::shareFileWith',['filter' => 'auth']);
+$routes->get('share-file-with-me', 'FileController::shareFileWithMe',['filter' => 'auth']);
+
+#Training routes
+$routes->get('/trainings', 'TrainingController::index', ['filter'=>'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------

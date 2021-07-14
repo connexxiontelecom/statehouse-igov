@@ -78,4 +78,16 @@ class FileModel extends Model
         endif;
         return $this->response->setJSON($response);
     }
+
+    public function getFilesByFolderId($id){
+        $builder = $this->db->table('file_models');
+        $builder->where('folder_id', $id);
+        return $builder->get()->getResultArray();
+    }
+    public function getFileByFileId($id){
+        $builder = $this->db->table('file_models');
+        $builder->where('file_id', $id);
+        return $builder->first();
+    }
+
 }
