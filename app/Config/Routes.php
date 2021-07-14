@@ -84,6 +84,7 @@ $routes->match(['get'], 'view-circular/(:num)', 'PostController::view_circular/$
 
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
 $routes->match(['get'], 'check-signature-exists', 'EmployeeController::check_signature_exists', ['filter' => 'auth']);
+$routes->match(['post'], 'setup-signature', 'EmployeeController::setup_signature', ['filter' => 'auth']);
 
 /*
  * --------------------------------------------------------------------
