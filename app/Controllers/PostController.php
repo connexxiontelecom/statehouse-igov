@@ -256,21 +256,28 @@ class PostController extends BaseController
 	
 
 
-	public function memos() {
+	public function memos($type = null) {
 		$search_params = @$_GET['search_params'];
 		$user_id = session()->get('user_id');
 		$user_data = $this->user->where('user_id', $user_id)->first();
 		$employee_id = $user_data['user_employee_id'];
 		$employee_data = $this->employee->where('employee_id', $employee_id)->first();
 		$position_id = $employee_data['employee_position_id'];
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
 		if (empty($search_params)) {
+			$unsigned_memos = $this->_get_unsigned_memos();
+			if ($unsigned_memos) session()->setFlashdata('unsigned_memos', true);
+			if ($type === 'signed') {
+				$data['memos'] = $unsigned_memos;
+				return view('/pages/posts/my-signed-memos', $data);
+			}
 			$data['memos'] = $this->_get_memos($position_id);
 		} else {
 			$data['memos'] = $this->_get_searched_memos($search_params, $position_id);
 		}
 		$data['pager'] = $this->post->pager;
-		$data['firstTime'] = $this->session->firstTime;
-		$data['username'] = $this->session->user_username;
+		
 		return view('/pages/posts/memos', $data);
 	}
 
@@ -282,14 +289,8 @@ class PostController extends BaseController
 		$position_id = $employee_data['employee_position_id'];
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
-		if ($type) {
-			$data['memos'] = $this->_get_signed_memos($position_id);
-			return view('/pages/posts/my-signed-memos', $data);
-		} else {
-			$data['memos'] = $this->_get_user_memos($position_id);
-			return view('/pages/posts/my-memos', $data);
-		}
-
+		$data['memos'] = $this->_get_user_memos($position_id);
+		return view('/pages/posts/my-memos', $data);
 	}
 	
 	public function new_memo() {
@@ -525,25 +526,22 @@ class PostController extends BaseController
 		return $new_memos;
 	}
 
-	private function _get_signed_memos($position_id) {
+	private function _get_unsigned_memos() {
 		$memos = $this->post
 			->where('p_signed_by', $this->session->user_id)
 			->where('p_type', 1)
+			->where('p_status', 0)
 			->orderBy('p_date', 'DESC')
 			->findAll();
-		$signed_memos = [];
-		foreach ($memos as $memo) {
+		foreach ($memos as $key => $memo) {
 			$recipient_ids = json_decode($memo['p_recipients_id']);
 			$recipients = [];
 			foreach ($recipient_ids as $recipient_id) {
 				array_push($recipients, $this->position->find($recipient_id));
 			}
-			if (in_array($position_id, $recipient_ids)) {
-				$memo['written_by'] = $this->user->find($memo['p_by']);
-				$memo['recipients'] = $recipients;
-				array_push($signed_memos, $memo);
-			}
+			$memos[$key]['written_by'] = $this->user->find($memo['p_by']);
+			$memos[$key]['recipients'] = $recipients;
 		}
-		return $signed_memos;
+		return $memos;
 	}
 }

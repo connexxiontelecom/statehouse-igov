@@ -10,7 +10,7 @@
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
 						<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
-						<li class="breadcrumb-item"><a href="<?=site_url('memos')?>">All Memos</a></li>
+						<li class="breadcrumb-item"><a href="<?=site_url('memos')?>">Memo Board</a></li>
 						<li class="breadcrumb-item active">My Memos</li>
 					</ol>
 				</div>
@@ -23,12 +23,15 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <div class="row mb-4">
+          <div class="row">
             <div class="col-lg-8">
-              <h4 class="header-title mt-2">All My Memos</h4>
+              <h4 class="header-title">All My Memos</h4>
+              <p class="text-muted font-13">
+                Below are all the memos you have written including memos that are signed, unsigned, deactivated or rejected.
+              </p>
             </div>
             <div class="col-lg-4">
-              <div class="text-lg-right mt-3 mt-lg-0">
+              <div class="text-lg-right mt-lg-0">
                 <div class="btn-group mr-1">
                   <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-plus-circle mr-1"></i> Add New</button>
                   <div class="dropdown-menu">
@@ -36,7 +39,6 @@
                     <a class="dropdown-item" href="<?=site_url('external-memo')?>">New External Memo</a>
                   </div>
                 </div>
-                <a href="<?=site_url('/my-memos/signed')?>" type="button" class="btn btn-success waves-effect waves-light mr-1">My Signed Memos</a>
                 <a href="<?=site_url('/memos')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
               </div>
             </div><!-- end col-->
@@ -86,7 +88,25 @@
       </div> <!-- end card -->
     </div><!-- end col-->
   </div>
-
-
 </div>
+<?= $this->endSection(); ?>
+<?= $this->section('extra-scripts'); ?>
+<!-- third party js -->
+<script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+<script src="/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+<script src="/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+<!-- third party js ends -->
+
+<!-- Datatables init -->
+<script src="/assets/js/pages/datatables.init.js"></script>
 <?= $this->endSection(); ?>
