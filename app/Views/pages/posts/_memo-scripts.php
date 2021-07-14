@@ -1,5 +1,8 @@
 <script>
 	$(document).ready(function () {
+
+   
+
 	  Dropzone.autoDiscover = false
     let name = new Date().getTime()
     $('div#myId').dropzone({
