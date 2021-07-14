@@ -63,11 +63,11 @@ $routes->post('edit-notice', 'NoticeController::edit_notice', ['filter' => 'auth
 $routes->match(['get', 'post'], 'new-notice', 'NoticeController::new_notice', ['filter' => 'auth']);
 
 $routes->match(['get'], 'memos', 'PostController::memos', ['filter' => 'auth']);
+$routes->match(['get'], 'memos/(:alpha)', 'PostController::memos/$1', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-memo', 'PostController::new_memo', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'internal-memo', 'PostController::internal_memo', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'external-memo', 'PostController::external_memo', ['filter' => 'auth']);
 $routes->match(['get'], 'my-memos', 'PostController::my_memos', ['filter' => 'auth']);
-$routes->match(['get'], 'my-memos/(:any)', 'PostController::my_memos/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'view-memo/(:num)', 'PostController::view_memo/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'edit-memo/(:num)', 'PostController::edit_memo/$1', ['filter' => 'auth']);
 $routes->match(['post'], 'edit-memo', 'PostController::edit_memo', ['filter' => 'auth']);
