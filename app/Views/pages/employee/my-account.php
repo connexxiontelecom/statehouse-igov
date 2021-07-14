@@ -1,6 +1,7 @@
 <?=$this->extend('layouts/master');?>
 <?=$this->section('extra-styles'); ?>
 <link href="/assets/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/libs/ladda/ladda-themeless.min.css" rel="stylesheet" type="text/css" />
 <?=$this->endSection() ?>
 <?=$this->section('content');?>
 <div class="container-fluid">
@@ -127,7 +128,10 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Save changes</button>
+              <button type="submit" class="btn btn-primary" id="save-btn">Save Changes</button>
+              <button type="submit" class="btn btn-primary" id="save-btn-loading" hidden disabled>
+                <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Saving Changes
+              </button>
             </div>
           </form>
         </div><!-- /.modal-content -->
@@ -139,7 +143,13 @@
 <?= $this->section('extra-scripts'); ?>
 <script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
 <script src="/assets/libs/dropify/js/dropify.min.js"></script>
+  <!-- Loading buttons js -->
+<script src="/assets/libs/ladda/spin.min.js"></script>
+<script src="/assets/libs/ladda/ladda.min.js"></script>
+
+  <!-- Buttons init js-->
 <!-- Init js-->
+<script src="/assets/js/pages/loading-btn.init.js"></script>
 <script src="/assets/js/pages/form-fileuploads.init.js"></script>
 <?=view('pages/employee/_employee-scripts.php')?>
 <?= $this->endSection(); ?>

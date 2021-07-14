@@ -33,6 +33,7 @@ class EmployeeController extends BaseController
 		$user = $this->user->find(session()->user_id);
 		$employee = $this->employee->find($user['user_employee_id']);
 		if ($employee['employee_signature']) {
+
 			$response['success'] = true;
 			$response['message'] = $employee['employee_signature'];
 		} else {
@@ -55,8 +56,18 @@ class EmployeeController extends BaseController
 					'employee_signature' => $file_name
 				];
 				if ($this->employee->save($employee_data)) {
-					$response['success'] = true;
-					$response['message'] = 'File saved';
+					$to = 'oamanambu@yahoo.com';
+					$subject = 'Verify E-Signature';
+					$message = view('email/signature-otp');
+					$from['name'] = 'IGOV by Connexxion Telecom';
+					$from['email'] = 'support@connexxiontelecom.com';
+					if ($this->send_mail($to, $subject, $message, $from)) {
+						$response['success'] = true;
+						$response['message'] = 'An E-Signature Verification OTP has been sent. Please, verify that it is you performing this action.';
+					} else {
+						$response['success'] = false;
+						$response['message'] = 'An error occurred while sending your E-Signature Verification';
+					}
 				} else {
 					$response['success'] = false;
 					$response['message'] = 'Your E-Signature has not been set up yet. You will be redirected to My Account to set it up now.';

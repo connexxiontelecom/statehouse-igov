@@ -6,6 +6,8 @@
       if (!files[0]) {
         Swal.fire('Invalid Submission!', 'Please upload a scan of your signature.', 'error')
       } else {
+        $('#save-btn').attr('hidden', true)
+        $('#save-btn-loading').attr('hidden', false)
         let formData = new FormData()
         formData.append('file', files[0])
         $.ajax({
@@ -13,8 +15,11 @@
           type: 'post',
           data: formData,
           success: response => {
+            $('#save-btn').attr('hidden', false)
+            $('#save-btn-loading').attr('hidden', true)
             if (response.success) {
-              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/my-account')?>')
+              Swal.fire('Confirmed!', response.message, 'success')
+                //.then(() => location.href = '<?//=site_url('/my-account')?>//')
             } else {
               Swal.fire('Sorry!', response.message, 'error')
             }
