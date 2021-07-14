@@ -72,7 +72,7 @@
 					<div class="form-group mb-3" id="department">
 					
 						<label for="department">Departments</label>
-						<select  class="form-control select2-multiple"  data-toggle="select2" multiple="multiple" data-placeholder="Choose Department ...">
+						<select  class="form-control select2-multiple"  data-toggle="select2" multiple="multiple" data-placeholder="Choose Department ..." name="p_recipients_id[]">
 							
 							<option value="a">All Departments</option>
 							<?php foreach ($departments as $department): ?>

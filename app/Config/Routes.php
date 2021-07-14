@@ -61,11 +61,16 @@ $routes->get('view-notice/(:num)', 'NoticeController::view_notice/$1', ['filter'
 $routes->get('edit-notice/(:num)', 'NoticeController::edit_notice/$1', ['filter' => 'auth']);
 $routes->post('edit-notice', 'NoticeController::edit_notice', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-notice', 'NoticeController::new_notice', ['filter' => 'auth']);
+
 $routes->match(['get'], 'memos', 'PostController::memos', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-memo', 'PostController::new_memo', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'internal-memo', 'PostController::internal_memo', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'external-memo', 'PostController::external_memo', ['filter' => 'auth']);
-$routes->match(['get'], 'my-memos', 'PostController::memos', ['filter' => 'auth']);
+$routes->match(['get'], 'my-memos', 'PostController::my_memos', ['filter' => 'auth']);
+$routes->match(['get'], 'my-memos/(:any)', 'PostController::my_memos/$1', ['filter' => 'auth']);
+$routes->match(['get'], 'view-memo/(:num)', 'PostController::view_memo/$1', ['filter' => 'auth']);
+$routes->match(['get'], 'edit-memo/(:num)', 'PostController::edit_memo/$1', ['filter' => 'auth']);
+$routes->match(['post'], 'edit-memo', 'PostController::edit_memo', ['filter' => 'auth']);
 
 $routes->match(['get'], 'circulars', 'PostController::circulars', ['filter' => 'auth']);
 $routes->match(['get'], 'new-circular', 'PostController::new_circular', ['filter' => 'auth']);
@@ -89,6 +94,9 @@ $routes->get('share-file-with-me', 'FileController::shareFileWithMe',['filter' =
 #Training routes
 $routes->get('/trainings', 'TrainingController::index', ['filter'=>'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
+
+$routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

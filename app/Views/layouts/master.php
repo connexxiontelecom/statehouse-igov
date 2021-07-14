@@ -128,11 +128,11 @@
 					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
 						<!-- item-->
 						<div class="dropdown-header noti-title">
-							<h6 class="text-overflow m-0">Welcome !</h6>
+							<h6 class="text-overflow m-0">Welcome!</h6>
 						</div>
 						
 						<!-- item-->
-						<a href="javascript:void(0);" class="dropdown-item notify-item">
+						<a href="<?=site_url('my-account')?>" class="dropdown-item notify-item">
 							<i class="fe-user"></i>
 							<span>My Account</span>
 						</a>
@@ -227,110 +227,6 @@
 						</a>
 					</div>
 				</li>
-				
-<!--				<li class="dropdown dropdown-mega d-none d-xl-block">-->
-<!--					<a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">-->
-<!--						Mega Menu-->
-<!--						<i class="mdi mdi-chevron-down"></i>-->
-<!--					</a>-->
-<!--					<div class="dropdown-menu dropdown-megamenu">-->
-<!--						<div class="row">-->
-<!--							<div class="col-sm-8">-->
-<!--								-->
-<!--								<div class="row">-->
-<!--									<div class="col-md-4">-->
-<!--										<h5 class="text-dark mt-0">UI Components</h5>-->
-<!--										<ul class="list-unstyled megamenu-list">-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Widgets</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Nestable List</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Range Sliders</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Masonry Items</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Sweet Alerts</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Treeview Page</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Tour Page</a>-->
-<!--											</li>-->
-<!--										</ul>-->
-<!--									</div>-->
-<!--									-->
-<!--									<div class="col-md-4">-->
-<!--										<h5 class="text-dark mt-0">Applications</h5>-->
-<!--										<ul class="list-unstyled megamenu-list">-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">eCommerce Pages</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">CRM Pages</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Email</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Calendar</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Team Contacts</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Task Board</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Email Templates</a>-->
-<!--											</li>-->
-<!--										</ul>-->
-<!--									</div>-->
-<!--									-->
-<!--									<div class="col-md-4">-->
-<!--										<h5 class="text-dark mt-0">Extra Pages</h5>-->
-<!--										<ul class="list-unstyled megamenu-list">-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Left Sidebar with User</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Menu Collapsed</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Small Left Sidebar</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">New Header Style</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Search Result</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Gallery Pages</a>-->
-<!--											</li>-->
-<!--											<li>-->
-<!--												<a href="javascript:void(0);">Maintenance & Coming Soon</a>-->
-<!--											</li>-->
-<!--										</ul>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--							</div>-->
-<!--							<div class="col-sm-4">-->
-<!--								<div class="text-center mt-3">-->
-<!--									<h3 class="text-dark">Special Discount Sale!</h3>-->
-<!--									<h4>Save up to 70% off.</h4>-->
-<!--									<button class="btn btn-primary btn-rounded mt-3">Download Now</button>-->
-<!--								</div>-->
-<!--							</div>-->
-<!--						</div>-->
-<!--					-->
-<!--					</div>-->
-<!--				</li>-->
 			</ul>
 			<div class="clearfix"></div>
 		</div>
@@ -390,33 +286,6 @@
 							<span> Dashboard </span>
 						</a>
 					</li>
-					<li>
-						<a href="apps-calendar.html">
-							<i data-feather="calendar"></i>
-							<span> Workflows </span>
-						</a>
-					</li>
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="layout"></i>
-							<span> Forms </span>
-						</a>
-					</li>
-					
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="log-in"></i>
-							<span> Meetings </span>
-						</a>
-					</li>
-					
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="bar-chart-2"></i>
-							<span> Trainings </span>
-						</a>
-					</li>
-
           <li>
             <a href="#messaging" data-toggle="collapse">
               <i data-feather="message-square"></i>
@@ -433,18 +302,10 @@
               </ul>
             </div>
           </li>
-
 					<li>
-						<a href="apps-chat.html">
-							<i data-feather="credit-card"></i>
-							<span> Budgets </span>
-						</a>
-					</li>
-					
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="briefcase"></i>
-							<span> Projects </span>
+						<a href="/my-account">
+							<i data-feather="user"></i>
+							<span> My Account </span>
 						</a>
 					</li>
 					
@@ -454,8 +315,7 @@
 							<span> GDrive </span>
 						</a>
 					</li>
-					
-					
+
 				</ul>
 			
 			</div>
