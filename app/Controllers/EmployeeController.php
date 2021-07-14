@@ -46,6 +46,7 @@ class EmployeeController extends BaseController
 	public function setup_signature() {
 		$user = $this->user->find(session()->user_id);
 		$employee = $this->employee->find($user['user_employee_id']);
+		$organization = $this->organization->first();
 		$file = $this->request->getFile('file');
 		if (!empty($file)) {
 			if($file->isValid() && !$file->hasMoved()) {
@@ -58,7 +59,10 @@ class EmployeeController extends BaseController
 				if ($this->employee->save($employee_data)) {
 					$to = 'oamanambu@yahoo.com';
 					$subject = 'Verify E-Signature';
-					$message = view('email/signature-otp');
+					$data['subject'] = $subject;
+					$data['user'] = $user['user_name'];
+					$data['organization'] = $organization['org_name'];
+					$message = view('email/signature-otp', $data);
 					$from['name'] = 'IGOV by Connexxion Telecom';
 					$from['email'] = 'support@connexxiontelecom.com';
 					if ($this->send_mail($to, $subject, $message, $from)) {
