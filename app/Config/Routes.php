@@ -83,6 +83,7 @@ $routes->match(['get'], 'view-circular/(:num)', 'PostController::view_circular/$
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
+$routes->match(['get'], 'check-signature-exists', 'EmployeeController::check_signature_exists', ['filter' => 'auth']);
 
 /*
  * --------------------------------------------------------------------

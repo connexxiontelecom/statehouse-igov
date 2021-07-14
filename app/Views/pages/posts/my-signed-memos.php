@@ -40,10 +40,10 @@
 							<thead>
 							<tr>
 								<th class="text-center" style="width: 5%">S/n</th>
+								<th>Ref No.</th>
 								<th>Subject</th>
 								<th>Written By</th>
-								<th>Status</th>
-								<th>Created</th>
+								<th style="width: 12%;">Created</th>
 								<th class="text-center" style="width: 10%">Actions</th>
 							</tr>
 							</thead>
@@ -51,27 +51,22 @@
 							<?php $i=1; foreach ($memos as $memo):?>
 								<tr>
 									<td><?=$i; $i++;?></td>
+									<td><?=$memo['p_ref_no']?></td>
 									<td><?=$memo['p_subject']?></td>
 									<td><?=$memo['written_by']['user_name']?></td>
-									<td>
-										<?php
-										if ($memo['p_status'] == 0) echo 'Pending';
-										elseif ($memo['p_status'] == 1) echo 'Confirmed';
-										elseif ($memo['p_status'] == 2) echo 'Activated';
-										elseif ($memo['p_status'] == 3) echo 'Deactivated';
-										elseif ($memo['p_status'] == 4) echo 'Rejected';
-										?>
-									</td>
 									<td>
 										<?php $date = date_create($memo['p_date']);
 										echo date_format($date,"d M Y H:i a");
 										?>
 									</td>
 									<td class="text-center">
-										<a href="<?=site_url('view-memo/').$memo['p_id']?>" class="mr-2">View</a>
-										<?php if($memo['p_status'] == 0 && $memo['p_by'] == session()->user_id):?>
-											<a href="<?=site_url('edit-memo/').$memo['p_id']?>">Edit</a>
+										<a href="<?=site_url('view-memo/').$memo['p_id']?>" class="mr-1">View</a>
+										<?php if($memo['p_by'] == session()->user_id && $memo['p_status'] == 0):?>
+											<a href="<?=site_url('/edit-memo/').$memo['p_id']?>">Edit</a>
 										<?php endif;?>
+										<?php if($memo['p_signed_by'] == session()->user_id && $memo['p_status'] == 0):?>
+                  		<a href="javascript:void(0)" onclick="signDocument()">Sign</a>
+	              		<?php endif;?>
 									</td>
 								</tr>
 							<?php endforeach;?>
@@ -84,6 +79,8 @@
 	</div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
+<?=view('pages/posts/_memo-scripts.php')?>
+
 <!-- third party js -->
 <script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>

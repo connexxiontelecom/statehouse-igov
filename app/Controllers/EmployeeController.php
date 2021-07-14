@@ -29,6 +29,19 @@ class EmployeeController extends BaseController
 		return view('/pages/employee/my-account', $data);
 	}
 
+	public function check_signature_exists() {
+		$user = $this->user->find(session()->user_id);
+		$employee = $this->employee->find($user['user_employee_id']);
+		if ($employee['employee_signature']) {
+			$response['success'] = true;
+			$response['message'] = $employee['employee_signature'];
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'Your E-Signature has not been set up yet. You will be redirected to My Account set it up now.';
+		}
+		return $this->response->setJSON($response);
+	}
+
 	private function _get_employee_detail() {
 		$user = $this->user->find(session()->user_id);
 		$user['employee'] = $this->employee->find($user['user_employee_id']);

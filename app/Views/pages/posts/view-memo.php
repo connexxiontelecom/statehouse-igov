@@ -29,8 +29,11 @@
             <div class="col-lg-4">
               <div class="text-lg-right">
                 <a href="javascript:window.print()" type="button" class="btn btn-success waves-effect waves-light mr-2"><i class="mdi mdi-printer"></i></a>
-	              <?php if($memo['p_status'] == 0):?>
+	              <?php if($memo['p_by'] == session()->user_id && $memo['p_status'] == 0):?>
                   <a href="<?=site_url('/edit-memo/').$memo['p_id']?>" type="button" class="btn btn-success">Edit</a>
+	              <?php endif;?>
+                <?php if($memo['p_signed_by'] == session()->user_id && $memo['p_status'] == 0):?>
+                  <button onclick="signDocument()" type="button" class="btn btn-success">Sign</button>
 	              <?php endif;?>
                 <a href="<?=site_url('/memos')?>" type="button" class="btn btn-success">Go Back</a>
               </div>
@@ -164,6 +167,6 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?//=view('pages/posts/_circular-scripts.php')?>
+<?=view('pages/posts/_memo-scripts.php')?>
 <?= $this->endSection(); ?>
 
