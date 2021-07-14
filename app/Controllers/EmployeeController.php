@@ -37,7 +37,31 @@ class EmployeeController extends BaseController
 			$response['message'] = $employee['employee_signature'];
 		} else {
 			$response['success'] = false;
-			$response['message'] = 'Your E-Signature has not been set up yet. You will be redirected to My Account set it up now.';
+			$response['message'] = 'Your E-Signature has not been set up yet. You will be redirected to My Account to set it up now.';
+		}
+		return $this->response->setJSON($response);
+	}
+
+	public function setup_signature() {
+		$user = $this->user->find(session()->user_id);
+		$employee = $this->employee->find($user['user_employee_id']);
+		$file = $this->request->getFile('file');
+		if (!empty($file)) {
+			if($file->isValid() && !$file->hasMoved()) {
+				$file_name = $file->getRandomName();
+				$file->move('uploads/signatures', $file_name);
+				$employee_data = [
+					'employee_id' => $employee['employee_id'],
+					'employee_signature' => $file_name
+				];
+				if ($this->employee->save($employee_data)) {
+					$response['success'] = true;
+					$response['message'] = 'File saved';
+				} else {
+					$response['success'] = false;
+					$response['message'] = 'Your E-Signature has not been set up yet. You will be redirected to My Account to set it up now.';
+				}
+			}
 		}
 		return $this->response->setJSON($response);
 	}
