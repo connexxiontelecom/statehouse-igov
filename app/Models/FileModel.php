@@ -93,4 +93,11 @@ class FileModel extends Model
         return $builder->first();
     }
 
+    public function searchFiles($keyword, $user_id){
+        $builder = $this->db->table('file_models');
+        $builder->like('name', $keyword);
+        $builder->where('uploaded_by', $user_id); //public
+        return $builder->get()->getResultArray();
+    }
+
 }
