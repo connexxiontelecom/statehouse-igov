@@ -46,6 +46,9 @@ class FileModel extends Model
 	public function getAllFiles(){
 	    return FileModel::findAll();
     }
+    public function getAllMyFiles($user_id){
+	    return FileModel::where('uploaded_by', $user_id)->findAll();
+    }
 
     public function getFileById($id){
 
@@ -88,6 +91,19 @@ class FileModel extends Model
         $builder = $this->db->table('file_models');
         $builder->where('file_id', $id);
         return $builder->first();
+    }
+
+    public function searchFiles($keyword, $user_id){
+        $builder = $this->db->table('file_models');
+        $builder->like('name', $keyword);
+        $builder->where('uploaded_by', $user_id); //public
+        return $builder->get()->getResultArray();
+    }
+    public function sharedWithMe($user_id){
+        $builder = $this->db->table('file_models as f');
+        $builder->join('shared_files as s','s.file_id = f.file_id' );
+        $builder->where('s.shared_with', $user_id);
+        return $builder->get()->getResultArray();
     }
 
 }

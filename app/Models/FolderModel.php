@@ -14,7 +14,7 @@ class FolderModel extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['created_by', 'parent_id', 'folder', 'location', 'password', 'name', 'permission', 'slug'];
+	protected $allowedFields        = ['created_by', 'parent_id', 'folder', 'location', 'password', 'name', 'permission', 'slug', 'visibility'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -47,12 +47,23 @@ class FolderModel extends Model
 	 */
 
     public function getAllFolders(){
-        return FolderModel::findAll();
+        return FolderModel::findAll(); //public folders
+    }
+    public function getAllMyAndPublicFolders($user_id){
+        return FolderModel::where('visibility',2)->orWhere('created_by', $user_id)->findAll(); //public folders
     }
 
     public function getFolderContentById($id){
         $builder = $this->db->table('folder_models');
         $builder->where('parent_id', $id);
+        return $builder->get()->getResultArray();
+    }
+
+    public function searchFolders($keyword, $user_id){
+        $builder = $this->db->table('folder_models');
+        $builder->like('folder', $keyword);
+        $builder->orWhere('visibility', 2); //public
+        $builder->where('created_by', $user_id); //public
         return $builder->get()->getResultArray();
     }
 }

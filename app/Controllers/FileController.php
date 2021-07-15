@@ -29,12 +29,22 @@ class FileController extends BaseController
     public function index()
 	{
 	    $data = [
-	      'files'=>$this->file->getAllFiles(),
+	      'files'=>$this->file->getAllMyFiles($this->session->user_id),
+            'my_folders'=>$this->folder->getAllMyAndPublicFolders($this->session->user_id),
             'folders'=>$this->folder->getAllFolders(),
             'users'=>$this->user->getAllUsers()
         ];
 	    return view('pages/gdrive/index', $data);
 	}
+
+	public function myFiles(){
+        $data = [
+            'files'=>$this->file->getAllMyFiles($this->session->user_id),
+            'users'=>$this->user->getAllUsers(),
+            'folders'=>$this->folder->getAllFolders()
+        ];
+        return view('pages/gdrive/my-files', $data);
+    }
 
 	public function processAttachmentUploads(){
         if($this->request->getMethod() == 'post') {
@@ -77,6 +87,7 @@ class FileController extends BaseController
               'created_by'=>$this->session->user_id,
                 'parent_id'=>$this->request->getPost('parent_folder'),
                 'folder'=>$this->request->getPost('folder_name'),
+                'visibility'=>$this->request->getPost('visibility'),
                 'slug'=>substr(sha1(time()),32,40)
             ];
             $this->folder->save($data);
@@ -91,7 +102,8 @@ class FileController extends BaseController
             $data = [
                 'files'=>$files,
                 'folders'=>$folders,
-                'folder'=>$id
+                'parent_folder'=>$id,
+                'users'=>$this->user->getAllUsers()
             ];
             //return print_r($data);
             return view('pages/gdrive/view', $data);
@@ -124,27 +136,29 @@ class FileController extends BaseController
         }
     }
 
-    public function shareFileWithMe(){
+    public function sharedFileWithMe(){
         $data = [
-            'files'=>$this->file->getAllFiles(),
-            'users'=>$this->user->getAllUsers()
+            'files'=>$this->file->sharedWithMe($this->session->user_id),
+            'users'=>$this->user->getAllUsers(),
+            'folders'=>$this->folder->getAllFolders()
         ];
+
         return view('pages/gdrive/shared-with-me', $data);
     }
 
-    public function searchFilesAndFolders($search_params) {
-        $notices = $this->notice
-            ->where('n_status', 2)
-            ->groupStart()
-            ->like('n_subject', $search_params)
-            ->orLike('n_body', $search_params)
-            ->groupEnd()
-            ->orderBy('created_at', 'DESC')
-            ->paginate('9');
-        foreach($notices as $key => $notice) {
-            $signed_by = $this->user->find($notice['n_signed_by']);
-            $notices[$key]['signed_by'] = $signed_by;
+    public function searchGDrive() {
+        if($this->request->getMethod() == 'post') {
+            helper(['form', 'url']);
+            $search_params = $this->request->getPost('keyword');
+            $folders = $this->folder->searchFolders($search_params, $this->session->user_id);
+            $files = $this->file->searchFiles($search_params, $this->session->user_id);
+            $data = [
+                'files'=>$files,
+                'users'=>$this->user->getAllUsers(),
+                'folders'=>$folders,
+                'keyword'=>$search_params
+            ];
+            return view('pages/gdrive/search', $data);
         }
-        return $notices;
     }
 }
