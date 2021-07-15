@@ -158,6 +158,37 @@
       }
     })
   })
+  function declineDocument(postID) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This document will not be published. This action is irreversible.',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33"
+    }).then(confirm => {
+      if (confirm.value) {
+        let formData = new FormData()
+        formData.append('p_id', postID)
+        $.ajax({
+          url: '<?=site_url('/decline-post')?>',
+          type: 'post',
+          data: formData,
+          success: response => {
+            if (response.success) {
+              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/memos/requests')?>')
+            } else {
+              Swal.fire('Sorry!', response.message, 'error')
+            }
+          },
+          cache: false,
+          contentType: false,
+          processData: false,
+        })
+      }
+    })
+  }
 
   function signDocument(postID) {
     Swal.fire({
