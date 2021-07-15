@@ -79,7 +79,6 @@
 	</div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?=view('pages/posts/_memo-scripts.php')?>
 
 <!-- third party js -->
 <script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -99,4 +98,6 @@
 
 <!-- Datatables init -->
 <script src="/assets/js/pages/datatables.init.js"></script>
+<?=view('pages/posts/_memo-scripts.php')?>
+
 <?= $this->endSection(); ?>

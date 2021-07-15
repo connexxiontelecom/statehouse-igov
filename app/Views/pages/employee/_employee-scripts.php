@@ -18,8 +18,7 @@
             $('#save-btn').attr('hidden', false)
             $('#save-btn-loading').attr('hidden', true)
             if (response.success) {
-              Swal.fire('Confirmed!', response.message, 'success')
-                //.then(() => location.href = '<?//=site_url('/my-account')?>//')
+              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/my-account')?>')
             } else {
               Swal.fire('Sorry!', response.message, 'error')
             }
@@ -29,6 +28,28 @@
           processData: false
         })
       }
+    })
+
+    $('form#verify-signature-form').submit(e => {
+      e.preventDefault()
+      let verCode = $('#ver-code').val()
+      let formData = new FormData()
+      formData.append('ver_code', verCode)
+      $.ajax({
+        url: '<?=site_url('/verify-signature')?>',
+        type: 'post',
+        data: formData,
+        success: response => {
+          if (response.success) {
+            Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/my-account')?>')
+          } else {
+            Swal.fire('Sorry!', response.message, 'error')
+          }
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+      })
     })
   })
 </script>
