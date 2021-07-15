@@ -44,7 +44,7 @@
             <div class="auth-logo" style="margin: 0 auto">
               <div class="logo logo-dark">
                 <span class="logo-lg">
-                  <img class="float-right" src="/uploads/organization/<?=$memo['organization']['org_logo'] ?>" height="100">
+                  <img src="/uploads/organization/<?=$memo['organization']['org_logo'] ?>" height="100">
                 </span>
               </div>
             </div>
@@ -99,30 +99,25 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-4">
-              <p class="mt-2 mb-1 text-muted">Created By</p>
-              <h5 class="mt-1 font-size-14">
-		            <?=$memo['written_by']['user_name'] ?>
-              </h5>
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4 text-center">
+              <?php if ($memo['p_status'] == 2 && $memo['p_signature']):?>
+                <p class="mt-2 mb-1 text-muted">Signed By</p>
+                <img src="/uploads/signatures/<?=$memo['p_signature'] ?>" height="80">
+                <h5 class="font-size-14">
+                  <?=$memo['signed_by']['user_name'] ?>
+                </h5>
+              <?php else:?>
+                <p class="mt-2 mb-1 text-muted">This memo is unsigned</p>
+              <?php endif;?>
             </div>
-            <div class="col-lg-4">
-              <p class="mt-2 mb-1 text-muted">Signed By</p>
-              <h5 class="mt-1 font-size-14">
-		            <?=$memo['signed_by']['user_name'] ?>
-              </h5>
-            </div>
-            <div class="col-lg-4">
-              <p class="mt-2 mb-1 text-muted">Date</p>
-	            <?php
-	            $date = date_create($memo['p_date']);
-	            echo date_format($date,"d M Y H:i a");
-	            ?>
-            </div>
+            <div class="col-lg-4"></div>
+
           </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-5">
+    <div class="col-lg-5 d-print-none">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title font-16 mb-3">Attachments</h5>
