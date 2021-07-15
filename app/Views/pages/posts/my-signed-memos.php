@@ -66,7 +66,7 @@
 										<?php endif;?>
 										<?php if($memo['p_signed_by'] == session()->user_id && $memo['p_status'] == 0):?>
                   		<a href="javascript:void(0)" onclick="signDocument(<?=$memo['p_id']?>)" class="mr-1 text-success">Sign</a>
-                  		<a href="javascript:void(0)" class="text-danger">Decline</a>
+                  		<a href="javascript:void(0)" onclick="declineDocument(<?=$memo['p_id']?>)" class="text-danger">Decline</a>
 	              		<?php endif;?>
 									</td>
 								</tr>

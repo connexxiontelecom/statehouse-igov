@@ -34,7 +34,7 @@
 	              <?php endif;?>
                 <?php if($memo['p_signed_by'] == session()->user_id && $memo['p_status'] == 0):?>
                   <button onclick="signDocument(<?=$memo['p_id']?>)" type="button" class="btn btn-success mr-1">Sign</button>
-                  <button type="button" class="btn btn-danger mr-1">Decline</button>
+                  <button onclick="declineDocument(<?=$memo['p_id']?>)" type="button" class="btn btn-danger mr-1">Decline</button>
 	              <?php endif;?>
                 <a href="<?=site_url('/memos')?>" type="button" class="btn btn-success">Go Back</a>
               </div>
@@ -101,12 +101,14 @@
           <div class="row">
             <div class="col-lg-4"></div>
             <div class="col-lg-4 text-center">
+              <p class="mt-2 mb-1 text-muted">Signed By</p>
               <?php if ($memo['p_status'] == 2 && $memo['p_signature']):?>
-                <p class="mt-2 mb-1 text-muted">Signed By</p>
                 <img src="/uploads/signatures/<?=$memo['p_signature'] ?>" height="80">
                 <h5 class="font-size-14">
                   <?=$memo['signed_by']['user_name'] ?>
                 </h5>
+              <?php elseif ($memo['p_status'] == 4):?>
+                <p class="mt-2 mb-1 text-muted">This memo is rejected</p>
               <?php else:?>
                 <p class="mt-2 mb-1 text-muted">This memo is unsigned</p>
               <?php endif;?>
