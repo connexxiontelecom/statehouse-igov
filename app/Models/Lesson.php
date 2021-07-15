@@ -39,4 +39,11 @@ class Lesson extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+    public function getLessonsByTrainingId($id){
+        $builder = $this->db->table('lessons');
+        $builder->where('training_id', $id);
+        $notices = $builder->get()->getResultArray();
+        return $notices;
+    }
 }

@@ -39,4 +39,19 @@ class Training extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+
+	/*
+	 * Use-case methods
+	 */
+    public function getTrainings(){
+        return Training::findAll(); //orderBy('training_id', 'DESC')->get();
+    }
+
+    public function getTrainingBySlug($slug){
+        $builder = $this->db->table('trainings');
+        $builder->where('slug', $slug);
+        $notices = $builder->get()->getResultArray();
+        return $notices;
+    }
 }

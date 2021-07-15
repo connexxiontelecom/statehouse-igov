@@ -315,6 +315,12 @@
 							<span> GDrive </span>
 						</a>
 					</li>
+                    <li>
+						<a href="<?= site_url('trainings') ?>">
+							<i data-feather="book"></i>
+							<span> Trainings </span>
+						</a>
+					</li>
 
 				</ul>
 			

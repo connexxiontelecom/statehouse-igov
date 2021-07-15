@@ -131,4 +131,20 @@ class FileController extends BaseController
         ];
         return view('pages/gdrive/shared-with-me', $data);
     }
+
+    public function searchFilesAndFolders($search_params) {
+        $notices = $this->notice
+            ->where('n_status', 2)
+            ->groupStart()
+            ->like('n_subject', $search_params)
+            ->orLike('n_body', $search_params)
+            ->groupEnd()
+            ->orderBy('created_at', 'DESC')
+            ->paginate('9');
+        foreach($notices as $key => $notice) {
+            $signed_by = $this->user->find($notice['n_signed_by']);
+            $notices[$key]['signed_by'] = $signed_by;
+        }
+        return $notices;
+    }
 }

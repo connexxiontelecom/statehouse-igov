@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class LessonAttachment extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'lessonattachments';
+	protected $table                = 'lesson_attachments';
 	protected $primaryKey           = 'lesson_attachment_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -39,4 +39,15 @@ class LessonAttachment extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+
+	/*
+	 * Use-case methods
+	 */
+    public function getTrainingAttachmentsByTrainingId($id){
+        $builder = $this->db->table('lesson_attachments');
+        $builder->where('lesson_attachment_training_id', $id);
+        $attachments = $builder->get()->getResultArray();
+        return $attachments;
+    }
 }

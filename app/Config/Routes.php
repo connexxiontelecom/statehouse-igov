@@ -93,6 +93,15 @@ $routes->get('share-file-with-me', 'FileController::shareFileWithMe',['filter' =
 
 #Training routes
 $routes->get('/trainings', 'TrainingController::index', ['filter'=>'auth']);
+$routes->get('/add-new-training', 'TrainingController::showAddNewTrainingForm', ['filter'=>'auth']);
+$routes->get('/edit-training/(:any)', 'TrainingController::showEditTrainingForm/$1', ['filter'=>'auth']);
+$routes->post('/add-new-training', 'TrainingController::storeNewTraining', ['filter'=>'auth']);
+$routes->get('/trainings/(:any)', 'TrainingController::viewTraining/$1', ['filter'=>'auth']);
+$routes->post('/update-training', 'TrainingController::updateTraining', ['filter'=>'auth']);
+#Lesson routes
+$routes->post('/add-new-training-lesson', 'TrainingController::addNewTrainingLesson', ['filter'=>'auth']);
+$routes->post('/update-training-lesson', 'TrainingController::updateTrainingLesson', ['filter'=>'auth']);
+$routes->get('/delete-lesson-attachment/(:num)', 'TrainingController::deleteAttachment/$1', ['filter'=>'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
