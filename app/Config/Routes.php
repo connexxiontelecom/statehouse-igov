@@ -80,6 +80,28 @@ $routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::dele
 $routes->match(['get', 'post'], 'external-circular', 'PostController::external_circular', ['filter' => 'auth']);
 $routes->match(['get'], 'my-circulars', 'PostController::my_circulars', ['filter' => 'auth']);
 $routes->match(['get'], 'view-circular/(:num)', 'PostController::view_circular/$1', ['filter' => 'auth']);
+
+
+#GDrive routes
+$routes->get('/g-drive', 'FileController::index',['filter' => 'auth']);
+$routes->post('/process-upload', 'FileController::processAttachmentUploads',['filter' => 'auth']);
+$routes->post('/create-folder', 'FileController::createFolder',['filter' => 'auth']);
+$routes->get('/open-folder/(:num)', 'FileController::openFolder/$1',['filter' => 'auth']);
+$routes->get('/remove-file/(:num)', 'FileController::removeFile/$1',['filter' => 'auth']);
+$routes->post('share-file-with', 'FileController::shareFileWith',['filter' => 'auth']);
+$routes->get('share-file-with-me', 'FileController::shareFileWithMe',['filter' => 'auth']);
+
+#Training routes
+$routes->get('/trainings', 'TrainingController::index', ['filter'=>'auth']);
+$routes->get('/add-new-training', 'TrainingController::showAddNewTrainingForm', ['filter'=>'auth']);
+$routes->get('/edit-training/(:any)', 'TrainingController::showEditTrainingForm/$1', ['filter'=>'auth']);
+$routes->post('/add-new-training', 'TrainingController::storeNewTraining', ['filter'=>'auth']);
+$routes->get('/trainings/(:any)', 'TrainingController::viewTraining/$1', ['filter'=>'auth']);
+$routes->post('/update-training', 'TrainingController::updateTraining', ['filter'=>'auth']);
+#Lesson routes
+$routes->post('/add-new-training-lesson', 'TrainingController::addNewTrainingLesson', ['filter'=>'auth']);
+$routes->post('/update-training-lesson', 'TrainingController::updateTrainingLesson', ['filter'=>'auth']);
+$routes->get('/delete-lesson-attachment/(:num)', 'TrainingController::deleteAttachment/$1', ['filter'=>'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 $routes->match(['post'], 'sign-post', 'PostController::sign_post', ['filter' => 'auth']);

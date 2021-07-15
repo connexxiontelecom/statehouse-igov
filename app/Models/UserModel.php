@@ -57,4 +57,8 @@ class UserModel extends Model
 		return $data;
 	}
 
+	public function getAllUsers(){
+	    return UserModel::findAll();
+    }
+
 }

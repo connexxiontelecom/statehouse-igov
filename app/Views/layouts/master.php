@@ -308,6 +308,20 @@
 							<span> My Account </span>
 						</a>
 					</li>
+					
+					<li>
+						<a href="<?= site_url('g-drive') ?>">
+							<i data-feather="folder-plus"></i>
+							<span> GDrive </span>
+						</a>
+					</li>
+                    <li>
+						<a href="<?= site_url('trainings') ?>">
+							<i data-feather="book"></i>
+							<span> Trainings </span>
+						</a>
+					</li>
+
 				</ul>
 			
 			</div>
