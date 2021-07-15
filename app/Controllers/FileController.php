@@ -136,11 +136,13 @@ class FileController extends BaseController
         }
     }
 
-    public function shareFileWithMe(){
+    public function sharedFileWithMe(){
         $data = [
-            'files'=>$this->file->getAllFiles(),
-            'users'=>$this->user->getAllUsers()
+            'files'=>$this->file->sharedWithMe($this->session->user_id),
+            'users'=>$this->user->getAllUsers(),
+            'folders'=>$this->folder->getAllFolders()
         ];
+
         return view('pages/gdrive/shared-with-me', $data);
     }
 

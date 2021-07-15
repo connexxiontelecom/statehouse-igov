@@ -89,7 +89,7 @@ $routes->post('/create-folder', 'FileController::createFolder',['filter' => 'aut
 $routes->get('/open-folder/(:num)', 'FileController::openFolder/$1',['filter' => 'auth']);
 $routes->get('/remove-file/(:num)', 'FileController::removeFile/$1',['filter' => 'auth']);
 $routes->post('share-file-with', 'FileController::shareFileWith',['filter' => 'auth']);
-$routes->get('share-file-with-me', 'FileController::shareFileWithMe',['filter' => 'auth']);
+$routes->get('shared-with-me', 'FileController::sharedFileWithMe',['filter' => 'auth']);
 $routes->get('/my-files', 'FileController::myFiles',['filter' => 'auth']);
 $routes->post('/search-g-drive', 'FileController::searchGDrive',['filter' => 'auth']);
 

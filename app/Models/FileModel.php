@@ -99,5 +99,11 @@ class FileModel extends Model
         $builder->where('uploaded_by', $user_id); //public
         return $builder->get()->getResultArray();
     }
+    public function sharedWithMe($user_id){
+        $builder = $this->db->table('file_models as f');
+        $builder->join('shared_files as s','s.file_id = f.file_id' );
+        $builder->where('s.shared_with', $user_id);
+        return $builder->get()->getResultArray();
+    }
 
 }

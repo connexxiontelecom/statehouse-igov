@@ -9,10 +9,10 @@
             <div class="page-title-box">
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item active">Shared With Me</li>
+                        <li class="breadcrumb-item active">Shared Files</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Shared With Me</h4>
+                <h4 class="page-title">Shared Files</h4>
             </div>
         </div>
     </div>
@@ -20,24 +20,11 @@
         <div class="col-12">
             <div class="card-box">
                 <?php echo view('pages/gdrive/_sidebar'); ?>
-
                 <div class="inbox-rightbar">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <form class="search-bar">
-                            <div class="position-relative">
-                                <input type="text" class="form-control form-control-light" placeholder="Search files...">
-                                <span class="mdi mdi-magnify"></span>
-                            </div>
-                        </form>
-                        <div>
-                            <button type="submit" class="btn btn-sm btn-white"><i class="mdi mdi-format-list-bulleted"></i></button>
-                            <button type="submit" class="btn btn-sm btn-white"><i class="mdi mdi-view-grid"></i></button>
-                            <button type="submit" class="btn btn-sm btn-white"><i class="mdi mdi-information-outline"></i></button>
-                        </div>
-                    </div>
+                    <?php echo view('pages/gdrive/_search-form') ?>
 
                     <div class="mt-3">
-                        <h5 class="mb-2">Quick Access</h5>
+                        <h5 class="mb-2">Files shared with me</h5>
                         <?php if(session()->has('error')): ?>
                             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -894,5 +881,6 @@
 
 </div> <!-- container -->
 <?php echo view('pages/gdrive/_modals'); ?>
+
 <?= $this->endSection(); ?>
 
