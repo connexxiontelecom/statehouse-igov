@@ -14,7 +14,7 @@ class Post extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['p_id', 'p_ref_no', 'p_subject', 'p_type', 'p_body', 'p_status', 'p_by', 'p_signed_by', 'p_direction', 'p_recipients_id',];
+	protected $allowedFields        = ['p_id', 'p_ref_no', 'p_subject', 'p_type', 'p_body', 'p_status', 'p_by', 'p_signed_by', 'p_direction', 'p_recipients_id', 'p_signature'];
 
 	// Dates
 	protected $useTimestamps        = false;

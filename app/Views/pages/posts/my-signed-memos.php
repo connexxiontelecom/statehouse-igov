@@ -11,10 +11,10 @@
 							<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
 							<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
 							<li class="breadcrumb-item"><a href="<?=site_url('memos')?>">Memo Board</a></li>
-							<li class="breadcrumb-item active">My Signed Memos</li>
+							<li class="breadcrumb-item active">Signature Requests</li>
 						</ol>
 					</div>
-					<h4 class="page-title">My Signed Memos</h4>
+					<h4 class="page-title">Signature Requests</h4>
 				</div>
 			</div>
 		</div>
@@ -25,9 +25,9 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-lg-8">
-								<h4 class="header-title">All My Signed Memos</h4>
+								<h4 class="header-title">All My Signature Requests</h4>
                 <p class="text-muted font-13">
-                 	Below are the memos you have been assigned as signatory. You can review and sign them with your e-signature here.
+                 	Below are the memos you have been assigned as signatory. You can review, sign them with your e-signature, or decline them here.
                 </p>
 							</div>
 							<div class="col-lg-4">
@@ -65,7 +65,8 @@
 											<a href="<?=site_url('/edit-memo/').$memo['p_id']?>">Edit</a>
 										<?php endif;?>
 										<?php if($memo['p_signed_by'] == session()->user_id && $memo['p_status'] == 0):?>
-                  		<a href="javascript:void(0)" onclick="signDocument()">Sign</a>
+                  		<a href="javascript:void(0)" onclick="signDocument(<?=$memo['p_id']?>)" class="mr-1 text-success">Sign</a>
+                  		<a href="javascript:void(0)" class="text-danger">Decline</a>
 	              		<?php endif;?>
 									</td>
 								</tr>
