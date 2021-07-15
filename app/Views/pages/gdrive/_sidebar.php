@@ -8,7 +8,7 @@
     </div>
     <div class="mail-list mt-3">
         <a href="<?= site_url('my-files') ?>" class="list-group-item border-0"><i class="mdi mdi-folder-outline font-18 align-middle mr-2"></i>My Files</a>
-        <a href="#" class="list-group-item border-0"><i class="mdi mdi-share-variant font-18 align-middle mr-2"></i>Shared with me</a>
+        <a href="<?= site_url('shared-with-me') ?>" class="list-group-item border-0"><i class="mdi mdi-share-variant font-18 align-middle mr-2"></i>Shared with me</a>
     </div>
 
 </div>
