@@ -46,7 +46,7 @@
                   <td class="content-block"
                       style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 28px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                       valign="top">
-                    123456
+                    <?=$ver_code?>
                   </td>
                 </tr>
                 </tr><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
