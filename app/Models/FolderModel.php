@@ -59,9 +59,11 @@ class FolderModel extends Model
         return $builder->get()->getResultArray();
     }
 
-    public function searchFolder($keyword){
-        $this->db->like('folder', $keyword);
-        $query = $this->db->get('folder_models');
-        return $query->result();
+    public function searchFolders($keyword, $user_id){
+        $builder = $this->db->table('folder_models');
+        $builder->like('folder', $keyword);
+        $builder->orWhere('visibility', 2); //public
+        $builder->where('created_by', $user_id); //public
+        return $builder->get()->getResultArray();
     }
 }

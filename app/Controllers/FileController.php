@@ -148,23 +148,15 @@ class FileController extends BaseController
         if($this->request->getMethod() == 'post') {
             helper(['form', 'url']);
             $search_params = $this->request->getPost('keyword');
-            $folders = $this->folder->searchFolder($search_params);
-            return print_r($folders);
+            $folders = $this->folder->searchFolders($search_params, $this->session->user_id);
+            $files = $this->file->searchFiles($search_params, $this->session->user_id);
+            $data = [
+                'files'=>$files,
+                'users'=>$this->user->getAllUsers(),
+                'folders'=>$folders,
+                'keyword'=>$search_params
+            ];
+            return view('pages/gdrive/search', $data);
         }
-
-       /* $files = $this->file
-                    ->where('n_status', 2)
-                    ->groupStart()
-                    ->like('n_subject', $search_params)
-                    ->orLike('n_body', $search_params)
-                    ->groupEnd()
-                    ->orderBy('created_at', 'DESC')
-                    ->get();*/
-            //->paginate('9');
-       /* foreach($notices as $key => $notice) {
-            $signed_by = $this->user->find($notice['n_signed_by']);
-            $notices[$key]['signed_by'] = $signed_by;
-        }*/
-       // return $files;
     }
 }
