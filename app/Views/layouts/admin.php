@@ -657,13 +657,13 @@
 							<span> Projects </span>
 						</a>
 					</li>
-					
-					<li>
-						<a href="apps-file-manager.html">
-							<i data-feather="folder-plus"></i>
-							<span> File Manager </span>
-						</a>
-					</li>
+
+                    <li>
+                        <a href="<?= site_url('g-drive') ?>">
+                            <i data-feather="folder-plus"></i>
+                            <span> GDrive </span>
+                        </a>
+                    </li>
 					
 					
 				</ul>
