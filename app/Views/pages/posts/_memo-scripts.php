@@ -158,4 +158,50 @@
       }
     })
   })
+
+  function signDocument(postID) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This will publish the document with you as the signatory. This action is irreversible.',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33"
+    }).then(confirm => {
+      if (confirm.value) {
+        $.ajax({
+          url: '<?=site_url('/check-signature-exists')?>',
+          type: 'get',
+          success: response => {
+            if (response.success) {
+              let formData = new FormData()
+              formData.append('p_id', postID)
+              formData.append('p_signature', response.message)
+              $.ajax({
+                url: '<?=site_url('/sign-post')?>',
+                type: 'post',
+                data: formData,
+                success: response => {
+                  if (response.success) {
+                    Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/memos/requests')?>')
+                  } else {
+                    Swal.fire('Sorry!', response.message, 'error')
+                  }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+              })
+            } else {
+              Swal.fire('Sorry!', response.message, 'error').then(() => location.href = '<?=site_url('/my-account')?>')
+            }
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        })
+      }
+    })
+  }
 </script>

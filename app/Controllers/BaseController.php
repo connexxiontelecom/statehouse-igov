@@ -38,6 +38,7 @@ class BaseController extends ResourceController
 	 * @var array
 	 */
 	protected $helpers = [];
+	protected $email;
 
 	/**
 	 * Constructor.
@@ -63,5 +64,11 @@ class BaseController extends ResourceController
 		helper('text');
 	}
 	
-	
+	protected function send_mail($to, $subject, $message, $from) {
+		$this->email->setTo($to);
+		$this->email->setFrom($from['email'], $from['name']);
+		$this->email->setSubject($subject);
+		$this->email->setMessage($message);
+		return $this->email->send();
+	}
 }

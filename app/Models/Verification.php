@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Post extends Model
+class Verification extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'posts';
-	protected $primaryKey           = 'p_id';
+	protected $table                = 'verifications';
+	protected $primaryKey           = 'ver_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['p_id', 'p_ref_no', 'p_subject', 'p_type', 'p_body', 'p_status', 'p_by', 'p_signed_by', 'p_direction', 'p_recipients_id', 'p_signature'];
+	protected $allowedFields        = ['ver_id', 'ver_user_id', 'ver_type', 'ver_code', 'ver_status'];
 
 	// Dates
 	protected $useTimestamps        = false;
