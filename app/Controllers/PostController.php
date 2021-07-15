@@ -253,8 +253,6 @@ class PostController extends BaseController
 		
 		return view('/pages/posts/my-circulars', $data);
 	}
-	
-
 
 	public function memos($type = null) {
 		$search_params = @$_GET['search_params'];
@@ -452,6 +450,32 @@ class PostController extends BaseController
 		} else {
 			$response['success'] = false;
 			$response['message'] = 'An error occurred while signing this document';
+		}
+		return $this->response->setJSON($response);
+	}
+
+	public function decline_post() {
+		$post_request_data = $this->request->getPost();
+		$post = $this->post->find($post_request_data['p_id']);
+		if ($post['p_signed_by'] != session()->user_id) {
+			$response['success'] = false;
+			$response['message'] = 'You have not been assigned to sign this document.';
+			return $this->response->setJSON($response);
+		} else if ($post['p_status'] != 0) {
+			$response['success'] = false;
+			$response['message'] = 'This document has been processed. No further actions can be taken at this time.';
+			return $this->response->setJSON($response);
+		}
+		$post_data = [
+			'p_id' => $post_request_data['p_id'],
+			'p_status' => 4,
+		];
+		if ($this->post->save($post_data)) {
+			$response['success'] = true;
+			$response['message'] = 'The document was successfully declined';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'An error occurred while declining this document';
 		}
 		return $this->response->setJSON($response);
 	}

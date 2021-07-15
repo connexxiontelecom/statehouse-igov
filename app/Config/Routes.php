@@ -105,6 +105,7 @@ $routes->get('/delete-lesson-attachment/(:num)', 'TrainingController::deleteAtta
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 $routes->match(['post'], 'sign-post', 'PostController::sign_post', ['filter' => 'auth']);
+$routes->match(['post'], 'decline-post', 'PostController::decline_post', ['filter' => 'auth']);
 
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
 $routes->match(['get'], 'check-signature-exists', 'EmployeeController::check_signature_exists', ['filter' => 'auth']);
