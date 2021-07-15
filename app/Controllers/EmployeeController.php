@@ -35,9 +35,18 @@ class EmployeeController extends BaseController
 		$user = $this->user->find(session()->user_id);
 		$employee = $this->employee->find($user['user_employee_id']);
 		if ($employee['employee_signature']) {
-
-			$response['success'] = true;
-			$response['message'] = $employee['employee_signature'];
+			$verified = $this->verification->where([
+				'ver_user_id' => session()->user_id,
+				'ver_type' => 'e-signature',
+				'ver_status' => 1
+			])->first();
+			if ($verified) {
+				$response['success'] = true;
+				$response['message'] = $employee['employee_signature'];
+			} else {
+				$response['success'] = false;
+				$response['message'] = 'Your E-Signature has been set up but is not verified yet. You will be redirected to My Account to set it up now.';
+			}
 		} else {
 			$response['success'] = false;
 			$response['message'] = 'Your E-Signature has not been set up yet. You will be redirected to My Account to set it up now.';

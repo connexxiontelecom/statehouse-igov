@@ -44,7 +44,7 @@
                 </div>
               </div>
               <a href="<?=site_url('/my-memos')?>" type="button" class="btn btn-success waves-effect waves-light mr-1">My Memos</a>
-              <a href="<?=site_url('/memos/signed')?>" type="button" class="btn btn-danger waves-effect waves-light">My Signed Memos</a>
+              <a href="<?=site_url('/memos/requests')?>" type="button" class="btn btn-danger waves-effect waves-light">Signature Requests</a>
 
             </div>
           </div><!-- end col-->
@@ -135,9 +135,9 @@
             <div class="modal-body p-4">
                 <div class="text-center">
                     <i class="dripicons-warning h1 text-danger"></i>
-                    <h4 class="mt-2">Pending Memos</h4>
-                    <p class="mt-3">There are memos still awaiting your signature. Please click on continue below to attend to these pending memos.</p>
-                    <a href="<?=site_url('/memos/signed')?>" type="button" class="btn btn-danger my-2">Continue</a>
+                    <h4 class="mt-2">Pending Signature Requests</h4>
+                    <p class="mt-3">There are memos still awaiting your signature. Please click on continue below to attend to these pending requests.</p>
+                    <a href="<?=site_url('/memos/requests')?>" type="button" class="btn btn-danger my-2">Continue</a>
                 </div>
             </div>
         </div><!-- /.modal-content -->

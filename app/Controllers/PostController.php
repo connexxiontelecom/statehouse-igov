@@ -268,7 +268,7 @@ class PostController extends BaseController
 		if (empty($search_params)) {
 			$unsigned_memos = $this->_get_unsigned_memos();
 			if ($unsigned_memos) session()->setFlashdata('unsigned_memos', true);
-			if ($type === 'signed') {
+			if ($type === 'requests') {
 				$data['memos'] = $unsigned_memos;
 				return view('/pages/posts/my-signed-memos', $data);
 			}
@@ -425,6 +425,33 @@ class PostController extends BaseController
 		} else {
 			$response['success'] = false;
 			$response['message'] = 'There was an error while editing the memo';
+		}
+		return $this->response->setJSON($response);
+	}
+
+	public function sign_post() {
+		$post_request_data = $this->request->getPost();
+		$post = $this->post->find($post_request_data['p_id']);
+		if ($post['p_signed_by'] != session()->user_id) {
+			$response['success'] = false;
+			$response['message'] = 'You have not been assigned to sign this document.';
+			return $this->response->setJSON($response);
+		} else if ($post['p_status'] != 0) {
+			$response['success'] = false;
+			$response['message'] = 'This document has been processed. No further actions can be taken at this time.';
+			return $this->response->setJSON($response);
+		}
+		$post_data = [
+			'p_id' => $post_request_data['p_id'],
+			'p_status' => 2,
+			'p_signature' => $post_request_data['p_signature']
+		];
+		if ($this->post->save($post_data)) {
+			$response['success'] = true;
+			$response['message'] = 'The document was signed successfully';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'An error occurred while signing this document';
 		}
 		return $this->response->setJSON($response);
 	}
