@@ -47,12 +47,21 @@ class FolderModel extends Model
 	 */
 
     public function getAllFolders(){
-        return FolderModel::where('')->findAll();
+        return FolderModel::findAll(); //public folders
+    }
+    public function getAllMyAndPublicFolders($user_id){
+        return FolderModel::where('visibility',2)->orWhere('created_by', $user_id)->findAll(); //public folders
     }
 
     public function getFolderContentById($id){
         $builder = $this->db->table('folder_models');
         $builder->where('parent_id', $id);
         return $builder->get()->getResultArray();
+    }
+
+    public function searchFolder($keyword){
+        $this->db->like('folder', $keyword);
+        $query = $this->db->get('folder_models');
+        return $query->result();
     }
 }

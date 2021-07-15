@@ -12,7 +12,7 @@ class FolderModelUpdate extends Migration
             'visibility' => [
                 'type' => 'INT',
                 'null'=>true,
-                'default'=>0,
+                'default'=>2,
                 'comment'=>'1=private,2=public'
             ]
         ];

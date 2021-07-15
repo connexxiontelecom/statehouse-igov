@@ -19,21 +19,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card-box">
-                <div class="inbox-leftbar">
-                    <div class="btn-group d-block mb-2">
-                        <button type="button" class="btn btn-success btn-block waves-effect waves-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-plus"></i> Create New</button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void(0);" data-target="#folderModal" data-toggle="modal"><i class="mdi mdi-folder-plus-outline mr-1"></i> Folder</a>
-                            <a class="dropdown-item" href="javascript:void(0);" data-target="#fileUploadModal" data-toggle="modal"><i class="mdi mdi-file-plus-outline mr-1"></i> File</a>
-                        </div>
-                    </div>
-                    <div class="mail-list mt-3">
-                        <a href="#" class="list-group-item border-0"><i class="mdi mdi-folder-outline font-18 align-middle mr-2"></i>My Files</a>
-                        <a href="#" class="list-group-item border-0"><i class="mdi mdi-share-variant font-18 align-middle mr-2"></i>Share with me</a>
-                    </div>
-
-                </div>
-                <!-- End Left sidebar -->
+                <?php echo view('pages/gdrive/_sidebar'); ?>
 
                 <div class="inbox-rightbar">
                     <div class="d-flex justify-content-between align-items-center">
@@ -71,7 +57,7 @@
                         <?php endif; ?>
                         <div class="row mx-n1 no-gutters">
                             <?php foreach($folders as $fold1): ?>
-                                <?php if($fold1['parent_id'] == 0) : ?>
+                                <?php if($fold1['parent_id'] == $parent_folder) : ?>
                                     <div class="col-xl-3 col-lg-6">
                                         <div class="card m-1 shadow-none border">
                                             <div class="p-2">
@@ -94,7 +80,7 @@
                             <?php endforeach; ?>
 
                             <?php foreach($files as $file): ?>
-                                <?php if($file['folder_id'] == 0) :?>
+                                <?php if($file['folder_id'] == $parent_folder) :?>
                                     <?php if(pathinfo($file['file_name'], PATHINFO_EXTENSION) == 'pdf'): ?>
                                         <div class="col-xl-3 col-lg-6">
                                             <div class="card m-1 shadow-none border">
@@ -930,75 +916,6 @@
     </div><!-- End row -->
 
 </div> <!-- container -->
-
-<div id="fileUploadModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <h4>Upload Attachment</h4>
-                <form method="post" action="<?= site_url('/process-upload') ?>" enctype="multipart/form-data" autocomplete="off">
-                    <?= csrf_field() ?>
-                    <div class="form-group">
-                        <label for="">File Name</label>
-                        <input type="text" placeholder="File Name" name="filename" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Attachment</label>
-                        <input type="file" name="attachments" multiple class="form-control-file">
-                        <input type="hidden" name="folder" value="<?= $folder ?>">
-                    </div>
-                    <hr>
-                    <div class="form-group d-flex justify-content-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-secondary btn-sm">Cancel</button>
-                            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-<div id="folderModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <h4>Create New Folder</h4>
-                <form method="post" action="<?= site_url('/create-folder') ?>" enctype="multipart/form-data" autocomplete="off">
-                    <?= csrf_field() ?>
-                    <div class="form-group">
-                        <label for="">Folder Name</label>
-                        <input type="text" placeholder="Folder Name" name="folder_name" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Parent Folder</label>
-                        <select name="parent_folder" id="parent_folder" class="form-control">
-                            <option value="0" selected>Default</option>
-                            <?php foreach($folders as $folder): ?>
-                                <option value="<?= $folder['folder_id'] ?>" <?php if($folder['folder_id'] == $folder): ?> 'selected' <?php endif; ?> ><?= $folder['folder'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Visibility</label>
-                        <select name="visibility" id="visibility" class="form-control">
-                            <option value="1">Private</option>
-                            <option value="2">Public</option>
-                        </select>
-                    </div>
-                    <hr>
-                    <div class="form-group d-flex justify-content-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-secondary btn-sm">Cancel</button>
-                            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
+<?php echo view('pages/gdrive/_modals'); ?>
 <?= $this->endSection(); ?>
 

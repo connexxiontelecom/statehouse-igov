@@ -46,6 +46,9 @@ class FileModel extends Model
 	public function getAllFiles(){
 	    return FileModel::findAll();
     }
+    public function getAllMyFiles($user_id){
+	    return FileModel::where('uploaded_by', $user_id)->findAll();
+    }
 
     public function getFileById($id){
 
