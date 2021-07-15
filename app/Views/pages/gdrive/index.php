@@ -37,7 +37,7 @@
 
                 <div class="inbox-rightbar">
                     <div class="d-flex justify-content-between align-items-center">
-                        <form class="search-bar">
+                        <form class="search-bar col-md-8">
                             <div class="position-relative">
                                 <input type="text" class="form-control form-control-light" placeholder="Search files...">
                                 <span class="mdi mdi-magnify"></span>

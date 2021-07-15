@@ -14,7 +14,7 @@ class FolderModel extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['created_by', 'parent_id', 'folder', 'location', 'password', 'name', 'permission', 'slug'];
+	protected $allowedFields        = ['created_by', 'parent_id', 'folder', 'location', 'password', 'name', 'permission', 'slug', 'visibility'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -47,7 +47,7 @@ class FolderModel extends Model
 	 */
 
     public function getAllFolders(){
-        return FolderModel::findAll();
+        return FolderModel::where('')->findAll();
     }
 
     public function getFolderContentById($id){
