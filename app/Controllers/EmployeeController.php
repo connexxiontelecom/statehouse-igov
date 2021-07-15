@@ -45,7 +45,7 @@ class EmployeeController extends BaseController
 				$response['message'] = $employee['employee_signature'];
 			} else {
 				$response['success'] = false;
-				$response['message'] = 'Your E-Signature has been set up but is not verified yet. You will be redirected to My Account to set it up now.';
+				$response['message'] = 'Your E-Signature has been set up but is not verified yet. You will be redirected to My Account to verify it now.';
 			}
 		} else {
 			$response['success'] = false;
@@ -68,7 +68,7 @@ class EmployeeController extends BaseController
 					'employee_signature' => $file_name
 				];
 				if ($this->employee->save($employee_data)) {
-					$to = 'oamanambu@yahoo.com';
+					$to = $employee['employee_mail'];
 					$subject = 'Verify E-Signature';
 					$data['subject'] = $subject;
 					$data['user'] = $user['user_name'];
