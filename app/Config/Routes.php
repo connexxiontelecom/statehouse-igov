@@ -104,6 +104,11 @@ $routes->post('/update-training', 'TrainingController::updateTraining', ['filter
 $routes->post('/add-new-training-lesson', 'TrainingController::addNewTrainingLesson', ['filter'=>'auth']);
 $routes->post('/update-training-lesson', 'TrainingController::updateTrainingLesson', ['filter'=>'auth']);
 $routes->get('/delete-lesson-attachment/(:num)', 'TrainingController::deleteAttachment/$1', ['filter'=>'auth']);
+
+#Workflow routes
+$routes->get('/workflow/settings', 'WorkflowController::settings', ['filter'=>'auth']);
+$routes->post('/workflow/add-new-workflow-type', 'WorkflowController::storeNewWorkflowType', ['filter'=>'auth']);
+$routes->post('/workflow/update-workflow-type', 'WorkflowController::updateWorkflowType', ['filter'=>'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 $routes->match(['post'], 'sign-post', 'PostController::sign_post', ['filter' => 'auth']);
