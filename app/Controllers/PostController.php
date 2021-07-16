@@ -448,7 +448,6 @@ class PostController extends BaseController
 			$response['success'] = true;
 			$response['message'] = 'A document signing verification code has been sent to your email.';
 		} else {
-			print_r($this->email->print_debugger());
 			$response['success'] = false;
 			$response['message'] = 'An error occurred while sending your document signing verification code';
 		}

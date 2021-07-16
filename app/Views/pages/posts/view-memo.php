@@ -182,34 +182,36 @@
   <div id="standard-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <form id="verify-signature-form" class="needs-validation" novalidate>
+        <form id="verify-doc-signing-form" class="needs-validation" novalidate>
           <div class="modal-header">
-            <h4 class="modal-title" id="standard-modalLabel">Verify E-Signature</h4>
+            <h4 class="modal-title" id="standard-modalLabel">Verify Document Signing</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
           </div>
           <div class="modal-body">
             <div class="row">
               <div class="col-12">
                 <div class="form-group">
-                  <label for="ver-code">E-Signature Verification Code</label>
+                  <label for="ver-code">Document Signing Verification Code</label>
                   <input type="text" class="form-control" name="ver_code" id="ver-code" required/>
                   <div class="invalid-feedback">
-                    Please enter an e-signature verification code.
+                    Please enter a document signing verification code.
                   </div>
                   <span class="help-block">
-                    <small>You can also generate a new verification code <a href="javascript:void(0)">here</a>.</small>
-                  </span>
+                      <small>Please enter the verification code that was sent to you to sign this document.</small>
+                    </span>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" id="save-btn">Submit</button>
+            <button type="button" onclick="verifyDocumentSigning()" class="btn btn-primary" id="save-btn">Submit</button>
             <button type="submit" class="btn btn-primary" id="save-btn-loading" hidden disabled>
               <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
             </button>
           </div>
+          <input type="hidden" id="post-id">
+          <input type="hidden" id="e-signature">
         </form>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
