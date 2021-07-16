@@ -157,7 +157,45 @@
         })
       }
     })
+
+    $('form#verify-doc-signing-form').submit(e => {
+      e.preventDefault()
+      alert('works')
+      let verCode = $('#ver-code').val()
+      if (!verCode) {
+        Swal.fire('Invalid Submission!', 'Please fill enter the verification code', 'error')
+      }
+    })
   })
+
+  function verifyDocumentSigning() {
+    let verCode = $('#ver-code').val()
+    if (!verCode) {
+      Swal.fire('Invalid Submission!', 'Please fill enter the verification code', 'error')
+    } else {
+      let formData = new FormData()
+      let postID = $('#post-id').val()
+      let eSignature = $('#e-signature').val()
+      formData.append('p_id', postID)
+      formData.append('p_signature', eSignature)
+      $.ajax({
+        url: '<?=site_url('/sign-post')?>',
+        type: 'post',
+        data: formData,
+        success: response => {
+          if (response.success) {
+            Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/memos/requests')?>')
+          } else {
+            Swal.fire('Sorry!', response.message, 'error')
+          }
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+      })
+    }
+  }
+
   function declineDocument(postID) {
     Swal.fire({
       title: 'Are you sure?',
@@ -170,6 +208,7 @@
     }).then(confirm => {
       if (confirm.value) {
         let formData = new FormData()
+
         formData.append('p_id', postID)
         $.ajax({
           url: '<?=site_url('/decline-post')?>',
@@ -198,26 +237,36 @@
       showCancelButton: true,
       confirmButtonText: 'Confirm',
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33"
+      cancelButtonColor: "#d33",
     }).then(confirm => {
       if (confirm.value) {
+        jQuery.noConflict()
+        $('#loading-modal').modal('toggle');
         $.ajax({
           url: '<?=site_url('/check-signature-exists')?>',
           type: 'get',
           success: response => {
             if (response.success) {
+              $('#post-id').val(postID)
+              $('#e-signature').val(response.message)
               let formData = new FormData()
               formData.append('p_id', postID)
-              formData.append('p_signature', response.message)
               $.ajax({
-                url: '<?=site_url('/sign-post')?>',
+                url: '<?=site_url('/send-doc-signing-verification')?>',
                 type: 'post',
                 data: formData,
                 success: response => {
                   if (response.success) {
-                    Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/memos/requests')?>')
+                    Swal.fire('Confirmed!', response.message, 'success').then(() => {
+                      jQuery.noConflict()
+                      $('#loading-modal').modal('hide');
+                      $('#standard-modal-3').modal('show');
+                    })
                   } else {
-                    Swal.fire('Sorry!', response.message, 'error')
+                    Swal.fire('Sorry!', response.message, 'error').then(() => {
+                      jQuery.noConflict()
+                      $('#loading-modal').modal('hide');
+                    })
                   }
                 },
                 cache: false,

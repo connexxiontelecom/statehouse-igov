@@ -73,7 +73,7 @@ class EmployeeController extends BaseController
 					$data['subject'] = $subject;
 					$data['user'] = $user['user_name'];
 					$data['organization'] = $organization['org_name'];
-					$data['ver_code'] = $this->_get_verification_code();
+					$data['ver_code'] = $this->_get_verification_code('e-signature');
 					$message = view('email/signature-otp', $data);
 					$from['name'] = 'IGOV by Connexxion Telecom';
 					$from['email'] = 'support@connexxiontelecom.com';
@@ -130,22 +130,5 @@ class EmployeeController extends BaseController
 		return $user;
 	}
 
-	private function _get_verification_code() {
-		$ver_code = bin2hex(random_bytes(4));
-		$verification_data = [
-			'ver_user_id' => session()->user_id,
-			'ver_type' => 'e-signature',
-			'ver_code' => $ver_code,
-			'ver_status' => 0,
-		];
-		$verification = $this->verification->where([
-			'ver_user_id' => session()->user_id,
-			'ver_type' => 'e-signature'
-		])->first();
-		if ($verification) {
-			$verification_data['ver_id'] = $verification['ver_id'];
-		}
-		$this->verification->save($verification_data);
-		return $ver_code;
-	}
+
 }

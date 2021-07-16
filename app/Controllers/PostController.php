@@ -427,6 +427,33 @@ class PostController extends BaseController
 		return $this->response->setJSON($response);
 	}
 
+	public function send_doc_signing_verification() {
+		$post_data = $this->request->getPost();
+		$post_id = $post_data['p_id'];
+		$post = $this->post->find($post_id);
+		$user = $this->user->find(session()->user_id);
+		$employee = $this->employee->find($user['user_employee_id']);
+		$organization = $this->organization->first();
+		$to = $employee['employee_mail'];
+		$subject = 'Verify Document Signing';
+		$data['subject'] = $subject;
+		$data['user'] = $user['user_name'];
+		$data['organization'] = $organization['org_name'];
+		$data['ver_code'] = $this->_get_verification_code('doc_signing');
+		$data['post'] = $post;
+		$message = view('email/doc-signing-otp', $data);
+		$from['name'] = 'IGOV by Connexxion Telecom';
+		$from['email'] = 'support@connexxiontelecom.com';
+		if ($this->send_mail($to, $subject, $message, $from)) {
+			$response['success'] = true;
+			$response['message'] = 'A document signing verification code has been sent to your email.';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'An error occurred while sending your document signing verification code';
+		}
+		return $this->response->setJSON($response);
+	}
+
 	public function sign_post() {
 		$post_request_data = $this->request->getPost();
 		$post = $this->post->find($post_request_data['p_id']);
