@@ -114,7 +114,6 @@
               <?php endif;?>
             </div>
             <div class="col-lg-4"></div>
-
           </div>
         </div>
       </div>
@@ -179,7 +178,7 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-  <div id="standard-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+  <div id="standard-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true"gt>
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <form id="verify-doc-signing-form" class="needs-validation" novalidate>
