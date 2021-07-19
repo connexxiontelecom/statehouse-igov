@@ -153,6 +153,6 @@
 
 <!-- Datatables init -->
 <script src="/assets/js/pages/datatables.init.js"></script>
-<?=view('pages/posts/_memo-scripts.php')?>
+<?=view('pages/posts/memos/_memo-scripts.php')?>
 
 <?= $this->endSection(); ?>

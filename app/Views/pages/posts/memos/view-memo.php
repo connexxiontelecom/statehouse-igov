@@ -10,7 +10,7 @@
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
 						<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
-						<li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">All Memos</a></li>
+						<li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">Memo Board</a></li>
 						<li class="breadcrumb-item active">View Memo</li>
 					</ol>
 				</div>
@@ -114,7 +114,6 @@
               <?php endif;?>
             </div>
             <div class="col-lg-4"></div>
-
           </div>
         </div>
       </div>
@@ -179,7 +178,7 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-  <div id="standard-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+  <div id="standard-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true"gt>
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <form id="verify-doc-signing-form" class="needs-validation" novalidate>
@@ -219,6 +218,6 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?=view('pages/posts/_memo-scripts.php')?>
+<?=view('pages/posts/memos/_memo-scripts.php')?>
 <?= $this->endSection(); ?>
 

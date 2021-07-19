@@ -162,7 +162,7 @@
 
 
 
-<?=view('pages/posts/_circular-scripts.php')?>
+<?=view('pages/posts/circulars/_circular-scripts.php')?>
 
 <script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
 <script src="/assets/libs/dropify/js/dropify.min.js"></script>
