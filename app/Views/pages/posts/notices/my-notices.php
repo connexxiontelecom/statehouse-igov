@@ -52,26 +52,26 @@
               <?php $i=1; foreach ($notices as $notice):?>
                 <tr>
                   <td><?=$i; $i++;?></td>
-                  <td><?=$notice['n_subject']?></td>
+                  <td><?=$notice['p_subject']?></td>
                   <td><?=$notice['signed_by']['user_name']?></td>
                   <td>
                     <?php
-                    if ($notice['n_status'] == 0) echo 'Pending';
-                    elseif ($notice['n_status'] == 1) echo 'Confirmed';
-                    elseif ($notice['n_status'] == 2) echo 'Activated';
-                    elseif ($notice['n_status'] == 3) echo 'Deactivated';
-                    elseif ($notice['n_status'] == 4) echo 'Rejected';
+                    if ($notice['p_status'] == 0) echo 'Pending';
+                    elseif ($notice['p_status'] == 1) echo 'Confirmed';
+                    elseif ($notice['p_status'] == 2) echo 'Activated';
+                    elseif ($notice['p_status'] == 3) echo 'Deactivated';
+                    elseif ($notice['p_status'] == 4) echo 'Rejected';
                     ?>
                   </td>
                   <td>
-                    <?php $date = date_create($notice['created_at']);
+                    <?php $date = date_create($notice['p_date']);
                       echo date_format($date,"d M Y H:i a");
                     ?>
                   </td>
                   <td class="text-center">
-                    <a href="<?=site_url('view-notice/').$notice['n_id']?>" class="mr-2">View</a>
-                    <?php if($notice['n_status'] == 0):?>
-                      <a href="<?=site_url('edit-notice/').$notice['n_id']?>">Edit</a>
+                    <a href="<?=site_url('view-notice/').$notice['p_id']?>" class="mr-2">View</a>
+                    <?php if($notice['p_status'] == 0):?>
+                      <a href="<?=site_url('edit-notice/').$notice['p_id']?>">Edit</a>
                     <?php endif;?>
                   </td>
                 </tr>

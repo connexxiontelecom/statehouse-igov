@@ -126,7 +126,7 @@ class NoticeController extends PostController
 			->orderBy('p_date', 'DESC')
 			->findAll();
 		foreach($notices as $key => $notice) {
-			$signed_by = $this->user->find($notice['n_signed_by']);
+			$signed_by = $this->user->find($notice['p_signed_by']);
 			$notices[$key]['signed_by'] = $signed_by;
 		}
 		return $notices;
