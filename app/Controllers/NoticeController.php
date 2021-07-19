@@ -2,35 +2,26 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
-use App\Models\Notice;
-use App\Models\UserModel;
 
-class NoticeController extends BaseController
+class NoticeController extends PostController
 {
-	public function __construct()
-	{
-		if (session()->get('type') == 1):
-			echo view('auth/access_denied');
-			exit;
-		endif;
-		$this->notice = new Notice();
-		$this->user = new UserModel();
-	}
-
-	public function index() {
+	public function index($type = null) {
 		$search_params = @$_GET['search_params'];
-		if (empty($search_params)) {
-			$data['notices'] = $this->_get_notices();
-		} else {
-			if (!empty($search_params)) {
-				$data['notices'] = $this->_get_searched_notices($search_params);
-			}
-		}
-		$data['pager'] = $this->notice->pager;
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
-		return view('/pages/notice/index', $data);
+		if (empty($search_params)) {
+			$unsigned_notices = $this->_get_unsigned_notices();
+			if ($unsigned_notices) session()->setFlashdata('unsigned_notices', true);
+			if ($type === 'requests') {
+				$data['notices'] = $unsigned_notices;
+				return view('/pages/posts/notices/signature-requests', $data);
+			}
+			$data['notices'] = $this->_get_notices();
+		} else {
+			$data['notices'] = $this->_get_searched_notices($search_params);
+		}
+		$data['pager'] = $this->post->pager;
+		return view('/pages/posts/notices/index', $data);
 	}
 
 	public function user_notices() {
@@ -114,12 +105,15 @@ class NoticeController extends BaseController
 		return $notice;
 	}
 	private function _get_notices() {
-		$notices = $this->notice
-			->where('n_status', 2)
-			->orderBy('created_at', 'DESC')
-			->paginate('9');
+		$notices = $this->post
+			->where('p_status', 2)
+			->where('p_type', 3)
+			->orderBy('p_date', 'DESC')
+			->paginate(9);
 		foreach($notices as $key => $notice) {
-			$signed_by = $this->user->find($notice['n_signed_by']);
+			$written_by = $this->user->find($notice['p_by']);
+			$signed_by = $this->user->find($notice['p_signed_by']);
+			$notices[$key]['written_by'] = $written_by;
 			$notices[$key]['signed_by'] = $signed_by;
 		}
 		return $notices;
@@ -139,15 +133,31 @@ class NoticeController extends BaseController
 
 	private function _get_searched_notices($search_params) {
 		$notices = $this->notice
-			->where('n_status', 2)
-			->groupStart()
-				->like('n_subject', $search_params)
-				->orLike('n_body', $search_params)
-			->groupEnd()
-			->orderBy('created_at', 'DESC')
-			->paginate('9');
+			->where('p_status', 2)
+			->where('p_type', 3)
+			->like('p_subject', $search_params)
+			->orderBy('p_date', 'DESC')
+			->paginate(9);
 		foreach($notices as $key => $notice) {
-			$signed_by = $this->user->find($notice['n_signed_by']);
+			$written_by = $this->user->find($notice['p_by']);
+			$signed_by = $this->user->find($notice['p_signed_by']);
+			$notices[$key]['written_by'] = $written_by;
+			$notices[$key]['signed_by'] = $signed_by;
+		}
+		return $notices;
+	}
+
+	private function _get_unsigned_notices() {
+		$notices = $this->post
+			->where('p_signed_by', $this->session->user_id)
+			->where('p_type', 3)
+			->where('p_status', 0)
+			->orderBy('p_date', 'DESC')
+			->findAll();
+		foreach($notices as $key => $notice) {
+			$written_by = $this->user->find($notice['p_by']);
+			$signed_by = $this->user->find($notice['p_signed_by']);
+			$notices[$key]['written_by'] = $written_by;
 			$notices[$key]['signed_by'] = $signed_by;
 		}
 		return $notices;

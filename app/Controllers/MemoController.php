@@ -27,7 +27,6 @@ class MemoController extends PostController
 			$data['memos'] = $this->_get_searched_memos($search_params, $position_id);
 		}
 		$data['pager'] = $this->post->pager;
-
 		return view('/pages/posts/memos/index', $data);
 	}
 
@@ -207,6 +206,7 @@ class MemoController extends PostController
 	private function _get_searched_memos($search_params, $position_id) {
 		$memos = $this->post
 			->where('p_status', 2)
+			->where('p_type', 1)
 			->like('p_subject', $search_params)
 			->orderBy('p_date', 'DESC')
 			->paginate(9);
