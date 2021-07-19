@@ -27,7 +27,7 @@
 							<div class="col-lg-8">
 								<h4 class="header-title">All My Signature Requests</h4>
                 <p class="text-muted font-13">
-                 	Below are the memos you have been assigned as signatory. You can review, sign them with your e-signature, or decline them here.
+                 	Below are the memos you have been assigned as signatory. You can review, sign them with your e-signature, or decline to sign them here.
                 </p>
 							</div>
 							<div class="col-lg-4">

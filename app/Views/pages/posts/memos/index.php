@@ -131,16 +131,16 @@
   <!-- Warning Alert Modal -->
   <div id="warning-alert-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-            <div class="modal-body p-4">
-                <div class="text-center">
-                    <i class="dripicons-warning h1 text-danger"></i>
-                    <h4 class="mt-2">Pending Signature Requests</h4>
-                    <p class="mt-3">There are memos still awaiting your signature. Please click on continue below to attend to these pending requests.</p>
-                    <a href="<?=site_url('/memos/requests')?>" type="button" class="btn btn-danger my-2">Continue</a>
-                </div>
-            </div>
-        </div><!-- /.modal-content -->
+      <div class="modal-content">
+        <div class="modal-body p-4">
+          <div class="text-center">
+            <i class="dripicons-warning h1 text-danger"></i>
+            <h4 class="mt-2">Pending Signature Requests</h4>
+            <p class="mt-3">There are memos still awaiting your signature. Please click on continue below to attend to these pending requests.</p>
+            <a href="<?=site_url('/memos/requests')?>" type="button" class="btn btn-danger my-2">Continue</a>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 </div>
