@@ -86,7 +86,7 @@
                 <div id="myId" class="dropzone">
                   <div class="dz-message needsclick">
                     <i class="hi text-muted dripicons-cloud-upload"></i>
-                    <h3>Drop all other relevant attachments here...</h3>
+                    <h3>Drop all relevant attachments here...</h3>
                   </div>
                 </div>
               </div>

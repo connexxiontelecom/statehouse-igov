@@ -37,24 +37,30 @@ class NoticeController extends PostController
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
 			$data['signed_by'] = $this->user->where('user_status', 1)
-											->groupStart()
-												->where('user_type', 2)
-												->orWhere('user_type', 3)
-											->groupEnd()
-											->findAll();
-			return view('/pages/notice/new-notice', $data);
+				->groupStart()
+					->where('user_type', 2)
+					->orWhere('user_type', 3)
+				->groupEnd()
+				->findAll();
+			return view('/pages/posts/notices/new-notice', $data);
 		}
 		$post_data = $this->request->getPost();
 		$notice_data = [
-			'n_subject' => $post_data['subject'],
-			'n_body' => $post_data['body'],
-			'n_status' => 0,
-			'n_by' => $this->session->user_id,
-			'n_signed_by' => $post_data['signed_by']
+			'p_ref_no' => $post_data['p_ref_no'],
+			'p_subject' => $post_data['p_subject'],
+			'p_type' => 3,
+			'p_body' => $post_data['p_body'],
+			'p_status' => 0,
+			'p_by' => $this->session->user_id,
+			'p_signed_by' => $post_data['p_signed_by'],
+			'p_direction' => 1
 		];
-		if ($this->notice->save($notice_data)) {
+		$post_id = $this->post->insert($notice_data);
+		$attachments = $post_data['p_attachment'];
+		if ($post_id) {
+			$this->_upload_attachments($attachments, $post_id);
 			$response['success'] = true;
-			$response['message'] = 'Successfully created notice';
+			$response['message'] = 'Successfully created the notice';
 		} else {
 			$response['success'] = false;
 			$response['message'] = 'There was an error while creating notice';
