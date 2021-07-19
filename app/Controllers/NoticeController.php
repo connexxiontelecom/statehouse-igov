@@ -78,17 +78,18 @@ class NoticeController extends PostController
 				->orWhere('user_type', 3)
 				->groupEnd()
 				->findAll();
-			$data['notice'] = $this->notice->find($notice_id);
-			return view('/pages/notice/edit-notice', $data);
+			$data['notice'] = $this->_get_notice($notice_id);
+			return view('/pages/posts/notices/edit-notice', $data);
 		}
 		$post_data = $this->request->getPost();
 		$notice_data = [
-			'n_id' => $post_data['n_id'],
-			'n_subject' => $post_data['subject'],
-			'n_body' => $post_data['body'],
-			'n_signed_by' => $post_data['signed_by']
+			'p_id' => $post_data['notice_id'],
+			'p_ref_no' => $post_data['p_ref_no'],
+			'p_subject' => $post_data['p_subject'],
+			'p_body' => $post_data['p_body'],
+			'p_signed_by' => $post_data['p_signed_by']
 		];
-		if ($this->notice->save($notice_data)) {
+		if ($this->post->save($notice_data)) {
 			$response['success'] = true;
 			$response['message'] = 'Successfully edited notice';
 		} else {
@@ -102,12 +103,17 @@ class NoticeController extends PostController
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$data['notice'] = $this->_get_notice($notice_id);
-		return view('/pages/notice/view-notice', $data);
+		return view('/pages/posts/notices/view-notice', $data);
 	}
 
 	private function _get_notice($notice_id) {
-		$notice = $this->notice->find($notice_id);
-		$notice['signed_by'] = $this->user->find($notice['n_signed_by']);
+		$notice = $this->post->find($notice_id);
+		if ($notice) {
+			$notice['written_by'] = $this->user->find($notice['p_by']);
+			$notice['signed_by'] = $this->user->find($notice['p_signed_by']);
+			$notice['attachments'] = $this->pa->where('pa_post_id', $notice_id)->findAll();
+			$notice['organization'] = $this->organization->first();
+		}
 		return $notice;
 	}
 	private function _get_notices() {
