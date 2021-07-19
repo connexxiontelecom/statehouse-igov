@@ -27,7 +27,6 @@ class MemoController extends PostController
 			$data['memos'] = $this->_get_searched_memos($search_params, $position_id);
 		}
 		$data['pager'] = $this->post->pager;
-
 		return view('/pages/posts/memos/index', $data);
 	}
 
@@ -109,7 +108,7 @@ class MemoController extends PostController
 		return $this->response->setJSON($response);
 	}
 
-	public function my_memos($type = null) {
+	public function my_memos() {
 		$user_id = session()->get('user_id');
 		$user_data = $this->user->where('user_id', $user_id)->first();
 		$employee_id = $user_data['user_employee_id'];
@@ -207,6 +206,7 @@ class MemoController extends PostController
 	private function _get_searched_memos($search_params, $position_id) {
 		$memos = $this->post
 			->where('p_status', 2)
+			->where('p_type', 1)
 			->like('p_subject', $search_params)
 			->orderBy('p_date', 'DESC')
 			->paginate(9);

@@ -51,9 +51,17 @@ $routes->match(['get', 'post'], 'fetch-positions', 'EmployeeSettingController::f
 $routes->match(['get', 'post'], 'employees', 'EmployeeSettingController::all_employees', ['filter' => 'auth']);
 $routes->match(['post'], 'check-username', 'EmployeeSettingController::check_username', ['filter' => 'auth']);
 
+// post routes
+$routes->match(['post'], 'upload-post-attachments', 'PostController::upload_post_attachments', ['filter' => 'auth']);
+$routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::delete_post_attachments', ['filter' => 'auth']);
+$routes->match(['post'], 'sign-post', 'PostController::sign_post', ['filter' => 'auth']);
+$routes->match(['post'], 'decline-post', 'PostController::decline_post', ['filter' => 'auth']);
+$routes->match(['post'], 'send-doc-signing-verification', 'PostController::send_doc_signing_verification/', ['filter' => 'auth']);
+
 // notices route
 $routes->get('notices', 'NoticeController::index', ['filter' => 'auth']);
-$routes->get('my-notices', 'NoticeController::user_notices', ['filter' => 'auth']);
+$routes->get('notices/(:alpha)', 'NoticeController::index/$1', ['filter' => 'auth']);
+$routes->get('my-notices', 'NoticeController::my_notices', ['filter' => 'auth']);
 $routes->get('view-notice/(:num)', 'NoticeController::view_notice/$1', ['filter' => 'auth']);
 $routes->get('edit-notice/(:num)', 'NoticeController::edit_notice/$1', ['filter' => 'auth']);
 $routes->post('edit-notice', 'NoticeController::edit_notice', ['filter' => 'auth']);
@@ -100,13 +108,6 @@ $routes->post('/add-new-training-lesson', 'TrainingController::addNewTrainingLes
 $routes->post('/update-training-lesson', 'TrainingController::updateTrainingLesson', ['filter'=>'auth']);
 $routes->get('/delete-lesson-attachment/(:num)', 'TrainingController::deleteAttachment/$1', ['filter'=>'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
-
-// post routes
-$routes->match(['post'], 'upload-post-attachments', 'PostController::upload_post_attachments', ['filter' => 'auth']);
-$routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::delete_post_attachments', ['filter' => 'auth']);
-$routes->match(['post'], 'sign-post', 'PostController::sign_post', ['filter' => 'auth']);
-$routes->match(['post'], 'decline-post', 'PostController::decline_post', ['filter' => 'auth']);
-$routes->match(['post'], 'send-doc-signing-verification', 'PostController::send_doc_signing_verification/', ['filter' => 'auth']);
 
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
