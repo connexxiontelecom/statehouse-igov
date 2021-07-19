@@ -136,7 +136,6 @@ class MemoController extends PostController
 				->groupEnd()
 				->findAll();
 			$data['positions'] = $this->position->findAll();
-			$data['pager'] = $this->post->pager;
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
 			$data['memo'] = $this->_get_memo($memo_id);
