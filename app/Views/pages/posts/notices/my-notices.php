@@ -25,11 +25,16 @@
 				<div class="card-body">
           <div class="row">
             <div class="col-lg-8">
-              <h4 class="header-title mt-2 mb-4">All My Notices</h4>
+              <h4 class="header-title">All My Notices</h4>
+              <p class="text-muted font-13">
+                Below are all the notices you have written including memos that are signed, unsigned, deactivated or rejected.
+              </p>
             </div>
             <div class="col-lg-4">
-              <a href="<?=site_url('/new-notice')?>" type="button" class="btn btn-primary btn-sm float-right"> <i class="mdi mdi-plus mr-2"></i>New Notice</a>
-              <a href="<?=site_url('/notices')?>" type="button" class="btn btn-primary btn-sm float-right mr-2"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
+              <div class="text-lg-right mt-lg-0">
+                <a href="<?=site_url('/new-notice')?>" type="button" class="btn btn-success waves-effect waves-light mr-1"><i class="mdi mdi-plus-circle mr-1"></i> Add New</a>
+                <a href="<?=site_url('/notices')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
+              </div>
             </div>
           </div>
           <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap w-100">
@@ -80,4 +85,23 @@
 
 </div>
 <?= $this->endSection(); ?>
+<?= $this->section('extra-scripts'); ?>
+<!-- third party js -->
+<script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+<script src="/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+<script src="/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+<!-- third party js ends -->
 
+<!-- Datatables init -->
+<script src="/assets/js/pages/datatables.init.js"></script>
+<?= $this->endSection(); ?>

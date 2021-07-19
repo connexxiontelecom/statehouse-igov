@@ -24,12 +24,12 @@ class NoticeController extends PostController
 		return view('/pages/posts/notices/index', $data);
 	}
 
-	public function user_notices() {
+	public function my_notices() {
 		$data['notices'] = $this->_get_user_notices();
 		$data['pager'] = $this->notice->pager;
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
-		return view('/pages/notice/my-notices', $data);
+		return view('/pages/posts/notices/my-notices', $data);
 	}
 
 	public function new_notice() {
@@ -120,10 +120,11 @@ class NoticeController extends PostController
 	}
 
 	private function _get_user_notices() {
-		$notices = $this->notice
-			->where('n_by', $this->session->user_id)
-			->orderBy('created_at', 'DESC')
-			->paginate('9');
+		$notices = $this->post
+			->where('p_by', $this->session->user_id)
+			->where('p_type', 3)
+			->orderBy('p_date', 'DESC')
+			->findAll();
 		foreach($notices as $key => $notice) {
 			$signed_by = $this->user->find($notice['n_signed_by']);
 			$notices[$key]['signed_by'] = $signed_by;
@@ -132,7 +133,7 @@ class NoticeController extends PostController
 	}
 
 	private function _get_searched_notices($search_params) {
-		$notices = $this->notice
+		$notices = $this->post
 			->where('p_status', 2)
 			->where('p_type', 3)
 			->like('p_subject', $search_params)

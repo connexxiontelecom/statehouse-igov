@@ -108,7 +108,7 @@ class MemoController extends PostController
 		return $this->response->setJSON($response);
 	}
 
-	public function my_memos($type = null) {
+	public function my_memos() {
 		$user_id = session()->get('user_id');
 		$user_data = $this->user->where('user_id', $user_id)->first();
 		$employee_id = $user_data['user_employee_id'];

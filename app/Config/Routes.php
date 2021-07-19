@@ -61,7 +61,7 @@ $routes->match(['post'], 'send-doc-signing-verification', 'PostController::send_
 // notices route
 $routes->get('notices', 'NoticeController::index', ['filter' => 'auth']);
 $routes->get('notices/(:alpha)', 'NoticeController::index/$1', ['filter' => 'auth']);
-$routes->get('my-notices', 'NoticeController::user_notices', ['filter' => 'auth']);
+$routes->get('my-notices', 'NoticeController::my_notices', ['filter' => 'auth']);
 $routes->get('view-notice/(:num)', 'NoticeController::view_notice/$1', ['filter' => 'auth']);
 $routes->get('edit-notice/(:num)', 'NoticeController::edit_notice/$1', ['filter' => 'auth']);
 $routes->post('edit-notice', 'NoticeController::edit_notice', ['filter' => 'auth']);
