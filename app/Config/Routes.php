@@ -118,9 +118,10 @@ $routes->post('/workflow/setup-exception-workflow-processor', 'WorkflowControlle
 $routes->post('/workflow/update-exception-workflow-processor', 'WorkflowController::updateExceptionWorkflowProcessor', ['filter'=>'auth']);
 
 #Workflow request [employee]
-$routes->get('/workflow-requests', 'WorkflowController::workflowRequests');
-$routes->get('/workflow-requests/new-request', 'WorkflowController::createNewWorkflowRequest');
-$routes->post('/workflow-requests/new-request', 'WorkflowController::setNewWorkflowRequest');
+$routes->get('/workflow-requests', 'WorkflowController::workflowRequests', ['filter'=>'auth']);
+$routes->get('/workflow-requests/new-request', 'WorkflowController::createNewWorkflowRequest', ['filter'=>'auth']);
+$routes->post('/workflow-requests/new-request', 'WorkflowController::setNewWorkflowRequest', ['filter'=>'auth']);
+$routes->get('/workflow-requests/view/(:num)', 'WorkflowController::viewWorkflowRequest/$1', ['filter'=>'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 $routes->match(['post'], 'sign-post', 'PostController::sign_post', ['filter' => 'auth']);

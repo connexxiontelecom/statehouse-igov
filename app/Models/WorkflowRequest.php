@@ -14,7 +14,7 @@ class WorkflowRequest extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = ['requested_by', 'requested_type_id', 'request_title', 'request_description', 'amount', 'request_status'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -39,4 +39,26 @@ class WorkflowRequest extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+
+	/*
+	 * Use-case methods
+	 */
+    public function getAuthUserWorkflowRequests($user_id){
+        $builder = $this->db->table('workflow_requests as wr');
+        $builder->join('users as u', 'u.user_id = wr.requested_by');
+        $builder->join('workflow_types wt', 'wt.workflow_type_id = wr.requested_type_id');
+        $builder->where('wr.requested_by = '.$user_id);
+        $result = $builder->get()->getRowObject();
+        return $result;
+    }
+
+    public function getWorkflowRequestDetail($request_id){
+        $builder = $this->db->table('workflow_requests as wr');
+        $builder->join('users as u', 'u.user_id = wr.requested_by');
+        $builder->join('workflow_types wt', 'wt.workflow_type_id = wr.requested_type_id');
+        $builder->where('wr.workflow_request_id = '.$request_id);
+        $result = $builder->get()->getRowObject();
+        return $result;
+    }
 }

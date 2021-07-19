@@ -7,6 +7,8 @@ use App\Models\Department;
 use App\Models\UserModel;
 use App\Models\WorkflowExceptionProcessor;
 use App\Models\WorkflowProcessor;
+use App\Models\WorkflowRequest;
+use App\Models\WorkflowRequestAttachment;
 use App\Models\WorkflowType;
 
 class WorkflowController extends BaseController
@@ -23,6 +25,8 @@ class WorkflowController extends BaseController
         $this->workflowtype = new WorkflowType();
         $this->workflowprocessor = new WorkflowProcessor();
         $this->workflowexceptionprocessor = new WorkflowExceptionProcessor();
+        $this->workflowrequest = new WorkflowRequest();
+        $this->workflowrequestattachment = new WorkflowRequestAttachment();
     }
 
 	public function settings()
@@ -152,19 +156,83 @@ class WorkflowController extends BaseController
     }
 
     public function workflowRequests(){
-        return view('pages/workflow/workflow-requests');
+        $data = [
+          'my_requests'=>$this->workflowrequest->getAuthUserWorkflowRequests($this->session->user_id),
+        ];
+
+        return view('pages/workflow/workflow-requests', $data);
     }
 
     public function createNewWorkflowRequest(){
-        return view('pages/workflow/new-request');
+        $data = [
+          'workflow_types'=>$this->workflowtype->getAllWorkflowTypes()
+        ];
+        return view('pages/workflow/new-request', $data);
     }
 
     public function setNewWorkflowRequest(){
         if ($this->request->getMethod() == 'post') {
             helper(['form', 'url']);
-
+            $input = $this->validate([
+                'title' => 'required',
+                'description' => 'required',
+                'workflow_type' => 'required'
+            ]);
+            if(!$input){
+                echo view('pages/workflow/new-request', [
+                    'validation' => $this->validator,
+                    'workflow_types'=>$this->workflowtype->getAllWorkflowTypes()
+                ]);
+            }else{
+                $title = $this->request->getPost('title');
+                $description = $this->request->getPost('description');
+                $amount = $this->request->getPost('amount');
+                $workflow_type = $this->request->getPost('workflow_type');
+                $data = [
+                    'requested_by' => $this->session->user_id,
+                    'requested_type_id' => $workflow_type,
+                    'request_title' => $title,
+                    'request_description' => $description,
+                    'amount'=>$amount
+                ];
+                $workflow_request_id = $this->workflowrequest->insert($data);
+                #Process attachments
+                if(!empty($workflow_request_id)){
+                    if($this->request->getFileMultiple('attachments')){
+                        foreach ($this->request->getFileMultiple('attachments') as $attachment){
+                            if($attachment->isValid() ){
+                                $extension = $attachment->guessExtension();
+                                $filename = $attachment->getRandomName();
+                                $attachment->move('uploads/posts', $filename);
+                                $request_attachment = [
+                                    'workflow_request_id' => $workflow_request_id,
+                                    'attachment' => $filename
+                                ];
+                                $this->workflowrequestattachment->save($request_attachment);
+                            }
+                        }
+                    }
+                }
+                return redirect()->back()->with("success", "<strong>Success!</strong> Your request was submitted successfully.");
+            }
 
         }
+    }
+
+
+    public function viewWorkflowRequest($id){
+        $request = $this->workflowrequest->getWorkflowRequestDetail($id);
+
+        if(!empty($request)){
+            $data = [
+              'workflow_request'=>$request,
+              'workflow_attachments'=>$this->workflowrequestattachment->getWorkflowRequestAttachments($id)
+            ];
+            return view('pages/workflow/view-workflow-request', $data);
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> No record found.");
+        }
+
     }
 
 }

@@ -31,17 +31,30 @@
                         <th>
                             S/No.
                         </th>
+                        <th>Date</th>
+                        <th>Amount</th>
                         <th>Title</th>
                         <th>Description</th>
-                        <th>Author</th>
-                        <th>Date</th>
+                        <th>Type</th>
                         <th class="hidden-sm">Action</th>
                     </tr>
                     </thead>
 
                     <tbody>
                     <?php  $serial = 1; ?>
-
+                    <?php foreach($my_requests as $request): ?>
+                        <tr>
+                            <td><?= $serial++ ?></td>
+                            <td><?= date('d M, Y', strtotime($request['created_at']))  ?></td>
+                            <td class="text-right"><?= number_format($request['amount'],2) ?></td>
+                            <td><?= $request['request_title']  ?></td>
+                            <td><?= strlen(strip_tags($request['request_description'])) > 35 ? substr(strip_tags($request['request_description']),0,35).'...' : strip_tags($request['request_description'])  ?></td>
+                            <td><?= $request['workflow_type_name'] ?></td>
+                            <td>
+                                <a href="<?= site_url('/workflow-requests/view/'.$request['workflow_request_id']) ?>" class="btn btn-info btn-sm">View</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
