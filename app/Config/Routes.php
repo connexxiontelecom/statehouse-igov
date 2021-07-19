@@ -70,14 +70,12 @@ $routes->match(['get'], 'edit-memo/(:num)', 'MemoController::edit_memo/$1', ['fi
 $routes->match(['post'], 'edit-memo', 'MemoController::edit_memo', ['filter' => 'auth']);
 
 // circular routes
-$routes->match(['get'], 'circulars', 'PostController::circulars', ['filter' => 'auth']);
-$routes->match(['get'], 'new-circular', 'PostController::new_circular', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'internal-circular', 'PostController::internal_circular', ['filter' => 'auth']);
-$routes->match(['post'], 'upload-post-attachments', 'PostController::upload_post_attachments', ['filter' => 'auth']);
-$routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::delete_post_attachments', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'external-circular', 'PostController::external_circular', ['filter' => 'auth']);
-$routes->match(['get'], 'my-circulars', 'PostController::my_circulars', ['filter' => 'auth']);
-$routes->match(['get'], 'view-circular/(:num)', 'PostController::view_circular/$1', ['filter' => 'auth']);
+$routes->match(['get'], 'circulars', 'CircularController::circulars', ['filter' => 'auth']);
+$routes->match(['get'], 'new-circular', 'CircularController::new_circular', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'internal-circular', 'CircularController::internal_circular', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'external-circular', 'CircularController::external_circular', ['filter' => 'auth']);
+$routes->match(['get'], 'my-circulars', 'CircularController::my_circulars', ['filter' => 'auth']);
+$routes->match(['get'], 'view-circular/(:num)', 'CircularController::view_circular/$1', ['filter' => 'auth']);
 
 #GDrive routes
 $routes->get('/g-drive', 'FileController::index',['filter' => 'auth']);
@@ -104,6 +102,8 @@ $routes->get('/delete-lesson-attachment/(:num)', 'TrainingController::deleteAtta
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 // post routes
+$routes->match(['post'], 'upload-post-attachments', 'PostController::upload_post_attachments', ['filter' => 'auth']);
+$routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::delete_post_attachments', ['filter' => 'auth']);
 $routes->match(['post'], 'sign-post', 'PostController::sign_post', ['filter' => 'auth']);
 $routes->match(['post'], 'decline-post', 'PostController::decline_post', ['filter' => 'auth']);
 $routes->match(['post'], 'send-doc-signing-verification', 'PostController::send_doc_signing_verification/', ['filter' => 'auth']);

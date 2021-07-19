@@ -129,5 +129,5 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?=view('pages/posts/_circular-scripts.php')?>
+<?=view('pages/posts/circulars/_circular-scripts.php')?>
 <?= $this->endSection(); ?>
