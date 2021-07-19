@@ -39,9 +39,6 @@ $routes->match(['get', 'post'], 'login', 'Auth::login', ['filter' => 'noauth']);
 $routes->get('/', 'Home::index', ['filter' => 'auth']);
 $routes->get('/logout', 'Auth::logout', ['filter' => 'auth']);
 
-
-
-
 //office route
 $routes->get('office', 'Office::index', ['filter' => 'auth']);
 $routes->get('moderator', 'Auth::moderator', ['filter' => 'auth']);
@@ -62,25 +59,23 @@ $routes->get('edit-notice/(:num)', 'NoticeController::edit_notice/$1', ['filter'
 $routes->post('edit-notice', 'NoticeController::edit_notice', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-notice', 'NoticeController::new_notice', ['filter' => 'auth']);
 
-$routes->match(['get'], 'memos', 'PostController::memos', ['filter' => 'auth']);
-$routes->match(['get'], 'memos/(:alpha)', 'PostController::memos/$1', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'new-memo', 'PostController::new_memo', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'internal-memo', 'PostController::internal_memo', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'external-memo', 'PostController::external_memo', ['filter' => 'auth']);
-$routes->match(['get'], 'my-memos', 'PostController::my_memos', ['filter' => 'auth']);
-$routes->match(['get'], 'view-memo/(:num)', 'PostController::view_memo/$1', ['filter' => 'auth']);
-$routes->match(['get'], 'edit-memo/(:num)', 'PostController::edit_memo/$1', ['filter' => 'auth']);
-$routes->match(['post'], 'edit-memo', 'PostController::edit_memo', ['filter' => 'auth']);
+// memo routes
+$routes->match(['get'], 'memos', 'MemoController::memos', ['filter' => 'auth']);
+$routes->match(['get'], 'memos/(:alpha)', 'MemoController::memos/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'internal-memo', 'MemoController::internal_memo', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'external-memo', 'MemoController::external_memo', ['filter' => 'auth']);
+$routes->match(['get'], 'my-memos', 'MemoController::my_memos', ['filter' => 'auth']);
+$routes->match(['get'], 'view-memo/(:num)', 'MemoController::view_memo/$1', ['filter' => 'auth']);
+$routes->match(['get'], 'edit-memo/(:num)', 'MemoController::edit_memo/$1', ['filter' => 'auth']);
+$routes->match(['post'], 'edit-memo', 'MemoController::edit_memo', ['filter' => 'auth']);
 
-$routes->match(['get'], 'circulars', 'PostController::circulars', ['filter' => 'auth']);
-$routes->match(['get'], 'new-circular', 'PostController::new_circular', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'internal-circular', 'PostController::internal_circular', ['filter' => 'auth']);
-$routes->match(['post'], 'upload-post-attachments', 'PostController::upload_post_attachments', ['filter' => 'auth']);
-$routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::delete_post_attachments', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'external-circular', 'PostController::external_circular', ['filter' => 'auth']);
-$routes->match(['get'], 'my-circulars', 'PostController::my_circulars', ['filter' => 'auth']);
-$routes->match(['get'], 'view-circular/(:num)', 'PostController::view_circular/$1', ['filter' => 'auth']);
-
+// circular routes
+$routes->match(['get'], 'circulars', 'CircularController::circulars', ['filter' => 'auth']);
+$routes->match(['get'], 'new-circular', 'CircularController::new_circular', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'internal-circular', 'CircularController::internal_circular', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'external-circular', 'CircularController::external_circular', ['filter' => 'auth']);
+$routes->match(['get'], 'my-circulars', 'CircularController::my_circulars', ['filter' => 'auth']);
+$routes->match(['get'], 'view-circular/(:num)', 'CircularController::view_circular/$1', ['filter' => 'auth']);
 
 #GDrive routes
 $routes->get('/g-drive', 'FileController::index',['filter' => 'auth']);
@@ -106,11 +101,14 @@ $routes->post('/update-training-lesson', 'TrainingController::updateTrainingLess
 $routes->get('/delete-lesson-attachment/(:num)', 'TrainingController::deleteAttachment/$1', ['filter'=>'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
+// post routes
+$routes->match(['post'], 'upload-post-attachments', 'PostController::upload_post_attachments', ['filter' => 'auth']);
+$routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::delete_post_attachments', ['filter' => 'auth']);
 $routes->match(['post'], 'sign-post', 'PostController::sign_post', ['filter' => 'auth']);
 $routes->match(['post'], 'decline-post', 'PostController::decline_post', ['filter' => 'auth']);
 $routes->match(['post'], 'send-doc-signing-verification', 'PostController::send_doc_signing_verification/', ['filter' => 'auth']);
 
-
+// employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
 $routes->match(['get'], 'check-signature-exists', 'EmployeeController::check_signature_exists', ['filter' => 'auth']);
 $routes->match(['post'], 'setup-signature', 'EmployeeController::setup_signature', ['filter' => 'auth']);
