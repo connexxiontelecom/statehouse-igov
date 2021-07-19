@@ -29,7 +29,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-lg-8">
-              <h4 class="header-title mt-2 mb-4">Create Notice Form</h4>
+              <h4 class="header-title">Create Notice Form</h4>
             </div>
             <div class="col-lg-4">
               <a href="<?=site_url('/my-notices')?>" type="button" class="btn btn-success float-right">Go Back</a>
@@ -98,7 +98,7 @@
             <div class="row g-3">
               <div class="col-lg-12 offset-lg-12">
                 <div class="form-group mt-2">
-                  <button type="button" onclick="createNotice()" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
+                  <button type="button" onclick="createNotice()" class="btn btn-primary btn-block">Submit</button>
                 </div>
               </div>
             </div>
