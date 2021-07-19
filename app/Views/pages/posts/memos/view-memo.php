@@ -10,7 +10,7 @@
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
 						<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
-						<li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">All Memos</a></li>
+						<li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">Memo Board</a></li>
 						<li class="breadcrumb-item active">View Memo</li>
 					</ol>
 				</div>
@@ -218,6 +218,6 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?=view('pages/posts/_memo-scripts.php')?>
+<?=view('pages/posts/memos/_memo-scripts.php')?>
 <?= $this->endSection(); ?>
 

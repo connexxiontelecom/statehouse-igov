@@ -20,7 +20,7 @@ class MemoController extends PostController
 			if ($unsigned_memos) session()->setFlashdata('unsigned_memos', true);
 			if ($type === 'requests') {
 				$data['memos'] = $unsigned_memos;
-				return view('/pages/posts/my-signed-memos', $data);
+				return view('/pages/posts/memos/signature-requests', $data);
 			}
 			$data['memos'] = $this->_get_memos($position_id);
 		} else {
@@ -28,7 +28,7 @@ class MemoController extends PostController
 		}
 		$data['pager'] = $this->post->pager;
 
-		return view('/pages/posts/memos', $data);
+		return view('/pages/posts/memos/index', $data);
 	}
 
 	public function internal_memo(){
@@ -43,7 +43,7 @@ class MemoController extends PostController
 			$data['pager'] = $this->post->pager;
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			return view('/pages/posts/new-internal-memo', $data);
+			return view('/pages/posts/memos/new-internal-memo', $data);
 		endif;
 		$post_data = $this->request->getPost();
 		$memo_data = [
@@ -82,7 +82,7 @@ class MemoController extends PostController
 			$data['pager'] = $this->post->pager;
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			return view('/pages/posts/new-external-memo', $data);
+			return view('/pages/posts/memos/new-external-memo', $data);
 		endif;
 		$post_data = $this->request->getPost();
 		$memo_data = [
@@ -118,14 +118,14 @@ class MemoController extends PostController
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$data['memos'] = $this->_get_user_memos($position_id);
-		return view('/pages/posts/my-memos', $data);
+		return view('/pages/posts/memos/my-memos', $data);
 	}
 
 	public function view_memo($memo_id) {
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$data['memo'] = $this->_get_memo($memo_id);
-		return view('/pages/posts/view-memo', $data);
+		return view('/pages/posts/memos/view-memo', $data);
 	}
 
 	public function edit_memo($memo_id = null) {
@@ -141,7 +141,7 @@ class MemoController extends PostController
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
 			$data['memo'] = $this->_get_memo($memo_id);
-			return view('/pages/posts/edit-internal-memo', $data);
+			return view('/pages/posts/memos/edit-internal-memo', $data);
 		}
 		$post_data = $this->request->getPost();
 		$memo_data = [
