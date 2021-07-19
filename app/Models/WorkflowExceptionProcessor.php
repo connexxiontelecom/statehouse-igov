@@ -4,17 +4,19 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class WorkflowProcessor extends Model
+class WorkflowExceptionProcessor extends Model
 {
+
 	protected $DBGroup              = 'default';
-	protected $table                = 'workflow_processors';
-	protected $primaryKey           = 'workflow_processor_id';
+	protected $table                = 'workflow_exception_processors';
+	protected $primaryKey           = 'workflow_ex_processor_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['workflow_processor_id', 'w_flow_added_by', 'w_flow_employee_id', 'w_flow_department_id', 'w_flow_type_id'];
+	protected $allowedFields        = ['workflow_ex_processor_id', 'w_flow_ex_added_by', 'w_flow_ex_type_id',
+        'w_flow_ex_department_id', 'w_flow_ex_employee_id'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -40,11 +42,12 @@ class WorkflowProcessor extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	public function getAllProcessors(){
-	    $builder = $this->db->table('workflow_processors as wp');
-	    $builder->join('departments as d', 'd.dpt_id = wp.w_flow_department_id');
-	    $builder->join('workflow_types as wt', 'wt.workflow_type_id = wp.w_flow_type_id');
-	    $builder->join('users as u', 'u.user_id = wp.w_flow_employee_id');
+
+    public function getAllExceptionProcessors(){
+        $builder = $this->db->table('workflow_exception_processors as we');
+        $builder->join('departments as d', 'd.dpt_id = we.w_flow_ex_department_id');
+        $builder->join('workflow_types as wt', 'wt.workflow_type_id = we.w_flow_ex_type_id');
+        $builder->join('users as u', 'u.user_id = we.w_flow_ex_employee_id');
         return $builder->get()->getResultArray();
     }
 }

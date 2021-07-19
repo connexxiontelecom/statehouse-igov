@@ -4,31 +4,31 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class WorkflowProcessors extends Migration
+class WorkflowExceptionProcessors extends Migration
 {
 	public function up()
 	{
         $this->db->disableForeignKeyChecks();
         $this->forge->addField(
             [
-                'workflow_processor_id' =>[
+                'workflow_ex_processor_id' =>[
                     'type' => 'INT',
                     'constraint' => 11,
                     'auto_increment' => true,
                 ],
-                'w_flow_added_by' =>[
+                'w_flow_ex_added_by' =>[
                     'type' => 'INT',
                     'null'=>true,
                 ],
-                'w_flow_employee_id' =>[
+                'w_flow_ex_employee_id' =>[
                     'type' => 'INT',
                     'null'=>true,
                 ],
-                'w_flow_department_id' =>[
+                'w_flow_ex_department_id' =>[
                     'type' => 'INT',
                     'null'=>true,
                 ],
-                'w_flow_type_id' =>[
+                'w_flow_ex_type_id' =>[
                     'type' => 'INT',
                     'null'=>true,
                 ],
@@ -36,8 +36,8 @@ class WorkflowProcessors extends Migration
 
             ]
         );
-        $this->forge->addKey('workflow_processor_id', true);
-        $this->forge->createTable('workflow_processors');
+        $this->forge->addKey('workflow_ex_processor_id', true);
+        $this->forge->createTable('workflow_exception_processors');
 	}
 
 	public function down()

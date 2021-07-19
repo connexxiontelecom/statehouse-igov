@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/master'); ?>
+<?= $this->extend('layouts/admin'); ?>
 
 <?= $this->section('content'); ?>
 <div class="container-fluid">
@@ -46,7 +46,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="#messages" data-toggle="tab" aria-expanded="false" class="nav-link">
-                            Messages
+                            Exceptions
                         </a>
                     </li>
                 </ul>
@@ -127,18 +127,25 @@
                     <div class="tab-pane show active" id="profile">
                        <div class="row">
                            <div class="col-md-4">
-                               <form action="">
+                               <h5>Normal Workflow Process</h5>
+                               <form action="<?= site_url('/workflow/setup-exception-workflow-processor') ?>" method="post">
                                    <?= csrf_field() ?>
                                    <div class="form-group">
                                        <label for="">Employee</label>
                                        <select name="employee"  id="employee" class="form-control">
                                            <option selected disabled>--Select employee--</option>
+                                           <?php foreach($employees as $emp): ?>
+                                               <option value="<?= $emp['user_id'] ?>"><?= $emp['user_name'] ?></option>
+                                           <?php endforeach; ?>
                                        </select>
                                    </div>
                                    <div class="form-group">
                                        <label for="">Department</label>
                                        <select name="department" id="department" class="form-control">
                                            <option selected disabled>--Select department--</option>
+                                           <?php foreach($departments as $depart): ?>
+                                               <option value="<?= $depart['dpt_id'] ?>"><?= $depart['dpt_name'] ?></option>
+                                           <?php endforeach; ?>
                                        </select>
                                    </div>
                                    <div class="form-group">
@@ -157,12 +164,201 @@
                                    </div>
                                </form>
                            </div>
+                           <div class="col-md-8">
+                               <div class="table-responsive">
+                                   <table class="table table-striped mb-0">
+                                       <thead>
+                                       <tr>
+                                           <th>#</th>
+                                           <th>Workflow Processor</th>
+                                           <th>Department</th>
+                                           <th>Workflow Type</th>
+                                           <th>Action</th>
+                                       </tr>
+                                       </thead>
+                                       <tbody>
+                                       <?php $no = 1; foreach($processors as $processor): ?>
+                                           <tr>
+                                               <th scope="row"><?= $no++ ?></th>
+                                               <td><?= $processor['user_name'] ?></td>
+                                               <td><?= $processor['dpt_name'] ?></td>
+                                               <td><?= $processor['workflow_type_name'] ?></td>
+                                               <td>
+                                                   <a href="javascript:void(0);" data-toggle="modal" data-target="#processorModal_<?= $ex_processor['workflow_ex_processor_id'] ?>" class="btn btn-sm btn-warning text-white">Edit</a>
+                                                   <div id="processorModal_<?= $ex_processor['workflow_ex_processor_id'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="multiple-oneModalLabel" aria-hidden="true">
+                                                       <div class="modal-dialog">
+                                                           <div class="modal-content">
+                                                               <div class="modal-header">
+                                                                   <h4 class="modal-title" id="multiple-oneModalLabel">Edit Settings</h4>
+                                                                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                               </div>
+                                                               <div class="modal-body">
+                                                                   <form action="<?= site_url('/workflow/update-workflow-processor') ?>" method="post">
+                                                                       <?= csrf_field() ?>
+                                                                       <div class="form-group">
+                                                                           <label for="">Employee</label>
+                                                                           <select name="employee"  id="employee" class="form-control">
+                                                                               <option selected disabled>--Select employee--</option>
+                                                                               <?php foreach($employees as $emp): ?>
+                                                                                   <option value="<?= $emp['user_id'] ?>" <?= $emp['user_id'] == $ex_processor['w_flow_ex_employee_id'] ? 'selected' : '' ?> ><?= $emp['user_name'] ?></option>
+                                                                               <?php endforeach; ?>
+                                                                           </select>
+                                                                       </div>
+                                                                       <div class="form-group">
+                                                                           <label for="">Department</label>
+                                                                           <select name="department" id="department" class="form-control">
+                                                                               <option selected disabled>--Select department--</option>
+                                                                               <?php foreach($departments as $depart): ?>
+                                                                                   <option value="<?= $depart['dpt_id'] ?>" <?= $depart['dpt_id'] == $ex_processor['w_flow_ex_department_id'] ? 'selected' : '' ?>><?= $depart['dpt_name'] ?></option>
+                                                                               <?php endforeach; ?>
+                                                                           </select>
+                                                                       </div>
+                                                                       <div class="form-group">
+                                                                           <label for="">Workflow Type</label>
+                                                                           <select name="workflow_type" id="workflow_type" class="form-control">
+                                                                               <option selected disabled>--Select workflow type</option>
+                                                                               <?php foreach($workflow_types as $w_type): ?>
+                                                                                   <option value="<?= $w_type['workflow_type_id'] ?>" <?= $w_type['workflow_type_id'] == $ex_processor['w_flow_ex_type_id'] ? 'selected' : '' ?>><?= $w_type['workflow_type_name'] ?></option>
+                                                                               <?php endforeach; ?>
+                                                                           </select>
+                                                                       </div>
+                                                                       <div class="form-group d-flex justify-content-center">
+                                                                           <div class="form-group">
+                                                                               <input type="hidden" name="workflow_ex_processor" value="<?= $ex_processor['workflow_ex_processor_id'] ?>">
+                                                                               <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                                                                           </div>
+                                                                       </div>
+                                                                   </form>
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </td>
+                                           </tr>
+                                       <?php endforeach; ?>
+                                       </tbody>
+                                   </table>
+                               </div>
+                           </div>
                        </div>
-
                     </div>
                     <div class="tab-pane" id="messages">
-                        <p>Vakal text here dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                        <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5>Exceptional Workflow Process</h5>
+                                <form action="<?= site_url('/workflow/setup-exception-workflow-processor') ?>" method="post">
+                                    <?= csrf_field() ?>
+                                    <div class="form-group">
+                                        <label for="">Employee</label>
+                                        <select name="employee"  id="employee" class="form-control">
+                                            <option selected disabled>--Select employee--</option>
+                                            <?php foreach($employees as $emp): ?>
+                                                <option value="<?= $emp['user_id'] ?>"><?= $emp['user_name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Department</label>
+                                        <select name="department" id="department" class="form-control">
+                                            <option selected disabled>--Select department--</option>
+                                            <?php foreach($departments as $depart): ?>
+                                                <option value="<?= $depart['dpt_id'] ?>"><?= $depart['dpt_name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Workflow Type</label>
+                                        <select name="workflow_type" id="workflow_type" class="form-control">
+                                            <option selected disabled>--Select workflow type</option>
+                                            <?php foreach($workflow_types as $w_type): ?>
+                                                <option value="<?= $w_type['workflow_type_id'] ?>"><?= $w_type['workflow_type_name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group d-flex justify-content-center">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="table-responsive">
+                                    <table class="table table-striped mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Workflow Processor</th>
+                                            <th>Department</th>
+                                            <th>Workflow Type</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php $no = 1; foreach($ex_processors as $ex_processor): ?>
+                                            <tr>
+                                                <th scope="row"><?= $no++ ?></th>
+                                                <td><?= $ex_processor['user_name'] ?></td>
+                                                <td><?= $ex_processor['dpt_name'] ?></td>
+                                                <td><?= $ex_processor['workflow_type_name'] ?></td>
+                                                <td>
+                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#processorModal_<?= $processor['workflow_processor_id'] ?>" class="btn btn-sm btn-warning text-white">Edit</a>
+                                                    <div id="processorModal_<?= $processor['workflow_processor_id'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="multiple-oneModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="multiple-oneModalLabel">Edit Settings</h4>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="<?= site_url('/workflow/update-workflow-processor') ?>" method="post">
+                                                                        <?= csrf_field() ?>
+                                                                        <div class="form-group">
+                                                                            <label for="">Employee</label>
+                                                                            <select name="employee"  id="employee" class="form-control">
+                                                                                <option selected disabled>--Select employee--</option>
+                                                                                <?php foreach($employees as $emp): ?>
+                                                                                    <option value="<?= $emp['user_id'] ?>" <?= $emp['user_id'] == $processor['w_flow_employee_id'] ? 'selected' : '' ?> ><?= $emp['user_name'] ?></option>
+                                                                                <?php endforeach; ?>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="">Department</label>
+                                                                            <select name="department" id="department" class="form-control">
+                                                                                <option selected disabled>--Select department--</option>
+                                                                                <?php foreach($departments as $depart): ?>
+                                                                                    <option value="<?= $depart['dpt_id'] ?>" <?= $depart['dpt_id'] == $processor['w_flow_department_id'] ? 'selected' : '' ?>><?= $depart['dpt_name'] ?></option>
+                                                                                <?php endforeach; ?>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="">Workflow Type</label>
+                                                                            <select name="workflow_type" id="workflow_type" class="form-control">
+                                                                                <option selected disabled>--Select workflow type</option>
+                                                                                <?php foreach($workflow_types as $w_type): ?>
+                                                                                    <option value="<?= $w_type['workflow_type_id'] ?>" <?= $w_type['workflow_type_id'] == $processor['w_flow_type_id'] ? 'selected' : '' ?>><?= $w_type['workflow_type_name'] ?></option>
+                                                                                <?php endforeach; ?>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group d-flex justify-content-center">
+                                                                            <div class="form-group">
+                                                                                <input type="hidden" name="workflow_processor" value="<?= $processor['workflow_processor_id'] ?>">
+                                                                                <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div> <!-- end card-box-->
