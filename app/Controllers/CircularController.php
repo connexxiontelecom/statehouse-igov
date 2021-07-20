@@ -10,8 +10,9 @@ class CircularController extends PostController
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$circulars = array();
-		$posts = $this->post->where('p_type', 2)
-//				->where('p_status', 3)
+		$posts = $this->post
+			->where('p_type', 2)
+			->where('p_status', 2)
 			->join('users', 'posts.p_signed_by = users.user_id')
 			->orderBy('posts.p_date', 'DESC')
 			->paginate('9');
@@ -23,24 +24,29 @@ class CircularController extends PostController
 		$i = 0;
 		foreach ($posts as $post):
 			$posts_dpts = json_decode($post['p_recipients_id']);
-
+			$recipients = [];
+			foreach($posts_dpts as $posts_dpt):
+				array_push($recipients, $this->department->find($posts_dpt));
+			endforeach;
 			if(in_array($department_id, $posts_dpts)):
+				$user = $this->user->find($post['p_by']);
+				$post['created_by'] = $user['user_name'];
+				$post['recipients'] = $recipients;
 				$circulars[$i] = $post;
 				$i++;
 			endif;
 		endforeach;
 
-		$i =0;
-
-		$new_circulars = array();
-		foreach ($circulars as $circular):
-			$user = $this->user->where('user_id', $circular['p_by'])->first();
-			$circular['created_by'] = $user['user_name'];
-			$new_circulars[$i] = $circular;
-			$i++;
-		endforeach;
+//		$i = 0;
+//		$new_circulars = array();
+//		foreach ($circulars as $circular):
+//			$user = $this->user->where('user_id', $circular['p_by'])->first();
+//			$circular['created_by'] = $user['user_name'];
+//			$new_circulars[$i] = $circular;
+//			$i++;
+//		endforeach;
 		$data['pager'] = $this->post->pager;
-		$data['circulars'] = $new_circulars;
+		$data['circulars'] = $circulars;
 		return view('/pages/posts/circulars/circulars', $data);
 	}
 
