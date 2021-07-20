@@ -1,3 +1,4 @@
+<?=view('pages/posts/_post-scripts.php')?>
 <script>
 	$(document).ready(function () {
         Dropzone.autoDiscover = false;

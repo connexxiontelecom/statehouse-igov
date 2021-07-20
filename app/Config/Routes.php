@@ -79,6 +79,7 @@ $routes->match(['post'], 'edit-memo', 'MemoController::edit_memo', ['filter' => 
 
 // circular routes
 $routes->match(['get'], 'circulars', 'CircularController::circulars', ['filter' => 'auth']);
+$routes->match(['get'], 'circulars/(:alpha)', 'CircularController::circulars/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'new-circular', 'CircularController::new_circular', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'internal-circular', 'CircularController::internal_circular', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'external-circular', 'CircularController::external_circular', ['filter' => 'auth']);

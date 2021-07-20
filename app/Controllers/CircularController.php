@@ -6,7 +6,7 @@ use App\Controllers\BaseController;
 
 class CircularController extends PostController
 {
-	public function circulars() {
+	public function circulars($type = null) {
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$search_params = @$_GET['search_params'];
@@ -15,13 +15,19 @@ class CircularController extends PostController
 			->first();
 		$department_id = $l_user['employee_department_id'];
 		if (empty($search_params)):
+			$unsigned_circulars = $this->_get_unsigned_circulars();
+			if ($unsigned_circulars) session()->setFlashdata('unsigned_circulars', true);
+			if ($type === 'requests'):
+				$data['circulars'] = $unsigned_circulars;
+				return view('/pages/posts/circulars/signature-requests', $data);
+			endif;
 			$circulars = array();
 			$posts = $this->post
 				->where('p_type', 2)
 				->where('p_status', 2)
 				->join('users', 'posts.p_signed_by = users.user_id')
 				->orderBy('posts.p_date', 'DESC')
-				->paginate('9');
+				->paginate(9);
 			$i = 0;
 			foreach ($posts as $post):
 				$posts_dpts = json_decode($post['p_recipients_id']);
@@ -232,6 +238,26 @@ class CircularController extends PostController
 			}
 			return $searched_circulars;
 		}
+	}
+
+	private function _get_unsigned_circulars() {
+		$circulars = $this->post
+			->where('p_signed_by', $this->session->user_id)
+			->where('p_type', 2)
+			->where('p_status', 0)
+			->orderBy('p_date', 'DESC')
+			->findAll();
+		foreach ($circulars as $key => $circular) {
+			$recipient_ids = json_decode($circular['p_recipients_id']);
+			$recipients = [];
+			foreach ($recipient_ids as $recipient_id) {
+				array_push($recipients, $this->department->find($recipient_id));
+			}
+			$created_by = $this->user->find($circular['p_by']);
+			$circulars[$key]['created_by'] = $created_by['user_name'];
+			$circulars[$key]['recipients'] = $recipients;
+		}
+		return $circulars;
 	}
 
 }
