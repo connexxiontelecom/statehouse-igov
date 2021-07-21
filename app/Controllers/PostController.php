@@ -143,9 +143,4 @@ class PostController extends BaseController
 			}
 		}
 	}
-
-
-
-
-
 }
