@@ -30,7 +30,7 @@ class MemoController extends PostController
 		return view('/pages/posts/memos/index', $data);
 	}
 
-	public function internal_memo(){
+	public function internal_memo() {
 		if($this->request->getMethod() == 'get'):
 			$data['signed_by'] = $this->user->where('user_status', 1)
 				->groupStart()
