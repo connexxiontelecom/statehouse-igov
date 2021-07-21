@@ -129,34 +129,7 @@ class CircularController extends PostController
 	public function view_circular($p_id){
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
-		$attachments = array();
-		$post = $this->post->where('p_id', $p_id)
-			->join('users', 'posts.p_signed_by = users.user_id')
-			->first();
-
-		$user = $this->user->where('user_id', $post['p_by'])->first();
-		$post['created_by'] = $user['user_name'];
-		$_attachments = $this->pa->where('pa_post_id', $p_id)->findAll();
-		if(!empty($_attachments)):
-			$attachments = $_attachments;
-		endif;
-
-		$dpts = json_decode($post['p_recipients_id']);
-		$departments = array();
-		$i = 0;
-		foreach ($dpts as $dpt):
-			$_dpt = $this->department->where('dpt_id', $dpt)->first();
-			$departments[$i] = $_dpt['dpt_name'];
-			$i++;
-		endforeach;
-
-		$data['departments'] = $departments;
-		$data['post'] = $post;
-		$data['attachments'] = $attachments;
-		$data['organization'] = $this->organization->first();
-
-
-
+		$data['circular'] = $this->_get_circular($p_id);
 		return view('/pages/posts/circulars/view-circular', $data);
 	}
 
@@ -237,5 +210,22 @@ class CircularController extends PostController
 			$circulars[$key]['signed_by'] = $this->user->find($circular['p_signed_by']);
 		}
 		return $circulars;
+	}
+
+	private function _get_circular($circular_id) {
+		$circular = $this->post->find($circular_id);
+		if ($circular) {
+			$circular['created_by'] = $this->user->find($circular['p_by']);
+			$circular['signed_by'] = $this->user->find($circular['p_signed_by']);
+			$circular['attachments'] = $this->pa->where('pa_post_id', $circular_id)->findAll();
+			$recipient_ids = json_decode($circular['p_recipients_id']);
+			$recipients = [];
+			foreach ($recipient_ids as $recipient_id) {
+				array_push($recipients, $this->department->find($recipient_id));
+			}
+			$circular['recipients'] = $recipients;
+			$circular['organization'] = $this->organization->first();
+		}
+		return $circular;
 	}
 }
