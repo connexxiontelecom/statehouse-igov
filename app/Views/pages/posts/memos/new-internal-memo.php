@@ -1,5 +1,11 @@
 <?= $this->extend('layouts/master'); ?>
 <?=$this->section('extra-styles'); ?>
+<link href="/assets/libs/multiselect/css/multi-select.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
 <link href="/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
 <?=$this->endSection() ?>
@@ -13,7 +19,7 @@
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
 						<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
-						<li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">All Memos</a></li>
+						<li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">Memo Board</a></li>
 						<li class="breadcrumb-item active">New Internal Memo</li>
 					</ol>
 				</div>
@@ -48,7 +54,7 @@
               <div class="col-lg-6">
                 <div class="form-group" id="department-div">
                   <label for="positions">Offices</label><span style="color: red"> *</span>
-                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" data-placeholder="Please select..." required>
+                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" data-placeholder="Please select offices..." required>
 				            <?php foreach ($positions as $position): ?>
                       <option value="<?=$position['pos_id']; ?>"> <?=$position['pos_name']; ?></option>
 				            <?php endforeach; ?>
@@ -111,7 +117,7 @@
             <div class="row g-3">
               <div class="col-lg-12 offset-lg-12">
                 <div class="form-group mt-2">
-                  <button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
+                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
                 </div>
               </div>
             </div>

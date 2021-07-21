@@ -201,8 +201,8 @@
                     Please enter a document signing verification code.
                   </div>
                   <span class="help-block">
-                      <small>Please enter the verification code that was sent to you to sign this document.</small>
-                    </span>
+                    <small>Please enter the verification code that was sent to you to sign this document.</small>
+                  </span>
                 </div>
               </div>
             </div>

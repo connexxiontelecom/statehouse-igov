@@ -35,8 +35,8 @@
                   <div class="btn-group mr-1">
                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-plus-circle mr-1"></i> Add New</button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href="<?=site_url('internal-memo')?>">New Internal Circular</a>
-                      <a class="dropdown-item" href="<?=site_url('external-memo')?>">New External Circular</a>
+                      <a class="dropdown-item" href="<?=site_url('internal-circular')?>">New Internal Circular</a>
+                      <a class="dropdown-item" href="<?=site_url('external-circular')?>">New External Circular</a>
                     </div>
                   </div>
                   <a href="<?=site_url('/circulars')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
