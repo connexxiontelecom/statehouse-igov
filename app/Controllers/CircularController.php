@@ -61,7 +61,7 @@ class CircularController extends PostController
 		endif;
 	}
 
-	public function internal_circular(){
+	public function internal_circular() {
 		if($this->request->getMethod() == 'get'):
 			$data['signed_by'] = $this->user->where('user_status', 1)
 				->groupStart()
@@ -75,7 +75,6 @@ class CircularController extends PostController
 			$data['username'] = $this->session->user_username;
 			return view('/pages/posts/circulars/new-internal-circular', $data);
 		endif;
-
 		if($this->request->getMethod() == 'post'):
 			$p_attachments = array();
 			if(isset($_POST['p_attachment'])):
@@ -93,36 +92,22 @@ class CircularController extends PostController
 				$i = 0;
 				foreach ($departments as $department):
 					$new_dpt[$i] = $department['dpt_id'];
-
 					$i++;
 				endforeach;
-
 				$_POST['p_recipients_id'] = json_encode($new_dpt);
 			else:
 				$_POST['p_recipients_id'] = json_encode($_POST['p_recipients_id']);
-
 			endif;
 			$p_id = $this->post->insert($_POST);
-
 			if ($p_id):
-
-				if(count($p_attachments) > 0):
-					foreach ($p_attachments as $attachment):
-						$attachment_array = array(
-							'pa_post_id'=> $p_id,
-							'pa_link' => $attachment
-						);
-						$this->pa->save($attachment_array);
-					endforeach;
-				endif;
+				$this->_upload_attachments($p_attachments, $p_id);
 				$response['success'] = true;
-				$response['message'] = 'Successfully created Circular';
+				$response['message'] = 'Successfully created the internal circular';
 			else:
 				$response['success'] = false;
-				$response['message'] = 'There was an error while creating Circular ';
+				$response['message'] = 'There was an error while creating the internal circular';
 			endif;
 			return $this->response->setJSON($response);
-
 		endif;
 	}
 
