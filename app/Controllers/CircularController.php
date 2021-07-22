@@ -119,18 +119,19 @@ class CircularController extends PostController
 	}
 
 	public function external_circular(){
-
-		$data['signed_by'] = $this->user->where('user_status', 1)
-			->groupStart()
-			->where('user_type', 2)
-			->orWhere('user_type', 3)
-			->groupEnd()
-			->findAll();
-		$data['departments']= $this->department->findAll();
-		$data['pager'] = $this->post->pager;
-		$data['firstTime'] = $this->session->firstTime;
-		$data['username'] = $this->session->user_username;
-		return view('/pages/posts/circulars/new-external-circular', $data);
+		if($this->request->getMethod() == 'get'):
+			$data['signed_by'] = $this->user->where('user_status', 1)
+				->groupStart()
+				->where('user_type', 2)
+				->orWhere('user_type', 3)
+				->groupEnd()
+				->findAll();
+			$data['departments']= $this->department->findAll();
+			$data['pager'] = $this->post->pager;
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			return view('/pages/posts/circulars/new-external-circular', $data);
+		endif;
 	}
 
 	public function my_circulars(){
