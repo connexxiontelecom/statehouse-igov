@@ -116,6 +116,9 @@ $routes->match(['get'], 'check-signature-exists', 'EmployeeController::check_sig
 $routes->match(['post'], 'setup-signature', 'EmployeeController::setup_signature', ['filter' => 'auth']);
 $routes->match(['post'], 'verify-signature', 'EmployeeController::verify_signature', ['filter' => 'auth']);
 
+// central registry routes
+$routes->match(['get'], 'central-registry', 'CentralRegistry::index', ['filter' => 'auth']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
