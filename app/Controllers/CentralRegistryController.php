@@ -20,6 +20,7 @@ class CentralRegistryController extends BaseController
 	public function index() {
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
+		$data['mails'] = $this->_get_mails();
 		return view('/pages/central-registry/index', $data);
 	}
 
@@ -84,5 +85,12 @@ class CentralRegistryController extends BaseController
 				$this->mail_attachment->save($attachment_data);
 			}
 		}
+	}
+
+	private function _get_mails() {
+		$mails = $this->mail
+			->orderBy('created_at', 'DESC')
+			->findAll();
+		return $mails;
 	}
 }

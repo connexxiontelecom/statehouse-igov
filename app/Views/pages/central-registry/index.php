@@ -18,41 +18,98 @@
 	<!-- end page title -->
   <div class="row">
     <div class="col-12">
-      <div class="card-box">
-        <div class="row">
-          <div class="col-lg-8">
-            <form class="form-inline" method="get">
-              <div class="form-group">
-                <div class="input-group">
-                  <label for="inputPassword2" class="sr-only">Search</label>
-                  <input type="search" class="form-control" id="inputPassword2" placeholder="Search..." name="search_params">
-                  <div class="input-group-append">
-                    <button class="btn btn-success waves-effect waves-light" type="submit">Search</button>
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-8">
+              <h4 class="header-title">All Mails</h4>
+              <p class="text-muted font-13">
+                Below are the registered correspondence that can be managed here.
+              </p>
+            </div>
+            <div class="col-lg-4">
+              <div class="text-lg-right mt-lg-0">
+                <div class="btn-group mr-2">
+                  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-plus-circle mr-1"></i> New Correspondence</button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="<?=site_url('incoming-mail')?>">New Incoming Mail</a>
+                    <a class="dropdown-item" href="<?= site_url('external-memo')?>">New Outgoing Mail</a>
                   </div>
                 </div>
-              </div>
-            </form>
-          </div>
-          <div class="col-lg-4">
-            <div class="text-lg-right mt-sm-2 mt-lg-0">
-              <div class="btn-group mr-3">
-                <button type="button" class="btn btn-primary">All</button>
-                <button type="button" class="btn btn-light">Incoming</button>
-                <button type="button" class="btn btn-light">Outgoing</button>
-              </div>
-              <div class="btn-group">
-                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-plus-circle mr-1"></i> New Correspondence</button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="<?=site_url('incoming-mail')?>">New Incoming Mail</a>
-                  <a class="dropdown-item" href="<?= site_url('external-memo')?>">New Outgoing Mail</a>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-primary">All</button>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-light">Incoming</button>
+                  <button type="button" class="btn btn-light">Outgoing</button>
                 </div>
               </div>
-            </div>
-          </div><!-- end col-->
-        </div> <!-- end row -->
-      </div> <!-- end card-box -->
+            </div><!-- end col-->
+          </div> <!-- end row -->
+          <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap w-100">
+            <thead>
+            <tr>
+              <th class="text-center" style="width: 5%">S/n</th>
+              <th>Ref No.</th>
+              <th>Subject</th>
+              <th>Sender</th>
+              <th>Received</th>
+              <th>Status</th>
+              <th class="text-center" style="width: 10%">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $i=1; foreach ($mails as $mail):?>
+              <tr>
+                <td><?=$i; $i++;?></td>
+                <td><?=$mail['m_ref_no']?></td>
+                <td><?=$mail['m_subject']?></td>
+                <td><?=$mail['m_sender']?></td>
+                <td>
+	                <?php $date = date_create($mail['m_date_received']);
+                    echo date_format($date,"d M Y");
+	                ?>
+                </td>
+                <td>
+		              <?php
+		              if ($mail['m_status'] == 0) echo 'Registered';
+                  elseif ($mail['m_status'] == 1) echo 'Confirmed';
+                  elseif ($mail['m_status'] == 2) echo 'Activated';
+                  elseif ($mail['m_status'] == 3) echo 'Deactivated';
+                  elseif ($mail['m_status'] == 4) echo 'Rejected';
+		              ?>
+                </td>
+                <td class="text-center">
+                  <a href="javascript:void(0)">Manage</a>
+                </td>
+              </tr>
+            <?php endforeach;?>
+            </tbody>
+          </table>
+        </div> <!-- end card body-->
+      </div> <!-- end card -->
     </div><!-- end col-->
   </div>
-  <!-- end row-->
+
 </div>
+<?= $this->endSection(); ?>
+<?= $this->section('extra-scripts'); ?>
+<!-- third party js -->
+<script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+<script src="/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+<script src="/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+<!-- third party js ends -->
+
+<!-- Datatables init -->
+<script src="/assets/js/pages/datatables.init.js"></script>
 <?= $this->endSection(); ?>

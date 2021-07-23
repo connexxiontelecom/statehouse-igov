@@ -316,8 +316,32 @@
 					</li>
           <li>
             <a href="<?= site_url('central-registry') ?>">
-              <i data-feather="archive"></i>
+              <i data-feather="inbox"></i>
               <span> Central Registry </span>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i data-feather="file-text"></i>
+              <span> Forms </span>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i data-feather="monitor"></i>
+              <span> Meetings </span>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i data-feather="clipboard"></i>
+              <span> Budgets </span>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i data-feather="briefcase"></i>
+              <span> Projects </span>
             </a>
           </li>
           <li>
