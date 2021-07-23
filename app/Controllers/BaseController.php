@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Verification;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -70,5 +71,25 @@ class BaseController extends ResourceController
 		$this->email->setSubject($subject);
 		$this->email->setMessage($message);
 		return $this->email->send();
+	}
+
+	protected function _get_verification_code($ver_type) {
+		$verification = new Verification();
+		$ver_code = bin2hex(random_bytes(4));
+		$verification_data = [
+			'ver_user_id' => session()->user_id,
+			'ver_type' => $ver_type,
+			'ver_code' => $ver_code,
+			'ver_status' => 0,
+		];
+		$verified = $verification->where([
+			'ver_user_id' => session()->user_id,
+			'ver_type' => $ver_type
+		])->first();
+		if ($verified) {
+			$verification_data['ver_id'] = $verified['ver_id'];
+		}
+		$verification->save($verification_data);
+		return $ver_code;
 	}
 }
