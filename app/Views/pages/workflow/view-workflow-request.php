@@ -44,11 +44,15 @@
                                             <?= session()->get('success') ?>
                                         </div>
                                     <?php endif; ?>
+
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4">
+                            <div class="btn-group">
                             <a href="<?=site_url('/workflow-requests')?>" type="button" class="btn btn-sm btn-primary float-right"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -113,34 +117,45 @@
                     </div>
 
                     <div>
-                        <h5>Team Members:</h5>
-                        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme" class="d-inline-block">
-                            <img src="/assets/images/users/user-6.jpg" class="rounded-circle img-thumbnail avatar-sm" alt="friend">
-                        </a>
-
-                        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Michael Zenaty" class="d-inline-block">
-                            <img src="/assets/images/users/user-7.jpg" class="rounded-circle img-thumbnail avatar-sm" alt="friend">
-                        </a>
+                        <h5>Responsible Persons(s):</h5>
+                        <?php foreach($responsible_persons as $person):  ?>
+                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="<?= $person['employee_f_name']  ?> <?= $person['employee_l_name'] ?>" class="d-inline-block">
+                                <img src="/assets/images/users/user-6.jpg" class="rounded-circle img-thumbnail avatar-sm" alt="friend">
+                            </a>
+                            <?php if($person['redirected_to_id'] == $auth_user && $person['request_status'] == 0): ?>
+                                <button class="btn btn-sm btn-danger" data-target="#declineRequest" data-toggle="modal">Decline</button>
+                                <button class="btn btn-sm btn-success" data-target="#approveRequest" data-toggle="modal">Approve</button>
+                                <div id="approveRequest" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="standard-modalLabel">Approve Request</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h6>This action cannot be undone. Are you sure you want to approve this request?</h6>
+                                                <form action="<?= site_url('/workflow-requests/process-request') ?>" method="post">
+                                                    <?= csrf_field() ?>
+                                                    <div class="btn-group float-right mt-3">
+                                                        <input type="hidden" name="request" value="<?= $workflow_request->workflow_request_id ?>">
+                                                        <input type="hidden" name="workflow_responsible" value="<?= $person['workflow_responsible_people_id'] ?>">
+                                                        <input type="hidden" name="action" value="1">
+                                                        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Yes, please</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
-
-                </div> <!-- end card-body-->
-
-            </div> <!-- end card-->
+                </div>
+            </div>
 
             <div class="card">
                 <div class="card-body">
-                    <div class="dropdown float-right">
-                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
-                            <i class="dripicons-dots-3"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">Latest</a>
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item">Popular</a>
-                        </div>
-                    </div>
-
                     <h4 class="mt-0 mb-3">Comments (258)</h4>
 
                     <textarea style="resize:none;" class="form-control form-control-light mb-2" placeholder="Leave comment..." id="comment-box" rows="3"></textarea>
@@ -172,79 +187,31 @@
         <div class="col-lg-6 col-xl-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title mb-3">Files</h5>
-
+                    <h5 class="card-title mb-3">Attachments</h5>
+                    <?php foreach($workflow_attachments as $attachment): ?>
                     <div class="card mb-1 shadow-none border">
                         <div class="p-2">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <div class="avatar-sm">
-                                                            <span class="avatar-title badge-soft-primary text-primary rounded">
-                                                                ZIP
-                                                            </span>
+                                        <span class="avatar-title badge-soft-primary text-primary rounded">
+                                            ZIP
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="col pl-0">
-                                    <a href="javascript:void(0);" class="text-muted font-weight-bold">Ubold-sketch-design.zip</a>
-                                    <p class="mb-0">2.3 MB</p>
+                                    <a href="/uploads/posts/<?= $attachment->attachment ?>" target="_blank" class="text-muted font-weight-bold"><?= strlen($attachment->attachment) > 30 ? substr($attachment->attachment,0,30).'...' : $attachment->attachment ?></a>
                                 </div>
                                 <div class="col-auto">
                                     <!-- Button -->
-                                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
+                                    <a href="/uploads/posts/<?= $attachment->attachment ?>" target="_blank" class="btn btn-link btn-lg text-muted">
                                         <i class="dripicons-download"></i>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card mb-1 shadow-none border">
-                        <div class="p-2">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <div class="avatar-sm">
-                                                            <span class="avatar-title badge-soft-primary text-primary rounded">
-                                                                JPG
-                                                            </span>
-                                    </div>
-                                </div>
-                                <div class="col pl-0">
-                                    <a href="javascript:void(0);" class="text-muted font-weight-bold">Dashboard-design.jpg</a>
-                                    <p class="mb-0">3.25 MB</p>
-                                </div>
-                                <div class="col-auto">
-                                    <!-- Button -->
-                                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                                        <i class="dripicons-download"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mb-0 shadow-none border">
-                        <div class="p-2">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <div class="avatar-sm">
-                                                            <span class="avatar-title badge-soft-primary text-primary rounded">
-                                                                MP4
-                                                            </span>
-                                    </div>
-                                </div>
-                                <div class="col pl-0">
-                                    <a href="javascript:void(0);" class="text-muted font-weight-bold">Admin-bug-report.mp4</a>
-                                    <p class="mb-0">7.05 MB</p>
-                                </div>
-                                <div class="col-auto">
-                                    <!-- Button -->
-                                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                                        <i class="dripicons-download"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
 
                 </div>
             </div>

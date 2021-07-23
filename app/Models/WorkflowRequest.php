@@ -49,7 +49,7 @@ class WorkflowRequest extends Model
         $builder->join('users as u', 'u.user_id = wr.requested_by');
         $builder->join('workflow_types wt', 'wt.workflow_type_id = wr.requested_type_id');
         $builder->where('wr.requested_by = '.$user_id);
-        $result = $builder->get()->getRowObject();
+        $result = $builder->get()->getResultArray();
         return $result;
     }
 

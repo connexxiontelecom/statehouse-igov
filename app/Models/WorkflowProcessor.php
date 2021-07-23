@@ -47,4 +47,16 @@ class WorkflowProcessor extends Model
 	    $builder->join('users as u', 'u.user_id = wp.w_flow_employee_id');
         return $builder->get()->getResultArray();
     }
+    public function checkNormalList($user_id, $workflow_type, $department){
+        return WorkflowProcessor::where('w_flow_employee_id', $user_id)
+            ->where('w_flow_type_id', $workflow_type)
+            ->where('w_flow_department_id', $department)
+            ->first();
+    }
+    public function checkAllNormalList($user_id, $workflow_type, $department){
+        return WorkflowProcessor::where('w_flow_employee_id', $user_id)
+            ->where('w_flow_type_id', $workflow_type)
+            ->where('w_flow_department_id', $department)
+            ->findAll();
+    }
 }

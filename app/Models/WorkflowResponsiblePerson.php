@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Employee extends Model
+class WorkflowResponsiblePerson extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'employees';
-	protected $primaryKey           = 'employee_id';
+	protected $table                = 'workflow_responsible_people';
+	protected $primaryKey           = 'workflow_responsible_people_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['employee_id', 'employee_f_name', 'employee_l_name', 'employee_o_name', 'employee_sex', 'employee_dob', 'employee_level', 'employee_step', 'employee_department_id', 'employee_position_id', 'employee_mail', 'employee_phone', 'employee_signature' ];
+	protected $allowedFields        = ['redirected_to_id', 'request_id', 'workflow_responsible_people_id', 'request_status'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -40,7 +40,15 @@ class Employee extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-    public function getEmployeeByUserEmployeeId($user_employee_id){
-        return Employee::where('employee_id', $user_employee_id)->first();
+
+	public function getWorkflowResponsiblePersonsByRequestId($request_id){
+	    $builder = $this->db->table('workflow_responsible_people as wrp');
+	    $builder->join('employees as e', 'e.employee_id = wrp.redirected_to_id');
+	    $builder->where('wrp.request_id = '.$request_id);
+	    return $builder->get()->getResultArray();
+    }
+
+    public function getPublishedResponsiblePersons($request_id){
+        return WorkflowResponsiblePerson::where('request_id', $request_id)->findAll();
     }
 }

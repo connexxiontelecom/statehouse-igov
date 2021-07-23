@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Employee extends Model
+class WorkflowConversation extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'employees';
-	protected $primaryKey           = 'employee_id';
+	protected $table                = 'workflow_conversations';
+	protected $primaryKey           = 'workflow_conversation_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['employee_id', 'employee_f_name', 'employee_l_name', 'employee_o_name', 'employee_sex', 'employee_dob', 'employee_level', 'employee_step', 'employee_department_id', 'employee_position_id', 'employee_mail', 'employee_phone', 'employee_signature' ];
+	protected $allowedFields        = ['workflow_conversation_id', 'comment', 'commented_by'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -39,8 +39,4 @@ class Employee extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-
-    public function getEmployeeByUserEmployeeId($user_employee_id){
-        return Employee::where('employee_id', $user_employee_id)->first();
-    }
 }

@@ -23,6 +23,11 @@
                 <a href="<?= site_url('/workflow-requests/new-request') ?>" class="btn btn-sm btn-blue waves-effect waves-light float-right">
                     <i class="mdi mdi-plus-circle"></i> Add New Request
                 </a>
+                <?php if(session()->has('error')): ?>
+                    <div class="alert alert-warning" role="alert">
+                        <i class="mdi mdi-alert-outline mr-2"></i> <?= session()->get('error') ?>
+                    </div>
+                <?php endif; ?>
                 <h4 class="header-title mb-4">My Workflow Requests</h4>
 
                 <table class="table table-hover m-0 table-centered dt-responsive nowrap w-100" id="tickets-table">
