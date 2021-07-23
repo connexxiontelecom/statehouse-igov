@@ -108,6 +108,26 @@ $routes->post('/update-training', 'TrainingController::updateTraining', ['filter
 $routes->post('/add-new-training-lesson', 'TrainingController::addNewTrainingLesson', ['filter'=>'auth']);
 $routes->post('/update-training-lesson', 'TrainingController::updateTrainingLesson', ['filter'=>'auth']);
 $routes->get('/delete-lesson-attachment/(:num)', 'TrainingController::deleteAttachment/$1', ['filter'=>'auth']);
+
+#Workflow routes
+$routes->get('/workflow/settings', 'WorkflowController::settings', ['filter'=>'auth']);
+$routes->post('/workflow/add-new-workflow-type', 'WorkflowController::storeNewWorkflowType', ['filter'=>'auth']);
+$routes->post('/workflow/update-workflow-type', 'WorkflowController::updateWorkflowType', ['filter'=>'auth']);
+#Normal process routes
+$routes->post('/workflow/setup-workflow-processor', 'WorkflowController::setupWorkflowProcessor', ['filter'=>'auth']);
+$routes->post('/workflow/update-workflow-processor', 'WorkflowController::updateWorkflowProcessor', ['filter'=>'auth']);
+
+#Exception process routes
+$routes->post('/workflow/setup-exception-workflow-processor', 'WorkflowController::setupExceptionWorkflowProcessor', ['filter'=>'auth']);
+$routes->post('/workflow/update-exception-workflow-processor', 'WorkflowController::updateExceptionWorkflowProcessor', ['filter'=>'auth']);
+
+#Workflow request [employee]
+$routes->get('/workflow-requests', 'WorkflowController::workflowRequests', ['filter'=>'auth']);
+$routes->get('/workflow-requests/new-request', 'WorkflowController::createNewWorkflowRequest', ['filter'=>'auth']);
+$routes->post('/workflow-requests/new-request', 'WorkflowController::setNewWorkflowRequest', ['filter'=>'auth']);
+$routes->get('/workflow-requests/view/(:num)', 'WorkflowController::viewWorkflowRequest/$1', ['filter'=>'auth']);
+$routes->post('/workflow-requests/process-request', 'WorkflowController::processWorkflowRequest', ['filter'=>'auth']);
+$routes->post('/workflow-requests/leave-comment', 'WorkflowController::leaveComment', ['filter'=>'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 // employee routes

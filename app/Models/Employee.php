@@ -39,4 +39,8 @@ class Employee extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+    public function getEmployeeByUserEmployeeId($user_employee_id){
+        return Employee::where('employee_id', $user_employee_id)->first();
+    }
 }
