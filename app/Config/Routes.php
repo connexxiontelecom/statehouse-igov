@@ -117,7 +117,10 @@ $routes->match(['post'], 'setup-signature', 'EmployeeController::setup_signature
 $routes->match(['post'], 'verify-signature', 'EmployeeController::verify_signature', ['filter' => 'auth']);
 
 // central registry routes
-$routes->match(['get'], 'central-registry', 'CentralRegistry::index', ['filter' => 'auth']);
+$routes->match(['get'], 'central-registry', 'CentralRegistryController::index', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'incoming-mail', 'CentralRegistryController::incoming_mail', ['filter' => 'auth']);
+$routes->match(['post'], 'upload-mail-attachments', 'CentralRegistryController::upload_mail_attachments', ['filter' => 'auth']);
+$routes->match(['post', 'get'], 'delete-mail-attachments', 'CentralRegistryController::delete_mail_attachments', ['filter' => 'auth']);
 
 /*
  * --------------------------------------------------------------------
