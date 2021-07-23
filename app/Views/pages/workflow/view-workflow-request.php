@@ -148,6 +148,29 @@
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div>
+                                <div id="declineRequest" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="standard-modalLabel">Decline Request</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h6>This action cannot be undone. Are you sure you want to decline this request?</h6>
+                                                <form action="<?= site_url('/workflow-requests/process-request') ?>" method="post">
+                                                    <?= csrf_field() ?>
+                                                    <div class="btn-group float-right mt-3">
+                                                        <input type="hidden" name="request" value="<?= $workflow_request->workflow_request_id ?>">
+                                                        <input type="hidden" name="workflow_responsible" value="<?= $person['workflow_responsible_people_id'] ?>">
+                                                        <input type="hidden" name="action" value="2">
+                                                        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Yes, please</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </div>
@@ -157,30 +180,31 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="mt-0 mb-3">Comments (258)</h4>
-
-                    <textarea style="resize:none;" class="form-control form-control-light mb-2" placeholder="Leave comment..." id="comment-box" rows="3"></textarea>
-                    <div class="text-right">
-                        <div class="btn-group mb-2">
-                            <button type="button" class="btn btn-link btn-sm text-muted font-18"><i class="dripicons-paperclip"></i></button>
+                    <form action="<?= site_url('/workflow-requests/leave-comment') ?>" method="post">
+                        <?= csrf_field() ?>
+                        <textarea style="resize:none;" class="form-control form-control-light mb-2" placeholder="Leave comment..." id="comment-box" name="leave_comment" rows="3"></textarea>
+                        <div class="text-right">
+                            <div class="btn-group mb-2 ml-2">
+                                <input type="hidden" name="workflow_comment" value="<?= $workflow_request->workflow_request_id ?>">
+                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                            </div>
                         </div>
-                        <div class="btn-group mb-2 ml-2">
-                            <button type="button" class="btn btn-primary btn-sm">Submit</button>
-                        </div>
-                    </div>
+                    </form>
 
+                    <?php foreach($comments as $comment): ?>
                     <div class="mt-2">
                         <div class="media">
                             <img class="mr-2 avatar-sm rounded-circle" src="/assets/images/users/user-3.jpg"
                                  alt="Generic placeholder image">
                             <div class="media-body">
-                                <h5 class="mt-0"><a href="contacts-profile.html" class="text-reset">Jeremy Tomlinson</a> <small class="text-muted">3 hours ago</small></h5>
-                                Nice work, makes me think of The Money Pit.
-
+                                <h5 class="mt-0">
+                                    <a href="contacts-profile.html" class="text-reset"><?= $comment['employee_f_name'] ?> <?= $comment['employee_l_name'] ?> </a> <small class="text-muted"><?= date('d M, Y h:ia', strtotime($comment['created_at'])) ?></small></h5>
+                                <?= $comment['comment'] ?>
                                 <br/>
-                                <a href="javascript: void(0);" class="text-muted font-13 d-inline-block mt-2"><i class="mdi mdi-reply"></i> Reply</a>
                             </div>
                         </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>

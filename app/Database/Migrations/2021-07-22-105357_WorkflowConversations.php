@@ -24,6 +24,10 @@ class WorkflowConversations extends Migration
                     'type' => 'INT',
                     'null'=>true,
                 ],
+                'request_id' =>[
+                    'type' => 'INT',
+                    'null'=>true,
+                ],
                 'created_at datetime default current_timestamp',
 
             ]

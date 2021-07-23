@@ -14,7 +14,7 @@ class WorkflowConversation extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['workflow_conversation_id', 'comment', 'commented_by'];
+	protected $allowedFields        = ['workflow_conversation_id', 'comment', 'commented_by', 'request_id'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -39,4 +39,13 @@ class WorkflowConversation extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+	/*
+	 * Use-case methods
+	 */
+    public function getWorkflowConversationByRequestId($id){
+        $builder = $this->db->table('workflow_conversations as wc');
+        $builder->join('employees as e', 'e.employee_id = wc.commented_by');
+        return $builder->get()->getResultArray();
+    }
 }

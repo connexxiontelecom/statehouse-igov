@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\UserModel;
+use App\Models\WorkflowConversation;
 use App\Models\WorkflowExceptionProcessor;
 use App\Models\WorkflowProcessor;
 use App\Models\WorkflowRequest;
@@ -31,6 +32,7 @@ class WorkflowController extends BaseController
         $this->workflowrequestattachment = new WorkflowRequestAttachment();
         $this->employee = new Employee();
         $this->workflowresponsibleperson = new WorkflowResponsiblePerson();
+        $this->workflowconversation = new WorkflowConversation();
     }
 
 	public function settings()
@@ -305,7 +307,8 @@ class WorkflowController extends BaseController
               'workflow_request'=>$request,
               'workflow_attachments'=>$this->workflowrequestattachment->getWorkflowRequestAttachments($id),
               'responsible_persons'=>$this->workflowresponsibleperson->getWorkflowResponsiblePersonsByRequestId($id),
-                'auth_user'=>$this->session->user_employee_id
+                'auth_user'=>$this->session->user_employee_id,
+                'comments'=>$this->workflowconversation->getWorkflowConversationByRequestId($id)
             ];
             return view('pages/workflow/view-workflow-request', $data);
         }else{
@@ -399,5 +402,31 @@ class WorkflowController extends BaseController
         }
     }
 
+    public function leaveComment()
+    {
+        if ($this->request->getMethod() == 'post') {
+            helper(['form', 'url']);
+            if ($this->request->getMethod() == 'post') {
+                helper(['form', 'url']);
+                $input = $this->validate([
+                    'leave_comment' => 'required',
+                    'workflow_comment' => 'required'
+                ]);
+                if (!$input) {
+                    return redirect()->back()->with("error", "<strong>Whoops!</strong> Something went wrong. Try again.");
+                } else {
+                    $comment = $this->request->getPost('leave_comment');
+                    $workflow = $this->request->getPost('workflow_comment');
+                    $data = [
+                        'request_id'=>$workflow,
+                        'comment'=>$comment,
+                        'commented_by'=>$this->session->user_id
+                    ];
+                    $this->workflowconversation->save($data);
+                    return redirect()->back()->with("success", "<strong>Success!</strong> Comment registered.");
+                }
+            }
+        }
+    }
 
 }
