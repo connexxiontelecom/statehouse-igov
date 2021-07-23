@@ -314,6 +314,13 @@
 							<span> Trainings </span>
 						</a>
 					</li>
+                    <li>
+						<a href="<?= site_url('workflow-requests') ?>">
+							<i data-feather="book"></i>
+							<span> Workflow </span>
+						</a>
+					</li>
+
           <li>
             <a href="<?= site_url('central-registry') ?>">
               <i data-feather="inbox"></i>

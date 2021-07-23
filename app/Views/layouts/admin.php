@@ -603,6 +603,26 @@
 							</ul>
 						</div>
 					</li>
+                    <li>
+						<a href="#workflowSettings" data-toggle="collapse">
+							<i data-feather="settings"></i>
+
+							<span> Workflow Settings </span>
+							<span class="menu-arrow"></span>
+						</a>
+						<div class="collapse" id="workflowSettings">
+							<ul class="nav-second-level">
+								<li>
+									<a href="<?=site_url('new-employee'); ?>">New Employee</a>
+								</li>
+								<li>
+									<a href="<?=site_url('/workflow/settings'); ?>">Settings</a>
+								</li>
+
+
+							</ul>
+						</div>
+					</li>
 					
 					<li>
 						<a href="apps-chat.html">

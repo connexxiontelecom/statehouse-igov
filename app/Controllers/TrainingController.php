@@ -91,8 +91,6 @@ class TrainingController extends BaseController
 
     public function viewTraining($slug){
         $training = $this->training->where('slug', $slug)->first();
-       // $lessons = $this->lesson->where('training_id', $training['training_id'])->getArray();
-       // return print_r($lessons);
         if(!empty($training)){
             $lessons = $this->lesson->getLessonsByTrainingId($training['training_id']);
             $data = [
@@ -122,6 +120,7 @@ class TrainingController extends BaseController
                 ];
                 #Lesson attachments
                 //$attachments = $this->request->getFileMultiple('attachments');
+                $lesson_id =  $this->lesson->save($data);
                 if($this->request->getFileMultiple('attachments')){
                     foreach ($this->request->getFileMultiple('attachments') as $attachment){
                         if($attachment->isValid() ){
@@ -130,15 +129,15 @@ class TrainingController extends BaseController
                             $attachment->move('uploads/posts', $filename);
                             $lesson_attachment = [
                                 'lesson_attachment_training_id' => $this->request->getPost('training'),
-                                'lesson_attachment_lesson_id' => 1,
+                                'lesson_attachment_lesson_id' => $lesson_id,
                                 'attachment' => $filename
                             ];
                             $this->lessonattachment->save($lesson_attachment);
                         }
                     }
                 }
-                $this->lesson->save($data);
-                return redirect()->back()->with("error", "<strong>Success!</strong> New lesson added.");
+
+                return redirect()->back()->with("success", "<strong>Success!</strong> New lesson added.");
             }else{
                 return redirect()->to(base_url('/add-new-training'))->with("error", "<strong>Whoops!</strong> All fields are required.");
             }

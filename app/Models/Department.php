@@ -39,4 +39,11 @@ class Department extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+	/*
+	 * Use-case methods
+	 */
+    public function getAllDepartments(){
+        return Department::orderBy('dpt_name', 'ASC')->findAll();
+    }
 }
