@@ -179,7 +179,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h4 class="mt-0 mb-3">Comments (258)</h4>
+                    <h4 class="mt-0 mb-3">Comments</h4>
                     <form action="<?= site_url('/workflow-requests/leave-comment') ?>" method="post">
                         <?= csrf_field() ?>
                         <textarea style="resize:none;" class="form-control form-control-light mb-2" placeholder="Leave comment..." id="comment-box" name="leave_comment" rows="3"></textarea>

@@ -97,7 +97,8 @@ class FileController extends BaseController
 
     public function openFolder($id){
         $files = $this->file->getFilesByFolderId($id);
-        $folders = $this->folder->getFolderContentById($id);
+        $folders = $this->folder->getAllFolders();
+        //$folders = $this->folder->getFolderContentById($id);
         //if(!empty($files) || !empty($folders)){
             $data = [
                 'files'=>$files,
