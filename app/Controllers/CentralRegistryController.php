@@ -75,6 +75,13 @@ class CentralRegistryController extends BaseController
 		return $this->response->setJSON($response);
 	}
 
+	public function manage_mail($mail_id) {
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$data['mail'] = $this->_get_mail($mail_id);
+		return view('/pages/central-registry/manage-mail', $data);
+	}
+
 	private function _upload_attachments($attachments, $mail_id) {
 		if (count($attachments) > 0) {
 			foreach ($attachments as $attachment) {
@@ -92,5 +99,13 @@ class CentralRegistryController extends BaseController
 			->orderBy('created_at', 'DESC')
 			->findAll();
 		return $mails;
+	}
+
+	private function _get_mail($mail_id) {
+		$mail = $this->mail->find($mail_id);
+		if ($mail):
+			$mail['attachments'] = $this->mail_attachment->where('ma_mail_id', $mail_id)->findAll();
+		endif;
+		return $mail;
 	}
 }
