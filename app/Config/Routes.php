@@ -142,7 +142,7 @@ $routes->match(['get', 'post'], 'incoming-mail', 'CentralRegistryController::inc
 $routes->match(['post'], 'upload-mail-attachments', 'CentralRegistryController::upload_mail_attachments', ['filter' => 'auth']);
 $routes->match(['post', 'get'], 'delete-mail-attachments', 'CentralRegistryController::delete_mail_attachments', ['filter' => 'auth']);
 $routes->match(['get'], 'manage-mail/(:num)', 'CentralRegistryController::manage_mail/$1', ['filter' => 'auth']);
-
+$routes->match(['post'], 'file-mail', 'CentralRegistryController::file_mail', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing

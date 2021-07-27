@@ -24,7 +24,7 @@
           <div class="row">
             <div class="col-lg-8">
               <a href="<?=site_url('/central-registry')?>" type="button" class="btn btn-danger waves-effect waves-light mr-2">Transfer Mail</a>
-              <a href="<?=site_url('/central-registry')?>" type="button" class="btn btn-success waves-effect waves-light">File Mail</a>
+              <a href="javascript:void(0)" type="button" class="btn btn-success waves-effect waves-light" data-toggle="modal" data-target="#standard-modal-3">File Mail</a>
             </div>
             <div class="col-lg-4">
               <div class="text-lg-right mt-3 mt-lg-0">
@@ -51,7 +51,11 @@
             </p>
             <h5>File Cabinet Number</h5>
             <p class="text-muted mb-2">
-		          <em>Not yet filed</em>
+              <?php if ($mail['m_file_ref_no']):?>
+	              <?=$mail['m_file_ref_no']?>
+              <?php else:?>
+                <em>Not yet filed</em>
+              <?php endif;?>
             </p>
             <h5>Current Desk</h5>
             <p class="text-muted mb-2">
@@ -194,6 +198,41 @@
         </div>
       </div>
     </div>
-
+    <div id="standard-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form id="mail-filing-form" class="needs-validation" novalidate>
+            <div class="modal-header">
+              <h4 class="modal-title" id="standard-modalLabel">File Mail</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="ver-code">File Cabinet Number</label>
+                    <input type="text" class="form-control" name="m_file_ref_no" id="file-ref-no" required/>
+                    <div class="invalid-feedback">
+                      Please enter a file cabinet number.
+                    </div>
+                    <span class="help-block">
+                      <small>Please enter the file cabinet number used to store this mail physically.</small>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+              <button type="button" onclick="fileMail()" class="btn btn-primary" id="save-btn">Submit</button>
+            </div>
+            <input type="hidden" id="mail-id" value="<?=$mail['m_id']?>">
+          </form>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 	</div>
+<?= $this->endSection(); ?>
+<?= $this->section('extra-scripts'); ?>
+<?=view('pages/central-registry/_central-registry-scripts.php')?>
 <?= $this->endSection(); ?>

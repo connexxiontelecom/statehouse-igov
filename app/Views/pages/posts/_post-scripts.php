@@ -36,13 +36,14 @@
   function verifyDocumentSigning() {
     let verCode = $('#ver-code').val()
     if (!verCode) {
-      Swal.fire('Invalid Submission!', 'Please fill enter the verification code', 'error')
+      Swal.fire('Invalid Submission!', 'Please enter the verification code', 'error')
     } else {
       let formData = new FormData()
       let postID = $('#post-id').val()
       let eSignature = $('#e-signature').val()
       formData.append('p_id', postID)
       formData.append('p_signature', eSignature)
+      formData.append('ver_code', verCode)
       $.ajax({
         url: '<?=site_url('/sign-post')?>',
         type: 'post',
