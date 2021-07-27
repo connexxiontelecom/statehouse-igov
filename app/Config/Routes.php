@@ -38,6 +38,7 @@ $routes->match(['get', 'post'], 'register', 'Auth::register', ['filter' => 'noau
 $routes->match(['get', 'post'], 'login', 'Auth::login', ['filter' => 'noauth']);
 $routes->get('/', 'Home::index', ['filter' => 'auth']);
 $routes->get('/logout', 'Auth::logout', ['filter' => 'auth']);
+$routes->get('/test', 'TestController::index');
 
 //office route
 $routes->get('office', 'Office::index', ['filter' => 'auth']);
