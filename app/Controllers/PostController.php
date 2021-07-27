@@ -91,17 +91,35 @@ class PostController extends BaseController
 			$response['message'] = 'This document has been processed. No further actions can be taken at this time.';
 			return $this->response->setJSON($response);
 		}
-		$post_data = [
-			'p_id' => $post_request_data['p_id'],
-			'p_status' => 2,
-			'p_signature' => $post_request_data['p_signature']
-		];
-		if ($this->post->save($post_data)) {
-			$response['success'] = true;
-			$response['message'] = 'The document was signed successfully';
+		// check verification code
+		$ver_code = $post_request_data['ver_code'];
+		$verification = $this->verification->where([
+			'ver_user_id' => session()->user_id,
+			'ver_type' => 'doc_signing',
+			'ver_code' => $ver_code,
+			'ver_status' => 0
+		])->first();
+		if ($verification) {
+			$verification_data = [
+				'ver_id' => $verification['ver_id'],
+				'ver_status' => 1,
+			];
+			$this->verification->save($verification_data);
+			$post_data = [
+				'p_id' => $post_request_data['p_id'],
+				'p_status' => 2,
+				'p_signature' => $post_request_data['p_signature']
+			];
+			if ($this->post->save($post_data)) {
+				$response['success'] = true;
+				$response['message'] = 'The document was signed successfully';
+			} else {
+				$response['success'] = false;
+				$response['message'] = 'An error occurred while signing this document';
+			}
 		} else {
 			$response['success'] = false;
-			$response['message'] = 'An error occurred while signing this document';
+			$response['message'] = 'The verification code you entered is not valid';
 		}
 		return $this->response->setJSON($response);
 	}

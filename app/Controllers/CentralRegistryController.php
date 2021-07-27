@@ -82,6 +82,25 @@ class CentralRegistryController extends BaseController
 		return view('/pages/central-registry/manage-mail', $data);
 	}
 
+	public function file_mail() {
+		$post_data = $this->request->getPost();
+		$mail_data = [
+			'm_id' => $post_data['m_id'],
+			'm_file_ref_no' => $post_data['m_file_ref_no'],
+			'm_status' => 1
+		];
+		$filed = $this->mail->save($mail_data);
+		if ($filed) {
+			$response['success'] = true;
+			$response['message'] = 'Successfully filed the incoming mail';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'There was an error while filing the incoming mail';
+		}
+		return $this->response->setJSON($response);
+	}
+
+
 	private function _upload_attachments($attachments, $mail_id) {
 		if (count($attachments) > 0) {
 			foreach ($attachments as $attachment) {
