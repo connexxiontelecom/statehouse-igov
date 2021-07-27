@@ -73,4 +73,31 @@
       }
     })
   })
+
+  function fileMail() {
+    let refNo = $('#file-ref-no').val()
+    if (!refNo) {
+      Swal.fire('Invalid Submission!', 'Please enter the file cabinet number', 'error')
+    } else {
+      let formData = new FormData()
+      let mailID = $('#mail-id').val()
+      formData.append('m_id', mailID)
+      formData.append('m_file_ref_no', refNo)
+      $.ajax({
+        url: '<?=site_url('/file-mail')?>',
+        type: 'post',
+        data: formData,
+        success: response => {
+          if (response.success) {
+            Swal.fire('Confirmed!', response.message, 'success').then(() => location.reload())
+          } else {
+            Swal.fire('Sorry!', response.message, 'error')
+          }
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+      })
+    }
+  }
 </script>
