@@ -80,7 +80,7 @@
 		              ?>
                 </td>
                 <td class="text-center">
-                  <a href="javascript:void(0)">Manage</a>
+                  <a href="<?=site_url('manage-mail/').$mail['m_id']?>">Manage</a>
                 </td>
               </tr>
             <?php endforeach;?>
