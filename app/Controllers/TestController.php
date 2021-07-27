@@ -9,7 +9,7 @@ class TestController extends BaseController
 {
 	public function index()
 	{
-		$server = new Server('https://mail.connexxiongroup.com ', '143', '/imap/ssl/novalidate-cert');
+		$server = new Server('mail.connexxiongroup.com', '993', '/imap/ssl/validate-cert');
 		
 		//print_r($server);
 //		$server = new Server(
@@ -30,7 +30,9 @@ class TestController extends BaseController
 
 			echo $message->getBodyHtml();    // Content of text/html part, if present
 
-//			echo '<br>';
+			echo '<br>';
+			
+			echo '<hr>';
 //
 //			echo $message->getBodyText();
 			// $message is instance of \Ddeboer\Imap\Message
