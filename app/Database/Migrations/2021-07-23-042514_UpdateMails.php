@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class UpdateMails extends Migration
+class UpdateMailss extends Migration
 {
 	public function up()
 	{
