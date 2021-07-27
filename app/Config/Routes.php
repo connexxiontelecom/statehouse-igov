@@ -130,6 +130,9 @@ $routes->post('/workflow-requests/process-request', 'WorkflowController::process
 $routes->post('/workflow-requests/leave-comment', 'WorkflowController::leaveComment', ['filter'=>'auth']);
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
+
+$routes->get('/email', 'EmailController::index', ['filter'=>'auth']);
+
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
 $routes->match(['get'], 'check-signature-exists', 'EmployeeController::check_signature_exists', ['filter' => 'auth']);
