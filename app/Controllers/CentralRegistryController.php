@@ -47,15 +47,51 @@ class CentralRegistryController extends BaseController
 			'm_direction' => 1,
 		];
 		$mail_id = $this->mail->insert($mail_data);
-		$attachments = $post_data['m_attachments'];
 		if ($mail_id) {
-			$this->_upload_attachments($attachments, $mail_id);
+			if (isset($post_data['m_attachments'])) {
+				$attachments = $post_data['m_attachments'];
+				$this->_upload_attachments($attachments, $mail_id);
+			}
 			$this->_set_file_holder(session()->user_id, $mail_id);
 			$response['success'] = true;
 			$response['message'] = 'Successfully registered the incoming mail';
 		} else {
 			$response['success'] = false;
 			$response['message'] = 'There was an error while registering the incoming mail';
+		}
+		return $this->response->setJSON($response);
+	}
+
+	public function outgoing_mail() {
+		if($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			return view('/pages/central-registry/new-outgoing-mail', $data);
+		endif;
+		$post_data = $this->request->getPost();
+		$mail_data = [
+			'm_ref_no' => $post_data['m_ref_no'],
+			'm_subject' => $post_data['m_subject'],
+			'm_sender' => $post_data['m_sender'],
+			'm_date_correspondence' => $post_data['m_date_correspondence'],
+			'm_date_received' => $post_data['m_date_received'],
+			'm_notes' => $post_data['m_notes'],
+			'm_status' => 0,
+			'm_by' => $this->session->user_id,
+			'm_direction' => 2,
+		];
+		$mail_id = $this->mail->insert($mail_data);
+		if ($mail_id) {
+			if (isset($post_data['m_attachments'])) {
+				$attachments = $post_data['m_attachments'];
+				$this->_upload_attachments($attachments, $mail_id);
+			}
+			$this->_set_file_holder(session()->user_id, $mail_id);
+			$response['success'] = true;
+			$response['message'] = 'Successfully registered the outgoing mail';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'There was an error while registering the outgoing mail';
 		}
 		return $this->response->setJSON($response);
 	}

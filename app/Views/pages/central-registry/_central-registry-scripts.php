@@ -72,6 +72,47 @@
         })
       }
     })
+
+    $('form#new-outgoing-mail-form').submit(function(e) {
+      e.preventDefault()
+      let refNo = $('#ref-no').val()
+      let subject = $('#subject').val()
+      let sender = $('#sender').val()
+      let dateCorrespondence = $('#date-correspondence').val()
+      let dateReceived = $('#date-received').val()
+      if (!refNo || !subject || !sender || !dateCorrespondence || !dateReceived) {
+        Swal.fire('Invalid Submission!', 'Please fill in all required fields', 'error')
+      } else {
+        let formData = new FormData(this)
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'This will register this mail in the iGov system',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Confirm',
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33"
+        }).then(confirm => {
+          if (confirm.value) {
+            $.ajax({
+              url: '<?=site_url('/outgoing-mail')?>',
+              type: 'post',
+              data: formData,
+              success: response => {
+                if (response.success) {
+                  Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/central-registry')?>')
+                } else {
+                  Swal.fire('Sorry!', response.message, 'error')
+                }
+              },
+              cache: false,
+              contentType: false,
+              processData: false
+            })
+          }
+        })
+      }
+    })
   })
 
   function fileMail() {
