@@ -132,7 +132,11 @@ $routes->post('/workflow-requests/leave-comment', 'WorkflowController::leaveComm
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 
-$routes->get('/email', 'EmailController::index', ['filter'=>'auth']);
+$routes->get('/email', 'EmailController::test', ['filter'=>'auth']);
+$routes->get('/email/(:num)', 'EmailController::test/$1', ['filter'=>'auth']);
+$routes->get('/read-mail/(:any)', 'EmailController::viewMail/$1', ['filter'=>'auth']);
+$routes->get('/compose-email', 'EmailController::composeEmail', ['filter'=>'auth']);
+$routes->post('/compose-email', 'EmailController::processMail', ['filter'=>'auth']);
 
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
