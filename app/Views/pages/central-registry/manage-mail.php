@@ -118,7 +118,6 @@
           </div> <!-- end card-body-->
         </div> <!-- end card-->
       </div> <!-- end col -->
-
       <div class="col-lg-6 col-xl-4">
         <div class="card">
           <div class="card-body">
@@ -162,7 +161,6 @@
               </div>
               <input type="hidden" id="mail-id" value="<?=$mail['m_id']?>">
             </form>
-
           </div>
         </div>
         <!-- end card-->
@@ -208,5 +206,4 @@
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
 <?=view('pages/central-registry/_central-registry-scripts.php')?>
-
 <?= $this->endSection(); ?>
