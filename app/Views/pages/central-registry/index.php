@@ -33,7 +33,7 @@
                   <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-plus-circle mr-1"></i> New Correspondence</button>
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href="<?=site_url('incoming-mail')?>">New Incoming Mail</a>
-                    <a class="dropdown-item" href="<?= site_url('external-memo')?>">New Outgoing Mail</a>
+                    <a class="dropdown-item" href="<?= site_url('outgoing-mail')?>">New Outgoing Mail</a>
                   </div>
                 </div>
                 <div class="btn-group">
