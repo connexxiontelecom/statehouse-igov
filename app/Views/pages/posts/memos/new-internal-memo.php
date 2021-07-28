@@ -130,6 +130,7 @@
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
 <?=view('pages/posts/memos/_memo-scripts.php')?>
+
 <script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
 <script src="/assets/libs/dropify/js/dropify.min.js"></script>
 <?= $this->endSection(); ?>
