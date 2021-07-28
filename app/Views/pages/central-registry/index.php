@@ -73,7 +73,7 @@
                 <td>
 		              <?php
 		              if ($mail['m_status'] == 0) echo 'Registered';
-                  elseif ($mail['m_status'] == 1) echo 'Confirmed';
+                  elseif ($mail['m_status'] == 1) echo 'Filed';
                   elseif ($mail['m_status'] == 2) echo 'Activated';
                   elseif ($mail['m_status'] == 3) echo 'Deactivated';
                   elseif ($mail['m_status'] == 4) echo 'Rejected';
