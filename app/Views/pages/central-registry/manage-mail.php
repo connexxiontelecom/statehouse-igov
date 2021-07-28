@@ -1,5 +1,6 @@
 <?= $this->extend('layouts/master'); ?>
-
+<?=$this->section('extra-styles'); ?>
+<?=$this->endSection() ?>
 <?= $this->section('content'); ?>
 	<div class="container-fluid">
 		<!-- start page title -->
@@ -23,8 +24,7 @@
         <div class="card-box">
           <div class="row">
             <div class="col-lg-8">
-              <a href="<?=site_url('/central-registry')?>" type="button" class="btn btn-danger waves-effect waves-light mr-2">Transfer Mail</a>
-              <a href="javascript:void(0)" type="button" class="btn btn-success waves-effect waves-light" data-toggle="modal" data-target="#standard-modal-3">File Mail</a>
+              <h5>Manage <?=$mail['m_direction'] == 1 ? 'Incoming' : 'Outgoing' ?> Mail</h5>
             </div>
             <div class="col-lg-4">
               <div class="text-lg-right mt-3 mt-lg-0">
@@ -44,7 +44,15 @@
             <h3 class="mt-0 font-20">
 							<?=$mail['m_subject']?>
             </h3>
-            <div class="badge badge-secondary mb-3">Incoming</div>
+            <div class="badge badge-success mb-3">
+	            <?php
+	            if ($mail['m_status'] == 0) echo 'Registered';
+              elseif ($mail['m_status'] == 1) echo 'Filed';
+              elseif ($mail['m_status'] == 2) echo 'Activated';
+              elseif ($mail['m_status'] == 3) echo 'Deactivated';
+              elseif ($mail['m_status'] == 4) echo 'Rejected';
+	            ?>
+            </div>
             <h5>Reference No</h5>
             <p class="text-muted mb-2">
 		          <?=$mail['m_ref_no']?>
@@ -59,7 +67,11 @@
             </p>
             <h5>Current Desk</h5>
             <p class="text-muted mb-2">
-              <em>Front Desk</em>
+	            <?php if ($mail['holder']):?>
+		            <?=$mail['holder']['user_name']?>
+	            <?php else:?>
+                <em>No holder assigned</em>
+	            <?php endif;?>
             </p>
             <h5>Sender</h5>
             <p class="text-muted mb-2">
@@ -110,129 +122,91 @@
       <div class="col-lg-6 col-xl-4">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title mb-3">Progress</h5>
-            <div class="mt-3 chartjs-chart" style="height: 320px;">
-              <canvas id="line-chart-example"></canvas>
-            </div>
-          </div>
-        </div>
-        <!-- end card-->
-
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Files</h5>
-
-            <div class="card mb-1 shadow-none border">
-              <div class="p-2">
-                <div class="row align-items-center">
-                  <div class="col-auto">
-                    <div class="avatar-sm">
-                                                            <span class="avatar-title badge-soft-primary text-primary rounded">
-                                                                ZIP
-                                                            </span>
-                    </div>
-                  </div>
-                  <div class="col pl-0">
-                    <a href="javascript:void(0);" class="text-muted font-weight-bold">Ubold-sketch-design.zip</a>
-                    <p class="mb-0">2.3 MB</p>
-                  </div>
-                  <div class="col-auto">
-                    <!-- Button -->
-                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                      <i class="dripicons-download"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="card mb-1 shadow-none border">
-              <div class="p-2">
-                <div class="row align-items-center">
-                  <div class="col-auto">
-                    <div class="avatar-sm">
-                                                            <span class="avatar-title badge-soft-primary text-primary rounded">
-                                                                JPG
-                                                            </span>
-                    </div>
-                  </div>
-                  <div class="col pl-0">
-                    <a href="javascript:void(0);" class="text-muted font-weight-bold">Dashboard-design.jpg</a>
-                    <p class="mb-0">3.25 MB</p>
-                  </div>
-                  <div class="col-auto">
-                    <!-- Button -->
-                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                      <i class="dripicons-download"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="card mb-0 shadow-none border">
-              <div class="p-2">
-                <div class="row align-items-center">
-                  <div class="col-auto">
-                    <div class="avatar-sm">
-                                                            <span class="avatar-title badge-soft-primary text-primary rounded">
-                                                                MP4
-                                                            </span>
-                    </div>
-                  </div>
-                  <div class="col pl-0">
-                    <a href="javascript:void(0);" class="text-muted font-weight-bold">Admin-bug-report.mp4</a>
-                    <p class="mb-0">7.05 MB</p>
-                  </div>
-                  <div class="col-auto">
-                    <!-- Button -->
-                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                      <i class="dripicons-download"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="standard-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <form id="mail-filing-form" class="needs-validation" novalidate>
-            <div class="modal-header">
-              <h4 class="modal-title" id="standard-modalLabel">File Mail</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
+            <h5 class="card-title mb-3">Actions</h5>
+            <form id="mail-filing-form" class="needs-validation" novalidate onsubmit="fileMail(); return false;">
               <div class="row">
                 <div class="col-12">
                   <div class="form-group">
-                    <label for="ver-code">File Cabinet Number</label>
+                    <label for="file-ref-no">File <?=$mail['m_direction'] == 1 ? 'Incoming' : 'Outgoing' ?> Mail</label>
                     <input type="text" class="form-control" name="m_file_ref_no" id="file-ref-no" required/>
                     <div class="invalid-feedback">
                       Please enter a file cabinet number.
                     </div>
                     <span class="help-block">
-                      <small>Please enter the file cabinet number used to store this mail physically.</small>
+                      <small>Please enter the new file cabinet number used to store this mail physically.</small>
                     </span>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-              <button type="button" onclick="fileMail()" class="btn btn-primary" id="save-btn">Submit</button>
-            </div>
-            <input type="hidden" id="mail-id" value="<?=$mail['m_id']?>">
-          </form>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-	</div>
+              <input type="hidden" id="mail-id" value="<?=$mail['m_id']?>">
+            </form>
+            <form id="mail-transfer-form" class="needs-validation mt-3" novalidate>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="mh-holder-id">Transfer <?=$mail['m_direction'] == 1 ? 'Incoming' : 'Outgoing' ?> Mail</label>
+                    <select class="form-control input-lg" data-toggle="select2" id="mh-holder-id" onchange="transferMail()">
+                      <option value="" selected disabled>Select</option>
+                      <?php foreach ($mail['recipients'] as $recipient): if ($recipient['user_id'] != session()->user_id):?>
+                        <option value="<?=$recipient['user_id']?>"><?=$recipient['user_name']?></option>
+                      <?php endif; endforeach;?>
+                    </select>
+                    <div class="invalid-feedback">
+                      Please select a new mail recipient.
+                    </div>
+                    <span class="help-block">
+                      <small>Please select the new recipient to transfer the mail.</small>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" id="mail-id" value="<?=$mail['m_id']?>">
+            </form>
+
+          </div>
+        </div>
+        <!-- end card-->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Attachments</h5>
+	          <?php if(!empty($mail['attachments'])):
+            foreach ($mail['attachments'] as $attachment):?>
+              <div class="card mb-1 shadow-none border">
+                <div class="p-2">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <div class="avatar-sm">
+                      <span class="avatar-title badge-soft-primary text-primary rounded">
+                         <?php echo strtoupper(substr($attachment['ma_link'], strpos($attachment['ma_link'], ".") + 1)); ?>
+                      </span>
+                      </div>
+                    </div>
+                    <div class="col pl-0">
+                      <p class="mb-0 font-12"><?php
+                        $filename = 'uploads/mails/'.$attachment['ma_link'];
+                        $size = round(filesize($filename)/(1024 * 1024), 2);
+                        echo $attachment['ma_link'] .'<br>';
+                        echo $size."MB";
+                        ?>
+                      </p>
+                    </div>
+                    <div class="col-auto">
+                      <!-- Button -->
+                      <a href="<?='/uploads/mails/'.$attachment['ma_link']; ?>" download="<?=$attachment['ma_link']; ?>" target="_blank" class="btn btn-link font-16 text-muted">
+                        <i class="dripicons-download"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; else: echo "No Attachments"; endif; ?>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
 <?=view('pages/central-registry/_central-registry-scripts.php')?>
+
 <?= $this->endSection(); ?>
