@@ -8,7 +8,8 @@
 		"php": "^7.3||^8.0",
 		"codeigniter4/framework": "^4",
       "ext-json": "*",
-		"ddeboer/imap": "^1.12"
+		"ddeboer/imap": "^1.12",
+		"stefangabos/zebra_pagination": "^2.4"
     },
 	"require-dev": {
 		"fakerphp/faker": "^1.14",

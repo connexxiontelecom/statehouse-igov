@@ -47,28 +47,30 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $SMTPHost = 'connexxiontelecom.com';
+	public $SMTPHost = 'connexxiongroup.com';
 
 	/**
 	 * SMTP Username
 	 *
 	 * @var string
 	 */
-	public $SMTPUser = 'support@connexxiontelecom.com';
+	public $SMTPUser = 'joseph@connexxiongroup.com';
+	//public $SMTPUser = 'support@connexxiontelecom.com';
 
 	/**
 	 * SMTP Password
 	 *
 	 * @var string
 	 */
-	public $SMTPPass = 'RM*Kv7J=p=[-FUOY}6';
+	public $SMTPPass = 'connect@joseph';
+	//public $SMTPPass = 'RM*Kv7J=p=[-FUOY}6';
 
 	/**
 	 * SMTP Port
 	 *
 	 * @var integer
 	 */
-	public $SMTPPort = 465;
+	public $SMTPPort = 587;
 
 	/**
 	 * SMTP Timeout (in seconds)
@@ -89,7 +91,7 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $SMTPCrypto = 'ssl';
+	public $SMTPCrypto = 'tls';
 
 	/**
 	 * Enable word-wrap
