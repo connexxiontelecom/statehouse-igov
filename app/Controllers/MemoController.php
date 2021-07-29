@@ -168,7 +168,7 @@ class MemoController extends PostController
 			foreach ($recipient_ids as $recipient_id) {
 				array_push($recipients, $this->position->find($recipient_id));
 			}
-			if (in_array($position_id, $recipient_ids)) {
+			if (in_array($position_id, $recipient_ids) || $memo['p_signed_by'] == session()->user_id || $memo['p_by'] == session()->user_id) {
 				$memo['written_by'] = $this->user->find($memo['p_by']);
 				$memo['signed_by'] = $this->user->find($memo['p_signed_by']);
 				$memo['recipients'] = $recipients;
