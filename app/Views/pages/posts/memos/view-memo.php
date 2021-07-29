@@ -85,7 +85,7 @@
             <div class="col-6">
               <div class="float-left">
                 <?php foreach ($memo['recipients'] as $recipient): ?>
-                  <?=$recipient['pos_name']?>
+                  <?=$recipient['pos_name']?> <br>
                 <?php endforeach;?>
               </div>
             </div>
