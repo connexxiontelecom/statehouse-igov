@@ -106,6 +106,23 @@ $this->extend('layouts/admin')
                 </div>
 
                 <div class="mt-4">
+                    <?php if(session()->has('error')): ?>
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <?= session()->get('error') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if(session()->has('success')): ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <?= session()->get('success') ?>
+                        </div>
+                    <?php endif; ?>
                     <form action="<?= site_url('/compose-email') ?>" method="post">
                         <?= csrf_field() ?>
                         <div class="form-group">

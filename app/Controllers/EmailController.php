@@ -66,18 +66,34 @@ class EmailController extends BaseController
     }
 
     public function processMail(){
-        $headers =  'MIME-Version: 1.0' . "\r\n";
+       /* $headers =  'MIME-Version: 1.0' . "\r\n";
         $headers .= 'From: Your name <joseph@connexxiongroup.com>' . "\r\n";
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
         mail(
             'talktojoegee@gmail.com',
             'Hello test',
             'This is a test message actually',
-        $headers
+        //$headers
         /* ?string $cc = null,
          ?string $bcc = null,
-         ?string $return_path = null*/
-        );
+         ?string $return_path = null
+        );*/
+
+        $message = $this->request->getPost('message_body');
+        $subject = $this->request->getPost('subject');
+        $to = $this->request->getPost('to');
+     $email = \Config\Services::email();
+     $email->setFrom('joseph@connexxiongroup.com', 'Joseph');
+     $email->setTo($to);
+     $email->setSubject($subject);
+     $email->setMessage($message);//your message here
+        //$email->setCC('treasuredgig@gmail.com');//CC
+    // $email->setBCC('joegbudu@gmail.com');// and BCC
+     //$filename = '/img/yourPhoto.jpg'; //you can use the App patch
+     //$email->attach($filename);
+
+     $email->send();
+     return redirect()->back()->with("success", "<strong>Success!</strong> Mail sent.");
     }
     /**
      * Return array of IMAP messages for pagination
