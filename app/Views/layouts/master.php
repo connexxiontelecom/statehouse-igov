@@ -297,7 +297,7 @@
                 <li><a href="<?=site_url('memos'); ?>">Memo</a></li>
                 <li><a href="<?=site_url('circulars'); ?>">Circular</a></li>
                 <li><a href="<?=site_url('notices')?>">Notice Board</a></li>
-                <li><a href="javascript:void(0)">Email</a></li>
+                <li><a href="<?= site_url('/email') ?>">Email</a></li>
                 <li><a href="javascript:void(0)">Chat</a></li>
               </ul>
             </div>

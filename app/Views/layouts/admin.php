@@ -623,12 +623,6 @@
 							</ul>
 						</div>
 					</li>
-                    <li>
-                        <a href="<?= site_url('/email') ?>">
-                            <i data-feather="file-minus"></i>
-                            <span> Email </span>
-                        </a>
-                    </li>
 					<li>
 						<a href="apps-chat.html">
 							<i data-feather="file-minus"></i>
