@@ -24,7 +24,8 @@ class Mail extends Model
 		'm_date_received',
 		'm_date_correspondence',
 		'm_status',
-		'm_notes'
+		'm_notes',
+		'm_by'
 	];
 
 	// Dates
