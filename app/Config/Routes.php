@@ -134,9 +134,13 @@ $routes->post('/workflow-requests/leave-comment', 'WorkflowController::leaveComm
 
 $routes->get('/email', 'EmailController::test', ['filter'=>'auth']);
 $routes->get('/email/(:num)', 'EmailController::test/$1', ['filter'=>'auth']);
-$routes->get('/read-mail/(:any)', 'EmailController::viewMail/$1', ['filter'=>'auth']);
+$routes->get('/sent-mails', 'EmailController::getSentMails', ['filter'=>'auth']);
+$routes->get('/sent-mails/(:num)', 'EmailController::getSentMails/$1', ['filter'=>'auth']);
+$routes->get('/read-mail/(:any)/(:any)', 'EmailController::viewMail/$1/$2', ['filter'=>'auth', 'as'=>'read-mail']);
 $routes->get('/compose-email', 'EmailController::composeEmail', ['filter'=>'auth']);
 $routes->post('/compose-email', 'EmailController::processMail', ['filter'=>'auth']);
+$routes->get('/email-settings', 'EmailController::showEmailSettingsForm', ['filter'=>'auth']);
+$routes->post('/email-settings', 'EmailController::processEmailSettings', ['filter'=>'auth']);
 
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);

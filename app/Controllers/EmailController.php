@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\EmailSetting;
 use Ddeboer\Imap\Server;
 use Ddeboer\Imap\SearchExpression;
 use Ddeboer\Imap\Search\Email\To;
@@ -22,19 +23,64 @@ class EmailController extends BaseController
             echo view('auth/access_denied');
             exit;
         endif;
+        $this->emailsetting = new EmailSetting();
 
         /*$this->server = new Server('mail.connexxiongroup.com', '993', '/imap/ssl/validate-cert');
         $this->connection = $this->server->authenticate('joseph@connexxiongroup.com', 'connect@joseph');*/
 
     }
 
-    public function connectToMailServer(){
-        $host = "{mail.connexxiongroup.com:993/imap/ssl/validate-cert}";
-        $username = "joseph@connexxiongroup.com";
-        $password = "connect@joseph";
-        return imap_open($host, $username, $password);
-       /* $server = new Server('mail.connexxiongroup.com', '993', '/imap/ssl/validate-cert');
-       return $server->authenticate($username,$password);*/
+    public function showEmailSettingsForm(){
+        $data = [
+            'firstTime'=>$this->session->firstTime,
+            'username'=>$this->session->username,
+            'settings'=>$this->emailsetting->where('employee_id', $this->session->user_employee_id)->first()
+        ];
+        return view('pages/email/email-settings', $data);
+    }
+
+    public function processEmailSettings(){
+        if($this->request->getMethod() == 'post') {
+            helper(['form', 'url']);
+            $hostname = $this->request->getPost('host_name');
+            $username = $this->request->getPost('username');
+            $password = $this->request->getPost('password');
+            $port = $this->request->getPost('port_no');
+            if(empty($hostname) || empty($username) || empty($password) || empty($port)){
+                return redirect()->back()->with("error", "<strong>Whoops!</strong> All the fields are required.");
+            }else{
+                $data = [
+                  'port_no'=>$port,
+                  'username'=>$username,
+                  'hostname'=>$hostname,
+                  'password'=>$password,
+                  'employee_id'=>$this->session->user_employee_id
+                ];
+                $settings = $this->emailsetting->where('employee_id', $this->session->user_employee_id)->first();
+                if(empty($settings)){
+                    $this->emailsetting->save($data);
+                    return redirect()->back()->with("success", "<strong>Success!</strong> Your email settings saved.");
+                }else{
+                    $this->emailsetting->update($settings['email_settings_id'], $data);
+                    return redirect()->back()->with("success", "<strong>Success!</strong> Your changes were saved.");
+                }
+
+            }
+        }
+    }
+    public function getEmailSettings(){
+        return $this->emailsetting->where('employee_id', $this->session->user_employee_id)->first();
+    }
+    public function connectToMailServer($mailbox){
+        $settings = $this->getEmailSettings();
+        if(!empty($settings)){
+            $host = "{".$settings['hostname'].":".$settings['port_no']."/imap/ssl/validate-cert}".$mailbox."";
+            $username = $settings['username'];
+            $password = $settings['password'];
+            return imap_open($host, $username, $password);
+        }else{
+            return redirect()->route('/email-settings')->with("error", "<strong>Whoops!</strong> Enter your email settings to proceed.");
+        }
     }
 
     public function getMessagesByFlag($mailbox, $flag){
@@ -95,22 +141,12 @@ class EmailController extends BaseController
      $email->send();
      return redirect()->back()->with("success", "<strong>Success!</strong> Mail sent.");
     }
-    /**
-     * Return array of IMAP messages for pagination
-     *
-     * @param   int     $page       page number to get
-     * @param   int     $per_page   number of results per page
-     * @param   array   $sort       array('subject', 'asc') etc
-     *
-     * @return  mixed   array containing imap_fetch_overview, pages, and total rows if successful, false if an error occurred
-     * @author  Raja K
-     */
     public function listMessages($page = 1, $per_page = 25, $sort = null) {
         $limit = ($per_page * $page);
         $start = ($limit - $per_page) + 1;
         $start = ($start < 1) ? 1 : $start;
         $limit = (($limit - $start) != ($per_page - 1)) ? ($start + ($per_page-1)) : $limit;
-        $info = imap_check($this->connectToMailServer());
+        $info = imap_check($this->connectToMailServer('INBOX'));
         $limit = ($info->Nmsgs < $limit) ? $info->Nmsgs : $limit;
         $sorted = null;
         if(true === is_array($sort)) {
@@ -130,7 +166,7 @@ class EmailController extends BaseController
                 ? $direction
                 : $sorting['direction']['desc'];
 
-            $sorted = imap_sort($this->connectToMailServer(), $by, $direction);
+            $sorted = imap_sort($this->connectToMailServer('INBOX'), $by, $direction);
 
             $msgs = array_chunk($sorted, $per_page);
             $msgs = $msgs[$page-1];
@@ -138,7 +174,7 @@ class EmailController extends BaseController
         else
             $msgs = range($start, $limit); //just to keep it consistent
 
-        $result = imap_fetch_overview($this->connectToMailServer(), implode(',',$msgs), 0);
+        $result = imap_fetch_overview($this->connectToMailServer('INBOX'), implode(',',$msgs), 0);
         if(false === is_array($result)) return false;
 
         //sorting!
@@ -158,13 +194,13 @@ class EmailController extends BaseController
             'start' => $start,
             'limit' => $limit,
             'sorting' => array('by' => $sort[0], 'direction' => $sort[1]),
-            'total' => imap_num_msg($this->connectToMailServer()));
+            'total' => imap_num_msg($this->connectToMailServer('INBOX')));
         $return['pages'] = ceil($return['total'] / $per_page);
         return $return;
     }
     public function listMessages2($nStart=0, $nCnt=10) {
 
-        if (!$this->connectToMailServer()) {
+        if (!$this->connectToMailServer('INBOX')) {
             return NULL;
         }
 
@@ -172,7 +208,7 @@ class EmailController extends BaseController
             $nCnt = $this->getNum() - $nStart;
         }
 
-        $aMsgs = imap_fetch_overview($this->connectToMailServer(), ($nStart+1).':'.($nStart+$nCnt));
+        $aMsgs = imap_fetch_overview($this->connectToMailServer('INBOX'), ($nStart+1).':'.($nStart+$nCnt));
         $aRet = array();
         if ($aMsgs) {
             foreach ($aMsgs as $msg) {
@@ -184,10 +220,10 @@ class EmailController extends BaseController
 
         var_dump($aRet);
     }
-    public function getNum(){$mailbox = $this->connectToMailServer(); return imap_num_msg($mailbox);}
+    public function getNum(){$mailbox = $this->connectToMailServer('INBOX'); return imap_num_msg($mailbox);}
 	public function index()
 	{
-	    if($this->connectToMailServer()){
+	    if($this->connectToMailServer('INBOX')){
 	       /* $mailboxes = $this->connectToMailServer()->getMailboxes();
 	        $inbox = $this->connectToMailServer()->getMailbox('INBOX');
 	        //$messages = (array) $inbox->getMessages();
@@ -243,40 +279,30 @@ class EmailController extends BaseController
 	}
 
 	public function test(){
-        //$messages = $this->listMessages(1,25);
-        /*foreach($messages as $message){
-            echo $message->subject. "<br/>\n";
-        }*/
-        //$start = $_GET['page'];
         $page = 0;
         $uri = new \CodeIgniter\HTTP\URI(current_url(true));
         $params = $uri->getQuery();
-
-//     echo $params;
         if($params){
             $page = trim($params, 'page=');
-            //echo $page;
         }
         $records_per_page = 20;
         $pagination = new \Zebra_Pagination();
         $pagination->records($this->getNum());
         $pagination->records_per_page($records_per_page);
-        $messages = $this->listMessages3($page,20);
-        /*foreach($messages as $message){
-            echo $message->subject. "<br/>\n";
-        }*/
+        $messages = $this->listMessages3('INBOX',$page,20);
         $data = [
             'firstTime'=>$this->session->firstTime,
             'username'=>$this->session->username,
             'messages'=>$messages,
-            'pagination'=>$pagination
+            'pagination'=>$pagination,
+            'mailbox'=>'INBOX'
         ];
         return view('pages/email/index', $data);
     }
 
-    public function listMessages3($nStart=0, $nCnt=10) {
+    public function listMessages3($mailbox, $nStart=0, $nCnt=10) {
 
-        if (!$this->connectToMailServer()) {
+        if (!$this->connectToMailServer($mailbox)) {
             return NULL;
         }
 
@@ -284,7 +310,7 @@ class EmailController extends BaseController
             $nCnt = $this->getNum()-$nStart;
         }
 
-        $aMsgs = imap_fetch_overview($this->connectToMailServer(), ($nStart+1).':'.($nStart+$nCnt));
+        $aMsgs = imap_fetch_overview($this->connectToMailServer($mailbox), ($nStart+1).':'.($nStart+$nCnt));
         $aRet = array();
         if ($aMsgs) {
             foreach ($aMsgs as $msg) {
@@ -297,20 +323,60 @@ class EmailController extends BaseController
         return $aRet;
     }
 
-	public function viewMail($id){
-        $host = "{mail.connexxiongroup.com:993/imap/ssl/validate-cert}";
-        $username = "joseph@connexxiongroup.com";
-        $password = "connect@joseph";
-        //return imap_open($host, $username, $password);
-         $server = new Server('mail.connexxiongroup.com', '993', '/imap/ssl/validate-cert');
-        $connection =  $server->authenticate($username,$password);
+    public function getSentMails(){
+      /*
+      * INBOX
+      * INBOX.Sent
+      * INBOX.Archive
+      * INBOX.Drafts
+      * INBOX.Trash
+      * INBOX.Junk
+      * INBOX.spam
+      * /
+     /*$connection = $this->openImapStream();
+     $mailboxes = $connection->getMailboxes();
 
-        //$message = imap_body($this->connectToMailServer(), $id); // imap_search($this->server->get, $id);
-        $mailbox = $connection->getMailbox('INBOX');
+     foreach ($mailboxes as $mailbox) {
+         // Skip container-only mailboxes
+         // @see https://secure.php.net/manual/en/function.imap-getmailboxes.php
+         if ($mailbox->getAttributes() & \LATT_NOSELECT) {
+             continue;
+         }
+
+         // $mailbox is instance of \Ddeboer\Imap\Mailbox
+         printf('Mailbox "%s" has %s messages', $mailbox->getName(), $mailbox->count());
+     }*/
+
+        $page = 0;
+        $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+        $params = $uri->getQuery();
+        if($params){
+            $page = trim($params, 'page=');
+        }
+
+        $records_per_page = 20;
+        $pagination = new \Zebra_Pagination();
+        $pagination->records($this->getNum());
+        $pagination->records_per_page($records_per_page);
+        $messages = $this->listMessages3('INBOX.Sent',$page,20);
+        $data = [
+            'firstTime'=>$this->session->firstTime,
+            'username'=>$this->session->username,
+            'messages'=>$messages,
+            'pagination'=>$pagination,
+            'mailbox'=>'INBOX.Sent'
+        ];
+        return view('pages/email/index', $data);
+    }
+
+	public function viewMail($id, $mailbox){
+
+        $connection = $this->openImapStream();
+        $mailbox = $connection->getMailbox($mailbox);
         $message = $mailbox->getMessage($id);
         $data = [
             'subject'=>$message->getSubject(),
-            'body'=>$message->getBodyText(),
+            'body'=>$message->getBodyHtml(),
             'date'=>$message->getDate(),
             'attachments'=>$message->getAttachments(),
             'bcc'=>$message->getBcc(),
@@ -321,6 +387,21 @@ class EmailController extends BaseController
         ];
         return view('pages/email/view', $data);
 
+    }
+
+    public function openImapStream(){
+        $settings = $this->getEmailSettings();
+
+        if(!empty($settings)){
+            $host = $settings['hostname'];
+            $port = $settings['port_no'];
+            $username = $settings['username'];
+            $password = $settings['password'];
+            $server = new Server($host, $port, '/imap/ssl/validate-cert');
+            return $server->authenticate($username,$password);
+        }else{
+            return redirect()->route('/email-settings')->with("error", "<strong>Whoops!</strong> Enter your email settings to proceed.");
+        }
     }
 
 }

@@ -297,17 +297,29 @@
                 <li><a href="<?=site_url('memos'); ?>">Memo</a></li>
                 <li><a href="<?=site_url('circulars'); ?>">Circular</a></li>
                 <li><a href="<?=site_url('notices')?>">Notice Board</a></li>
-                <li><a href="<?= site_url('/email') ?>">Email</a></li>
                 <li><a href="javascript:void(0)">Chat</a></li>
               </ul>
             </div>
           </li>
-					<li>
-						<a href="<?= site_url('g-drive') ?>">
-							<i data-feather="folder-plus"></i>
-							<span> GDrive </span>
-						</a>
-					</li>
+          <li>
+            <a href="#email" data-toggle="collapse">
+              <i data-feather="message-square"></i>
+              <span> Email </span>
+              <span class="menu-arrow"></span>
+            </a>
+            <div class="collapse" id="email">
+              <ul class="nav-second-level">
+                <li><a href="<?= site_url('/email') ?>">Email</a></li>
+                <li><a href="<?= site_url('/email-settings') ?>">Settings</a></li>
+              </ul>
+            </div>
+          </li>
+            <li>
+                <a href="<?= site_url('g-drive') ?>">
+                    <i data-feather="folder-plus"></i>
+                    <span> GDrive </span>
+                </a>
+            </li>
           <li>
 						<a href="<?= site_url('trainings') ?>">
 							<i data-feather="book"></i>
