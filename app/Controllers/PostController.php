@@ -11,6 +11,7 @@ use App\Models\Position;
 use App\Models\Post;
 use App\Models\PostAttachment;
 use App\Models\UserModel;
+use App\Models\Verification;
 
 class PostController extends BaseController
 {
@@ -28,6 +29,7 @@ class PostController extends BaseController
 		$this->position = new Position();
 		$this->pa = new PostAttachment();
 		$this->organization = new Organization();
+		$this->verification = new Verification();
 	}
 
 	public function upload_post_attachments(){
