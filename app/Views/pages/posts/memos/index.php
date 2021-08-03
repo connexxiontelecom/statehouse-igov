@@ -84,7 +84,7 @@
             </div>
           </div> <!-- end dropdown -->
           <!-- Title-->
-          <h4 class="mt-0"><a href="<?=site_url('view-memo/').$memo['p_id']?>" class="text-dark"><?=word_limiter($memo['p_subject'], 8) ?></a></h4>
+          <h4 class="mt-0"><a href="<?=site_url('view-memo/').$memo['p_id']?>" class="text-dark"><?=word_limiter($memo['p_subject'], 7) ?></a></h4>
           <p class="text-muted text-uppercase"><i class="mdi mdi-account-circle"></i> <small><?=$memo['written_by']['user_name']?></small></p>
           <p class="text-muted mt-n2"><small><?=$memo['p_ref_no']?></small></p>
           <div class="badge bg-soft-secondary text-<?=$memo['p_direction'] == 1 ? 'success' : 'secondary'?> mb-3"><?=$memo['p_direction'] == 1 ? 'Internal Memo' : 'External Memo'?></div>

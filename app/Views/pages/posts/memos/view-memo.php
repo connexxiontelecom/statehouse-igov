@@ -40,7 +40,7 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row mb-3">
             <div class="auth-logo" style="margin: 0 auto">
               <div class="logo logo-dark">
                 <span class="logo-lg">
@@ -84,13 +84,22 @@
           <div class="row">
             <div class="col-6">
               <div class="float-left">
-                <?php foreach ($memo['recipients'] as $recipient): ?>
-                  <?=$recipient['pos_name']?> <br>
-                <?php endforeach;?>
+                <h5 class="font-size-14 mb-0">From:</h5>
+	              <?=$memo['written_by']['user_name'] ?> (<?=$memo['written_by']['position']['pos_name']?>, <?=$memo['written_by']['department']['dpt_name']?>)
               </div>
             </div>
           </div>
           <div class="row">
+            <div class="col-6">
+              <div class="float-left">
+                <h5 class="font-size-14 mb-0">To:</h5>
+                <?php foreach ($memo['recipients'] as $recipient): ?>
+                  <?=$recipient['pos_name']?> (<?=$recipient['department']['dpt_name']?>) <br>
+                <?php endforeach;?>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
             <div class="col-12">
               <h3 class="title text-center text-uppercase"><u><?=$memo['p_subject']?></u></h3>
               <p>
@@ -105,7 +114,7 @@
               <?php if ($memo['p_status'] == 2 && $memo['p_signature']):?>
                 <img src="/uploads/signatures/<?=$memo['p_signature'] ?>" height="80">
                 <h5 class="font-size-14">
-                  <?=$memo['signed_by']['user_name'] ?>
+                  <?=$memo['signed_by']['user_name'] ?> (<?=$memo['signed_by']['position']['pos_name']?>, <?=$memo['signed_by']['department']['dpt_name']?>)
                 </h5>
               <?php elseif ($memo['p_status'] == 4):?>
                 <p class="mt-2 mb-1 text-muted">This memo is rejected</p>
@@ -135,7 +144,7 @@
                       </div>
                     </div>
                     <div class="col pl-0">
-                      <p class="mb-0 font-12"><?php
+                      <a href="<?='/uploads/posts/'.$attachment['pa_link']; ?>" target="_blank" class="mb-0 font-12"><?php
 										    $filename = 'uploads/posts/'.$attachment['pa_link'];
 										    //											$handle = fopen($filename, "r");
 										    //											$contents = fread($handle, filesize($filename));
@@ -145,7 +154,7 @@
 										    echo $size."MB";
 										    //											fclose($handle);
 
-										    ?></p>
+										    ?></a>
                     </div>
                     <div class="col-auto">
                       <!-- Button -->
