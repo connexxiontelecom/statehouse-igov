@@ -1,0 +1,199 @@
+<?= $this->extend('layouts/master'); ?>
+<?= $this->section('content');
+  $uri = current_url(true);
+?>
+<div class="container-fluid">
+	<!-- start page title -->
+	<div class="row">
+		<div class="col-12">
+			<div class="page-title-box">
+				<div class="page-title-right">
+					<ol class="breadcrumb m-0">
+						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
+						<li class="breadcrumb-item"><a href="<?=site_url('/registries')?>">Registries</a></li>
+						<li class="breadcrumb-item active"><a href="javascript: void(0);">View Registry</a></li>
+					</ol>
+				</div>
+				<h4 class="page-title">View Registry</h4>
+			</div>
+		</div>
+	</div>
+	<!-- end page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card-box">
+        <div class="row">
+          <div class="col-lg-8">
+            <h5><?=$registry['registry_name']?></h5>
+          </div>
+          <div class="col-lg-4">
+            <div class="text-lg-right mt-3 mt-lg-0">
+              <a href="<?=site_url('/registries')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
+            </div>
+          </div><!-- end col-->
+        </div> <!-- end row -->
+      </div> <!-- end card-box -->
+    </div><!-- end col-->
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-xl-3">
+      <div class="card-box bg-pattern">
+        <div class="row">
+          <div class="col-6">
+          </div>
+          <div class="col-6">
+            <div class="text-right">
+              <h5 class="text-dark my-1"><?=$registry['manager']['user_name']?></h5>
+              <p class="text-muted mb-0 text-truncate">Registry Manager</p>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end card-box-->
+    </div> <!-- end col -->
+    <div class="col-lg-6 col-xl-3">
+      <div class="card-box bg-pattern">
+        <div class="row">
+          <div class="col-6">
+          </div>
+          <div class="col-6">
+            <div class="text-right">
+              <h5 class="text-dark my-1"><span data-plugin="counterup"><?=count($mails)?></span></h5>
+              <p class="text-muted mb-0 text-truncate">At Your Desk</p>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end card-box-->
+    </div> <!-- end col -->
+    <div class="col-lg-6 col-xl-3">
+      <div class="card-box bg-pattern">
+        <div class="row">
+          <div class="col-6">
+          </div>
+          <div class="col-6">
+            <div class="text-right">
+              <h5 class="text-dark my-1"><span data-plugin="counterup">0</span></h5>
+              <p class="text-muted mb-0 text-truncate">Unfiled</p>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end card-box-->
+    </div> <!-- end col -->
+    <div class="col-lg-6 col-xl-3">
+      <div class="card-box bg-pattern">
+        <div class="row">
+          <div class="col-6">
+          </div>
+          <div class="col-6">
+            <div class="text-right">
+              <h5 class="text-dark my-1"><span data-plugin="counterup">0</span></h5>
+              <p class="text-muted mb-0 text-truncate">Transfer Requests</p>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end card-box-->
+    </div> <!-- end col -->
+  </div>
+  <div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-lg-8">
+              <?php if (!$uri->getSegment(3)):?>
+                <h4 class="header-title">All Mails</h4>
+                <p class="text-muted font-13">
+                  Below are the registered correspondence currently at your desk or filed by you and managed by this registry.
+                </p>
+              <?php elseif ($uri->getSegment(3) == 'incoming'):?>
+                <h4 class="header-title">Incoming Mails</h4>
+                <p class="text-muted font-13">
+                  Below are the registered incoming correspondence currently at your desk or filed by you and managed by this registry.
+                </p>
+              <?php elseif ($uri->getSegment(3) == 'outgoing'):?>
+                <h4 class="header-title">Outgoing Mails</h4>
+                <p class="text-muted font-13">
+                  Below are the registered outgoing correspondence currently at your desk or filed by you and managed by this registry.
+                </p>
+              <?php endif?>
+
+						</div>
+						<div class="col-lg-4">
+							<div class="text-lg-right mt-lg-0">
+								<div class="btn-group">
+									<a href="<?=site_url('view-registry/').$registry['registry_id']?>" class="btn btn-<?= !$uri->getSegment(3) ? 'primary':'light' ?>">All</a>
+								</div>
+								<div class="btn-group">
+									<a href="<?=site_url('view-registry/').$registry['registry_id'].'/incoming'?>" class="btn btn-<?= $uri->getSegment(3) == 'incoming' ? 'primary':'light' ?>">Incoming</a>
+									<a href="<?=site_url('view-registry/').$registry['registry_id'].'/outgoing'?>" class="btn btn-<?= $uri->getSegment(3) == 'outgoing' ? 'primary':'light' ?>">Outgoing</a>
+								</div>
+							</div>
+						</div><!-- end col-->
+					</div> <!-- end row -->
+					<table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap w-100">
+						<thead>
+						<tr>
+							<th class="text-center" style="width: 5%">S/n</th>
+							<th>Ref No.</th>
+							<th>Subject</th>
+							<th>Sender</th>
+							<th>Received</th>
+							<th>Status</th>
+							<th class="text-center" style="width: 10%">Actions</th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php $i=1; foreach ($mails as $mail):?>
+							<tr>
+								<td><?=$i; $i++;?></td>
+								<td><?=$mail['m_ref_no']?></td>
+								<td><?=$mail['m_subject']?></td>
+								<td><?=$mail['m_sender']?></td>
+								<td>
+									<?php $date = date_create($mail['m_date_received']);
+									echo date_format($date,"d M Y");
+									?>
+								</td>
+								<td>
+									<?php
+									if ($mail['m_status'] == 0) echo 'Registered';
+									elseif ($mail['m_status'] == 1) echo 'Filed';
+									elseif ($mail['m_status'] == 2) echo 'Activated';
+									elseif ($mail['m_status'] == 3) echo 'Deactivated';
+									elseif ($mail['m_status'] == 4) echo 'Rejected';
+									?>
+								</td>
+								<td class="text-center">
+									<a href="<?=site_url('manage-mail/').$mail['m_id']?>">Manage</a>
+								</td>
+							</tr>
+						<?php endforeach;?>
+						</tbody>
+					</table>
+				</div> <!-- end card body-->
+			</div> <!-- end card -->
+		</div><!-- end col-->
+	</div>
+
+</div>
+<?= $this->endSection(); ?>
+<?= $this->section('extra-scripts'); ?>
+<?=view('pages/registry/_registry-scripts.php')?>
+<!-- third party js -->
+<script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+<script src="/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+<script src="/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+<!-- third party js ends -->
+
+<!-- Datatables init -->
+<script src="/assets/js/pages/datatables.init.js"></script>
+<?= $this->endSection(); ?>

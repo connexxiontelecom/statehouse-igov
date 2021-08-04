@@ -154,6 +154,10 @@ $routes->match(['post', 'get'], 'delete-mail-attachments', 'CentralRegistryContr
 $routes->match(['get'], 'manage-mail/(:num)', 'CentralRegistryController::manage_mail/$1', ['filter' => 'auth']);
 $routes->match(['post'], 'file-mail', 'CentralRegistryController::file_mail', ['filter' => 'auth']);
 $routes->match(['post'], 'transfer-mail', 'CentralRegistryController::transfer_mail', ['filter' => 'auth']);
+
+// registries routes
+$routes->match(['get'], 'registries', 'RegistryController::index', ['filter' => 'auth']);
+$routes->match(['get'], 'view-registry/(:any)', 'RegistryController::view_registry/$1', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing

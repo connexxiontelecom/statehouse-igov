@@ -25,7 +25,9 @@ class Mail extends Model
 		'm_date_correspondence',
 		'm_status',
 		'm_notes',
-		'm_by'
+		'm_by',
+		'm_desk',
+		'm_registry_id'
 	];
 
 	// Dates
