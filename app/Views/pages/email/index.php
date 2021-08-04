@@ -1,5 +1,5 @@
 <?=
-$this->extend('layouts/admin')
+$this->extend('layouts/master')
 ?>
 
 
@@ -21,11 +21,11 @@ $this->extend('layouts/admin')
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="<?= site_url('office') ?>">iGov</a></li>
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Email</a></li>
-                        <li class="breadcrumb-item active">Email</li>
+                        <li class="breadcrumb-item active"><?= strlen($mailbox) > 5 ? substr($mailbox,6,8) : 'Inbox' ?></li>
                     </ol>
 
                 </div>
-                <h4 class="page-title">Email</h4>
+                <h4 class="page-title"><?= strlen($mailbox) > 5 ? substr($mailbox,6,8) : 'Inbox' ?></h4>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@ $this->extend('layouts/admin')
                         <ul class="message-list">
                             <?php if(count($messages) > 0): ?>
                             <?php foreach($messages as $message): ?>
-                            <li class="unread">
+                            <li class="<?= $message->seen != 1 ? 'unread' : '' ?>">
                                 <div class="col-mail col-mail-1">
                                     <a href="<?= route_to('read-mail', $message->uid, $mailbox ) ?>" class="title"><?=  $message->from ?></a>
                                 </div>
@@ -51,7 +51,7 @@ $this->extend('layouts/admin')
                                 <div class="col-mail col-mail-2">
                                     <a href="<?= route_to('read-mail', $message->uid,$mailbox ) ?>" class="subject"><?= $message->subject ?></span>
                                     </a>
-                                    <div class="date"><?= $message->date ?></div>
+                                    <div class="date"><?= substr($message->date,0,11) ?></div>
                                 </div>
                             </li>
                             <?php endforeach; ?>

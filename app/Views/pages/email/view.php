@@ -1,5 +1,5 @@
 <?=
-$this->extend('layouts/admin')
+$this->extend('layouts/master')
 ?>
 
 
@@ -37,11 +37,11 @@ $this->extend('layouts/admin')
                     <hr/>
 
                     <div class="media mb-3 mt-1">
-                        <img class="d-flex mr-2 rounded-circle" src="../assets/images/users/user-2.jpg" alt="placeholder image" height="32">
+                        <img class="d-flex mr-2 rounded-circle" src="/assets/images/users/user-2.jpg" alt="placeholder image" height="32">
                         <div class="media-body">
-                            <small class="float-right">date</small>
-                            <h6 class="m-0 font-14">Name</h6>
-                            <small class="text-muted">From: </small>
+                            <small class="float-right">Date: <?= $date ?? '' ?></small>
+                            <h6 class="m-0 font-14">Name: <?= $from ?? '' ?></h6>
+                            <small class="text-muted">From: <?= $from ?? '' ?></small>
                         </div>
                     </div>
 

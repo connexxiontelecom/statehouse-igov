@@ -17,6 +17,7 @@ class EmailController extends BaseController
     public $username = null;
     public $password = null;
 
+
     public function __construct()
     {
         if (session()->get('type') == 1): //employee
@@ -74,12 +75,17 @@ class EmailController extends BaseController
     public function connectToMailServer($mailbox){
         $settings = $this->getEmailSettings();
         if(!empty($settings)){
-            $host = "{".$settings['hostname'].":".$settings['port_no']."/imap/ssl/validate-cert}".$mailbox."";
-            $username = $settings['username'];
-            $password = $settings['password'];
-            return imap_open($host, $username, $password);
+            try{
+                $host = "{".$settings['hostname'].":".$settings['port_no']."/imap/ssl/validate-cert}".$mailbox."";
+                $username = $settings['username'];
+                $password = $settings['password'];
+                return @imap_open($host, $username, $password);
+            }catch(\Exception $exception){
+                return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mailserver.");
+            }
+
         }else{
-            return redirect()->route('/email-settings')->with("error", "<strong>Whoops!</strong> Enter your email settings to proceed.");
+            return redirect('/email-settings');
         }
     }
 
@@ -88,21 +94,6 @@ class EmailController extends BaseController
     }
 
     public function composeEmail(){
-        /*$message = "Please activate the account ".anchor('user/activate/8skskaj2e9','Activate Now','');
-        $email = \Config\Services::email();
-        $email->setFrom('joseph@connexxiongroup.com', 'your Title Here');
-        $email->setTo('talktojoegee@gmail.com');
-        $email->setSubject('Your Subject here | tutsmake.com');
-        $email->setMessage($message);//your message here
-
-        $email->setCC('treasuredgig@gmail.com');//CC
-        $email->setBCC('joegbudu@gmail.com');// and BCC
-        //$filename = '/img/yourPhoto.jpg'; //you can use the App patch
-        //$email->attach($filename);
-
-        $email->send();
-        $email->printDebugger(['headers']);*/
-
 
         $data = [
             'firstTime'=>$this->session->firstTime,
@@ -112,6 +103,36 @@ class EmailController extends BaseController
     }
 
     public function processMail(){
+        $settings = $this->getEmailSettings();
+        $message = $this->request->getPost('message_body');
+        $subject = $this->request->getPost('subject');
+        $to = $this->request->getPost('to');
+        if(!empty($settings)){
+            $username = $settings['username'];
+            $stream = $this->connectToMailServer('INBOX.Sent');
+            $check = imap_check($stream);
+            //echo "Msg Count before append: ". $check->Nmsgs . "\n";
+            imap_append($stream, "{".$settings['hostname'].":".$settings['port_no']."/imap/ssl/validate-cert}INBOX.Sent"
+                , "From: ".$username."\r\n"
+                . "To: ".$to."\r\n"
+                . "Subject: ".$subject."\r\n"
+                . "\r\n"
+                . " ".strip_tags($message)."\r\n"
+            );
+            //$check = imap_check($stream);
+            //echo "Msg Count after append : ". $check->Nmsgs . "\n";
+            imap_close($stream);
+            $email = \Config\Services::email();
+            $email->setFrom($username, 'Joseph');
+            $email->setTo($to);
+            $email->setSubject($subject);
+            $email->setMessage($message);
+            return redirect()->back()->with("success", "<strong>Success!</strong> Mail sent.");
+        }else{
+            return redirect('/email-settings');
+        }
+
+
        /* $headers =  'MIME-Version: 1.0' . "\r\n";
         $headers .= 'From: Your name <joseph@connexxiongroup.com>' . "\r\n";
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
@@ -125,21 +146,27 @@ class EmailController extends BaseController
          ?string $return_path = null
         );*/
 
-        $message = $this->request->getPost('message_body');
-        $subject = $this->request->getPost('subject');
-        $to = $this->request->getPost('to');
-     $email = \Config\Services::email();
-     $email->setFrom('joseph@connexxiongroup.com', 'Joseph');
-     $email->setTo($to);
-     $email->setSubject($subject);
-     $email->setMessage($message);//your message here
+
+     //your message here
         //$email->setCC('treasuredgig@gmail.com');//CC
     // $email->setBCC('joegbudu@gmail.com');// and BCC
      //$filename = '/img/yourPhoto.jpg'; //you can use the App patch
      //$email->attach($filename);
 
-     $email->send();
-     return redirect()->back()->with("success", "<strong>Success!</strong> Mail sent.");
+     //$email->send();
+
+
+
+
+
+
+
+
+
+
+
+
+     //return redirect()->back()->with("success", "<strong>Success!</strong> Mail sent.");
     }
     public function listMessages($page = 1, $per_page = 25, $sort = null) {
         $limit = ($per_page * $page);
@@ -220,7 +247,14 @@ class EmailController extends BaseController
 
         var_dump($aRet);
     }
-    public function getNum(){$mailbox = $this->connectToMailServer('INBOX'); return imap_num_msg($mailbox);}
+    public function getNum($mail){
+        /*if (!$this->connectToMailServer($mail)) {
+            return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+        }*/
+            $mailbox = $this->connectToMailServer($mail);
+            return imap_num_msg($mailbox);
+
+    }
 	public function index()
 	{
 	    if($this->connectToMailServer('INBOX')){
@@ -279,37 +313,84 @@ class EmailController extends BaseController
 	}
 
 	public function test(){
-        $page = 0;
-        $uri = new \CodeIgniter\HTTP\URI(current_url(true));
-        $params = $uri->getQuery();
-        if($params){
-            $page = trim($params, 'page=');
+        $settings = $this->getEmailSettings();
+        if(!is_null($settings)){
+            $page = 0;
+            $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+            $params = $uri->getQuery();
+
+            if($params){
+                $page = trim($params, 'page=');
+            }
+            if (!$this->connectToMailServer('INBOX')) {
+                return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+            }else{
+                $data = $this->fetchMails($page, 'INBOX');
+                return view('pages/email/index', $data);
+            }
+
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> We need your email settings to retrieve your connect.");
         }
-        $records_per_page = 20;
-        $pagination = new \Zebra_Pagination();
-        $pagination->records($this->getNum());
-        $pagination->records_per_page($records_per_page);
-        $messages = $this->listMessages3('INBOX',$page,20);
-        $data = [
-            'firstTime'=>$this->session->firstTime,
-            'username'=>$this->session->username,
-            'messages'=>$messages,
-            'pagination'=>$pagination,
-            'mailbox'=>'INBOX'
-        ];
-        return view('pages/email/index', $data);
+
     }
 
+
+    public function getSentMails(){
+        $settings = $this->getEmailSettings();
+        if(!is_null($settings)){
+            $page = 0;
+            $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+            $params = $uri->getQuery();
+
+            if($params){
+                $page = trim($params, 'page=');
+            }
+            if (!$this->connectToMailServer('INBOX.Sent')) {
+                return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+            }else{
+                $data = $this->fetchMails($page, 'INBOX.Sent');
+                return view('pages/email/index', $data);
+            }
+
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> We need your email settings to retrieve your connect.");
+        }
+
+    }
+    public function getDraftMails(){
+        $settings = $this->getEmailSettings();
+        if(!is_null($settings)){
+            $page = 0;
+            $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+            $params = $uri->getQuery();
+
+            if($params){
+                $page = trim($params, 'page=');
+            }
+            if (!$this->connectToMailServer('INBOX.Drafts')) {
+                return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+            }else{
+                $data = $this->fetchMails($page, 'INBOX.Drafts');
+                return view('pages/email/index', $data);
+            }
+
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> We need your email settings to retrieve your connect.");
+        }
+
+    }
     public function listMessages3($mailbox, $nStart=0, $nCnt=10) {
 
-        if (!$this->connectToMailServer($mailbox)) {
-            return NULL;
+      /*  if (!$this->connectToMailServer($mailbox)) {
+            return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+        }*/
+
+        if (($nStart+$nCnt) > $this->getNum($mailbox)) {
+            $nCnt = $this->getNum($mailbox)-$nStart;
         }
 
-        if (($nStart+$nCnt) > $this->getNum()) {
-            $nCnt = $this->getNum()-$nStart;
-        }
-
+        //$aMsgs = imap_sort($this->connectToMailServer($mailbox), SORTDATE, 1, SE_UID);
         $aMsgs = imap_fetch_overview($this->connectToMailServer($mailbox), ($nStart+1).':'.($nStart+$nCnt));
         $aRet = array();
         if ($aMsgs) {
@@ -323,56 +404,131 @@ class EmailController extends BaseController
         return $aRet;
     }
 
-    public function getSentMails(){
-      /*
-      * INBOX
-      * INBOX.Sent
-      * INBOX.Archive
-      * INBOX.Drafts
-      * INBOX.Trash
-      * INBOX.Junk
-      * INBOX.spam
-      * /
-     /*$connection = $this->openImapStream();
-     $mailboxes = $connection->getMailboxes();
+    public function getArchivedMails(){
+        $settings = $this->getEmailSettings();
+        if(!is_null($settings)){
+            $page = 0;
+            $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+            $params = $uri->getQuery();
 
-     foreach ($mailboxes as $mailbox) {
-         // Skip container-only mailboxes
-         // @see https://secure.php.net/manual/en/function.imap-getmailboxes.php
-         if ($mailbox->getAttributes() & \LATT_NOSELECT) {
-             continue;
-         }
+            if($params){
+                $page = trim($params, 'page=');
+            }
+            if (!$this->connectToMailServer('INBOX.Archive')) {
+                return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+            }else{
+                $data = $this->fetchMails($page, 'INBOX.Archive');
+                return view('pages/email/index', $data);
+            }
 
-         // $mailbox is instance of \Ddeboer\Imap\Mailbox
-         printf('Mailbox "%s" has %s messages', $mailbox->getName(), $mailbox->count());
-     }*/
-
-        $page = 0;
-        $uri = new \CodeIgniter\HTTP\URI(current_url(true));
-        $params = $uri->getQuery();
-        if($params){
-            $page = trim($params, 'page=');
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> We need your email settings to retrieve your connect.");
         }
+
+    }
+    public function getTrashedMails(){
+        $settings = $this->getEmailSettings();
+        if(!is_null($settings)){
+            $page = 0;
+            $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+            $params = $uri->getQuery();
+
+            if($params){
+                $page = trim($params, 'page=');
+            }
+            if (!$this->connectToMailServer('INBOX.Trash')) {
+                return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+            }else{
+                $data = $this->fetchMails($page, 'INBOX.Trash');
+                return view('pages/email/index', $data);
+            }
+
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> We need your email settings to retrieve your connect.");
+        }
+
+    }
+    public function getSpamMails(){
+        $settings = $this->getEmailSettings();
+        if(!is_null($settings)){
+            $page = 0;
+            $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+            $params = $uri->getQuery();
+
+            if($params){
+                $page = trim($params, 'page=');
+            }
+            if (!$this->connectToMailServer('INBOX.Spam')) {
+                return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+            }else{
+                $data = $this->fetchMails($page, 'INBOX.Spam');
+                return view('pages/email/index', $data);
+            }
+
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> We need your email settings to retrieve your connect.");
+        }
+
+    }
+    public function fetchMails($page, $mailbox){
+        /*
+        * INBOX
+        * INBOX.Sent
+        * INBOX.Archive
+        * INBOX.Drafts
+        * INBOX.Trash
+        * INBOX.Junk
+        * INBOX.spam
+         */
+      /*  if (!$this->connectToMailServer($mailbox)) {
+            return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+        }*/
 
         $records_per_page = 20;
         $pagination = new \Zebra_Pagination();
-        $pagination->records($this->getNum());
-        $pagination->records_per_page($records_per_page);
-        $messages = $this->listMessages3('INBOX.Sent',$page,20);
-        $data = [
-            'firstTime'=>$this->session->firstTime,
-            'username'=>$this->session->username,
-            'messages'=>$messages,
-            'pagination'=>$pagination,
-            'mailbox'=>'INBOX.Sent'
-        ];
-        return view('pages/email/index', $data);
+
+            $messages = $this->listMessages3($mailbox,$page,20);
+            $pagination->records($this->getNum($mailbox));
+            $pagination->records_per_page($records_per_page);
+            return  [
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
+                'messages'=>$messages,
+                'pagination'=>$pagination,
+                'mailbox'=>$mailbox
+            ];
+
+
     }
 
 	public function viewMail($id, $mailbox){
 
-        $connection = $this->openImapStream();
-        $mailbox = $connection->getMailbox($mailbox);
+        $results = imap_fetch_overview($this->connectToMailServer($mailbox), $id, FT_UID);
+        if(!empty($results)){
+            $messageOverview = array_shift($results);
+            if (!isset($messageOverview->date)) {
+                $messageOverview->date = null;
+            }
+            //return var_dump($messageOverview);
+            $data = [
+                'subject'=>$messageOverview->subject,
+                'body'=> $this->get_part($this->connectToMailServer($mailbox), $id, "TEXT/HTML"),//imap_body($this->connectToMailServer($mailbox), $id),
+                'date'=>$messageOverview->date,
+                //'attachments'=>$message->getAttachments(),
+                //'bcc'=>$message->getBcc(),
+                //'cc'=>$message->getCc(),
+                'from'=>$messageOverview->from,
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username
+            ];
+            return view('pages/email/view', $data);
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't retrieve mail.");
+        }
+
+        /*$connection = $this->openImapStream();
+        $mailbox = $connection->getMailbox('INBOX.Sent');
+
         $message = $mailbox->getMessage($id);
         $data = [
             'subject'=>$message->getSubject(),
@@ -385,10 +541,55 @@ class EmailController extends BaseController
             'firstTime'=>$this->session->firstTime,
             'username'=>$this->session->username
         ];
-        return view('pages/email/view', $data);
+        return view('pages/email/view', $data);*/
 
     }
+    function get_part($imap, $uid, $mimetype, $structure = false, $partNumber = false)
+    {
+        if (!$structure) {
+            $structure = imap_fetchstructure($imap, $uid, FT_UID);
+        }
+        if ($structure) {
+            if ($mimetype == $this->get_mime_type($structure)) {
+                if (!$partNumber) {
+                    $partNumber = 1;
+                }
+                $text = imap_fetchbody($imap, $uid, $partNumber, FT_UID);
+                switch ($structure->encoding) {
+                    case 3:
+                        return imap_base64($text);
+                    case 4:
+                        return imap_qprint($text);
+                    default:
+                        return $text;
+                }
+            }
 
+            // multipart
+            if ($structure->type == 1) {
+                foreach ($structure->parts as $index => $subStruct) {
+                    $prefix = "";
+                    if ($partNumber) {
+                        $prefix = $partNumber . ".";
+                    }
+                    $data = $this->get_part($imap, $uid, $mimetype, $subStruct, $prefix . ($index + 1));
+                    if ($data) {
+                        return $data;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    function get_mime_type($structure)
+    {
+        $primaryMimetype = ["TEXT", "MULTIPART", "MESSAGE", "APPLICATION", "AUDIO", "IMAGE", "VIDEO", "OTHER"];
+
+        if ($structure->subtype) {
+            return $primaryMimetype[(int)$structure->type] . "/" . $structure->subtype;
+        }
+        return "TEXT/PLAIN";
+    }
     public function openImapStream(){
         $settings = $this->getEmailSettings();
 
