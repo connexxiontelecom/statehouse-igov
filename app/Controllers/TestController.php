@@ -10,7 +10,7 @@ class TestController extends BaseController
 	public function index()
 	{
 		$server = new Server('mail.connexxiongroup.com', '993', '/imap/ssl/validate-cert');
-		
+
 		//print_r($server);
 //		$server = new Server(
 //			$hostname, // required
@@ -20,7 +20,7 @@ class TestController extends BaseController
 //		);
 
 // $connection is instance of \Ddeboer\Imap\Connection
-		$connection = $server->authenticate('oki-peter@connexxiongroup.com', '');
+		$connection = $server->authenticate('joseph@connexxiongroup.com', 'connect@joseph');
 
 		//$mailboxes = $connection->getMailboxes();
 		$mailboxes = $connection->getMailbox('INBOX');
@@ -28,11 +28,12 @@ class TestController extends BaseController
 
 		foreach ($messages as $message) {
 
-			echo $message->getBodyHtml();    // Content of text/html part, if present
+			//echo $message->getHeaders();    // Content of text/html part, if present
+            echo $message->getSubject();
+            echo $message->getDate();
+			//echo $message->getBodyText();    // Content of text/html part, if present
 
-			echo '<br>';
-			
-			echo '<hr>';
+//			echo '<br>';
 //
 //			echo $message->getBodyText();
 			// $message is instance of \Ddeboer\Imap\Message
