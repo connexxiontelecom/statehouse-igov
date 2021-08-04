@@ -9,10 +9,10 @@
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url('office') ?>">iGov</a></li>
 						<li class="breadcrumb-item"><a href="javascript: void(0);">General Settings</a></li>
-						<li class="breadcrumb-item active">Registries</li>
+						<li class="breadcrumb-item active">Budgets</li>
 					</ol>
 				</div>
-				<h4 class="page-title">Registries</h4>
+				<h4 class="page-title">Budgets</h4>
 			</div>
 		</div>
 	</div>
@@ -30,30 +30,30 @@
 						</div>
 					<?php endif; ?>
 					<div>
-						<button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-registry" style="float: right"> <i class="mdi mdi-plus mr-2"></i>New Registry</button>
+						<a href="<?=site_url('budget-setup') ?>" class="btn btn-primary"  style="float: right"> <i class="mdi mdi-plus mr-2"></i>New budget</a>
 					</div>
 					<table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
 						<thead>
 						<tr>
 							<th>S/N</th>
-							<th>Registry Name</th>
-							<th>Registry Description</th>
-							<th>Status</th>
+							<th>Budget Title</th>
+							<th>Year</th>
+							
 							<th>Actions</th>
 						</tr>
 						</thead>
 						<tbody>
-						<?php if ($registries):
+						<?php if ($budgets):
 							$i = 1;
-							foreach ($registries as $registry):
+							foreach ($budgets as $budget):
 								?>
 								<tr>
 									<td><?=$i++;?></td>
-									<td><?=$registry['registry_name']?></td>
-									<td><?=$registry['registry_description']?></td>
-									<td><?=$registry['registry_status']?></td>
+									<td><?=$budget['budget_title']?></td>
+									<td><?=$budget['budget_year']?></td>
+									<td><?=$budget['budget_status']?></td>
 									<td>
-										<button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-department<?=$registry['registry_id'] ?>" > <i class="mdi mdi-pen-lock mr-2"></i></button>
+										<button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-department<?=$budget['budget_id'] ?>" > <i class="mdi mdi-pen-lock mr-2"></i></button>
 									</td>
 								</tr>
 							<?php endforeach; endif;?>
@@ -65,60 +65,6 @@
 	</div>
 </div>
 <!-- Long Content Scroll Modal -->
-<div class="modal fade" id="new-registry" tabindex="-1" role="dialog"
-     aria-labelledby="scrollableModalTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-scrollable" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="scrollableModalTitle">New Registry</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form method="post" action="">
-					<div class="row g-3 align-center">
-						<div class="col-lg-12">
-							<div class="form-group">
-								<label class="form-label" for="site-name">Registry Name</label>
-								<span class="form-note">Enter Registry Name</span>
-							</div>
-						</div>
-						<div class="col-lg-12">
-							<div class="form-group">
-								<div class="form-control-wrap">
-									<input type="text" class="form-control" id="site-name" name="registry_name" required>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row g-3 align-center">
-						<div class="col-lg-12">
-							<div class="form-group">
-								<label class="form-label" for="site-desc">Registry Description</label>
-								<span class="form-note">Enter Registry Description</span>
-							</div>
-						</div>
-						<div class="col-lg-12">
-							<div class="form-group">
-								<div class="form-control-wrap">
-									<textarea class="form-control" name="registry_description" id="site-desc" rows="4"></textarea>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row g-3">
-						<div class="col-lg-12 offset-lg-12">
-							<div class="form-group mt-2">
-								<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+
 <?= $this->endSection() ?>
 
