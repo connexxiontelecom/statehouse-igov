@@ -37,4 +37,24 @@ class BudgetSettingController extends BaseController
 		
 		
 	}
+	
+	
+	public function budget_setup()
+	{
+		
+		if($this->request->getMethod() == 'post'):
+		
+		
+		
+		endif;
+		
+		if($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['postions'] = $this->position->findAll();
+			return view('office/budget/budget_setup', $data);
+		endif;
+		
+		
+	}
 }
