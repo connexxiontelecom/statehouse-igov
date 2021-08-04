@@ -141,4 +141,25 @@ class BudgetSettingController extends BaseController
 		
 		
 	}
+	
+	public  function view_budget ($budget_id) {
+	
+		$check_budget = $this->budget->where('budget_id', $budget_id)->first();
+		if($check_budget):
+			$data['budget'] = $check_budget;
+			$data['budget_headers'] = $this->bh->where('bh_budget_id', $budget_id)
+												->join('departments', 'budget_headers.bh_office = departments.dpt_id')
+												->findAll();
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			return view('office/budget/view_budget', $data);
+			
+			
+			else:
+				
+				
+				
+				endif;
+	
+	}
 }

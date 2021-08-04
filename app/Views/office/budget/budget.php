@@ -53,7 +53,7 @@
 									<td><?=$budget['budget_year']?></td>
 									
 									<td>
-										<button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-department<?=$budget['budget_id'] ?>" > <i class="mdi mdi-pen-lock mr-2"></i></button>
+										<a  href="<?=site_url('view-budget-setup/'.$budget['budget_id']) ?>" class="btn btn-primary" > <i class="mdi mdi-pen-lock mr-2"></i></a>
 									</td>
 								</tr>
 							<?php endforeach; endif;?>
