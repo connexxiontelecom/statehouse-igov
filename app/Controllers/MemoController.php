@@ -38,7 +38,7 @@ class MemoController extends PostController
 				->orWhere('user_type', 3)
 				->groupEnd()
 				->findAll();
-			$data['positions'] = $this->position->findAll();
+			$data['department_employees'] = $this->_get_department_employees();
 			$data['pager'] = $this->post->pager;
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
@@ -57,9 +57,11 @@ class MemoController extends PostController
 			'p_recipients_id' => json_encode($post_data['positions'])
 		];
 		$post_id = $this->post->insert($memo_data);
-		$attachments = $post_data['p_attachment'];
 		if ($post_id) {
-			$this->_upload_attachments($attachments, $post_id);
+			if (isset($post_data['m_attachments'])) {
+				$attachments = $post_data['m_attachments'];
+				$this->_upload_attachments($attachments, $post_id);
+			}
 			$response['success'] = true;
 			$response['message'] = 'Successfully created the internal memo';
 		} else {
@@ -168,7 +170,7 @@ class MemoController extends PostController
 			foreach ($recipient_ids as $recipient_id) {
 				array_push($recipients, $this->position->find($recipient_id));
 			}
-			if (in_array($position_id, $recipient_ids)) {
+			if (in_array($position_id, $recipient_ids) || $memo['p_signed_by'] == session()->user_id || $memo['p_by'] == session()->user_id) {
 				$memo['written_by'] = $this->user->find($memo['p_by']);
 				$memo['signed_by'] = $this->user->find($memo['p_signed_by']);
 				$memo['recipients'] = $recipients;
@@ -236,17 +238,54 @@ class MemoController extends PostController
 	private function _get_memo($memo_id) {
 		$memo = $this->post->find($memo_id);
 		if ($memo) {
-			$memo['written_by'] = $this->user->find($memo['p_by']);
-			$memo['signed_by'] = $this->user->find($memo['p_signed_by']);
+			// written by
+			$written_by = $this->user->find($memo['p_by']);
+			$written_by_employee = $this->employee->find($written_by['user_employee_id']);
+			$written_by_position = $this->position->find($written_by_employee['employee_position_id']);
+			$written_by_department = $this->department->find($written_by_position['pos_id']);
+			$memo['written_by'] = $written_by;
+			$memo['written_by']['position'] = $written_by_position;
+			$memo['written_by']['department'] = $written_by_department;
+			// signed by
+			$signed_by = $this->user->find($memo['p_signed_by']);
+			$signed_by_employee = $this->employee->find($signed_by['user_employee_id']);
+			$signed_by_position = $this->position->find($signed_by_employee['employee_position_id']);
+			$signed_by_department = $this->department->find($signed_by_position['pos_id']);
+			$memo['signed_by'] = $signed_by;
+			$memo['signed_by']['position'] = $signed_by_position;
+			$memo['signed_by']['department'] = $signed_by_department;
+
 			$memo['attachments'] = $this->pa->where('pa_post_id', $memo_id)->findAll();
 			$recipient_ids = json_decode($memo['p_recipients_id']);
 			$recipients = [];
 			foreach ($recipient_ids as $recipient_id) {
-				array_push($recipients, $this->position->find($recipient_id));
+				$position =  $this->position->find($recipient_id);
+				$position['department'] = $this->department->find($position['pos_dpt_id']);
+				array_push($recipients, $position);
 			}
 			$memo['recipients'] = $recipients;
 			$memo['organization'] = $this->organization->first();
 		}
 		return $memo;
+	}
+
+	private function _get_department_employees() {
+		$department_employees = [];
+		$departments = $this->department->findAll();
+		foreach ($departments as $department) {
+			$department_employees[$department['dpt_name']] = [];
+			$employees = $this->employee
+				->where('employee_department_id', $department['dpt_id'])
+			->findAll();
+			foreach ($employees as $employee) {
+				$user = $this->user->where('user_employee_id', $employee['employee_id'])->first();
+				if ($user['user_status'] == 1 && ($user['user_type'] == 3 || $user['user_type'] == 2)) {
+					$employee['user'] = $user;
+					$employee['position'] = $this->position->find($employee['employee_position_id']);
+					array_push($department_employees[$department['dpt_name']], $employee);
+				}
+			}
+		}
+		return $department_employees;
 	}
 }

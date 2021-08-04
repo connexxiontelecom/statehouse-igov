@@ -84,7 +84,7 @@
                   </div>
                   <div class="form-group">
                     <label for="notes">Notes</label>
-                    <textarea class="form-control" id="notes" rows="3" name="m_notes"></textarea>
+                    <textarea class="form-control" id="notes" rows="5" name="m_notes"></textarea>
                   </div>
                 </div> <!-- end col-->
                 <div class="col-xl-6">

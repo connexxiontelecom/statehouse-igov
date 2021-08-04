@@ -86,7 +86,7 @@ class EmployeeController extends BaseController
 					}
 				} else {
 					$response['success'] = false;
-					$response['message'] = 'Your E-Signature has not been set up yet. You will be redirected to My Account to set it up now.';
+					$response['message'] = 'An error occurred while setting up your E-Signature.';
 				}
 			}
 		}

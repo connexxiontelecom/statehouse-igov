@@ -17,13 +17,15 @@ class Auth extends BaseController
 		$data = [];
 		
 		if($this->request->getMethod() == 'post'):
+
+
 			$rules = [
 				'username'=> [
 					'rules'=>'required',
 					'label'=>'Email address',
 					'errors'=>[
 						'required'=>'username/email is compulsory',
-					
+
 					]
 				],
 				'password'=> [
@@ -31,22 +33,24 @@ class Auth extends BaseController
 					'label'=>'Password',
 					'errors'=>[
 						'required'=>'Enter your registered password'
-					
+
 					]
 				]
 			];
 			if($this->validate($rules)):
-				
+
 				$username= $this->request->getVar('username');
 				$password = $this->request->getVar('password');
-				
+
 				$url = $this->request->getVar('url');
 				$data = $this->user->where('user_username', $username)
 					->orWhere('user_email', $username)
 					->first();
+
+				//print_r($data);
 				if($data):
 					$user_status = $data['user_status'];
-					
+
 					if($user_status == 1):
 						$pass = $data['user_password'];
 						$verify_password = password_verify($password, $pass);
@@ -66,16 +70,16 @@ class Auth extends BaseController
 							if($type == 2 ):
 								return redirect()->to('/');
 							endif;
-							
+
 							if($type == 1):
 								return redirect()->to('admin');
 							endif;
-							
+
 							if($type == 3):
 								return view('auth/moderator', $data);
 							endif;
-						
-						
+
+
 						endif;
 						$data['errors'] = 'Wrong authentication details';
 						$data['url'] = '';
@@ -91,7 +95,7 @@ class Auth extends BaseController
 					return view('auth/login', $data);
 				endif;
 			else:
-				
+
 				$data['validation'] = $this->validator;
 				$data['url'] = '';
 				return view('auth/login', $data);

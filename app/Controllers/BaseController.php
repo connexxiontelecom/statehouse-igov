@@ -70,7 +70,7 @@ class BaseController extends ResourceController
 		$this->email->setFrom($from['email'], $from['name']);
 		$this->email->setSubject($subject);
 		$this->email->setMessage($message);
-		return $this->email->send();
+		return $this->email->send(false);
 	}
 
 	protected function _get_verification_code($ver_type) {

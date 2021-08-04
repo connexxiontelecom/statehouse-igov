@@ -35,7 +35,7 @@ class CircularController extends PostController
 				foreach($posts_dpts as $posts_dpt):
 					array_push($recipients, $this->department->find($posts_dpt));
 				endforeach;
-				if(in_array($department_id, $posts_dpts)):
+				if(in_array($department_id, $posts_dpts) || $post['p_by'] == session()->user_id || $post['p_signed_by'] == session()->user_id):
 					$user = $this->user->find($post['p_by']);
 					$post['created_by'] = $user['user_name'];
 					$post['recipients'] = $recipients;

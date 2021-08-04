@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\Organization;
 use App\Models\Department;
 use App\Models\Position;
+use App\Models\Registry;
 
 class GeneralSettingController extends BaseController
 {
@@ -19,6 +20,7 @@ class GeneralSettingController extends BaseController
 		$this->organization = new Organization();
 		$this->department = new Department();
 		$this->position = new Position();
+		$this->registry = new Registry();
 	}
 	public function organization_profile()
 	{
@@ -88,5 +90,18 @@ class GeneralSettingController extends BaseController
 			$data['departments'] = $this->department->findAll();
 			return view('office/positions', $data);
 		endif;
+	}
+
+	public function registries() {
+		if ($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['registries'] = $this->registry->findAll();
+			return view('office/registry/registries', $data);
+		endif;
+		$_POST['registry_status'] = 1;
+		$this->registry->save($_POST);
+		session()->setFlashData("action","action successful");
+		return redirect()->to(base_url('/manage-registries'));
 	}
 }
