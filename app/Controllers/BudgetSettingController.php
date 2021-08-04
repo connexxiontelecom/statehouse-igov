@@ -51,7 +51,7 @@ class BudgetSettingController extends BaseController
 		if($this->request->getMethod() == 'get'):
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$data['postions'] = $this->position->findAll();
+			$data['departments'] = $this->department->findAll();
 			return view('office/budget/budget_setup', $data);
 		endif;
 		
