@@ -660,7 +660,7 @@
 					</li>
 					
 					<li>
-						<a href="apps-chat.html">
+						<a href="<?=site_url('budget-setups') ?>">
 							<i data-feather="credit-card"></i>
 							<span> Budgets </span>
 						</a>
