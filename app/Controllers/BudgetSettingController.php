@@ -43,8 +43,92 @@ class BudgetSettingController extends BaseController
 	{
 		
 		if($this->request->getMethod() == 'post'):
-		
-		
+			$this->validator->setRules( [
+				'budget_title'=>[
+					'rules'=>'required',
+					'errors'=>[
+						'required'=>'Enter Budget Title'
+					]
+				],
+				
+				'budget_year'=>[
+					'rules'=>'required',
+					'errors'=>[
+						'required'=>'Enter Budget Year'
+					]
+				]
+			]);
+			if ($this->validator->withRequest($this->request)->run()):
+				$budget = array();
+				$budget['budget_title'] = $_POST['budget_title'];
+				$budget['budget_year'] = $_POST['budget_year'];
+				
+				$bh_title = $_POST['bh_title'];
+				$bh_office = $_POST['bh_office'];
+				$bh_amount = $_POST['bh_amount'];
+				
+				$budget_id = $this->budget->insert($budget);
+				
+				
+				if($budget_id):
+				
+				if(count($bh_title)):
+					$k = 0;
+						for($n = 0; $n<count($bh_title); $n++):
+							
+							$bh_array = array(
+								'bh_title' => $bh_title[$n],
+								'bh_office' => $bh_office[$n],
+								'bh_amount'=> $bh_amount[$n],
+								'bh_budget_id' => $budget_id
+							);
+						
+						$check = $this->bh->save($bh_array);
+						if(!$check):
+							$this->budget->where('budget_id', $budget_id)->delete();
+							$this->bh->where('bh_budget_id', $budget_id)->delete();
+							$arr = array('An error Occurred while creating budget headers');
+							session()->setFlashData("errors",$arr);
+							return redirect()->to(base_url('budget-setup'));
+						endif;
+						$k++;
+					endfor;
+					
+					if($k):
+						
+						session()->setFlashData("action",'Action Successful');
+						return redirect()->to(base_url('budget-setups'));
+					else:
+						
+						$arr = array('An error occurred');
+						session()->setFlashData("errors",$arr);
+						return redirect()->to(base_url('budget-setup'));
+					endif;
+				
+				else:
+					$this->budget->where('budget_id', $budget_id)->delete();
+					
+					$arr = array('No Budget Headers Sent');
+					session()->setFlashData("errors",$arr);
+					return redirect()->to(base_url('budget-setup'));
+					endif;
+					
+					
+					else:
+						
+						
+						$arr = array('An error occurred while creating the budget');
+						session()->setFlashData("errors",$arr);
+						return redirect()->to(base_url('budget-setup'));
+				endif;
+				
+				
+			else:
+					$arr = $this->validator->getErrors();
+					session()->setFlashData("errors",$arr);
+					return redirect()->to(base_url('budget-setup'));
+				
+				endif;
 		
 		endif;
 		

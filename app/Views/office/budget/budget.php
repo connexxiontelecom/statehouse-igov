@@ -51,7 +51,7 @@
 									<td><?=$i++;?></td>
 									<td><?=$budget['budget_title']?></td>
 									<td><?=$budget['budget_year']?></td>
-									<td><?=$budget['budget_status']?></td>
+									
 									<td>
 										<button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-department<?=$budget['budget_id'] ?>" > <i class="mdi mdi-pen-lock mr-2"></i></button>
 									</td>

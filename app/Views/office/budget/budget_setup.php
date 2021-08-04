@@ -30,6 +30,19 @@
 						</div>
 					<?php endif; ?>
 					
+					
+					<?php if(session()->has('errors')):
+						$errors = session()->get('errors');
+						foreach ($errors as $error):
+							?>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<i class="mdi mdi-check-all mr-2"></i><strong><?php print_r($error); ?> !</strong>
+							</div>
+						<?php endforeach; endif; ?>
+					
 					<form action="" method="post">
 					<div class="row">
 						<h4> Budget Details</h4>
@@ -40,7 +53,7 @@
 									<!-- Date View -->
 									<div class="form-group">
 										<label>Budget Title</label>
-										<input type="text" class="form-control"  placeholder="Budget Title" required>
+										<input type="text" class="form-control" name="budget_title"  placeholder="Budget Title">
 									</div>
 								</div>
 								
@@ -48,7 +61,7 @@
 									<!-- Date View -->
 									<div class="form-group">
 										<label>Year</label>
-										<input type="text" class="form-control" value="<?=date('Y') ?>" placeholder="<?=date('Y') ?>" required>
+										<input type="text" class="form-control" name="budget_year" value="<?=date('Y') ?>" placeholder="<?=date('Y') ?>" required>
 									</div>
 								</div>
 							</div>
