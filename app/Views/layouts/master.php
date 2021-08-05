@@ -321,15 +321,9 @@
 						</a>
 					</li>
           <li>
-            <a href="<?= site_url('registries') ?>">
+            <a href="<?= site_url('registry') ?>">
               <i data-feather="inbox"></i>
-              <span> Registries </span>
-            </a>
-          </li>
-          <li>
-            <a href="<?= site_url('central-registry') ?>">
-              <i data-feather="inbox"></i>
-              <span> Central Registry </span>
+              <span> Registry </span>
             </a>
           </li>
           <li>

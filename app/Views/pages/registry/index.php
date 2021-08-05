@@ -8,10 +8,10 @@
 				<div class="page-title-right">
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
-						<li class="breadcrumb-item active"><a href="<?= site_url('registries')?>">Registries</a></li>
+						<li class="breadcrumb-item active"><a href="<?= site_url('registries')?>">Registry</a></li>
 					</ol>
 				</div>
-				<h4 class="page-title">Registries</h4>
+				<h4 class="page-title">Registry</h4>
 			</div>
 		</div>
 	</div>

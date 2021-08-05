@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Department;
 use App\Models\Mail;
+use App\Models\MailAttachment;
 use App\Models\Position;
 use App\Models\Registry;
 use App\Models\UserModel;
@@ -23,6 +24,7 @@ class RegistryController extends BaseController
 		$this->employee = new Employee();
 		$this->position = new Position();
 		$this->department = new Department();
+		$this->mail_attachment = new MailAttachment();
 	}
 
 	public function index() {
@@ -34,17 +36,19 @@ class RegistryController extends BaseController
 		return view('/pages/registry/index', $data);
 	}
 
-	public function view_registry($registry_id = null, $type = null) {
+	public function view_registry($registry_id = null) {
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
-		if (!$type || $type = 'all')
-			$data['mails'] = $this->_get_user_registry_mails($registry_id);
-		if ($type == 'incoming')
-			$data['mails'] = $this->_get_user_registry_mails($registry_id);
-		if ($type == 'outgoing')
-			$data['mails'] = $this->_get_user_registry_mails($registry_id);
+		$data['mails'] = $this->_get_user_registry_mails($registry_id);
 		$data['registry'] = $this->_get_registry($registry_id);
 		return view('/pages/registry/view-registry', $data);
+	}
+
+	public function manage_mail($mail_id) {
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$data['mail'] = $this->_get_mail($mail_id);
+		return view('/pages/registry/manage-mail', $data);
 	}
 
 	private function _get_registries() {
@@ -78,5 +82,23 @@ class RegistryController extends BaseController
 			->where('m_desk', session()->user_id)
 			->where('m_registry_id', $registry_id)
 		->findAll();
+	}
+
+	private function _get_mail($mail_id) {
+		$mail = $this->mail->find($mail_id);
+		if ($mail):
+			$mail['attachments'] = $this->mail_attachment->where('ma_mail_id', $mail_id)->findAll();
+			$mail['recipients'] = $this->user->where('user_status', 1)
+				->groupStart()
+				->where('user_type', 2)
+				->orWhere('user_type', 3)
+				->groupEnd()
+				->findAll();
+			$mail['holder'] = '';
+			$mail['registry'] = $this->registry->find($mail['m_registry_id']);
+			$mail['current_desk'] = $this->user->find($mail['m_desk']);
+			$mail['stamped_by'] = $this->user->find($mail['m_by']);
+		endif;
+		return $mail;
 	}
 }

@@ -10,7 +10,7 @@
 				<div class="page-title-right">
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
-						<li class="breadcrumb-item"><a href="<?=site_url('/registries')?>">Registries</a></li>
+						<li class="breadcrumb-item"><a href="<?=site_url('/registry')?>">Registry</a></li>
 						<li class="breadcrumb-item active"><a href="javascript: void(0);">View Registry</a></li>
 					</ol>
 				</div>
@@ -28,7 +28,7 @@
           </div>
           <div class="col-lg-4">
             <div class="text-lg-right mt-3 mt-lg-0">
-              <a href="<?=site_url('/registries')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
+              <a href="<?=site_url('/registry')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
             </div>
           </div><!-- end col-->
         </div> <!-- end row -->
@@ -99,35 +99,11 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-lg-8">
-              <?php if (!$uri->getSegment(3)):?>
-                <h4 class="header-title">All Mails</h4>
-                <p class="text-muted font-13">
-                  Below are the registered correspondence currently at your desk or filed by you and managed by this registry.
-                </p>
-              <?php elseif ($uri->getSegment(3) == 'incoming'):?>
-                <h4 class="header-title">Incoming Mails</h4>
-                <p class="text-muted font-13">
-                  Below are the registered incoming correspondence currently at your desk or filed by you and managed by this registry.
-                </p>
-              <?php elseif ($uri->getSegment(3) == 'outgoing'):?>
-                <h4 class="header-title">Outgoing Mails</h4>
-                <p class="text-muted font-13">
-                  Below are the registered outgoing correspondence currently at your desk or filed by you and managed by this registry.
-                </p>
-              <?php endif?>
-
+              <h4 class="header-title">All Mails</h4>
+              <p class="text-muted font-13">
+                Below are the registered correspondence currently at your desk or filed by you and managed by this registry.
+              </p>
 						</div>
-						<div class="col-lg-4">
-							<div class="text-lg-right mt-lg-0">
-								<div class="btn-group">
-									<a href="<?=site_url('view-registry/').$registry['registry_id']?>" class="btn btn-<?= !$uri->getSegment(3) ? 'primary':'light' ?>">All</a>
-								</div>
-								<div class="btn-group">
-									<a href="<?=site_url('view-registry/').$registry['registry_id'].'/incoming'?>" class="btn btn-<?= $uri->getSegment(3) == 'incoming' ? 'primary':'light' ?>">Incoming</a>
-									<a href="<?=site_url('view-registry/').$registry['registry_id'].'/outgoing'?>" class="btn btn-<?= $uri->getSegment(3) == 'outgoing' ? 'primary':'light' ?>">Outgoing</a>
-								</div>
-							</div>
-						</div><!-- end col-->
 					</div> <!-- end row -->
 					<table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap w-100">
 						<thead>
@@ -136,9 +112,10 @@
 							<th>Ref No.</th>
 							<th>Subject</th>
 							<th>Sender</th>
-							<th>Received</th>
-							<th>Status</th>
-							<th class="text-center" style="width: 10%">Actions</th>
+							<th style="width: 10%">Received</th>
+              <th class="text-center" style="width: 5%">Direction</th>
+              <th class="text-center" style="width: 5%">Status</th>
+							<th class="text-center" style="width: 5%">Actions</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -153,17 +130,26 @@
 									echo date_format($date,"d M Y");
 									?>
 								</td>
-								<td>
+                <td class="text-center">
+									<?=
+									$mail['m_direction'] == 1
+										? '<span class="badge badge-outline-blue badge-pill">Incoming</span>'
+										: '<span class="badge badge-outline-dark badge-pill">Outgoing</span>'
+									?>
+                </td>
+								<td class="text-center">
 									<?php
-									if ($mail['m_status'] == 0) echo 'Registered';
-									elseif ($mail['m_status'] == 1) echo 'Filed';
-									elseif ($mail['m_status'] == 2) echo 'Activated';
-									elseif ($mail['m_status'] == 3) echo 'Deactivated';
+									if ($mail['m_status'] == 0) echo '<span class="badge badge-soft-primary badge-pill">Registered</span>';
+									elseif ($mail['m_status'] == 1) echo '<span class="badge badge-soft-secondary badge-pill">In Transit</span>';
+									elseif ($mail['m_status'] == 2) echo '<span class="badge badge-soft-warning badge-pill">Received</span>';
+									elseif ($mail['m_status'] == 3) echo '<span class="badge badge-soft-success badge-pill">Filed</span>';
 									elseif ($mail['m_status'] == 4) echo 'Rejected';
 									?>
 								</td>
 								<td class="text-center">
-									<a href="<?=site_url('manage-mail/').$mail['m_id']?>">Manage</a>
+									<a href="<?=site_url('manage-mail/').$mail['m_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="Manage Mail">
+                    <i data-feather="edit-3" class="icon-dual"></i>.
+                  </a>
 								</td>
 							</tr>
 						<?php endforeach;?>
