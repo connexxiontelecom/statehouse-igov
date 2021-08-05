@@ -124,36 +124,6 @@ class CentralRegistryController extends BaseController
 		return view('/pages/central-registry/manage-mail', $data);
 	}
 
-	public function file_mail() {
-		$post_data = $this->request->getPost();
-		$mail_data = [
-			'm_id' => $post_data['m_id'],
-			'm_file_ref_no' => $post_data['m_file_ref_no'],
-			'm_status' => 1
-		];
-		$filed = $this->mail->save($mail_data);
-		if ($filed) {
-			$response['success'] = true;
-			$response['message'] = 'Successfully filed the mail';
-		} else {
-			$response['success'] = false;
-			$response['message'] = 'There was an error while filing the mail';
-		}
-		return $this->response->setJSON($response);
-	}
-
-	public function transfer_mail() {
-		$post_data = $this->request->getPost();
-		if ($this->_set_file_holder($post_data['mh_holder_id'], $post_data['m_id'])) {
-			$response['success'] = true;
-			$response['message'] = 'Successfully transferred the mail';
-		} else {
-			$response['success'] = false;
-			$response['message'] = 'There was an error while transferring the mail';
-		}
-		return $this->response->setJSON($response);
-	}
-
 	private function _upload_attachments($attachments, $mail_id) {
 		if (count($attachments) > 0) {
 			foreach ($attachments as $attachment) {
@@ -195,23 +165,5 @@ class CentralRegistryController extends BaseController
 		return $mail;
 	}
 
-	private function _set_file_holder($user_id, $mail_id) {
-		$file_holder = $this->mail_holder->where([
-			'mh_mail_id' => $mail_id,
-			'mh_status' => 1,
-		])->first();
-		if ($file_holder) {
-			$file_holder_data = [
-				'mh_id' => $file_holder['mh_id'],
-				'mh_status' => 0
-			];
-			$this->mail_holder->save($file_holder_data);
-		}
-		$file_holder_data = [
-			'mh_mail_id' => $mail_id,
-			'mh_holder_id' => $user_id,
-			'mh_status' => 1
-		];
-		return $this->mail_holder->save($file_holder_data);
-	}
+
 }

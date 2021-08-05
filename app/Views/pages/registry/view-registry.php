@@ -86,7 +86,7 @@
           <div class="col-6">
             <div class="text-right">
               <h5 class="text-dark my-1"><span data-plugin="counterup">0</span></h5>
-              <p class="text-muted mb-0 text-truncate">Transfer Requests</p>
+              <p class="text-muted mb-0 text-truncate">Pending Transfers</p>
             </div>
           </div>
         </div>

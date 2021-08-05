@@ -52,6 +52,16 @@
             elseif ($mail['m_status'] == 3) echo '<span class="badge badge-soft-success badge-pill mb-3">Filed</span>';
             elseif ($mail['m_status'] == 4) echo 'Rejected';
 	          ?>
+            <h5 class="mt-0 text-danger">Current Desk:</h5>
+            <p class="text-danger"><?=$mail['current_desk']['user_name']?></p>
+            <h5 class="mt-0 text-danger">File Cabinet Number:</h5>
+            <p class="text-danger">
+		          <?php if ($mail['m_file_ref_no']):?>
+			          <?=$mail['m_file_ref_no']?>
+		          <?php else:?>
+                <em>Not yet filed</em>
+		          <?php endif;?>
+            </p>
             <h5>Reference No</h5>
             <p class="text-muted mb-2">
 		          <?=$mail['m_ref_no']?>
@@ -158,12 +168,20 @@
               <div class="row">
                 <div class="col-12">
                   <div class="form-group">
-                    <label for="mh-holder-id">Mail Recipient</label>
-                    <select class="form-control input-lg" data-toggle="select2" id="mh-holder-id">
+                    <label for="mt-to-id">Mail Recipient</label>
+                    <select class="form-control input-lg" data-toggle="select2" id="mt-to-id">
                       <option value="" selected disabled>Select</option>
-								      <?php foreach ($mail['recipients'] as $recipient): if ($recipient['user_id'] != session()->user_id):?>
-                        <option value="<?=$recipient['user_id']?>"><?=$recipient['user_name']?></option>
-								      <?php endif; endforeach;?>
+	                    <?php foreach ($mail['department_employees'] as $department => $employees): ?>
+		                    <?php if(!empty($employees)):?>
+                          <optgroup label="<?=$department?>">
+				                    <?php foreach ($employees as $employee): if ($employee['user']['user_id'] != session()->user_id):?>
+                              <option value="<?=$employee['user']['user_id']?>">
+						                    <?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+                              </option>
+				                    <?php endif; endforeach;?>
+                          </optgroup>
+		                    <?php endif;?>
+	                    <?php endforeach; ?>
                     </select>
                     <div class="invalid-feedback">
                       Please select a new mail recipient.
@@ -175,6 +193,9 @@
                 </div>
                 <div class="col-12 mt-0">
                   <button type="button" onclick="transferMail()" class="btn btn-success waves-effect waves-light btn-sm">Transfer Mail</button>
+                  <?php foreach($mail['transfer_logs'] as $transfer_log): if ($transfer_log['mt_status'] == 0): ?>
+                    <span class="ml-1" data-toggle="tooltip" data-placement="right" title data-original-title="There is a pending transfer"><i data-feather="alert-triangle" class="icon-dual-warning"></i></span>
+                  <?php break; endif; endforeach;?>
                 </div>
               </div>
               <input type="hidden" id="mail-id" value="<?=$mail['m_id']?>">
@@ -208,63 +229,93 @@
         </div>
         <div class="card">
           <div class="card-body">
-            <h4 class="header-title mb-3">Mail Activity Log</h4>
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="mb-4">
-                  <h5 class="mt-0 text-danger">Current Desk:</h5>
-                  <p class="text-danger"><?=$mail['current_desk']['user_name']?></p>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="mb-4">
-                  <h5 class="mt-0 text-danger">File Cabinet Number:</h5>
-                  <p class="text-danger">
-							      <?php if ($mail['m_file_ref_no']):?>
-								      <?=$mail['m_file_ref_no']?>
-							      <?php else:?>
-                      <em>Not yet filed</em>
-							      <?php endif;?>
-                  </p>
-                </div>
-              </div>
-            </div>
+            <h4 class="header-title mb-3">Mail Transfer Log</h4>
             <div class="track-order-list mb-3" style="height: 200px; overflow: auto">
-              <ul class="list-unstyled px-1">
-                <li class="completed">
-                  <h5 class="mt-0 mb-1">Stamped/Received by <em><?=$mail['stamped_by']['user_name']?></em> </h5>
-                  <p class="text-muted">April 21 2019 <small class="text-muted">07:22 AM</small> </p>
-                </li>
-                <li class="completed">
-                  <h5 class="mt-0 mb-1">Packed</h5>
-                  <p class="text-muted">April 22 2019 <small class="text-muted">12:16 AM</small></p>
-                </li>
-                <li>
-                  <span class="active-dot dot"></span>
-                  <h5 class="mt-0 mb-1">Shipped</h5>
-                  <p class="text-muted">April 22 2019 <small class="text-muted">05:16 PM</small></p>
-                </li>
-                <li>
-                  <h5 class="mt-0 mb-1"> Delivered</h5>
-                  <p class="text-muted">Estimated delivery within 3 days</p>
-                </li>
-                <li>
-                  <h5 class="mt-0 mb-1"> Delivered</h5>
-                  <p class="text-muted">Estimated delivery within 3 days</p>
-                </li>
-                <li>
-                  <h5 class="mt-0 mb-1"> Delivered</h5>
-                  <p class="text-muted">Estimated delivery within 3 days</p>
-                </li>
-                <li>
-                  <h5 class="mt-0 mb-1"> Delivered</h5>
-                  <p class="text-muted">Estimated delivery within 3 days</p>
-                </li>
-                <li>
-                  <h5 class="mt-0 mb-1"> Delivered</h5>
-                  <p class="text-muted">Estimated delivery within 3 days</p>
-                </li>
+              <ul class="list-unstyled p-2">
+                <?php if (empty($mail['transfer_logs'])): ?>
+                  <li>
+                    <span class="active-dot dot"></span>
+                    <h5 class="mt-0 mb-1">Stamped/Received</h5>
+                    <em><?=$mail['stamped_by']['user_name']?></em>
+                    <p class="text-muted">
+			                <?php $date = date_create($mail['created_at']);
+			                echo date_format($date,"d F Y");
+			                ?>
+                      <small class="text-muted">
+				                <?php $date = date_create($mail['created_at']);
+				                echo date_format($date,"H:i a");
+				                ?>
+                      </small>
+                    </p>
+                  </li>
+                <?php else:?>
+                  <li class="completed">
+                    <h5 class="mt-0 mb-1">Stamped/Received</h5>
+                    <em><?=$mail['stamped_by']['user_name']?></em>
+                    <p class="text-muted">
+			                <?php $date = date_create($mail['created_at']);
+			                echo date_format($date,"d F Y");
+			                ?>
+                      <small class="text-muted">
+				                <?php $date = date_create($mail['created_at']);
+				                echo date_format($date,"H:i a");
+				                ?>
+                      </small>
+                    </p>
+                  </li>
+	                <?php
+	                $last_key = array_key_last($mail['transfer_logs']);
+	                foreach ($mail['transfer_logs'] as $key => $transfer_log): ?>
+		                <?php if ($key == $last_key):?>
+                      <li>
+                        <span class="active-dot dot"></span>
+                        <h5 class="mt-0 mb-1">
+					                <?=$transfer_log['mt_status'] == 0 ? 'Pending Transfer' : 'Transfer Confirmed'?>
+                        </h5>
+                        <em><?=$transfer_log['transfer_to']['user_name']?></em>
+				                <?php if ($transfer_log['mt_confirmed_at']): ?>
+                          <p class="text-muted">
+						                <?php $date = date_create($transfer_log['mt_confirmed_at']);
+						                echo date_format($date,"d F Y");
+						                ?>
+                            <small class="text-muted">
+							                <?php $date = date_create($transfer_log['mt_confirmed_at']);
+							                echo date_format($date,"H:i a");
+							                ?>
+                            </small>
+                          </p>
+				                <?php else:?>
+                          <p class="text-muted">---</p>
+				                <?php endif;?>
+                      </li>
+		                <?php else:?>
+                      <li class="completed">
+                        <h5 class="mt-0 mb-1">
+					                <?=$transfer_log['mt_status'] == 0 ? 'Pending Transfer' : 'Transfer Confirmed'?>
+                        </h5>
+                        <em><?=$transfer_log['transfer_to']['user_name']?></em>
+				                <?php if ($transfer_log['mt_confirmed_at']): ?>
+                          <p class="text-muted">
+						                <?php $date = date_create($transfer_log['mt_confirmed_at']);
+						                echo date_format($date,"d F Y");
+						                ?>
+                            <small class="text-muted">
+							                <?php $date = date_create($transfer_log['mt_confirmed_at']);
+							                echo date_format($date,"H:i a");
+							                ?>
+                            </small>
+                          </p>
+				                <?php else:?>
+                          <p class="text-muted">---</p>
+				                <?php endif;?>
+                      </li>
+		                <?php endif;?>
+	                <?php endforeach;?>
+                <?php endif;?>
               </ul>
+            </div>
+            <div class="text-center">
+              <a href="#" class="btn btn-success">View Details</a>
             </div>
           </div>
         </div>
@@ -274,5 +325,5 @@
   </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?=view('pages/central-registry/_central-registry-scripts.php')?>
+<?=view('pages/registry/_registry-scripts.php')?>
 <?= $this->endSection(); ?>
