@@ -4,30 +4,22 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Mail extends Model
+class MailTransfer extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'mails';
-	protected $primaryKey           = 'm_id';
+	protected $table                = 'mail_transfers';
+	protected $primaryKey           = 'mt_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'm_id',
-		'm_ref_no',
-		'm_file_ref_no',
-		'm_subject',
-		'm_sender',
-		'm_direction',
-		'm_date_received',
-		'm_date_correspondence',
-		'm_status',
-		'm_notes',
-		'm_by',
-		'm_desk',
-		'm_registry_id'
+		'mt_mail_id',
+		'mt_from_id',
+		'mt_to_id',
+		'mt_status',
+		'mt_confirmed_at'
 	];
 
 	// Dates

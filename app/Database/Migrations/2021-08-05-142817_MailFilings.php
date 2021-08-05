@@ -4,40 +4,49 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class MailHolders extends Migration
+class MailFilings extends Migration
 {
 	public function up()
 	{
 		$this->db->disableForeignKeyChecks();
 		$this->forge->addField(
 			[
-				'mh_id' =>[
+				'mf_id' =>[
 					'type' => 'INT',
 					'constraint' => 11,
 					'auto_increment' => true,
 				],
 
-				'mh_mail_id' =>[
+				'mf_mail_id' =>[
 					'type' => 'INT',
 				],
 
-				'mh_holder_id' =>[
+				'mf_filed_by_id' =>[
 					'type' => 'INT',
 				],
 
-				'mh_status' =>[
+				'mf_file_ref_no' =>[
+					'type' => 'TEXT',
+				],
+
+				'mf_status' =>[
 					'type' => 'INT',
+				],
+
+				'mf_confirmed_at' => [
+					'type' => 'datetime',
+					'null' => true,
 				],
 
 				'created_at datetime default current_timestamp',
 			]
 		);
-		$this->forge->addKey('mh_id', true);
-		$this->forge->createTable('mail_holders');
+		$this->forge->addKey('mf_id', true);
+		$this->forge->createTable('mail_filings');
 	}
 
 	public function down()
 	{
-		$this->forge->dropTable('mail_holders');
+		//
 	}
 }

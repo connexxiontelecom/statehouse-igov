@@ -320,11 +320,10 @@
 							<span> Workflow </span>
 						</a>
 					</li>
-
           <li>
-            <a href="<?= site_url('central-registry') ?>">
+            <a href="<?= site_url('registry') ?>">
               <i data-feather="inbox"></i>
-              <span> Central Registry </span>
+              <span> Registry </span>
             </a>
           </li>
           <li>
