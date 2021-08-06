@@ -47,11 +47,15 @@ $routes->match(['get', 'post'], 'organization-profile', 'GeneralSettingControlle
 $routes->match(['get', 'post'], 'departments', 'GeneralSettingController::departments', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'positions', 'GeneralSettingController::positions', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'manage-registries', 'GeneralSettingController::registries', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'manage-registry/(:num)', 'GeneralSettingController::manage_registry/$1', ['filter' => 'auth']);
+
 $routes->match(['get', 'post'], 'notice-board', 'MessagingSettingController::notice_board', ['filter' => 'auth']);
+
 $routes->match(['get', 'post'], 'new-employee', 'EmployeeSettingController::new_employee', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'fetch-positions', 'EmployeeSettingController::fetch_positions', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'employees', 'EmployeeSettingController::all_employees', ['filter' => 'auth']);
 $routes->match(['post'], 'check-username', 'EmployeeSettingController::check_username', ['filter' => 'auth']);
+
 $routes->match(['get', 'post'], 'budget-setup', 'BudgetSettingController::budget_setup', ['filter' => 'auth']);
 $routes->match(['get'], 'budget-setups', 'BudgetSettingController::budget_setups', ['filter' => 'auth']);
 $routes->match(['get'], 'view-budget-setup/(:num)', 'BudgetSettingController::view_budget/$1', ['filter' => 'auth']);
@@ -159,6 +163,8 @@ $routes->match(['post', 'get'], 'delete-mail-attachments', 'CentralRegistryContr
 $routes->match(['get'], 'registry', 'RegistryController::index', ['filter' => 'auth']);
 $routes->match(['get'], 'view-registry/(:any)', 'RegistryController::view_registry/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'manage-mail/(:num)', 'RegistryController::manage_mail/$1', ['filter' => 'auth']);
+$routes->match(['get'], 'view-transfer-log/(:num)', 'RegistryController::view_transfer_log/$1', ['filter' => 'auth']);
+$routes->match(['get'], 'view-filing-log/(:num)', 'RegistryController::view_filing_log/$1', ['filter' => 'auth']);
 $routes->match(['post'], 'transfer-mail', 'RegistryController::transfer_mail', ['filter' => 'auth']);
 $routes->match(['post'], 'file-mail', 'RegistryController::file_mail', ['filter' => 'auth']);
 

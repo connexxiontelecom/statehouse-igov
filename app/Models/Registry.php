@@ -18,7 +18,8 @@ class Registry extends Model
 		'registry_name',
 		'registry_description',
 		'registry_status',
-		'registry_manager_id'
+		'registry_manager_id',
+		'registry_users'
 	];
 
 	// Dates

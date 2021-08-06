@@ -11,7 +11,7 @@
 						<ol class="breadcrumb m-0">
 							<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
 							<li class="breadcrumb-item"><a href="<?= site_url('/registry')?>">Registry</a></li>
-							<li class="breadcrumb-item"><a href="<?= site_url('/view-registry').$mail['registry']['registry_id']?>">View Registry</a></li>
+							<li class="breadcrumb-item"><a href="<?= site_url('/view-registry/').$mail['registry']['registry_id']?>">View Registry</a></li>
 							<li class="breadcrumb-item active">Manage Mail</li>
 						</ol>
 					</div>
@@ -194,7 +194,7 @@
                 <div class="col-12 mt-0">
                   <button type="button" onclick="transferMail()" class="btn btn-success waves-effect waves-light btn-sm">Transfer Mail</button>
                   <?php foreach($mail['transfer_logs'] as $transfer_log): if ($transfer_log['mt_status'] == 0): ?>
-                    <span class="ml-1" data-toggle="tooltip" data-placement="right" title data-original-title="There is a pending transfer"><i data-feather="alert-triangle" class="icon-dual-warning"></i></span>
+                    <span class="ml-1" data-toggle="tooltip" data-placement="right" title data-original-title="You cannot transfer while there is a pending transfer"><i data-feather="alert-triangle" class="icon-dual-warning"></i></span>
                   <?php break; endif; endforeach;?>
                 </div>
               </div>
@@ -221,6 +221,9 @@
                 </div>
                 <div class="col-12 mt-0">
                   <button class="btn btn-success waves-effect waves-light btn-sm">File Mail</button>
+	                <?php foreach($mail['transfer_logs'] as $transfer_log): if ($transfer_log['mt_status'] == 0): ?>
+                    <span class="ml-1" data-toggle="tooltip" data-placement="right" title data-original-title="You cannot file while there is a pending transfer"><i data-feather="alert-triangle" class="icon-dual-warning"></i></span>
+                  <?php break; endif; endforeach;?>
                 </div>
               </div>
               <input type="hidden" id="mail-id" value="<?=$mail['m_id']?>">
@@ -315,7 +318,7 @@
               </ul>
             </div>
             <div class="text-center">
-              <a href="#" class="btn btn-success">View Details</a>
+              <a href="<?=site_url('view-transfer-log/').$mail['m_id']?>" class="btn btn-success">View Details</a>
             </div>
           </div>
         </div>

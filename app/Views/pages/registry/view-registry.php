@@ -150,6 +150,9 @@
 									<a href="<?=site_url('manage-mail/').$mail['m_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="Manage Mail">
                     <i data-feather="edit-3" class="icon-dual"></i>.
                   </a>
+									<a href="<?=site_url('view-transfer-log/').$mail['m_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="View Log">
+                    <i data-feather="file-text" class="icon-dual"></i>.
+                  </a>
 								</td>
 							</tr>
 						<?php endforeach;?>
