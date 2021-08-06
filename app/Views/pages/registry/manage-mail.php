@@ -158,7 +158,6 @@
 				      <?php endforeach; else: echo "No Attachments"; endif; ?>
           </div>
         </div>
-
       </div> <!-- end col -->
       <div class="col-lg-6 col-xl-4">
         <div class="card">

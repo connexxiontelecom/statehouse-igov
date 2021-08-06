@@ -195,4 +195,36 @@
       })
     }
   }
+
+  function confirmTransfer(transferID, registryID) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Please ensure you have the physical mail before confirming. This action is irreversible and will be logged.',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33"
+    }).then(confirm => {
+      if (confirm.value) {
+        let formData = new FormData()
+        formData.append('mt_id', transferID)
+        $.ajax({
+          url: '<?=site_url('confirm-transfer-request')?>',
+          type: 'post',
+          data: formData,
+          success: response => {
+            if (response.success) {
+              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/view-registry/')?>'+registryID)
+            } else {
+              Swal.fire('Sorry!', response.message, 'error')
+            }
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        })
+      }
+    })
+  }
 </script>

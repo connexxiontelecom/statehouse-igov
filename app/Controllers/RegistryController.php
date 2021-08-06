@@ -35,6 +35,9 @@ class RegistryController extends BaseController
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$data['registries'] = $this->_get_registries();
+		$transfer_requests = $this->_get_transfer_requests();
+		if ($transfer_requests) session()->setFlashdata('transfer_requests', true);
+//		print_r($transfer_requests);
 		return view('/pages/registry/index', $data);
 	}
 
@@ -210,6 +213,55 @@ class RegistryController extends BaseController
 		return view('/pages/registry/mail-filing-log', $data);
 	}
 
+	public function mail_transfer_requests() {
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$data['transfer_requests'] = $this->_get_transfer_requests();
+		return view('/pages/registry/mail-transfer-requests', $data);
+	}
+
+	public function confirm_transfer_request() {
+		$post_data = $this->request->getPost();
+		$transfer_request = $this->mail_transfer->where([
+			'mt_id' => $post_data['mt_id'],
+			'mt_status' => 0
+		])->first();
+		if (!$transfer_request) {
+			$response['success'] = false;
+			$response['message'] = 'This transfer request is not valid';
+			return $this->response->setJSON($response);
+		}
+		$transfer_request_data = [
+			'mt_id' => $transfer_request['mt_id'],
+			'mt_status' => 1,
+			'mt_confirmed_at' => date('Y-m-d H:i:s', time())
+		];
+		if ($this->mail_transfer->save($transfer_request_data)) {
+			$mail = $this->mail->find($transfer_request['mt_mail_id']);
+			if ($mail) {
+				$mail_data = [
+					'm_id' => $mail['m_id'],
+					'm_desk' => $transfer_request['mt_to_id'],
+					'm_status' => 2
+				];
+				if ($this->mail->save($mail_data)) {
+					$response['success'] = true;
+					$response['message'] = 'The transfer request was successfully confirmed';
+				} else {
+					$response['success'] = false;
+					$response['message'] = 'An error occurred while confirming the transfer request';
+				}
+			} else {
+				$response['success'] = false;
+				$response['message'] = 'An error occurred while confirming the transfer request';
+			}
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'An error occurred while confirming the transfer request';
+		}
+		return $this->response->setJSON($response);
+	}
+
 	private function _get_registries() {
 		$registries = $this->registry->where('registry_status', 1)->findAll();
 		foreach ($registries as $key => $registry) {
@@ -245,7 +297,6 @@ class RegistryController extends BaseController
 		return $this->mail
 			->groupStart()
 				->where('m_desk', session()->user_id)
-				->orWhere('m_by', session()->user_id)
 			->groupEnd()
 			->where('m_registry_id', $registry_id)
 		->findAll();
@@ -255,7 +306,6 @@ class RegistryController extends BaseController
 		return $this->mail
 			->groupStart()
 				->where('m_desk', session()->user_id)
-				->orWhere('m_by', session()->user_id)
 			->groupEnd()
 			->where('m_status !=', 3)
 			->where('m_registry_id', $registry_id)
@@ -266,7 +316,6 @@ class RegistryController extends BaseController
 		return $this->mail
 			->groupStart()
 				->where('m_desk', session()->user_id)
-				->orWhere('m_by', session()->user_id)
 			->groupEnd()
 			->where('m_status', 1)
 			->where('m_registry_id', $registry_id)
@@ -343,5 +392,23 @@ class RegistryController extends BaseController
 				$this->mail_attachment->save($attachment_data);
 			}
 		}
+	}
+
+	private function _get_transfer_requests() {
+		$transfer_requests = $this->mail_transfer
+			->where('mt_to_id', session()->user_id)
+			->where('mt_status', 0)
+		->findAll();
+		foreach ($transfer_requests as $key => $transfer_request) {
+			$mail = $this->mail->find($transfer_request['mt_mail_id']);
+			$registry = $this->registry->find($mail['m_registry_id']);
+			$transfer_from = $this->user->find($transfer_request['mt_from_id']);
+			$transfer_to = $this->user->find($transfer_request['mt_to_id']);
+			$transfer_requests[$key]['mail'] = $mail;
+			$transfer_requests[$key]['registry'] = $registry;
+			$transfer_requests[$key]['transfer_from'] = $transfer_from;
+			$transfer_requests[$key]['transfer_to'] = $transfer_to;
+		}
+		return $transfer_requests;
 	}
 }

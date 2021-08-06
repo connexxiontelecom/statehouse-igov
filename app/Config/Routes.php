@@ -168,7 +168,8 @@ $routes->match(['post'], 'transfer-mail', 'RegistryController::transfer_mail', [
 $routes->match(['post'], 'file-mail', 'RegistryController::file_mail', ['filter' => 'auth']);
 $routes->match(['post'], 'upload-mail-attachments', 'RegistryController::upload_mail_attachments', ['filter' => 'auth']);
 $routes->match(['post', 'get'], 'delete-mail-attachments', 'RegistryController::delete_mail_attachments', ['filter' => 'auth']);
-
+$routes->match(['get'], 'mail-transfer-requests', 'RegistryController::mail_transfer_requests', ['filter' => 'auth']);
+$routes->match(['post'], 'confirm-transfer-request', 'RegistryController::confirm_transfer_request', ['filter' => 'auth']);
 
 /*
  * --------------------------------------------------------------------
