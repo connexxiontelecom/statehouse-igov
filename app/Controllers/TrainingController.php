@@ -26,13 +26,18 @@ class TrainingController extends BaseController
 	{
 	    $data = [
 	      'trainings'=>$this->training->getTrainings(),
+            'firstTime'=>$this->session->firstTime,
+            'username'=>$this->session->username
         ];
-        $data['firstTime'] = $this->session->firstTime;
+
 		return view('pages/training/index', $data);
 	}
 
 	public function showAddNewTrainingForm(){
-        $data['firstTime'] = $this->session->firstTime;
+        $data = [
+            'firstTime'=>$this->session->firstTime,
+            'username'=>$this->session->username
+        ];
         return view('pages/training/create',$data);
     }
 
@@ -97,9 +102,9 @@ class TrainingController extends BaseController
                 'training'=>$training,
                 'lessons'=> $lessons,
                 'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
                 'lesson_attachments'=>$this->lessonattachment->getTrainingAttachmentsByTrainingId($training['training_id'])
             ];
-            //$data['firstTime'] = $this->session->firstTime;
             return view('pages/training/view',$data);
         }else{
             return redirect()->to(base_url('/trainings'))->with("error", "<strong>Whoops!</strong> Record not found.");

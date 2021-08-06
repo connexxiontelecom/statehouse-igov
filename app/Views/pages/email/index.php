@@ -43,15 +43,16 @@ $this->extend('layouts/master')
                         <ul class="message-list">
                             <?php if(count($messages) > 0): ?>
                             <?php foreach($messages as $message): ?>
-                            <li class="<?= $message->seen != 1 ? 'unread' : '' ?>">
+                            <li class="<?= $message->isSeen() != 1 ? 'unread' : '' ?>">
                                 <div class="col-mail col-mail-1">
-                                    <a href="<?= route_to('read-mail', $message->uid, $mailbox ) ?>" class="title"><?=  $message->from ?></a>
-                                </div>
-
-                                <div class="col-mail col-mail-2">
-                                    <a href="<?= route_to('read-mail', $message->uid,$mailbox ) ?>" class="subject"><?= $message->subject ?></span>
+                                    <a href="<?= route_to('read-mail', $message->getNumber(), $mailbox ) ?>" class="title">
+                                        <?=  $message->getFrom()->getAddress() ?>
                                     </a>
-                                    <div class="date"><?= substr($message->date,0,11) ?></div>
+                                </div>
+                                <div class="col-mail col-mail-2">
+                                    <a href="<?= route_to('read-mail', $message->getNumber(),$mailbox ) ?>" class="subject"><?= $message->getSubject() ?></span>
+                                    </a>
+                                    <div class="date"><?= $message->getDate()->format('d M, Y') ?></div>
                                 </div>
                             </li>
                             <?php endforeach; ?>
@@ -62,7 +63,7 @@ $this->extend('layouts/master')
 
                     <div class="row">
                         <div class="col-7 mt-1">
-                            <?= $pagination->render() ?>
+                            pagination
                         </div>
                     </div>
                     <!-- end row-->

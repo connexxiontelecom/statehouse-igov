@@ -37,7 +37,6 @@ $this->extend('layouts/master')
                     <hr/>
 
                     <div class="media mb-3 mt-1">
-                        <img class="d-flex mr-2 rounded-circle" src="/assets/images/users/user-2.jpg" alt="placeholder image" height="32">
                         <div class="media-body">
                             <small class="float-right">Date: <?= $date ?? '' ?></small>
                             <h6 class="m-0 font-14">Name: <?= $from ?? '' ?></h6>
@@ -46,6 +45,15 @@ $this->extend('layouts/master')
                     </div>
 
                    <?= $body ?>
+                    <p class="mt-2">
+                        <?php foreach ($attachments as $attachment): ?>
+                            <?php if(pathinfo("/uploads/email-attachments/".$attachment->getFilename(), PATHINFO_EXTENSION) == 'docx'): ?>
+                                <a href="<?= "/uploads/email-attachments/".$attachment->getFilename() ?>" >
+                                    <img height="64" width="64" src="/assets/formats/doc.png" alt="<?= substr($attachment->getFilename(),0,10)?>">
+                                </a>
+                        <?php endif; ?>
+                        <?php endforeach; ?>
+                    </p>
                     <hr/>
 
 

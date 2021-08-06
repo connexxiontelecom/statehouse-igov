@@ -8,6 +8,11 @@ use Ddeboer\Imap\Server;
 use Ddeboer\Imap\SearchExpression;
 use Ddeboer\Imap\Search\Email\To;
 use Ddeboer\Imap\Search\Text\Body;
+use \Ddeboer\Imap\Message\Attachment;
+
+use DateTimeImmutable;
+use DateInterval;
+use Ddeboer\Imap\Search\Date\Since;
 
 class EmailController extends BaseController
 {
@@ -88,7 +93,20 @@ class EmailController extends BaseController
             return redirect('/email-settings');
         }
     }
-
+    public function connectToMailServer2(){
+        $settings = $this->getEmailSettings();
+        if(!empty($settings)){
+                $host = $settings['hostname'];
+                //$host = "{".$settings['hostname'].":".$settings['port_no']."/imap/ssl/validate-cert}";
+                $username = $settings['username'];
+                $password = $settings['password'];
+                $port = $settings['port_no'];
+            $server = new Server($host, $port);
+            return $server->authenticate($username, $password);
+        }else{
+            return redirect('/email-settings');
+        }
+    }
     public function getMessagesByFlag($mailbox, $flag){
         return imap_search($mailbox, $flag);
     }
@@ -248,9 +266,6 @@ class EmailController extends BaseController
         var_dump($aRet);
     }
     public function getNum($mail){
-        /*if (!$this->connectToMailServer($mail)) {
-            return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
-        }*/
             $mailbox = $this->connectToMailServer($mail);
             return imap_num_msg($mailbox);
 
@@ -311,10 +326,28 @@ class EmailController extends BaseController
         }
 
 	}
+    public function test(){
+        $connection = $this->connectToMailServer2();
+        if($connection){
+            $today = new DateTimeImmutable();
+            $thirtyDaysAgo = $today->sub(new DateInterval('P15D'));
+            $inbox = $connection->getMailbox('INBOX');
+            $messages = $inbox->getMessages(new Since($thirtyDaysAgo), \SORTDATE, true);
+            $data = [
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
+                'messages'=>$messages,
+                'mailbox'=>'INBOX'
+            ];
+            return view('pages/email/index', $data);
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+        }
 
-	public function test(){
         $settings = $this->getEmailSettings();
+        $data = [];
         if(!is_null($settings)){
+            $inbox = $this->connectToMailServer('INBOX');
             $page = 0;
             $uri = new \CodeIgniter\HTTP\URI(current_url(true));
             $params = $uri->getQuery();
@@ -322,11 +355,200 @@ class EmailController extends BaseController
             if($params){
                 $page = trim($params, 'page=');
             }
-            if (!$this->connectToMailServer('INBOX')) {
+            if (!$inbox) {
                 return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
             }else{
-                $data = $this->fetchMails($page, 'INBOX');
-                return view('pages/email/index', $data);
+                $emails = imap_search($inbox, 'UNSEEN');
+                if($emails){
+                    $count = 1;
+                    rsort($emails);
+                    foreach($emails as $email_number){
+                        /* get information specific to this email */
+                        $overview = imap_fetch_overview($inbox,$email_number,0);
+                        $message = imap_fetchbody($inbox,$email_number,2);
+                        /* get mail structure */
+                        $structure = imap_fetchstructure($inbox, $email_number);
+                        $attachments = array();
+                        /* if any attachments found... */
+                        if(isset($structure->parts) && count($structure->parts))
+                        {
+                            for($i = 0; $i < count($structure->parts); $i++)
+                            {
+                                $attachments[$i] = array(
+                                    'is_attachment' => false,
+                                    'filename' => '',
+                                    'name' => '',
+                                    'attachment' => ''
+                                );
+
+                                if($structure->parts[$i]->ifdparameters)
+                                {
+                                    foreach($structure->parts[$i]->dparameters as $object)
+                                    {
+                                        if(strtolower($object->attribute) == 'filename')
+                                        {
+                                            $attachments[$i]['is_attachment'] = true;
+                                            $attachments[$i]['filename'] = $object->value;
+                                        }
+                                    }
+                                }
+
+                                if($structure->parts[$i]->ifparameters)
+                                {
+                                    foreach($structure->parts[$i]->parameters as $object)
+                                    {
+                                        if(strtolower($object->attribute) == 'name')
+                                        {
+                                            $attachments[$i]['is_attachment'] = true;
+                                            $attachments[$i]['name'] = $object->value;
+                                        }
+                                    }
+                                }
+
+                                if($attachments[$i]['is_attachment'])
+                                {
+                                    $attachments[$i]['attachment'] = imap_fetchbody($inbox, $email_number, $i+1);
+                                    /* 3 = BASE64 encoding */
+                                    if($structure->parts[$i]->encoding == 3)
+                                    {
+                                        $attachments[$i]['attachment'] = base64_decode($attachments[$i]['attachment']);
+                                    }
+                                    /* 4 = QUOTED-PRINTABLE encoding */
+                                    elseif($structure->parts[$i]->encoding == 4)
+                                    {
+                                        $attachments[$i]['attachment'] = quoted_printable_decode($attachments[$i]['attachment']);
+                                    }
+                                }
+                            }
+                        }
+                        //return var_dump($attachments);
+                        $val = [
+                            'overview'=>$overview,
+                            'message'=>$message,
+                            'structure'=>$structure,
+                            'attachments'=>$attachments
+                        ];
+                        array_push($data, $val);
+                    }
+                    print_r($data);
+                }
+                //return var_dump($search);
+                //$data = $this->fetchMails($page, 'INBOX');
+
+                //return view('pages/email/index', $data);
+            }
+
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> We need your email settings to retrieve your connect.");
+        }
+
+    }
+    public function objectToArray($data)
+    {
+        if (is_object($data)) {
+            $data = get_object_vars($data);
+        }
+
+        if (is_array($data)) {
+            return array_map(array($this, 'objectToArray'), $data);
+        }
+
+        return $data;
+    }
+	public function testOld(){
+        set_time_limit(3000);
+        $settings = $this->getEmailSettings();
+        $data = [];
+        if(!is_null($settings)){
+            $inbox = $this->connectToMailServer('INBOX');
+            $page = 0;
+            $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+            $params = $uri->getQuery();
+
+            if($params){
+                $page = trim($params, 'page=');
+            }
+            if (!$inbox) {
+                return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+            }else{
+                $emails = imap_search($inbox, 'UNSEEN');
+                if($emails){
+                    $count = 1;
+                    rsort($emails);
+                    foreach($emails as $email_number){
+                        /* get information specific to this email */
+                        $overview = imap_fetch_overview($inbox,$email_number,0);
+                        $message = imap_fetchbody($inbox,$email_number,2);
+                        /* get mail structure */
+                        $structure = imap_fetchstructure($inbox, $email_number);
+                        $attachments = array();
+                        /* if any attachments found... */
+                        if(isset($structure->parts) && count($structure->parts))
+                        {
+                            for($i = 0; $i < count($structure->parts); $i++)
+                            {
+                                $attachments[$i] = array(
+                                    'is_attachment' => false,
+                                    'filename' => '',
+                                    'name' => '',
+                                    'attachment' => ''
+                                );
+
+                                if($structure->parts[$i]->ifdparameters)
+                                {
+                                    foreach($structure->parts[$i]->dparameters as $object)
+                                    {
+                                        if(strtolower($object->attribute) == 'filename')
+                                        {
+                                            $attachments[$i]['is_attachment'] = true;
+                                            $attachments[$i]['filename'] = $object->value;
+                                        }
+                                    }
+                                }
+
+                                if($structure->parts[$i]->ifparameters)
+                                {
+                                    foreach($structure->parts[$i]->parameters as $object)
+                                    {
+                                        if(strtolower($object->attribute) == 'name')
+                                        {
+                                            $attachments[$i]['is_attachment'] = true;
+                                            $attachments[$i]['name'] = $object->value;
+                                        }
+                                    }
+                                }
+
+                                if($attachments[$i]['is_attachment'])
+                                {
+                                    $attachments[$i]['attachment'] = imap_fetchbody($inbox, $email_number, $i+1);
+                                    /* 3 = BASE64 encoding */
+                                    if($structure->parts[$i]->encoding == 3)
+                                    {
+                                        $attachments[$i]['attachment'] = base64_decode($attachments[$i]['attachment']);
+                                    }
+                                    /* 4 = QUOTED-PRINTABLE encoding */
+                                    elseif($structure->parts[$i]->encoding == 4)
+                                    {
+                                        $attachments[$i]['attachment'] = quoted_printable_decode($attachments[$i]['attachment']);
+                                    }
+                                }
+                            }
+                        }
+                        //return var_dump($attachments);
+                        $val = [
+                            'overview'=>$overview,
+                            'message'=>$message,
+                            'structure'=>$structure,
+                            'attachments'=>$attachments
+                        ];
+                        array_push($data, $val);
+                    }
+                    print_r($data);
+                }
+                //return var_dump($search);
+                //$data = $this->fetchMails($page, 'INBOX');
+
+                //return view('pages/email/index', $data);
             }
 
         }else{
@@ -380,7 +602,7 @@ class EmailController extends BaseController
         }
 
     }
-    public function listMessages3($mailbox, $nStart=0, $nCnt=10) {
+    public function listMessages3($messages, $nStart=0, $nCnt=10) {
 
       /*  if (!$this->connectToMailServer($mailbox)) {
             return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
@@ -389,9 +611,11 @@ class EmailController extends BaseController
         if (($nStart+$nCnt) > $this->getNum($mailbox)) {
             $nCnt = $this->getNum($mailbox)-$nStart;
         }
-
+        $box = $this->connectToMailServer($mailbox);
         //$aMsgs = imap_sort($this->connectToMailServer($mailbox), SORTDATE, 1, SE_UID);
-        $aMsgs = imap_fetch_overview($this->connectToMailServer($mailbox), ($nStart+1).':'.($nStart+$nCnt));
+        $aMsgs =   imap_fetch_overview($box, ($nStart+1).':'.($nStart+$nCnt));
+        rsort($aMsgs);
+
         $aRet = array();
         if ($aMsgs) {
             foreach ($aMsgs as $msg) {
@@ -501,8 +725,15 @@ class EmailController extends BaseController
 
     }
 
-	public function viewMail($id, $mailbox){
+	//public function viewMail($id, $mailbox){
 
+     /*   $structure = imap_fetchstructure($this->connectToMailServer($mailbox), $id, FT_UID); //imap_fetch_overview($this->connectToMailServer($mailbox), $id, FT_UID);
+        $existAttachments = $this->existAttachment($structure);
+        $attachments = array();
+        if(isset($structure->parts) && count($structure->parts)){
+
+        }
+        return var_dump($structure);
         $results = imap_fetch_overview($this->connectToMailServer($mailbox), $id, FT_UID);
         if(!empty($results)){
             $messageOverview = array_shift($results);
@@ -514,9 +745,6 @@ class EmailController extends BaseController
                 'subject'=>$messageOverview->subject,
                 'body'=> $this->get_part($this->connectToMailServer($mailbox), $id, "TEXT/HTML"),//imap_body($this->connectToMailServer($mailbox), $id),
                 'date'=>$messageOverview->date,
-                //'attachments'=>$message->getAttachments(),
-                //'bcc'=>$message->getBcc(),
-                //'cc'=>$message->getCc(),
                 'from'=>$messageOverview->from,
                 'firstTime'=>$this->session->firstTime,
                 'username'=>$this->session->username
@@ -524,7 +752,7 @@ class EmailController extends BaseController
             return view('pages/email/view', $data);
         }else{
             return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't retrieve mail.");
-        }
+        }*/
 
         /*$connection = $this->openImapStream();
         $mailbox = $connection->getMailbox('INBOX.Sent');
@@ -542,6 +770,29 @@ class EmailController extends BaseController
             'username'=>$this->session->username
         ];
         return view('pages/email/view', $data);*/
+
+    //}
+    public function viewMail($id, $mailbox){
+        $connection =  $connection = $this->connectToMailServer2();
+        //$message = imap_body($this->connectToMailServer(), $id); // imap_search($this->server->get, $id);
+        $mailbox = $connection->getMailbox($mailbox);
+        $message = $mailbox->getMessage($id);
+        $data = [
+            'subject'=>$message->getSubject(),
+            'body'=>$message->getBodyText(),
+            'date'=>$message->getDate()->format('d M, Y'),
+            'attachments'=>$message->getAttachments(),
+            'bcc'=>$message->getBcc(),
+            'cc'=>$message->getCc(),
+            'from'=>$message->getFrom()->getAddress(),
+            'firstTime'=>$this->session->firstTime,
+            'username'=>$this->session->username,
+        ];
+        foreach($message->getAttachments() as $attachment){
+            file_put_contents('uploads/email-attachments/'.$attachment->getFilename(), $attachment->getDecodedContent()) ;
+        }
+
+        return view('pages/email/view', $data);
 
     }
     function get_part($imap, $uid, $mimetype, $structure = false, $partNumber = false)
@@ -603,6 +854,38 @@ class EmailController extends BaseController
         }else{
             return redirect()->route('/email-settings')->with("error", "<strong>Whoops!</strong> Enter your email settings to proceed.");
         }
+    }
+
+    function existAttachment($part)
+    {
+        if (isset($part->parts))
+        {
+            foreach ($part->parts as $partOfPart)
+            {
+                $this->existAttachment($partOfPart);
+            }
+        }
+        else
+        {
+            if (isset($part->disposition))
+            {
+                if ($part->disposition == 'attachment')
+                {
+                    echo '<p>' . $part->dparameters[0]->value . '</p>';
+                    // here you can create a link to the file whose name is  $part->dparameters[0]->value to download it
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    function hasAttachments($msgno)
+    {
+        $struct = imap_fetchstructure($this->_connection,$msgno,FT_UID);
+        return $this->existAttachment($struct);
+
+        //return $existAttachments;
     }
 
 }
