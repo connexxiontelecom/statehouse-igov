@@ -106,6 +106,7 @@ class GeneralSettingController extends BaseController
 			return view('office/registry/registries', $data);
 		endif;
 		$_POST['registry_status'] = 1;
+		$_POST['registry_users'] = json_encode([]);
 		$this->registry->save($_POST);
 		session()->setFlashData("action","action successful");
 		return redirect()->to(base_url('/manage-registries'));

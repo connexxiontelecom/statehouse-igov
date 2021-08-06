@@ -34,9 +34,7 @@ class RegistryController extends BaseController
 	public function index() {
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
-		// @TODO get only the registries the current user has access to
 		$data['registries'] = $this->_get_registries();
-//		$data['registries'] = array();
 		return view('/pages/registry/index', $data);
 	}
 
@@ -56,7 +54,6 @@ class RegistryController extends BaseController
 	}
 
 	public function transfer_mail() {
-		//@TODO include check to ensure the recipient has access to the mail's registry
 		$post_data = $this->request->getPost();
 		$pending_transfer = $this->mail_transfer->where([
 			'mt_mail_id' => $post_data['mt_mail_id'],
@@ -67,29 +64,35 @@ class RegistryController extends BaseController
 			$response['message'] = 'This mail has a transfer request still pending. Please cancel the pending request before submitting a new transfer request.';
 			return $this->response->setJSON($response);
 		}
-		$mail_transfer_data = [
-			'mt_mail_id' => $post_data['mt_mail_id'],
-			'mt_from_id' => session()->user_id,
-			'mt_to_id' => $post_data['mt_to_id'],
-		];
-		if ($this->mail_transfer->save($mail_transfer_data)) {
-			// @TODO set mail in transit here
-			$mail_data = [
-				'm_id' => $post_data['mt_mail_id'],
-				'm_status' => 1
+		$mail = $this->mail->find($post_data['mt_mail_id']);
+		$registry = $this->registry->find($mail['m_registry_id']);
+		$authorised_users = json_decode($registry['registry_users']);
+		if ($registry['registry_manager_id'] == $post_data['mt_to_id'] || in_array($post_data['mt_to_id'], $authorised_users)) {
+			$mail_transfer_data = [
+				'mt_mail_id' => $post_data['mt_mail_id'],
+				'mt_from_id' => session()->user_id,
+				'mt_to_id' => $post_data['mt_to_id'],
 			];
-			$this->mail->save($mail_data);
-			$response['success'] = true;
-			$response['message'] = 'The mail transfer request has been submitted to the recipient.';
+			if ($this->mail_transfer->save($mail_transfer_data)) {
+				$mail_data = [
+					'm_id' => $post_data['mt_mail_id'],
+					'm_status' => 1
+				];
+				$this->mail->save($mail_data);
+				$response['success'] = true;
+				$response['message'] = 'The mail transfer request has been submitted to the recipient.';
+			} else {
+				$response['success'] = false;
+				$response['message'] = 'There was an error while submitting the transfer request to the recipient';
+			}
 		} else {
 			$response['success'] = false;
-			$response['message'] = 'There was an error while submitting the transfer request to the recipient';
+			$response['message'] = 'The recipient does not have access to this registry.';
 		}
 		return $this->response->setJSON($response);
 	}
 
 	public function file_mail() {
-		// @TODO can't file if in transit
 		$post_data = $this->request->getPost();
 		$in_transit = $this->mail_transfer->where([
 			'mt_mail_id' => $post_data['mf_mail_id'],
@@ -136,13 +139,18 @@ class RegistryController extends BaseController
 	private function _get_registries() {
 		$registries = $this->registry->findAll();
 		foreach ($registries as $key => $registry) {
-			$manager_user = $this->user->find($registry['registry_manager_id']);
-			$manager_employee = $this->employee->find($manager_user['user_employee_id']);
-			$manager_position = $this->position->find($manager_employee['employee_position_id']);
-			$manager_department = $this->department->find($manager_employee['employee_department_id']);
-			$registries[$key]['manager'] = $manager_user;
-			$registries[$key]['position'] = $manager_position;
-			$registries[$key]['department'] = $manager_department;
+			$authorised_users = json_decode($registry['registry_users']);
+			if ($registry['registry_manager_id'] == session()->user_id || in_array(session()->user_id, $authorised_users)) {
+				$manager_user = $this->user->find($registry['registry_manager_id']);
+				$manager_employee = $this->employee->find($manager_user['user_employee_id']);
+				$manager_position = $this->position->find($manager_employee['employee_position_id']);
+				$manager_department = $this->department->find($manager_employee['employee_department_id']);
+				$registries[$key]['manager'] = $manager_user;
+				$registries[$key]['position'] = $manager_position;
+				$registries[$key]['department'] = $manager_department;
+			} else {
+				unset($registries[$key]);
+			}
 		}
 		return $registries;
 	}
@@ -170,7 +178,7 @@ class RegistryController extends BaseController
 		$mail = $this->mail->find($mail_id);
 		if ($mail):
 			$mail['attachments'] = $this->mail_attachment->where('ma_mail_id', $mail_id)->findAll();
-			$mail['department_employees'] = $this->_get_department_employees_by_registry();
+			$mail['department_employees'] = $this->_get_department_employees_by_registry($mail['m_registry_id']);
 			$mail['holder'] = '';
 			$mail['registry'] = $this->registry->find($mail['m_registry_id']);
 			$mail['current_desk'] = $this->user->find($mail['m_desk']);
@@ -180,8 +188,7 @@ class RegistryController extends BaseController
 		return $mail;
 	}
 
-	private function _get_department_employees_by_registry() {
-		// @TODO check if recipients have access to the registry as well
+	private function _get_department_employees_by_registry($registry_id) {
 		$department_employees = [];
 		$departments = $this->department->findAll();
 		foreach ($departments as $department) {
@@ -191,7 +198,13 @@ class RegistryController extends BaseController
 				->findAll();
 			foreach ($employees as $employee) {
 				$user = $this->user->where('user_employee_id', $employee['employee_id'])->first();
-				if ($user['user_status'] == 1 && ($user['user_type'] == 3 || $user['user_type'] == 2)) {
+				$registry = $this->registry->find($registry_id);
+				$authorised_users = json_decode($registry['registry_users']);
+				if (
+					$user['user_status'] == 1
+					&& ($user['user_type'] == 3 || $user['user_type'] == 2)
+					&& ($registry['registry_manager_id'] == $user['user_id'] or in_array($user['user_id'], $authorised_users))
+				) {
 					$employee['user'] = $user;
 					$employee['position'] = $this->position->find($employee['employee_position_id']);
 					array_push($department_employees[$department['dpt_name']], $employee);
