@@ -11,7 +11,7 @@
 						<ol class="breadcrumb m-0">
 							<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
 							<li class="breadcrumb-item"><a href="<?= site_url('/registry')?>">Registry</a></li>
-							<li class="breadcrumb-item"><a href="<?= site_url('/view-registry').$mail['registry']['registry_id']?>">View Registry</a></li>
+							<li class="breadcrumb-item"><a href="<?= site_url('/view-registry/').$mail['registry']['registry_id']?>">View Registry</a></li>
 							<li class="breadcrumb-item active">Manage Mail</li>
 						</ol>
 					</div>
@@ -318,7 +318,7 @@
               </ul>
             </div>
             <div class="text-center">
-              <a href="#" class="btn btn-success">View Details</a>
+              <a href="<?=site_url('view-transfer-log/').$mail['m_id']?>" class="btn btn-success">View Details</a>
             </div>
           </div>
         </div>

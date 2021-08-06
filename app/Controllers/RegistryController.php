@@ -136,6 +136,22 @@ class RegistryController extends BaseController
 		return $this->response->setJSON($response);
 	}
 
+	public function view_transfer_log($mail_id) {
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$data['mail'] = $this->_get_mail($mail_id);
+		$data['transfer_logs'] = $this->_get_transfer_logs($mail_id);
+		return view('/pages/registry/mail-transfer-log', $data);
+	}
+
+	public function view_filing_log($mail_id) {
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$data['mail'] = $this->_get_mail($mail_id);
+		$data['filing_logs'] = $this->_get_filing_logs($mail_id);
+		return view('/pages/registry/mail-filing-log', $data);
+	}
+
 	private function _get_registries() {
 		$registries = $this->registry->findAll();
 		foreach ($registries as $key => $registry) {
@@ -215,11 +231,22 @@ class RegistryController extends BaseController
 	}
 
 	private function _get_transfer_logs($mail_id) {
-		$transfer_logs = $this->mail_transfer->where('mt_mail_id', $mail_id)->findAll();
+		$transfer_logs = $this->mail_transfer->where('mt_mail_id', $mail_id)->orderBy('created_at', 'DESC')->findAll();
 		foreach ($transfer_logs as $key => $transfer_log) {
+			$transfer_from = $this->user->find($transfer_log['mt_from_id']);
 			$transfer_to = $this->user->find($transfer_log['mt_to_id']);
+			$transfer_logs[$key]['transfer_from'] = $transfer_from;
 			$transfer_logs[$key]['transfer_to'] = $transfer_to;
 		}
 		return $transfer_logs;
+	}
+
+	private function _get_filing_logs($mail_id) {
+		$filing_logs = $this->mail_filing->where('mf_mail_id', $mail_id)->orderBy('created_at', 'DESC')->findAll();
+		foreach ($filing_logs as $key => $filing_log) {
+			$filed_by = $this->user->find($filing_log['mf_filed_by_id']);
+			$filing_logs[$key]['filed_by'] = $filed_by;
+		}
+		return $filing_logs;
 	}
 }
