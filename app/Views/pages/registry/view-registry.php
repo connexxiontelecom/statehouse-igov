@@ -71,7 +71,7 @@
           </div>
           <div class="col-6">
             <div class="text-right">
-              <h5 class="text-dark my-1"><span data-plugin="counterup">0</span></h5>
+              <h5 class="text-dark my-1"><span data-plugin="counterup"><?=count($unfiled_mails)?></span></h5>
               <p class="text-muted mb-0 text-truncate">Unfiled</p>
             </div>
           </div>
@@ -85,7 +85,7 @@
           </div>
           <div class="col-6">
             <div class="text-right">
-              <h5 class="text-dark my-1"><span data-plugin="counterup">0</span></h5>
+              <h5 class="text-dark my-1"><span data-plugin="counterup"><?=count($in_transit)?></span></h5>
               <p class="text-muted mb-0 text-truncate">Pending Transfers</p>
             </div>
           </div>
@@ -166,7 +166,6 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?=view('pages/registry/_registry-scripts.php')?>
 <!-- third party js -->
 <script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -185,4 +184,6 @@
 
 <!-- Datatables init -->
 <script src="/assets/js/pages/datatables.init.js"></script>
+<?=view('pages/registry/_registry-scripts.php')?>
+
 <?= $this->endSection(); ?>

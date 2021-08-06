@@ -42,6 +42,8 @@ class RegistryController extends BaseController
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$data['mails'] = $this->_get_user_registry_mails($registry_id);
+		$data['unfiled_mails'] = $this->_get_user_registry_unfiled_mails($registry_id);
+		$data['in_transit'] = $this->_get_user_registry_in_transit_mails($registry_id);
 		$data['registry'] = $this->_get_registry($registry_id);
 		return view('/pages/registry/view-registry', $data);
 	}
@@ -51,6 +53,62 @@ class RegistryController extends BaseController
 		$data['username'] = $this->session->user_username;
 		$data['mail'] = $this->_get_mail($mail_id);
 		return view('/pages/registry/manage-mail', $data);
+	}
+
+	public function incoming_mail() {
+		if($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['registries'] = $this->_get_registries();
+			return view('/pages/registry/new-incoming-mail', $data);
+		endif;
+		$post_data = $this->request->getPost();
+		$mail_data = [
+			'm_ref_no' => $post_data['m_ref_no'],
+			'm_subject' => $post_data['m_subject'],
+			'm_sender' => $post_data['m_sender'],
+			'm_date_correspondence' => $post_data['m_date_correspondence'],
+			'm_date_received' => $post_data['m_date_received'],
+			'm_notes' => $post_data['m_notes'],
+			'm_status' => 0,
+			'm_by' => $this->session->user_id,
+			'm_desk' => $this->session->user_id,
+			'm_direction' => 1,
+			'm_registry_id' => $post_data['m_registry_id']
+		];
+		$mail_id = $this->mail->insert($mail_data);
+		if ($mail_id) {
+			if (isset($post_data['m_attachments'])) {
+				$attachments = $post_data['m_attachments'];
+				$this->_upload_attachments($attachments, $mail_id);
+			}
+			$response['success'] = true;
+			$response['message'] = 'Successfully registered the incoming mail';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'There was an error while registering the incoming mail';
+		}
+		return $this->response->setJSON($response);
+	}
+
+	public function upload_mail_attachments() {
+		$file = $this->request->getFile('file');
+		if($file->isValid() && !$file->hasMoved()):
+			$file_name = $file->getClientName();
+			$file->move('uploads/mails', $file_name);
+			echo $file_name;
+		endif;
+	}
+
+	public function delete_mail_attachments(){
+		$file = $this->request->getPostGet('files');
+		$directory = 'uploads/mails/'.$file;
+		if(unlink($directory)):
+			$response['message'] = 'Deleted Successful';
+		else:
+			$response['message'] = 'An error Occurred';
+		endif;
+		return $this->response->setJSON($response);
 	}
 
 	public function transfer_mail() {
@@ -153,7 +211,7 @@ class RegistryController extends BaseController
 	}
 
 	private function _get_registries() {
-		$registries = $this->registry->findAll();
+		$registries = $this->registry->where('registry_status', 1)->findAll();
 		foreach ($registries as $key => $registry) {
 			$authorised_users = json_decode($registry['registry_users']);
 			if ($registry['registry_manager_id'] == session()->user_id || in_array(session()->user_id, $authorised_users)) {
@@ -185,7 +243,32 @@ class RegistryController extends BaseController
 
 	private function _get_user_registry_mails($registry_id) {
 		return $this->mail
-			->where('m_desk', session()->user_id)
+			->groupStart()
+				->where('m_desk', session()->user_id)
+				->orWhere('m_by', session()->user_id)
+			->groupEnd()
+			->where('m_registry_id', $registry_id)
+		->findAll();
+	}
+
+	private function _get_user_registry_unfiled_mails($registry_id) {
+		return $this->mail
+			->groupStart()
+				->where('m_desk', session()->user_id)
+				->orWhere('m_by', session()->user_id)
+			->groupEnd()
+			->where('m_status !=', 3)
+			->where('m_registry_id', $registry_id)
+		->findAll();
+	}
+
+	private function _get_user_registry_in_transit_mails($registry_id) {
+		return $this->mail
+			->groupStart()
+				->where('m_desk', session()->user_id)
+				->orWhere('m_by', session()->user_id)
+			->groupEnd()
+			->where('m_status', 1)
 			->where('m_registry_id', $registry_id)
 		->findAll();
 	}
@@ -248,5 +331,17 @@ class RegistryController extends BaseController
 			$filing_logs[$key]['filed_by'] = $filed_by;
 		}
 		return $filing_logs;
+	}
+
+	private function _upload_attachments($attachments, $mail_id) {
+		if (count($attachments) > 0) {
+			foreach ($attachments as $attachment) {
+				$attachment_data = array(
+					'ma_mail_id' => $mail_id,
+					'ma_link' => $attachment
+				);
+				$this->mail_attachment->save($attachment_data);
+			}
+		}
 	}
 }

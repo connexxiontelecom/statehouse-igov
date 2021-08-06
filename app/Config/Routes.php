@@ -154,20 +154,20 @@ $routes->match(['post'], 'verify-signature', 'EmployeeController::verify_signatu
 
 // central registry routes
 $routes->match(['get'], 'central-registry', 'CentralRegistryController::index', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'incoming-mail', 'CentralRegistryController::incoming_mail', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'outgoing-mail', 'CentralRegistryController::outgoing_mail', ['filter' => 'auth']);
-$routes->match(['post'], 'upload-mail-attachments', 'CentralRegistryController::upload_mail_attachments', ['filter' => 'auth']);
-$routes->match(['post', 'get'], 'delete-mail-attachments', 'CentralRegistryController::delete_mail_attachments', ['filter' => 'auth']);
+
 
 // registries routes
 $routes->match(['get'], 'registry', 'RegistryController::index', ['filter' => 'auth']);
 $routes->match(['get'], 'view-registry/(:any)', 'RegistryController::view_registry/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'incoming-mail', 'RegistryController::incoming_mail', ['filter' => 'auth']);
 $routes->match(['get'], 'manage-mail/(:num)', 'RegistryController::manage_mail/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'view-transfer-log/(:num)', 'RegistryController::view_transfer_log/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'view-filing-log/(:num)', 'RegistryController::view_filing_log/$1', ['filter' => 'auth']);
 $routes->match(['post'], 'transfer-mail', 'RegistryController::transfer_mail', ['filter' => 'auth']);
 $routes->match(['post'], 'file-mail', 'RegistryController::file_mail', ['filter' => 'auth']);
-
+$routes->match(['post'], 'upload-mail-attachments', 'RegistryController::upload_mail_attachments', ['filter' => 'auth']);
+$routes->match(['post', 'get'], 'delete-mail-attachments', 'RegistryController::delete_mail_attachments', ['filter' => 'auth']);
 
 
 /*

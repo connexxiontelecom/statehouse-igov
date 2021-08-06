@@ -97,7 +97,6 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?=view('pages/registry/_registry-scripts.php')?>
   <!-- third party js -->
   <script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -116,4 +115,6 @@
 
   <!-- Datatables init -->
   <script src="/assets/js/pages/datatables.init.js"></script>
+<?=view('pages/registry/_registry-scripts.php')?>
+
 <?= $this->endSection(); ?>
