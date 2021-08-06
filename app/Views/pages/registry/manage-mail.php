@@ -194,7 +194,7 @@
                 <div class="col-12 mt-0">
                   <button type="button" onclick="transferMail()" class="btn btn-success waves-effect waves-light btn-sm">Transfer Mail</button>
                   <?php foreach($mail['transfer_logs'] as $transfer_log): if ($transfer_log['mt_status'] == 0): ?>
-                    <span class="ml-1" data-toggle="tooltip" data-placement="right" title data-original-title="There is a pending transfer"><i data-feather="alert-triangle" class="icon-dual-warning"></i></span>
+                    <span class="ml-1" data-toggle="tooltip" data-placement="right" title data-original-title="You cannot transfer while there is a pending transfer"><i data-feather="alert-triangle" class="icon-dual-warning"></i></span>
                   <?php break; endif; endforeach;?>
                 </div>
               </div>
@@ -221,6 +221,9 @@
                 </div>
                 <div class="col-12 mt-0">
                   <button class="btn btn-success waves-effect waves-light btn-sm">File Mail</button>
+	                <?php foreach($mail['transfer_logs'] as $transfer_log): if ($transfer_log['mt_status'] == 0): ?>
+                    <span class="ml-1" data-toggle="tooltip" data-placement="right" title data-original-title="You cannot file while there is a pending transfer"><i data-feather="alert-triangle" class="icon-dual-warning"></i></span>
+                  <?php break; endif; endforeach;?>
                 </div>
               </div>
               <input type="hidden" id="mail-id" value="<?=$mail['m_id']?>">

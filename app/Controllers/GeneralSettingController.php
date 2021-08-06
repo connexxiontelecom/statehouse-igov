@@ -7,6 +7,9 @@ use App\Models\Organization;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\Registry;
+use App\Models\Employee;
+use App\Models\UserModel;
+
 
 class GeneralSettingController extends BaseController
 {
@@ -21,6 +24,8 @@ class GeneralSettingController extends BaseController
 		$this->department = new Department();
 		$this->position = new Position();
 		$this->registry = new Registry();
+		$this->employee = new Employee();
+		$this->user = new UserModel();
 	}
 	public function organization_profile()
 	{
@@ -96,12 +101,63 @@ class GeneralSettingController extends BaseController
 		if ($this->request->getMethod() == 'get'):
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$data['registries'] = $this->registry->findAll();
+			$data['registries'] = $this->_get_registries();
+			$data['department_employees'] = $this->_get_department_employees();
 			return view('office/registry/registries', $data);
 		endif;
 		$_POST['registry_status'] = 1;
 		$this->registry->save($_POST);
 		session()->setFlashData("action","action successful");
 		return redirect()->to(base_url('/manage-registries'));
+	}
+
+	public function manage_registry($registry_id) {
+		if ($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['registry'] = $this->_get_registry($registry_id);
+			$data['department_employees'] = $this->_get_department_employees();
+			return view('office/registry/manage-registry', $data);
+		endif;
+		if (isset($_POST['registry_users'])) {
+			$_POST['registry_users'] = json_encode($_POST['registry_users']);
+		}
+		$this->registry->save($_POST);
+		session()->setFlashData("action","update successful");
+		return redirect()->to(base_url('/manage-registries')) ;
+	}
+
+	private function _get_registry($registry_id) {
+		$registry = $this->registry->find($registry_id);
+		$registry['registry_users'] = json_decode($registry['registry_users']);
+		return $registry;
+	}
+
+	private function _get_department_employees() {
+		$department_employees = [];
+		$departments = $this->department->findAll();
+		foreach ($departments as $department) {
+			$department_employees[$department['dpt_name']] = [];
+			$employees = $this->employee
+				->where('employee_department_id', $department['dpt_id'])
+				->findAll();
+			foreach ($employees as $employee) {
+				$user = $this->user->where('user_employee_id', $employee['employee_id'])->first();
+				if ($user['user_status'] == 1 && ($user['user_type'] == 3 || $user['user_type'] == 2)) {
+					$employee['user'] = $user;
+					$employee['position'] = $this->position->find($employee['employee_position_id']);
+					array_push($department_employees[$department['dpt_name']], $employee);
+				}
+			}
+		}
+		return $department_employees;
+	}
+
+	private function _get_registries() {
+		$registries = $this->registry->findAll();
+		foreach ($registries as $key => $registry) {
+			$registries[$key]['manager'] = $this->user->find($registry['registry_manager_id']);
+		}
+		return $registries;
 	}
 }

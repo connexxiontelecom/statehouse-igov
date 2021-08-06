@@ -89,7 +89,17 @@ class RegistryController extends BaseController
 	}
 
 	public function file_mail() {
+		// @TODO can't file if in transit
 		$post_data = $this->request->getPost();
+		$in_transit = $this->mail_transfer->where([
+			'mt_mail_id' => $post_data['mf_mail_id'],
+			'mt_status' => 0,
+		])->first();
+		if ($in_transit) {
+			$response['success'] = false;
+			$response['message'] = 'The mail cannot be filed with a pending transfer';
+			return $this->response->setJSON($response);
+		}
 		$filed = $this->mail_filing->where([
 			'mf_mail_id' => $post_data['mf_mail_id'],
 			'mf_status' => 1

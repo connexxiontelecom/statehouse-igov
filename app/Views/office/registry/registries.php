@@ -37,6 +37,7 @@
             <tr>
               <th>S/N</th>
               <th>Registry Name</th>
+              <th>Registry Manager</th>
               <th>Registry Description</th>
               <th>Status</th>
               <th>Actions</th>
@@ -50,10 +51,11 @@
                 <tr>
                   <td><?=$i++;?></td>
                   <td><?=$registry['registry_name']?></td>
+                  <td><?=$registry['manager']['user_name']?></td>
                   <td><?=$registry['registry_description']?></td>
-                  <td><?=$registry['registry_status']?></td>
+                  <td><?=$registry['registry_status'] == 0 ? 'Inactive' : 'Active'?></td>
                   <td>
-                    <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-department<?=$registry['registry_id'] ?>" > <i class="mdi mdi-pen-lock mr-2"></i></button>
+                    <a href="<?=site_url('manage-registry/').$registry['registry_id']?>" type="button" class="btn btn-primary"><i class="mdi mdi-pen-lock"></i></a>
                   </td>
                 </tr>
               <?php endforeach; endif;?>
@@ -89,6 +91,32 @@
                 <div class="form-control-wrap">
                   <input type="text" class="form-control" id="site-name" name="registry_name" required>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3 align-center">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label class="form-label" for="registry-manager-id">Registry Manager</label>
+                <span class="form-note">Select Registry Manager</span>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <select class="form-control input-lg" data-toggle="select2" id="registry-manager-id" name="registry_manager_id">
+                  <option value="" selected disabled>Select</option>
+		              <?php foreach ($department_employees as $department => $employees): ?>
+			              <?php if(!empty($employees)):?>
+                      <optgroup label="<?=$department?>">
+					              <?php foreach ($employees as $employee): if ($employee['user']['user_id'] != session()->user_id):?>
+                          <option value="<?=$employee['user']['user_id']?>">
+							              <?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+                          </option>
+					              <?php endif; endforeach;?>
+                      </optgroup>
+			              <?php endif;?>
+		              <?php endforeach; ?>
+                </select>
               </div>
             </div>
           </div>
