@@ -55,6 +55,7 @@ $routes->match(['post'], 'check-username', 'EmployeeSettingController::check_use
 $routes->match(['get', 'post'], 'budget-setup', 'BudgetSettingController::budget_setup', ['filter' => 'auth']);
 $routes->match(['get'], 'budget-setups', 'BudgetSettingController::budget_setups', ['filter' => 'auth']);
 $routes->match(['get'], 'view-budget-setup/(:num)', 'BudgetSettingController::view_budget/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'budget-categories', 'BudgetSettingController::budget_categories', ['filter' => 'auth']);
 
 // post routes
 $routes->match(['post'], 'upload-post-attachments', 'PostController::upload_post_attachments', ['filter' => 'auth']);

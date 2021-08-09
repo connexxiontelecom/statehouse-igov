@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\Budget;
+use App\Models\BudgetCategory;
 use App\Models\BudgetHeader;
 use App\Models\Department;
 use App\Models\Notice;
@@ -27,6 +28,7 @@ class BudgetSettingController extends BaseController
 		$this->user = new UserModel();
 		$this->budget = new Budget();
 		$this->bh = new BudgetHeader();
+		$this->bc = new BudgetCategory();
 	}
 	public function budget_setups()
 	{
@@ -161,5 +163,22 @@ class BudgetSettingController extends BaseController
 				
 				endif;
 	
+	}
+	
+	public function budget_categories(){
+		if($this->request->getMethod() == 'post'):
+			
+			$this->bc->save($_POST);
+			session()->setFlashData("action","action successful");
+			return redirect()->to(base_url('/budget-categories'));
+		
+		endif;
+
+		if($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['categories'] = $this->bc->findAll();
+			return view('office/budget/budget-category', $data);
+		endif;
 	}
 }
