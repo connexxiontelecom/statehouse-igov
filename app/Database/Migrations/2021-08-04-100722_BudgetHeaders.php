@@ -4,40 +4,45 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class MailHolders extends Migration
+class BudgetHeaders extends Migration
 {
 	public function up()
 	{
 		$this->db->disableForeignKeyChecks();
 		$this->forge->addField(
 			[
-				'mh_id' =>[
+				'bh_id' => [
 					'type' => 'INT',
 					'constraint' => 11,
 					'auto_increment' => true,
 				],
-
-				'mh_mail_id' =>[
+				
+				'bh_budget_id' => [
 					'type' => 'INT',
 				],
-
-				'mh_holder_id' =>[
+				
+				'bh_title' =>[
+					'type' => 'TEXT',
+				],
+				
+				'bh_office' => [
 					'type' => 'INT',
 				],
-
-				'mh_status' =>[
-					'type' => 'INT',
+				
+				'bh_amount' =>[
+					'type' => 'DOUBLE'
 				],
-
+				
+				
 				'created_at datetime default current_timestamp',
 			]
 		);
-		$this->forge->addKey('mh_id', true);
-		$this->forge->createTable('mail_holders');
+		$this->forge->addKey('bh_id', true);
+		$this->forge->createTable('budget_headers');
 	}
 
 	public function down()
 	{
-		$this->forge->dropTable('mail_holders');
+		//
 	}
 }

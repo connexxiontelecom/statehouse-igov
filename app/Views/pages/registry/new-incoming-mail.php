@@ -1,8 +1,6 @@
 <?= $this->extend('layouts/master'); ?>
 <?=$this->section('extra-styles'); ?>
 <link href="/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
-<link href="/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-<link href="/assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
 <?=$this->endSection() ?>
 <?= $this->section('content'); ?>
 <div class="container-fluid">
@@ -13,7 +11,7 @@
 				<div class="page-title-right">
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
-						<li class="breadcrumb-item"><a href="<?= site_url('/central-registry')?>">Central Registry</a></li>
+						<li class="breadcrumb-item"><a href="<?= site_url('/registry')?>">Registry</a></li>
 						<li class="breadcrumb-item active">New Incoming Mail</li>
 					</ol>
 				</div>
@@ -64,22 +62,35 @@
                       <!-- Date View -->
                       <div class="form-group">
                         <label for="date-correspondence">Date of Correspondence</label><span style="color: red"> *</span>
-                        <input type="text" class="form-control" data-provide="datepicker" data-date-format="yyyy-mm-dd" id="date-correspondence" name="m_date_correspondence" required>
+                        <input type="date" class="form-control" id="date-correspondence" name="m_date_correspondence" required>
                         <div class="invalid-feedback">
                           Please select a date of correspondence.
                         </div>
                       </div>
                     </div>
-
                     <div class="col-lg-6">
                       <!-- Date View -->
                       <div class="form-group">
                         <label for="date-received">Date Received</label><span style="color: red"> *</span>
-                        <input type="text" class="form-control" data-provide="datepicker" data-date-format="yyyy-mm-dd" id="date-received" name="m_date_received" required>
+                        <input type="date" class="form-control" id="date-received" name="m_date_received" required>
                         <div class="invalid-feedback">
                           Please select a date received.
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="m-registry-id">Mail Registry</label><span style="color: red"> *</span>
+                    <select class="form-control input-lg" data-toggle="select2" id="m-registry-id" name="m_registry_id" required>
+                      <option value="" selected disabled>Select</option>
+		                  <?php foreach ($registries as $registry): ?>
+                        <option value="<?=$registry['registry_id']?>">
+				                  <?=$registry['registry_name']?>
+                        </option>
+		                  <?php endforeach; ?>
+                    </select>
+                    <div class="invalid-feedback">
+                      Please select the corresponding mail registry.
                     </div>
                   </div>
                   <div class="form-group">
@@ -103,7 +114,7 @@
               <div class="row mt-3">
                 <div class="col-12 text-center">
                   <button class="btn btn-success waves-effect waves-light m-1"><i class="fe-check-circle mr-1"></i> Register</button>
-                  <a href="<?=site_url('central-registry')?>" type="button" class="btn btn-light waves-effect waves-light m-1"><i class="fe-x mr-1"></i> Cancel</a>
+                  <a href="<?=site_url('registry')?>" type="button" class="btn btn-light waves-effect waves-light m-1"><i class="fe-x mr-1"></i> Cancel</a>
                 </div>
               </div>
             </form>
@@ -118,8 +129,6 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?=view('pages/central-registry/_central-registry-scripts.php')?>
+<?=view('pages/registry/_registry-scripts.php')?>
 <script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
-<script src="/assets/libs/select2/js/select2.min.js"></script>
-<script src="../assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <?= $this->endSection(); ?>

@@ -338,10 +338,22 @@
                 <span> Project</span>
             </a>
         </li>
+						<a href="<?= site_url('trainings') ?>">
+							<i data-feather="book"></i>
+							<span> Trainings </span>
+						</a>
+					</li>
+                    <li>
+						<a href="<?= site_url('workflow-requests') ?>">
+							<i data-feather="book"></i>
+							<span> Workflow </span>
+						</a>
+					</li>
+>>>>>>> 6bf7d7e5b0e24aab457ed6ba75c0a2019f937909
           <li>
-            <a href="<?= site_url('central-registry') ?>">
+            <a href="<?= site_url('registry') ?>">
               <i data-feather="inbox"></i>
-              <span> Central Registry </span>
+              <span> Registry </span>
             </a>
           </li>
           <li>

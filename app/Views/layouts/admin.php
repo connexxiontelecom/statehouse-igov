@@ -558,7 +558,9 @@
 								<li>
 									<a href="<?= site_url('positions'); ?>">Position/Title</a>
 								</li>
-								
+								<li>
+									<a href="<?= site_url('manage-registries'); ?>">Registries</a>
+								</li>
 							</ul>
 						</div>
 					</li>
@@ -625,12 +627,6 @@
 					</li>
 					<li>
 						<a href="apps-chat.html">
-							<i data-feather="file-minus"></i>
-							<span> Memo </span>
-						</a>
-					</li>
-					<li>
-						<a href="apps-chat.html">
 							<i data-feather="file-text"></i>
 							<span> Circular </span>
 						</a>
@@ -664,7 +660,7 @@
 					</li>
 					
 					<li>
-						<a href="apps-chat.html">
+						<a href="<?=site_url('budget-setups') ?>">
 							<i data-feather="credit-card"></i>
 							<span> Budgets </span>
 						</a>

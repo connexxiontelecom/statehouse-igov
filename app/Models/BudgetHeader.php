@@ -4,31 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Mail extends Model
+class BudgetHeader extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'mails';
-	protected $primaryKey           = 'm_id';
+	protected $table                = 'budget_headers';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'm_id',
-		'm_ref_no',
-		'm_file_ref_no',
-		'm_subject',
-		'm_sender',
-		'm_direction',
-		'm_date_received',
-		'm_date_correspondence',
-		'm_status',
-		'm_notes',
-		'm_by',
-		'm_desk',
-		'm_registry_id'
-	];
+	protected $allowedFields        = ['bh_id', 'bh_budget_id', 'bh_title', 'bh_office', 'bh_amount'];
 
 	// Dates
 	protected $useTimestamps        = false;

@@ -4,40 +4,40 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class MailHolders extends Migration
+class Registry extends Migration
 {
 	public function up()
 	{
 		$this->db->disableForeignKeyChecks();
 		$this->forge->addField(
 			[
-				'mh_id' =>[
+				'registry_id' => [
 					'type' => 'INT',
 					'constraint' => 11,
 					'auto_increment' => true,
 				],
 
-				'mh_mail_id' =>[
-					'type' => 'INT',
+				'registry_name' =>[
+					'type' => 'TEXT',
 				],
 
-				'mh_holder_id' =>[
-					'type' => 'INT',
+				'registry_description' => [
+					'type' => 'TEXT',
 				],
 
-				'mh_status' =>[
+				'registry_status' => [
 					'type' => 'INT',
 				],
 
 				'created_at datetime default current_timestamp',
 			]
 		);
-		$this->forge->addKey('mh_id', true);
-		$this->forge->createTable('mail_holders');
+		$this->forge->addKey('registry_id', true);
+		$this->forge->createTable('registries');
 	}
 
 	public function down()
 	{
-		$this->forge->dropTable('mail_holders');
+		//
 	}
 }

@@ -1,11 +1,6 @@
 <?= $this->extend('layouts/master'); ?>
 <?=$this->section('extra-styles'); ?>
-<link href="/assets/libs/multiselect/css/multi-select.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-<link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
-<link href="/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
-<link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
-
 <link href="/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
 <?=$this->endSection() ?>
@@ -42,7 +37,7 @@
           </div>
           <form class="needs-validation" id="new-internal-memo-form" novalidate>
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="ref-no">Reference No</label><span style="color: red"> *</span>
                   <input type="text" class="form-control" id="ref-no" name="p_ref_no" required>
@@ -51,13 +46,23 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6">
-                <div class="form-group" id="department-div">
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
                   <label for="positions">Offices</label><span style="color: red"> *</span>
-                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" data-placeholder="Please select offices..." required>
-				            <?php foreach ($positions as $position): ?>
-                      <option value="<?=$position['pos_id']; ?>"> <?=$position['pos_name']; ?></option>
-				            <?php endforeach; ?>
+                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" required style="min-height: 38px">
+			              <?php foreach ($department_employees as $department => $employees): ?>
+                      <?php if(!empty($employees)):?>
+                        <optgroup label="<?=$department?>">
+                          <?php foreach ($employees as $employee):?>
+                            <option value="<?=$employee['user']['user_id']?>">
+                              <?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+                            </option>
+                          <?php endforeach;?>
+                        </optgroup>
+                      <?php endif;?>
+			              <?php endforeach; ?>
                   </select>
                   <div class="invalid-feedback">
                     Please select all applicable offices.
@@ -130,7 +135,7 @@
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
 <?=view('pages/posts/memos/_memo-scripts.php')?>
-
 <script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
 <script src="/assets/libs/dropify/js/dropify.min.js"></script>
+<script src="/assets/libs/select2/js/select2.min.js"></script>
 <?= $this->endSection(); ?>
