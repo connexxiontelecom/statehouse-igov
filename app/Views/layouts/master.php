@@ -309,7 +309,7 @@
             </a>
             <div class="collapse" id="email">
               <ul class="nav-second-level">
-                <li><a href="<?= site_url('/email') ?>">Email</a></li>
+                <li><a href="<?= route_to('messages-in','INBOX') ?>">Email</a></li>
                 <li><a href="<?= site_url('/email-settings') ?>">Settings</a></li>
               </ul>
             </div>
@@ -321,18 +321,23 @@
                 </a>
             </li>
           <li>
-						<a href="<?= site_url('trainings') ?>">
-							<i data-feather="book"></i>
-							<span> Trainings </span>
-						</a>
-					</li>
-                    <li>
-						<a href="<?= site_url('workflow-requests') ?>">
-							<i data-feather="book"></i>
-							<span> Workflow </span>
-						</a>
-					</li>
-
+            <a href="<?= site_url('trainings') ?>">
+                <i data-feather="book"></i>
+                <span> Trainings </span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= site_url('workflow-requests') ?>">
+                <i data-feather="book"></i>
+                <span> Workflow </span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= route_to('manage-projects') ?>">
+                <i data-feather="book"></i>
+                <span> Project</span>
+            </a>
+        </li>
           <li>
             <a href="<?= site_url('central-registry') ?>">
               <i data-feather="inbox"></i>

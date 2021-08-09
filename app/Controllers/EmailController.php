@@ -31,9 +31,6 @@ class EmailController extends BaseController
         endif;
         $this->emailsetting = new EmailSetting();
 
-        /*$this->server = new Server('mail.connexxiongroup.com', '993', '/imap/ssl/validate-cert');
-        $this->connection = $this->server->authenticate('joseph@connexxiongroup.com', 'connect@joseph');*/
-
     }
 
     public function showEmailSettingsForm(){
@@ -330,9 +327,16 @@ class EmailController extends BaseController
         $connection = $this->connectToMailServer2();
         if($connection){
             $today = new DateTimeImmutable();
-            $thirtyDaysAgo = $today->sub(new DateInterval('P15D'));
+            $thirtyDaysAgo = $today->sub(new DateInterval('P30D'));
             $inbox = $connection->getMailbox('INBOX');
             $messages = $inbox->getMessages(new Since($thirtyDaysAgo), \SORTDATE, true);
+            $records_per_page = 10;
+            $page = 1;
+            //$pagination = new \Zebra_Pagination();
+            $record_count = count($messages);
+            //$pagination->records_per_page($records_per_page);
+            //$messages = array_slice((array)$messages, (($pagination->get_page() - 1) * $records_per_page), $records_per_page);
+            return var_dump($record_count);
             $data = [
                 'firstTime'=>$this->session->firstTime,
                 'username'=>$this->session->username,
@@ -342,104 +346,6 @@ class EmailController extends BaseController
             return view('pages/email/index', $data);
         }else{
             return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
-        }
-
-        $settings = $this->getEmailSettings();
-        $data = [];
-        if(!is_null($settings)){
-            $inbox = $this->connectToMailServer('INBOX');
-            $page = 0;
-            $uri = new \CodeIgniter\HTTP\URI(current_url(true));
-            $params = $uri->getQuery();
-
-            if($params){
-                $page = trim($params, 'page=');
-            }
-            if (!$inbox) {
-                return  redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
-            }else{
-                $emails = imap_search($inbox, 'UNSEEN');
-                if($emails){
-                    $count = 1;
-                    rsort($emails);
-                    foreach($emails as $email_number){
-                        /* get information specific to this email */
-                        $overview = imap_fetch_overview($inbox,$email_number,0);
-                        $message = imap_fetchbody($inbox,$email_number,2);
-                        /* get mail structure */
-                        $structure = imap_fetchstructure($inbox, $email_number);
-                        $attachments = array();
-                        /* if any attachments found... */
-                        if(isset($structure->parts) && count($structure->parts))
-                        {
-                            for($i = 0; $i < count($structure->parts); $i++)
-                            {
-                                $attachments[$i] = array(
-                                    'is_attachment' => false,
-                                    'filename' => '',
-                                    'name' => '',
-                                    'attachment' => ''
-                                );
-
-                                if($structure->parts[$i]->ifdparameters)
-                                {
-                                    foreach($structure->parts[$i]->dparameters as $object)
-                                    {
-                                        if(strtolower($object->attribute) == 'filename')
-                                        {
-                                            $attachments[$i]['is_attachment'] = true;
-                                            $attachments[$i]['filename'] = $object->value;
-                                        }
-                                    }
-                                }
-
-                                if($structure->parts[$i]->ifparameters)
-                                {
-                                    foreach($structure->parts[$i]->parameters as $object)
-                                    {
-                                        if(strtolower($object->attribute) == 'name')
-                                        {
-                                            $attachments[$i]['is_attachment'] = true;
-                                            $attachments[$i]['name'] = $object->value;
-                                        }
-                                    }
-                                }
-
-                                if($attachments[$i]['is_attachment'])
-                                {
-                                    $attachments[$i]['attachment'] = imap_fetchbody($inbox, $email_number, $i+1);
-                                    /* 3 = BASE64 encoding */
-                                    if($structure->parts[$i]->encoding == 3)
-                                    {
-                                        $attachments[$i]['attachment'] = base64_decode($attachments[$i]['attachment']);
-                                    }
-                                    /* 4 = QUOTED-PRINTABLE encoding */
-                                    elseif($structure->parts[$i]->encoding == 4)
-                                    {
-                                        $attachments[$i]['attachment'] = quoted_printable_decode($attachments[$i]['attachment']);
-                                    }
-                                }
-                            }
-                        }
-                        //return var_dump($attachments);
-                        $val = [
-                            'overview'=>$overview,
-                            'message'=>$message,
-                            'structure'=>$structure,
-                            'attachments'=>$attachments
-                        ];
-                        array_push($data, $val);
-                    }
-                    print_r($data);
-                }
-                //return var_dump($search);
-                //$data = $this->fetchMails($page, 'INBOX');
-
-                //return view('pages/email/index', $data);
-            }
-
-        }else{
-            return redirect()->back()->with("error", "<strong>Whoops!</strong> We need your email settings to retrieve your connect.");
         }
 
     }
@@ -557,8 +463,103 @@ class EmailController extends BaseController
 
     }
 
-
     public function getSentMails(){
+        $connection = $this->connectToMailServer2();
+        if($connection){
+            $today = new DateTimeImmutable();
+            $thirtyDaysAgo = $today->sub(new DateInterval('P15D'));
+            $inbox = $connection->getMailbox('INBOX.Sent');
+            $messages = $inbox->getMessages(new Since($thirtyDaysAgo), \SORTDATE, true);
+            $data = [
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
+                'messages'=>$messages,
+                'mailbox'=>'INBOX.Sent'
+            ];
+            return view('pages/email/others', $data);
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+        }
+
+    }
+    public function getDraftMails(){
+        $connection = $this->connectToMailServer2();
+        if($connection){
+            $today = new DateTimeImmutable();
+            $thirtyDaysAgo = $today->sub(new DateInterval('P15D'));
+            $inbox = $connection->getMailbox('INBOX.Drafts');
+            $messages = $inbox->getMessages(new Since($thirtyDaysAgo), \SORTDATE, true);
+            $data = [
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
+                'messages'=>$messages,
+                'mailbox'=>'INBOX.Drafts'
+            ];
+            return view('pages/email/others', $data);
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+        }
+
+    }
+    public function getTrashedMails(){
+        $connection = $this->connectToMailServer2();
+        if($connection){
+            $today = new DateTimeImmutable();
+            $thirtyDaysAgo = $today->sub(new DateInterval('P15D'));
+            $inbox = $connection->getMailbox('INBOX.Trash');
+            $messages = $inbox->getMessages(new Since($thirtyDaysAgo), \SORTDATE, true);
+            $data = [
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
+                'messages'=>$messages,
+                'mailbox'=>'INBOX.Trash'
+            ];
+            return view('pages/email/others', $data);
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+        }
+
+    }
+    public function getSpamMails(){
+        $connection = $this->connectToMailServer2();
+        if($connection){
+            $today = new DateTimeImmutable();
+            $thirtyDaysAgo = $today->sub(new DateInterval('P15D'));
+            $inbox = $connection->getMailbox('INBOX.Spam');
+            $messages = $inbox->getMessages(new Since($thirtyDaysAgo), \SORTDATE, true);
+            $data = [
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
+                'messages'=>$messages,
+                'mailbox'=>'INBOX.Spam'
+            ];
+            return view('pages/email/others', $data);
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+        }
+
+    }
+    public function getArchivedMails(){
+        $connection = $this->connectToMailServer2();
+        if($connection){
+            $today = new DateTimeImmutable();
+            $thirtyDaysAgo = $today->sub(new DateInterval('P15D'));
+            $inbox = $connection->getMailbox('INBOX.Archive');
+            $messages = $inbox->getMessages(new Since($thirtyDaysAgo), \SORTDATE, true);
+            $data = [
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
+                'messages'=>$messages,
+                'mailbox'=>'INBOX.Archive'
+            ];
+            return view('pages/email/others', $data);
+        }else{
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mail server.");
+        }
+
+    }
+
+    public function getSentMailsOld(){
         $settings = $this->getEmailSettings();
         if(!is_null($settings)){
             $page = 0;
@@ -580,7 +581,7 @@ class EmailController extends BaseController
         }
 
     }
-    public function getDraftMails(){
+    public function getDraftMailsOld(){
         $settings = $this->getEmailSettings();
         if(!is_null($settings)){
             $page = 0;
@@ -628,7 +629,7 @@ class EmailController extends BaseController
         return $aRet;
     }
 
-    public function getArchivedMails(){
+    public function getArchivedMailsOld(){
         $settings = $this->getEmailSettings();
         if(!is_null($settings)){
             $page = 0;
@@ -650,7 +651,7 @@ class EmailController extends BaseController
         }
 
     }
-    public function getTrashedMails(){
+    public function getTrashedMailsOld(){
         $settings = $this->getEmailSettings();
         if(!is_null($settings)){
             $page = 0;
@@ -672,7 +673,7 @@ class EmailController extends BaseController
         }
 
     }
-    public function getSpamMails(){
+    public function getSpamMailsOld(){
         $settings = $this->getEmailSettings();
         if(!is_null($settings)){
             $page = 0;
@@ -780,7 +781,7 @@ class EmailController extends BaseController
         $data = [
             'subject'=>$message->getSubject(),
             'body'=>$message->getBodyText(),
-            'date'=>$message->getDate()->format('d M, Y'),
+            'date'=> $mailbox == 'INBOX' ? $message->getDate()->format('d M, Y') : '',
             'attachments'=>$message->getAttachments(),
             'bcc'=>$message->getBcc(),
             'cc'=>$message->getCc(),
