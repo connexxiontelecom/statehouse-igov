@@ -140,11 +140,36 @@ $routes->post('/workflow-requests/leave-comment', 'WorkflowController::leaveComm
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 
-$routes->get('/email', 'EmailController::test', ['filter'=>'auth']);
-$routes->get('/email/(:num)', 'EmailController::test/$1', ['filter'=>'auth']);
-$routes->get('/read-mail/(:any)', 'EmailController::viewMail/$1', ['filter'=>'auth']);
+//$routes->get('/email', 'EmailServiceController::index', ['filter'=>'auth']);
+//$routes->get('/email/(:num)', 'EmailServiceController::index/$1', ['filter'=>'auth']);
+
+$routes->get('/email/folder/(:any)', 'EmailServiceController::getMessagesInFolder/$1',['filter'=>'auth', 'as'=>'messages-in']);
+/*
+
+$routes->get('/sent-mails', 'EmailController::getSentMails', ['filter'=>'auth']);
+$routes->get('/sent-mails/(:num)', 'EmailController::getSentMails/$1', ['filter'=>'auth']);
+
+$routes->get('/draft-mails', 'EmailController::getDraftMails', ['filter'=>'auth']);
+$routes->get('/draft-mails/(:num)', 'EmailController::getDraftMails/$1', ['filter'=>'auth']);
+
+$routes->get('/archive-mails', 'EmailController::getArchivedMails', ['filter'=>'auth']);
+$routes->get('/archive-mails/(:num)', 'EmailController::getArchivedMails/$1', ['filter'=>'auth']);
+
+$routes->get('/trashed-mails', 'EmailController::getTrashedMails', ['filter'=>'auth']);
+$routes->get('/trashed-mails/(:num)', 'EmailController::getTrashedMails/$1', ['filter'=>'auth']);
+
+$routes->get('/spam-mails', 'EmailController::getSpamMails', ['filter'=>'auth']);
+$routes->get('/spam-mails/(:num)', 'EmailController::getSpamMails/$1', ['filter'=>'auth']);*/
+
+$routes->get('/read-mail/(:any)/(:any)', 'EmailServiceController::readMail/$1/$2', ['filter'=>'auth', 'as'=>'read-mail']);
 $routes->get('/compose-email', 'EmailController::composeEmail', ['filter'=>'auth']);
 $routes->post('/compose-email', 'EmailController::processMail', ['filter'=>'auth']);
+$routes->get('/email-settings', 'EmailController::showEmailSettingsForm', ['filter'=>'auth']);
+$routes->post('/email-settings', 'EmailController::processEmailSettings', ['filter'=>'auth']);
+
+#Project routes
+$routes->get('/manage-projects','ProjectController::index',['filter'=>'auth', 'as'=>'manage-projects']);
+$routes->get('/projects/create','ProjectController::showAddNewProjectForm',['filter'=>'auth', 'as'=>'add-new-project']);
 
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
