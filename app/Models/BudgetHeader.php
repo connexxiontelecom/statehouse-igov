@@ -14,7 +14,7 @@ class BudgetHeader extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['bh_id', 'bh_budget_id', 'bh_title', 'bh_office', 'bh_amount'];
+	protected $allowedFields        = ['bh_id', 'bh_budget_id', 'bh_title', 'bh_code', 'bh_acc_type', 'bh_project', 'bh_project_status', 'bh_cat', 'bh_office', 'bh_parent', 'bh_amount'];
 
 	// Dates
 	protected $useTimestamps        = false;
