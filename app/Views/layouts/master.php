@@ -349,7 +349,6 @@
 							<span> Workflow </span>
 						</a>
 					</li>
->>>>>>> 6bf7d7e5b0e24aab457ed6ba75c0a2019f937909
           <li>
             <a href="<?= site_url('registry') ?>">
               <i data-feather="inbox"></i>
