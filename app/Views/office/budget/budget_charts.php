@@ -22,6 +22,50 @@
 	<!-- end page title -->
 	<div class="row" style="margin-top: -50px">
 		<div class="col-xl-12">
+			
+			<div class="card">
+				<div class="card-body">
+					
+					<div class="row">
+						<div class="col-xl-4">
+						
+									<h4 style="float: right" class="header-title">View Budget Chart</h4>
+									<div class="row mt-4">
+										<div class="col">
+									
+											
+											<form method="post">
+												
+												<div class="form-group mb-3">
+													<label for="account-type">Budget Profiles</label>
+													<select class="form-control" name="bh_budget_id" >
+														<?php foreach ($budgets as $bud): ?>
+														<option value="<?=$bud['budget_id'] ?>"><?=$bud['budget_title'] ?> - <?=$bud['budget_year']; ?></option>
+														
+														<?php endforeach; ?>
+													
+													</select>
+												</div>
+												
+									
+												<div class="form-group mb-3">
+													<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
+												
+												</div>
+											
+											
+											</form>
+										</div> <!-- end col -->
+									</div> <!-- end row -->
+								
+								
+						
+						</div> <!-- end col -->
+					</div> <!-- end row -->
+				
+				
+				</div> <!-- end card-body -->
+			</div> <!-- end card-->
 			<div class="card">
 				<div class="card-body">
 					
@@ -45,13 +89,16 @@
 									</tr>
 									</thead>
 									<tbody>
+									<?php $i = 1;  foreach ($categories as $category): ?>
 									<tr>
-										<td colspan="2"><h4> EXPENDITURE</h4> </td>
+										<td colspan="2"><h4> <?=$category['bc_name']; ?></h4> </td>
 										
 									</tr>
-									<?php
-										$i = 1;
+										
+										<?php
+										
 										foreach ($bhs as $bh):
+											if($bh['bh_cat'] == $category['bc_id']):
 											?>
 											<tr>
 												<td><?=$i++;?></td>
@@ -61,7 +108,11 @@
 												<td> <?=$bh['bh_office']; ?></td>
 												<td> <?=number_format($bh['bh_amount']); ?></td>
 											</tr>
-										<?php endforeach; ?>
+										<?php endif; endforeach; ?>
+									<?php endforeach; ?>
+									
+									
+								
 									</tbody>
 								</table>
 							
