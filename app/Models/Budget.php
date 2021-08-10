@@ -14,7 +14,7 @@ class Budget extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['budget_id', 'budget_title', 'budget_year'];
+	protected $allowedFields        = ['budget_id', 'budget_title', 'budget_year', 'budget_status'];
 
 	// Dates
 	protected $useTimestamps        = false;

@@ -32,17 +32,6 @@ class BudgetSettingController extends BaseController
 	}
 	public function budget_setups()
 	{
-		$data['firstTime'] = $this->session->firstTime;
-		$data['username'] = $this->session->user_username;
-		$data['budgets'] = $this->budget->findAll();
-		return view('office/budget/budget', $data);
-		
-		
-	}
-	
-	
-	public function budget_setup()
-	{
 		
 		if($this->request->getMethod() == 'post'):
 			$this->validator->setRules( [
@@ -61,81 +50,107 @@ class BudgetSettingController extends BaseController
 				]
 			]);
 			if ($this->validator->withRequest($this->request)->run()):
+				if($_POST['budget_status'] == 1):
+					$check = $this->budget->where('budget_status', 1)->first();
 				
-				$this->budget->save($_POST);
-				session()->setFlashData("action","action successful");
-				return redirect()->to(base_url('/budget-categories'));
-				
-				$budget = array();
-				$budget['budget_title'] = $_POST['budget_title'];
-				$budget['budget_year'] = $_POST['budget_year'];
-				
-				$bh_title = $_POST['bh_title'];
-				$bh_office = $_POST['bh_office'];
-				$bh_amount = $_POST['bh_amount'];
-				
-				$budget_id = $this->budget->insert($budget);
-				
-				
-				if($budget_id):
-				
-				if(count($bh_title)):
-					$k = 0;
-						for($n = 0; $n<count($bh_title); $n++):
-							
-							$bh_array = array(
-								'bh_title' => $bh_title[$n],
-								'bh_office' => $bh_office[$n],
-								'bh_amount'=> $bh_amount[$n],
-								'bh_budget_id' => $budget_id
-							);
+					if(!empty($check)):
+						$check['budget_status'] = 0;
+					$id = $check['budget_id'];
+					unset($check['budget_id']);
 						
-						$check = $this->bh->save($bh_array);
-						if(!$check):
-							$this->budget->where('budget_id', $budget_id)->delete();
-							$this->bh->where('bh_budget_id', $budget_id)->delete();
-							$arr = array('An error Occurred while creating budget headers');
-							session()->setFlashData("errors",$arr);
-							return redirect()->to(base_url('budget-setup'));
-						endif;
-						$k++;
-					endfor;
-					
-					if($k):
 						
-						session()->setFlashData("action",'Action Successful');
-						return redirect()->to(base_url('budget-setups'));
-					else:
-						
-						$arr = array('An error occurred');
-						session()->setFlashData("errors",$arr);
-						return redirect()->to(base_url('budget-setup'));
+						try {
+							$this->budget->where('budget_id', $id)
+								->set($check)
+								->update();
+						} catch (\ReflectionException $e) {
+						}
 					endif;
-				
-				else:
-					$this->budget->where('budget_id', $budget_id)->delete();
-					
-					$arr = array('No Budget Headers Sent');
-					session()->setFlashData("errors",$arr);
-					return redirect()->to(base_url('budget-setup'));
-					endif;
-					
-					
-					else:
-						
-						
-						$arr = array('An error occurred while creating the budget');
-						session()->setFlashData("errors",$arr);
-						return redirect()->to(base_url('budget-setup'));
 				endif;
 				
+				if($_POST['budget_id']):
+					
+					$id = $_POST['budget_id'];
+					unset($_POST['budget_id']);
+					
+					
+					try {
+						$this->budget->where('budget_id', $id)
+							->set($_POST)
+							->update();
+						session()->setFlashData("action","action successful");
+						return redirect()->to(base_url('/budget-setups'));
+					} catch (\ReflectionException $e) {
+						session()->setFlashData("action",$e->getMessage());
+						return redirect()->to(base_url('/budget-setups'));
+					}
+				else:
+					
+					try {
+						$this->budget->save($_POST);
+						session()->setFlashData("action","action successful");
+						return redirect()->to(base_url('/budget-setups'));
+					} catch (\ReflectionException $e) {
+						session()->setFlashData("action",$e->getMessage());
+						return redirect()->to(base_url('/budget-setups'));
+					}
+				endif;
 				
 			else:
-					$arr = $this->validator->getErrors();
-					session()->setFlashData("errors",$arr);
-					return redirect()->to(base_url('budget-setup'));
-				
-				endif;
+				$arr = $this->validator->getErrors();
+				session()->setFlashData("errors",$arr);
+				return redirect()->to(base_url('budget-setups'));
+			
+			endif;
+		
+		endif;
+		
+		if($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['budgets'] = $this->budget->findAll();
+			return view('office/budget/budget', $data);
+		endif;
+		
+		
+	}
+	
+	
+	public function budget_setup()
+	{
+		
+		if($this->request->getMethod() == 'post'):
+					$this->validator->setRules( [
+						'budget_title'=>[
+							'rules'=>'required',
+							'errors'=>[
+								'required'=>'Enter Budget Title'
+							]
+						],
+						
+						'budget_year'=>[
+							'rules'=>'required',
+							'errors'=>[
+								'required'=>'Enter Budget Year'
+							]
+						]
+					]);
+					if ($this->validator->withRequest($this->request)->run()):
+						if($_POST['budget_status'] == 1):
+							$check = $this->budget->where('budget_status', 1)->first();
+							$check['budget_status'] = 0;
+							$this->budget->save($check);
+						endif;
+						
+						$this->budget->save($_POST);
+						session()->setFlashData("action","action successful");
+						return redirect()->to(base_url('/budget-setups'));
+					else:
+							$arr = $this->validator->getErrors();
+							session()->setFlashData("errors",$arr);
+							return redirect()->to(base_url('budget-setups'));
+						
+					endif;
 		
 		endif;
 		
@@ -173,9 +188,16 @@ class BudgetSettingController extends BaseController
 	public function budget_categories(){
 		if($this->request->getMethod() == 'post'):
 			
-			$this->bc->save($_POST);
-			session()->setFlashData("action","action successful");
-			return redirect()->to(base_url('/budget-categories'));
+			try {
+				$this->bc->save($_POST);
+				session()->setFlashData("action","action successful");
+				return redirect()->to(base_url('/budget-categories'));
+			} catch (\ReflectionException $e) {
+				session()->setFlashData("action",$e->getMessage());
+				return redirect()->to(base_url('/budget-categories'));
+			
+		}
+		
 		
 		endif;
 

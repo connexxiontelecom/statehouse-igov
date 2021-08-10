@@ -53,7 +53,7 @@ $routes->match(['get', 'post'], 'fetch-positions', 'EmployeeSettingController::f
 $routes->match(['get', 'post'], 'employees', 'EmployeeSettingController::all_employees', ['filter' => 'auth']);
 $routes->match(['post'], 'check-username', 'EmployeeSettingController::check_username', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'budget-setup', 'BudgetSettingController::budget_setup', ['filter' => 'auth']);
-$routes->match(['get'], 'budget-setups', 'BudgetSettingController::budget_setups', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'budget-setups', 'BudgetSettingController::budget_setups', ['filter' => 'auth']);
 $routes->match(['get'], 'view-budget-setup/(:num)', 'BudgetSettingController::view_budget/$1', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'budget-categories', 'BudgetSettingController::budget_categories', ['filter' => 'auth']);
 

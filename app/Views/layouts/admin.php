@@ -670,6 +670,9 @@
 						</a>
 						<div class="collapse" id="budgetSettings">
 							<ul class="nav-second-level">
+								<li>
+									<a href="<?=site_url('budget-setups'); ?>">Budget Profiles</a>
+								</li>
 								
 								<li>
 									<a href="<?=site_url('budget-categories'); ?>">Budget Categories</a>
