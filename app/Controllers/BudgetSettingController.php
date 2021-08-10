@@ -61,6 +61,11 @@ class BudgetSettingController extends BaseController
 				]
 			]);
 			if ($this->validator->withRequest($this->request)->run()):
+				
+				$this->budget->save($_POST);
+				session()->setFlashData("action","action successful");
+				return redirect()->to(base_url('/budget-categories'));
+				
 				$budget = array();
 				$budget['budget_title'] = $_POST['budget_title'];
 				$budget['budget_year'] = $_POST['budget_year'];
