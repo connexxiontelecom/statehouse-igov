@@ -116,7 +116,7 @@ class BudgetSettingController extends BaseController
 	}
 	
 	
-	public function budget_setup()
+	public function budget_charts()
 	{
 		
 		if($this->request->getMethod() == 'post'):
@@ -157,8 +157,10 @@ class BudgetSettingController extends BaseController
 		if($this->request->getMethod() == 'get'):
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$data['departments'] = $this->department->findAll();
-			return view('office/budget/budget_setup', $data);
+			$active_budget = $this->budget->where('budget_status', 1)->first();
+			$data['budget'] = $active_budget;
+			$data['bhs'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->findAll();
+			return view('office/budget/budget_charts', $data);
 		endif;
 		
 		

@@ -677,6 +677,10 @@
 								<li>
 									<a href="<?=site_url('budget-categories'); ?>">Budget Categories</a>
 								</li>
+								
+								<li>
+									<a href="<?=site_url('budget-charts'); ?>">Budget Chat Setup</a>
+								</li>
 							
 							
 							</ul>
