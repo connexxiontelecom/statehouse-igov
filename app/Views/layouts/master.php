@@ -297,18 +297,47 @@
                 <li><a href="<?=site_url('memos'); ?>">Memo</a></li>
                 <li><a href="<?=site_url('circulars'); ?>">Circular</a></li>
                 <li><a href="<?=site_url('notices')?>">Notice Board</a></li>
-                <li><a href="<?= site_url('/email') ?>">Email</a></li>
                 <li><a href="javascript:void(0)">Chat</a></li>
               </ul>
             </div>
           </li>
-					<li>
-						<a href="<?= site_url('g-drive') ?>">
-							<i data-feather="folder-plus"></i>
-							<span> GDrive </span>
-						</a>
-					</li>
           <li>
+            <a href="#email" data-toggle="collapse">
+              <i data-feather="message-square"></i>
+              <span> Email </span>
+              <span class="menu-arrow"></span>
+            </a>
+            <div class="collapse" id="email">
+              <ul class="nav-second-level">
+                <li><a href="<?= route_to('messages-in','INBOX') ?>">Email</a></li>
+                <li><a href="<?= site_url('/email-settings') ?>">Settings</a></li>
+              </ul>
+            </div>
+          </li>
+            <li>
+                <a href="<?= site_url('g-drive') ?>">
+                    <i data-feather="folder-plus"></i>
+                    <span> GDrive </span>
+                </a>
+            </li>
+          <li>
+            <a href="<?= site_url('trainings') ?>">
+                <i data-feather="book"></i>
+                <span> Trainings </span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= site_url('workflow-requests') ?>">
+                <i data-feather="book"></i>
+                <span> Workflow </span>
+            </a>
+        </li>
+        <li>
+            <a href="<?= route_to('manage-projects') ?>">
+                <i data-feather="book"></i>
+                <span> Project</span>
+            </a>
+        </li>
 						<a href="<?= site_url('trainings') ?>">
 							<i data-feather="book"></i>
 							<span> Trainings </span>
@@ -320,11 +349,11 @@
 							<span> Workflow </span>
 						</a>
 					</li>
-
+>>>>>>> 6bf7d7e5b0e24aab457ed6ba75c0a2019f937909
           <li>
-            <a href="<?= site_url('central-registry') ?>">
+            <a href="<?= site_url('registry') ?>">
               <i data-feather="inbox"></i>
-              <span> Central Registry </span>
+              <span> Registry </span>
             </a>
           </li>
           <li>

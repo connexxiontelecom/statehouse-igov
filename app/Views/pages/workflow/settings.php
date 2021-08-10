@@ -367,7 +367,7 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-<?=view('pages/notice/_notice-scripts.php')?>
+<!--view('pages/notice/_notice-scripts.php')-->
 <?= $this->endSection(); ?>
 
 
