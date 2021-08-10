@@ -40,9 +40,7 @@ class GeneralSettingController extends BaseController
 			return redirect()->to(base_url('/organization-profile'));
 		
 		endif;
-		
-		
-		
+
 		if($this->request->getMethod() == 'get'):
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
