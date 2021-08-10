@@ -173,7 +173,7 @@ class BudgetSettingController extends BaseController
 			$data['budget'] = $active_budget;
 			$data['budgets'] = $this->budget->findAll();
 			$data['categories'] = $this->bc->findAll();
-			$data['bhs'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->orderBy('bh_code', 'ASC')->findAll();
+			$data['bhs'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->join('positions', 'budget_headers.bh_office = positions.pos_id')->orderBy('bh_code', 'ASC')->findAll();
 			return view('office/budget/budget_charts', $data);
 		endif;
 		

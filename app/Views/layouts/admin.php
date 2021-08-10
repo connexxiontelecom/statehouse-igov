@@ -679,7 +679,7 @@
 								</li>
 								
 								<li>
-									<a href="<?=site_url('budget-charts'); ?>">Budget Chat Setup</a>
+									<a href="<?=site_url('budget-charts'); ?>">Budget Chart Setup</a>
 								</li>
 							
 							
