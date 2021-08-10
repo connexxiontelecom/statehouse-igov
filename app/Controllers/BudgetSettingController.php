@@ -166,6 +166,28 @@ class BudgetSettingController extends BaseController
 		
 	}
 	
+	public function new_budget_chart(){
+		
+		if($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$active_budget = $this->budget->where('budget_status', 1)->first();
+			$data['budget'] = $active_budget;
+			$data['bhs'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->findAll();
+			$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->where('bh_acc_type', 0)->findAll();
+			$data['categories'] = $this->bc->findAll();
+			$data['positions'] = $this->position->findAll();
+			return view('office/budget/new_budget_chart', $data);
+		endif;
+	}
+	
+	public function fetch_parent(){
+		$category = $_POST['cat'];
+		$budget_id = $_POST['b_id'];
+		$parents = $this->bh->where('bh_budget_id', $budget_id)->where('bh_acc_type', 0)->where('bh_cat', $category)->findAll();
+		echo json_encode($parents);
+	}
+	
 	public  function view_budget ($budget_id) {
 	
 		$check_budget = $this->budget->where('budget_id', $budget_id)->first();

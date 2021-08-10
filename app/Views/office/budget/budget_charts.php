@@ -28,9 +28,11 @@
 					
 					<div class="row mt-4">
 						<div class="col">
+							<a href="<?=site_url('new-budget-chart') ?>" class="btn btn-success waves-effect waves-light">New Chart</a>
 							
 							
 							<?php if(!empty($bhs)): ?>
+								
 								
 								<table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
 									<thead>
