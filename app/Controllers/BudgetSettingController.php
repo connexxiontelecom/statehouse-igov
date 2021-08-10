@@ -120,37 +120,49 @@ class BudgetSettingController extends BaseController
 	{
 		
 		if($this->request->getMethod() == 'post'):
-					$this->validator->setRules( [
-						'budget_title'=>[
-							'rules'=>'required',
-							'errors'=>[
-								'required'=>'Enter Budget Title'
-							]
-						],
-						
-						'budget_year'=>[
-							'rules'=>'required',
-							'errors'=>[
-								'required'=>'Enter Budget Year'
-							]
-						]
-					]);
-					if ($this->validator->withRequest($this->request)->run()):
-						if($_POST['budget_status'] == 1):
-							$check = $this->budget->where('budget_status', 1)->first();
-							$check['budget_status'] = 0;
-							$this->budget->save($check);
-						endif;
-						
-						$this->budget->save($_POST);
-						session()->setFlashData("action","action successful");
-						return redirect()->to(base_url('/budget-setups'));
-					else:
-							$arr = $this->validator->getErrors();
-							session()->setFlashData("errors",$arr);
-							return redirect()->to(base_url('budget-setups'));
-						
-					endif;
+//					$this->validator->setRules( [
+//						'budget_title'=>[
+//							'rules'=>'required',
+//							'errors'=>[
+//								'required'=>'Enter Budget Title'
+//							]
+//						],
+//
+//						'budget_year'=>[
+//							'rules'=>'required',
+//							'errors'=>[
+//								'required'=>'Enter Budget Year'
+//							]
+//						]
+//					]);
+//					if ($this->validator->withRequest($this->request)->run()):
+//						if($_POST['budget_status'] == 1):
+//							$check = $this->budget->where('budget_status', 1)->first();
+//							$check['budget_status'] = 0;
+//							$this->budget->save($check);
+//						endif;
+//
+//						$this->budget->save($_POST);
+//						session()->setFlashData("action","action successful");
+//						return redirect()->to(base_url('/budget-setups'));
+//					else:
+//							$arr = $this->validator->getErrors();
+//							session()->setFlashData("errors",$arr);
+//							return redirect()->to(base_url('budget-setups'));
+//
+//					endif;
+			
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$b_id = $_POST['bh_budget_id'];
+			$active_budget = $this->budget->where('budget_id', $b_id)->first();
+			$data['budget'] = $active_budget;
+			$data['budgets'] = $this->budget->findAll();
+			$data['categories'] = $this->bc->findAll();
+			$data['bhs'] = $this->bh->where('bh_budget_id', $b_id)->orderBy('bh_code', 'ASC')->findAll();
+			return view('office/budget/budget_charts', $data);
+		
+		
 		
 		endif;
 		
