@@ -39,6 +39,8 @@
 				<i class="mdi mdi-check-all mr-2"></i><strong>Action Successful !</strong>
 			</div>
 		<?php endif; ?>
+				
+				
 					<div>
 						<button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-bc" style="float: right"> <i class="mdi mdi-plus mr-2"></i>New Category</button>
 					

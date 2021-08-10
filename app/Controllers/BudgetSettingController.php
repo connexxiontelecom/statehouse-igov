@@ -159,7 +159,7 @@ class BudgetSettingController extends BaseController
 			$data['username'] = $this->session->user_username;
 			$active_budget = $this->budget->where('budget_status', 1)->first();
 			$data['budget'] = $active_budget;
-			$data['bhs'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->findAll();
+			$data['bhs'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->orderBy('bh_code', 'ASC')->findAll();
 			return view('office/budget/budget_charts', $data);
 		endif;
 		
@@ -167,6 +167,19 @@ class BudgetSettingController extends BaseController
 	}
 	
 	public function new_budget_chart(){
+		
+		if($this->request->getMethod() == 'post'):
+			
+			try {
+				$this->bh->save($_POST);
+				session()->setFlashData("action","action successful");
+				return redirect()->to(base_url('/new-budget-chart'));
+			} catch (\ReflectionException $e) {
+				session()->setFlashData("error",$e->getMessage());
+				return redirect()->to(base_url('/new-budget-chart'));
+			}
+			
+		endif;
 		
 		if($this->request->getMethod() == 'get'):
 			$data['firstTime'] = $this->session->firstTime;

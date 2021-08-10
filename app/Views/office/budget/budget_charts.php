@@ -1,7 +1,6 @@
 <?= $this->extend('layouts/admin') ?>
 <?= $this->section('extra-styles') ?>
-<link href="/assetsa/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
-<link href="/assetsa/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+
 <?= $this->endSection() ?>
 <?= $this->section('content') ?>
 <div class="container-fluid">
@@ -46,17 +45,21 @@
 									</tr>
 									</thead>
 									<tbody>
+									<tr>
+										<td colspan="2"><h4> EXPENDITURE</h4> </td>
+										
+									</tr>
 									<?php
 										$i = 1;
 										foreach ($bhs as $bh):
 											?>
 											<tr>
 												<td><?=$i++;?></td>
-												<td><?=$bh['bh_code']?></td>
-												<td><?=$bh['bh_title']?></td>
-												<td> <?=$bh['bh_project_status'] ?></td>
-												<td> <?=$bh['bh_office'] ?></td>
-												<td> <?=number_format($bh['bh_amount']) ?></td>
+												<td <?php if($bh['bh_acc_type'] == 0): echo 'style="font-weight: bold;"';  endif; ?>><?=$bh['bh_code'];?></td>
+												<td <?php if($bh['bh_acc_type'] == 0): echo 'style="font-weight: bold;"';  endif; ?>><?=$bh['bh_title'];?></td>
+												<td> <?=$bh['bh_project_status']; ?></td>
+												<td> <?=$bh['bh_office']; ?></td>
+												<td> <?=number_format($bh['bh_amount']); ?></td>
 											</tr>
 										<?php endforeach; ?>
 									</tbody>
@@ -110,19 +113,6 @@
 
 <?= $this->endSection() ?>
 <?= $this->section('extra-scripts') ?>
-<!-- Vendor js -->
-<script src="/assetsa/js/vendor.min.js"></script>
-
-<!-- Dragula js -->
-<script src="/assetsa/libs/dragula/dragula.min.js"></script>
-<!-- Dragula init js-->
-<script src="/assetsa/js/pages/dragula.init.js"></script>
-
-<!-- Plugins js -->
-<script src="/assetsa/libs/quill/quill.min.js"></script>
-
-<!-- Init js-->
-<script src="/assetsa/js/pages/task.init.js"></script>
 
 
 <?= $this->endSection() ?>

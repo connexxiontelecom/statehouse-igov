@@ -28,13 +28,26 @@
 						<h4 style="float: right" class="header-title">New Budget Chart</h4>
 						<div class="row mt-4">
 							<div class="col">
-			
-							
-<!--								<p class="sub-header">-->
-<!--									-->
-<!--								</p>-->
 								
-								<form>
+								<?php if(session()->has('action')): ?>
+									<div class="alert alert-success alert-dismissible fade show" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+										<i class="mdi mdi-check-all mr-2"></i><strong>Action Successful !</strong>
+									</div>
+								<?php endif; ?>
+								
+								<?php if(session()->has('error')): ?>
+									<div class="alert alert-danger alert-dismissible fade show" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+										<i class="mdi mdi-check-all mr-2"></i><strong>An Error Occurred</strong>
+									</div>
+								<?php endif; ?>
+								
+								<form method="post">
 									
 									<div class="form-group mb-3">
 										<label for="account-type">Account Type</label>
@@ -43,11 +56,12 @@
 											<option value="1">Detail</option>
 										
 										</select>
+									</div>
 									
 										
 									<div class="form-group mb-3">
 										<label for="category">Category: </label>
-										<select class="form-control" name="bh_cat" id="category">
+										<select class="form-control" name="bh_cat" onchange="get_parents()" id="category">
 											<option value="0" selected >Choose Category</option>
 											<?php foreach ($categories as $category): ?>
 												<option value="<?=$category['bc_id'] ?>"> <?=$category['bc_name']; ?> </option>
@@ -58,23 +72,21 @@
 									
 									<div class="form-group mb-3">
 										<label for="account-type">Parent</label>
-										<select class="form-control" name="bh_acc_type" id="account-type">
+										<select class="form-control" name="bh_parent" id="parent">
 											<option value="0">None</option>
-											<?php foreach ($parents as $parent): ?>
-											<option value="<?=$parent['bh_code'] ?>"> <?=$parent['bh_title']; ?> </option>
-											<?php endforeach; ?>
+											
 										</select>
 									</div>
 							
 									
 									<div class="form-group mb-3">
-										<label for="example-input-normal">Account Code</label>
-										<input type="text" id="example-input-normal" name="bh_code" class="form-control" placeholder="Normal">
+										<label for="example-input-normal">Code</label>
+										<input type="text" id="example-input-normal" name="bh_code" class="form-control" placeholder="Code" required>
 									</div>
 									
 									<div class="form-group mb-3">
 										<label for="example-input-normal">Narration: </label>
-										<input type="text" id="example-input-normal" name="bh_title" class="form-control" placeholder="Normal">
+										<input type="text" id="example-input-normal" name="bh_title" class="form-control" placeholder="Narration" required>
 									</div>
 									
 									
@@ -98,6 +110,23 @@
 										</select>
 									</div>
 									
+									<div class="form-group mb-3">
+										<label for="category">Office: </label>
+										<select class="form-control" name="bh_office"  id="office" required>
+											<option selected disabled >Choose Office</option>
+											<?php foreach ($positions as $position): ?>
+												<option value="<?=$position['pos_id'] ?>"> <?=$position['pos_name']; ?> </option>
+											<?php endforeach; ?>
+										
+										</select>
+									</div>
+									
+									<input type="hidden" name="bh_budget_id" value="<?=$budget['budget_id'] ?>">
+									<div class="form-group mb-3">
+										<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
+									
+									</div>
+									
 								
 								</form>
 							</div> <!-- end col -->
@@ -113,6 +142,30 @@
 
 <?= $this->endSection() ?>
 <?= $this->section('extra-scripts') ?>
+	
+	<script>
+        function get_parents(){
+            let cat =  $("#category").val();
+            let b_id = <?=$budget['budget_id'] ?>;
+            $.ajax({
+                url: '<?php echo site_url('fetch-parent') ?>',
+                type: 'post',
+                data: { cat, b_id },
+                dataType: 'json',
+                success:function(response){
+                    $("#parent").empty();
+                    $("#parent").append('<option value="0">  None </option>');
+                    for (let i=0; i<response.length; i++) {
+                        $("#parent").append('<option value="' + response[i].bh_code + '">' + response[i].bh_title + '</option>');
+                    }
+                    
+                }
+            });
+
+        }
+		
+		</script>
+		
 	<!-- Vendor js -->
 	<script src="/assetsa/js/vendor.min.js"></script>
 	
