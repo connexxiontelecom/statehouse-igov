@@ -105,8 +105,8 @@
 												<td <?php if($bh['bh_acc_type'] == 0): echo 'style="font-weight: bold;"';  endif; ?>><?=$bh['bh_code'];?></td>
 												<td <?php if($bh['bh_acc_type'] == 0): echo 'style="font-weight: bold;"';  endif; ?>><?=$bh['bh_title'];?></td>
 												<td> <?=$bh['bh_project_status']; ?></td>
-												<td> <?=$bh['bh_office']; ?></td>
-												<td> <?=number_format($bh['bh_amount']); ?></td>
+												<td> <?=$bh['pos_name']; ?></td>
+												<td>  <?php if($bh['bh_acc_type']): echo number_format($bh['bh_amount']); endif; ?></td>
 											</tr>
 										<?php endif; endforeach; ?>
 									<?php endforeach; ?>
