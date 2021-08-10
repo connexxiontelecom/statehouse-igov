@@ -659,11 +659,32 @@
 						</a>
 					</li>
 					
+					
+					
 					<li>
-						<a href="<?=site_url('budget-setups') ?>">
-							<i data-feather="credit-card"></i>
-							<span> Budgets </span>
+						<a href="#budgetSettings" data-toggle="collapse">
+							<i data-feather="settings"></i>
+							
+							<span> Budget </span>
+							<span class="menu-arrow"></span>
 						</a>
+						<div class="collapse" id="budgetSettings">
+							<ul class="nav-second-level">
+								<li>
+									<a href="<?=site_url('budget-setups'); ?>">Budget Profiles</a>
+								</li>
+								
+								<li>
+									<a href="<?=site_url('budget-categories'); ?>">Budget Categories</a>
+								</li>
+								
+								<li>
+									<a href="<?=site_url('budget-charts'); ?>">Budget Chart Setup</a>
+								</li>
+							
+							
+							</ul>
+						</div>
 					</li>
 					
 					<li>

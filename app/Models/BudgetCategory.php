@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Budget extends Model
+class BudgetCategory extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'budgets';
+	protected $table                = 'budget_categories';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['budget_id', 'budget_title', 'budget_year', 'budget_status'];
+	protected $allowedFields        = ['bc_id', 'bc_name'];
 
 	// Dates
 	protected $useTimestamps        = false;
