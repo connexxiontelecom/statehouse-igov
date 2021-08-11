@@ -89,12 +89,16 @@
 									</tr>
 									</thead>
 									<tbody>
-									
+									<?php $i = 1;  foreach ($categories as $category): ?>
+									<tr>
+										<td colspan="2"><h4> <?=$category['bc_name']; ?></h4> </td>
+										
+									</tr>
 										
 										<?php
 										
-										$i =1; foreach ($bhs as $bh):
-											
+										foreach ($bhs as $bh):
+											if($bh['bh_cat'] == $category['bc_id']):
 											?>
 											<tr>
 												<td><?=$i++;?></td>
@@ -104,8 +108,8 @@
 												<td> <?=$bh['pos_name']; ?></td>
 												<td>  <?php if($bh['bh_acc_type']): echo number_format($bh['bh_amount']); endif; ?></td>
 											</tr>
-										<?php  endforeach; ?>
-									
+										<?php endif; endforeach; ?>
+									<?php endforeach; ?>
 									
 									
 								
