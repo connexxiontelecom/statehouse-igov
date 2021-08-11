@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/admin') ?>
 <?= $this->section('extra-styles') ?>
-	<link href="/assetsa/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
-	<link href="/assetsa/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+
 <?= $this->endSection() ?>
 <?= $this->section('content') ?>
 	<div class="container-fluid">
@@ -112,12 +112,18 @@
 									
 									<div class="form-group mb-3">
 										<label for="category">Office: </label>
-										<select class="form-control" name="bh_office"  id="office" required>
-											<option selected disabled >Choose Office</option>
-											<?php foreach ($positions as $position): ?>
-												<option value="<?=$position['pos_id'] ?>"> <?=$position['pos_name']; ?> </option>
+										<select class="form-control select2-multiple" id="positions" name="bh_office[]" data-toggle="select2" multiple="multiple" required style="min-height: 38px">
+											<?php foreach ($department_employees as $department => $employees): ?>
+												<?php if(!empty($employees)):?>
+													<optgroup label="<?=$department?>">
+														<?php foreach ($employees as $employee):?>
+															<option value="<?=$employee['employee_id']?>">
+																<?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+															</option>
+														<?php endforeach;?>
+													</optgroup>
+												<?php endif;?>
 											<?php endforeach; ?>
-										
 										</select>
 									</div>
 									
@@ -142,7 +148,7 @@
 
 <?= $this->endSection() ?>
 <?= $this->section('extra-scripts') ?>
-	
+	<script src="/assets/libs/select2/js/select2.min.js"></script>
 	<script>
         function get_parents(){
             let cat =  $("#category").val();
@@ -165,20 +171,7 @@
         }
 		
 		</script>
-		
-	<!-- Vendor js -->
-	<script src="/assetsa/js/vendor.min.js"></script>
-	
-	<!-- Dragula js -->
-	<script src="/assetsa/libs/dragula/dragula.min.js"></script>
-	<!-- Dragula init js-->
-	<script src="/assetsa/js/pages/dragula.init.js"></script>
-	
-	<!-- Plugins js -->
-	<script src="/assetsa/libs/quill/quill.min.js"></script>
-	
-	<!-- Init js-->
-	<script src="/assetsa/js/pages/task.init.js"></script>
+
 
 
 <?= $this->endSection() ?>

@@ -32,6 +32,7 @@
 
 <!-- App js-->
 <script src="/assetsa/js/app.min.js"></script>
+<!--<script src="/assetsa/libs/parsleyjs/parsley.min.js"></script>-->
 <!-- third party js -->
 <script src="/assetsa/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/assetsa/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -68,9 +69,10 @@
 
 <!-- Init js-->
 <script src="/assetsa/js/pages/form-masks.init.js"></script>
+
 <!-- Init js-->
-<script src="/assetsa/js/pages/form-validation.init.js"></script>
-<!--<script src="/assetsa/js/pages/form-advanced.init.js"></script>-->
+<!--<script src="/assetsa/js/pages/form-validation.init.js"></script>-->
+<script src="/assetsa/js/pages/form-advanced.init.js"></script>
 <script>
 	$('input.number').keyup(function (event) {
 		// skip for arrow keys

@@ -21,56 +21,59 @@
 	</div>
 	<!-- end page title -->
 	<div class="row" style="margin-top: -50px">
-		<div class="col-xl-12">
-			
+		<div class="col-sm-4">
 			<div class="card">
 				<div class="card-body">
 					
-					<div class="row">
-						<div class="col-xl-4">
-						
-									<h4 style="float: right" class="header-title">View Budget Chart</h4>
-									<div class="row mt-4">
-										<div class="col">
+				
+							
+							<h4 style="float: right" class="header-title">View Budget Chart</h4>
+							<div class="row mt-4">
+								<div class="col">
 									
-											
-											<form method="post">
-												
-												<div class="form-group mb-3">
-													<label for="account-type">Budget Profiles</label>
-													<select class="form-control" name="bh_budget_id" >
-														<?php foreach ($budgets as $bud): ?>
-														<option value="<?=$bud['budget_id'] ?>"><?=$bud['budget_title'] ?> - <?=$bud['budget_year']; ?></option>
-														
-														<?php endforeach; ?>
-													
-													</select>
-												</div>
-												
 									
-												<div class="form-group mb-3">
-													<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
+									<form method="post">
+										
+										<div class="form-group mb-3">
+											<label for="account-type">Budget Profiles</label>
+											<select class="form-control" name="bh_budget_id" >
+												<?php foreach ($budgets as $bud): ?>
+													<option value="<?=$bud['budget_id'] ?>"><?=$bud['budget_title'] ?> - <?=$bud['budget_year']; ?></option>
 												
-												</div>
+												<?php endforeach; ?>
 											
-											
-											</form>
-										</div> <!-- end col -->
-									</div> <!-- end row -->
-								
-								
+											</select>
+										</div>
+										
+										
+										<div class="form-group mb-3">
+											<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
+										
+										</div>
+									
+									
+									</form>
+								</div> <!-- end col -->
+							</div> <!-- end row -->
 						
-						</div> <!-- end col -->
-					</div> <!-- end row -->
+						
+						
+					
 				
 				
 				</div> <!-- end card-body -->
 			</div> <!-- end card-->
+			
+		</div> <!-- end col -->
+	</div>
+	
+	<div class="row" style="margin-top: -50px">
+		<div class="col-sm-12">
 			<div class="card">
 				<div class="card-body">
 					
-					<div class="row mt-4">
-						<div class="col">
+					<div class="row">
+						<div class="col-xl-12">
 							<a href="<?=site_url('new-budget-chart') ?>" class="btn btn-success waves-effect waves-light">New Chart</a>
 							
 							
@@ -90,29 +93,29 @@
 									</thead>
 									<tbody>
 									<?php $i = 1;  foreach ($categories as $category): ?>
-									<tr>
-										<td colspan="2"><h4> <?=$category['bc_name']; ?></h4> </td>
+										<tr>
+											<td colspan="2"><h4> <?=$category['bc_name']; ?></h4> </td>
 										
-									</tr>
+										</tr>
 										
 										<?php
 										
 										foreach ($bhs as $bh):
 											if($bh['bh_cat'] == $category['bc_id']):
-											?>
-											<tr>
-												<td><?=$i++;?></td>
-												<td <?php if($bh['bh_acc_type'] == 0): echo 'style="font-weight: bold;"';  endif; ?>><?=$bh['bh_code'];?></td>
-												<td <?php if($bh['bh_acc_type'] == 0): echo 'style="font-weight: bold;"';  endif; ?>><?=$bh['bh_title'];?></td>
-												<td> <?=$bh['bh_project_status']; ?></td>
-												<td> <?=$bh['pos_name']; ?></td>
-												<td>  <?php if($bh['bh_acc_type']): echo number_format($bh['bh_amount']); endif; ?></td>
-											</tr>
-										<?php endif; endforeach; ?>
+												?>
+												<tr>
+													<td><?=$i++;?></td>
+													<td <?php if($bh['bh_acc_type'] == 0): echo 'style="font-weight: bold;"';  endif; ?>><?=$bh['bh_code'];?></td>
+													<td <?php if($bh['bh_acc_type'] == 0): echo 'style="font-weight: bold;"';  endif; ?>><?=$bh['bh_title'];?></td>
+													<td> <?=$bh['bh_project_status']; ?></td>
+													<td> <?=implode('', $bh['office_d']); ?></td>
+													<td>  <?php if($bh['bh_acc_type']): echo number_format($bh['bh_amount']); endif; ?></td>
+												</tr>
+											<?php endif; endforeach; ?>
 									<?php endforeach; ?>
 									
 									
-								
+									
 									</tbody>
 								</table>
 							
@@ -157,9 +160,13 @@
 				
 				</div> <!-- end card-body -->
 			</div> <!-- end card-->
+		
 		</div> <!-- end col -->
 	</div>
 </div>
+
+
+
 <!-- Long Content Scroll Modal -->
 
 <?= $this->endSection() ?>
