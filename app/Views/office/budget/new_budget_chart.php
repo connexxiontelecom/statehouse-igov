@@ -162,7 +162,7 @@
                     $("#parent").empty();
                     $("#parent").append('<option value="0">  None </option>');
                     for (let i=0; i<response.length; i++) {
-                        $("#parent").append('<option value="' + response[i].bh_code + '">' + response[i].bh_title + '</option>');
+                        $("#parent").append('<option value="' + response[i].bh_code + '">' + response[i].bh_title + ' - '+ response[i].bh_code + '</option>');
                     }
                     
                 }

@@ -264,6 +264,11 @@ class BudgetSettingController extends BaseController
 		if($this->request->getMethod() == 'post'):
 			
 			try {
+				if($_POST['bh_acc_type'] == 0):
+					unset($_POST['bh_amount']);
+				else:
+					$_POST['bh_amount'] = str_replace(',', '', $_POST['bh_amount']);
+					endif;
 				$_POST['bh_office'] = json_encode($_POST['bh_office']);
 				$this->bh->save($_POST);
 				session()->setFlashData("action","action successful");
@@ -284,6 +289,7 @@ class BudgetSettingController extends BaseController
 			$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
 									->where('bh_acc_type', 0)
 									->where('bh_cat', $bh['bh_cat'])
+									->orderBy('bh_code', 'ASC')
 									->findAll();
 			$data['categories'] = $this->bc->findAll();
 		
@@ -295,7 +301,7 @@ class BudgetSettingController extends BaseController
 	public function fetch_parent(){
 		$category = $_POST['cat'];
 		$budget_id = $_POST['b_id'];
-		$parents = $this->bh->where('bh_budget_id', $budget_id)->where('bh_acc_type', 0)->where('bh_cat', $category)->findAll();
+		$parents = $this->bh->where('bh_budget_id', $budget_id)->where('bh_acc_type', 0)->where('bh_cat', $category)->orderBy('bh_code', 'ASC')->findAll();
 		echo json_encode($parents);
 	}
 	

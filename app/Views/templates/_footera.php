@@ -72,7 +72,7 @@
 
 <!-- Init js-->
 <!--<script src="/assetsa/js/pages/form-validation.init.js"></script>-->
-<script src="/assetsa/js/pages/form-advanced.init.js"></script>
+<!--<script src="/assetsa/js/pages/form-advanced.init.js"></script>-->
 <script>
 	$('input.number').keyup(function (event) {
 		// skip for arrow keys

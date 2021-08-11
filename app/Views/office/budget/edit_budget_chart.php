@@ -87,7 +87,7 @@
 									</div>
 									
 									<div class="form-group mb-3">
-										<label for="account-type">Parent</label>
+										<label for="parent">Parent</label>
 										<select class="form-control" name="bh_parent" id="parent">
 											<option <?php if($bhs['bh_parent'] == 0 || is_null($bhs['bh_parent'])): echo "selected"; endif; ?> value="0">None</option>
 											<?php foreach ($parents as $parent): ?>
@@ -147,6 +147,11 @@
 												<?php endif;?>
 											<?php endforeach; ?>
 										</select>
+									</div>
+									
+									<div class="form-group mb-3">
+										<label for="example-input-normal">Amount: </label>
+										<input type="text" id="example-input-normal" name="bh_amount" value="<?=$bhs['bh_amount']; ?>" class="form-control number" placeholder="Amount" required>
 									</div>
 									
 									<input type="hidden" name="bh_budget_id" value="<?=$budget['budget_id'] ?>">
