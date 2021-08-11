@@ -74,7 +74,7 @@
 					
 					<div class="row">
 						<div class="col-xl-12">
-							<a href="<?=site_url('new-budget-chart') ?>" class="btn btn-success waves-effect waves-light">New Chart</a>
+							<a href="<?=site_url('new-budget-chart') ?>" class="btn btn-success waves-effect waves-light"><i class="fas fa-plus"></i></a></a>
 							
 							
 							<?php if(!empty($bhs)): ?>
@@ -89,6 +89,7 @@
 										<th> Project Status</th>
 										<th> Responsible Office</th>
 										<th>Amount</th>
+										<th> Action </th>
 									</tr>
 									</thead>
 									<tbody>
@@ -110,6 +111,7 @@
 													<td> <?=$bh['bh_project_status']; ?></td>
 													<td> <?=implode('', $bh['office_d']); ?></td>
 													<td>  <?php if($bh['bh_acc_type']): echo number_format($bh['bh_amount']); endif; ?></td>
+													<td> <a href="<?=site_url('edit-budget-chart/'.$bh['bh_id']) ?>" class="btn btn-success waves-effect waves-light"><i class="far fa-edit"></i></a></td>
 												</tr>
 											<?php endif; endforeach; ?>
 									<?php endforeach; ?>
