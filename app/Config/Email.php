@@ -54,6 +54,7 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
+
 //	public $SMTPUser = 'joseph@connexxiongroup.com';
 	public $SMTPUser = 'support@connexxiontelecom.com';
 

@@ -47,14 +47,19 @@ $routes->match(['get', 'post'], 'organization-profile', 'GeneralSettingControlle
 $routes->match(['get', 'post'], 'departments', 'GeneralSettingController::departments', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'positions', 'GeneralSettingController::positions', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'manage-registries', 'GeneralSettingController::registries', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'manage-registry/(:num)', 'GeneralSettingController::manage_registry/$1', ['filter' => 'auth']);
+
 $routes->match(['get', 'post'], 'notice-board', 'MessagingSettingController::notice_board', ['filter' => 'auth']);
+
 $routes->match(['get', 'post'], 'new-employee', 'EmployeeSettingController::new_employee', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'fetch-positions', 'EmployeeSettingController::fetch_positions', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'employees', 'EmployeeSettingController::all_employees', ['filter' => 'auth']);
 $routes->match(['post'], 'check-username', 'EmployeeSettingController::check_username', ['filter' => 'auth']);
+
 $routes->match(['get', 'post'], 'budget-charts', 'BudgetSettingController::budget_charts', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-budget-chart', 'BudgetSettingController::new_budget_chart', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'budget-setups', 'BudgetSettingController::budget_setups', ['filter' => 'auth']);
+
 $routes->match(['get'], 'view-budget-setup/(:num)', 'BudgetSettingController::view_budget/$1', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'budget-categories', 'BudgetSettingController::budget_categories', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'fetch-parent', 'BudgetSettingController::fetch_parent', ['filter' => 'auth']);
@@ -139,11 +144,20 @@ $routes->post('/workflow-requests/leave-comment', 'WorkflowController::leaveComm
 //$routes->get('notice-board/(:any)', 'MessagingSettingController::notice_board/$1', ['filter' => 'auth']);
 
 
-$routes->get('/email', 'EmailController::test', ['filter'=>'auth']);
-$routes->get('/email/(:num)', 'EmailController::test/$1', ['filter'=>'auth']);
-$routes->get('/read-mail/(:any)', 'EmailController::viewMail/$1', ['filter'=>'auth']);
+//$routes->get('/email', 'EmailServiceController::index', ['filter'=>'auth']);
+//$routes->get('/email/(:num)', 'EmailServiceController::index/$1', ['filter'=>'auth']);
+
+$routes->get('/email/folder/(:any)', 'EmailServiceController::getMessagesInFolder/$1',['filter'=>'auth', 'as'=>'messages-in']);
+
+$routes->get('/read-mail/(:any)/(:any)', 'EmailServiceController::readMail/$1/$2', ['filter'=>'auth', 'as'=>'read-mail']);
 $routes->get('/compose-email', 'EmailController::composeEmail', ['filter'=>'auth']);
 $routes->post('/compose-email', 'EmailController::processMail', ['filter'=>'auth']);
+$routes->get('/email-settings', 'EmailController::showEmailSettingsForm', ['filter'=>'auth', 'as'=>'email-settings']);
+$routes->post('/email-settings', 'EmailController::processEmailSettings', ['filter'=>'auth']);
+
+#Project routes
+$routes->get('/manage-projects','ProjectController::index',['filter'=>'auth', 'as'=>'manage-projects']);
+$routes->get('/projects/create','ProjectController::showAddNewProjectForm',['filter'=>'auth', 'as'=>'add-new-project']);
 
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
@@ -153,13 +167,23 @@ $routes->match(['post'], 'verify-signature', 'EmployeeController::verify_signatu
 
 // central registry routes
 $routes->match(['get'], 'central-registry', 'CentralRegistryController::index', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'incoming-mail', 'CentralRegistryController::incoming_mail', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'outgoing-mail', 'CentralRegistryController::outgoing_mail', ['filter' => 'auth']);
-$routes->match(['post'], 'upload-mail-attachments', 'CentralRegistryController::upload_mail_attachments', ['filter' => 'auth']);
-$routes->match(['post', 'get'], 'delete-mail-attachments', 'CentralRegistryController::delete_mail_attachments', ['filter' => 'auth']);
-$routes->match(['get'], 'manage-mail/(:num)', 'CentralRegistryController::manage_mail/$1', ['filter' => 'auth']);
-$routes->match(['post'], 'file-mail', 'CentralRegistryController::file_mail', ['filter' => 'auth']);
-$routes->match(['post'], 'transfer-mail', 'CentralRegistryController::transfer_mail', ['filter' => 'auth']);
+
+
+// registries routes
+$routes->match(['get'], 'registry', 'RegistryController::index', ['filter' => 'auth']);
+$routes->match(['get'], 'view-registry/(:any)', 'RegistryController::view_registry/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'incoming-mail', 'RegistryController::incoming_mail', ['filter' => 'auth']);
+$routes->match(['get'], 'manage-mail/(:num)', 'RegistryController::manage_mail/$1', ['filter' => 'auth']);
+$routes->match(['get'], 'view-transfer-log/(:num)', 'RegistryController::view_transfer_log/$1', ['filter' => 'auth']);
+$routes->match(['get'], 'view-filing-log/(:num)', 'RegistryController::view_filing_log/$1', ['filter' => 'auth']);
+$routes->match(['post'], 'transfer-mail', 'RegistryController::transfer_mail', ['filter' => 'auth']);
+$routes->match(['post'], 'file-mail', 'RegistryController::file_mail', ['filter' => 'auth']);
+$routes->match(['post'], 'upload-mail-attachments', 'RegistryController::upload_mail_attachments', ['filter' => 'auth']);
+$routes->match(['post', 'get'], 'delete-mail-attachments', 'RegistryController::delete_mail_attachments', ['filter' => 'auth']);
+$routes->match(['get'], 'mail-transfer-requests', 'RegistryController::mail_transfer_requests', ['filter' => 'auth']);
+$routes->match(['post'], 'confirm-transfer-request', 'RegistryController::confirm_transfer_request', ['filter' => 'auth']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

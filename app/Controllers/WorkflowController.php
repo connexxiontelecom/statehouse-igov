@@ -42,7 +42,9 @@ class WorkflowController extends BaseController
           'departments'=>$this->department->getAllDepartments(),
           'employees'=>$this->user->getAllUsers(),
           'processors'=>$this->workflowprocessor->getAllProcessors(),
-          'ex_processors'=>$this->workflowexceptionprocessor->getAllExceptionProcessors()
+          'ex_processors'=>$this->workflowexceptionprocessor->getAllExceptionProcessors(),
+            'firstTime'=>$this->session->firstTime,
+            'username'=>$this->session->username,
         ];
 		return view('pages/workflow/settings', $data);
 	}
@@ -164,6 +166,8 @@ class WorkflowController extends BaseController
     public function workflowRequests(){
         $data = [
           'my_requests'=>$this->workflowrequest->getAuthUserWorkflowRequests($this->session->user_id),
+            'firstTime'=>$this->session->firstTime,
+            'username'=>$this->session->username,
         ];
 
         return view('pages/workflow/workflow-requests', $data);
@@ -175,7 +179,9 @@ class WorkflowController extends BaseController
         if(!empty($employee)){
             if(!empty($employee['employee_department_id'])){
                 $data = [
-                    'workflow_types'=>$this->workflowtype->getAllWorkflowTypes()
+                    'workflow_types'=>$this->workflowtype->getAllWorkflowTypes(),
+                    'firstTime'=>$this->session->firstTime,
+                    'username'=>$this->session->username,
                 ];
                 return view('pages/workflow/new-request', $data);
             }else{
@@ -198,7 +204,9 @@ class WorkflowController extends BaseController
             if(!$input){
                 echo view('pages/workflow/new-request', [
                     'validation' => $this->validator,
-                    'workflow_types'=>$this->workflowtype->getAllWorkflowTypes()
+                    'workflow_types'=>$this->workflowtype->getAllWorkflowTypes(),
+                    'firstTime'=>$this->session->firstTime,
+                    'username'=>$this->session->username,
                 ]);
             }else{
                 $title = $this->request->getPost('title');
@@ -308,7 +316,9 @@ class WorkflowController extends BaseController
               'workflow_attachments'=>$this->workflowrequestattachment->getWorkflowRequestAttachments($id),
               'responsible_persons'=>$this->workflowresponsibleperson->getWorkflowResponsiblePersonsByRequestId($id),
                 'auth_user'=>$this->session->user_employee_id,
-                'comments'=>$this->workflowconversation->getWorkflowConversationByRequestId($id)
+                'comments'=>$this->workflowconversation->getWorkflowConversationByRequestId($id),
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
             ];
             return view('pages/workflow/view-workflow-request', $data);
         }else{

@@ -32,7 +32,9 @@ class FileController extends BaseController
 	      'files'=>$this->file->getAllMyFiles($this->session->user_id),
             'my_folders'=>$this->folder->getAllMyAndPublicFolders($this->session->user_id),
             'folders'=>$this->folder->getAllFolders(),
-            'users'=>$this->user->getAllUsers()
+            'users'=>$this->user->getAllUsers(),
+            'firstTime'=>$this->session->firstTime,
+            'username'=>$this->session->username
         ];
 	    return view('pages/gdrive/index', $data);
 	}
@@ -41,7 +43,9 @@ class FileController extends BaseController
         $data = [
             'files'=>$this->file->getAllMyFiles($this->session->user_id),
             'users'=>$this->user->getAllUsers(),
-            'folders'=>$this->folder->getAllFolders()
+            'folders'=>$this->folder->getAllFolders(),
+            'firstTime'=>$this->session->firstTime,
+            'username'=>$this->session->username
         ];
         return view('pages/gdrive/my-files', $data);
     }
@@ -104,7 +108,9 @@ class FileController extends BaseController
                 'files'=>$files,
                 'folders'=>$folders,
                 'parent_folder'=>$id,
-                'users'=>$this->user->getAllUsers()
+                'users'=>$this->user->getAllUsers(),
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username
             ];
             //return print_r($data);
             return view('pages/gdrive/view', $data);
@@ -157,7 +163,9 @@ class FileController extends BaseController
                 'files'=>$files,
                 'users'=>$this->user->getAllUsers(),
                 'folders'=>$folders,
-                'keyword'=>$search_params
+                'keyword'=>$search_params,
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username
             ];
             return view('pages/gdrive/search', $data);
         }
