@@ -239,16 +239,34 @@ class BudgetSettingController extends BaseController
 	public function budget_categories(){
 		if($this->request->getMethod() == 'post'):
 			
-			try {
-				$this->bc->save($_POST);
-				session()->setFlashData("action","action successful");
-				return redirect()->to(base_url('/budget-categories'));
-			} catch (\ReflectionException $e) {
-				session()->setFlashData("action",$e->getMessage());
-				return redirect()->to(base_url('/budget-categories'));
-			
-		}
-		
+			if($_POST['bc_id']):
+				
+				$id = $_POST['bc_id'];
+				unset($_POST['bc_id']);
+				
+				
+				try {
+					$this->bc->where('bc_id', $id)
+						->set($_POST)
+						->update();
+					session()->setFlashData("action","action successful");
+					return redirect()->to(base_url('/budget-categories'));
+				} catch (\ReflectionException $e) {
+					session()->setFlashData("action",$e->getMessage());
+					return redirect()->to(base_url('/budget-categories'));
+				}
+			else:
+				
+				try {
+					$this->bc->save($_POST);
+					session()->setFlashData("action","action successful");
+					return redirect()->to(base_url('/budget-categories'));
+				} catch (\ReflectionException $e) {
+					session()->setFlashData("action",$e->getMessage());
+					return redirect()->to(base_url('/budget-categories'));
+				}
+			endif;
+	
 		
 		endif;
 
