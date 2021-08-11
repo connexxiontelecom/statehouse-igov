@@ -463,96 +463,30 @@
 <?= $this->section('extra-scripts') ?>
 	<script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
 	<script src="/assets/libs/dropify/js/dropify.min.js"></script>
-	<script>
-        $(document).ready(function () {
-        
-           
-        })
-		
-	</script>
-	
-	
-	<script>
-        function get_positions(){
-            let department_id =  $("#department").val();
-           $.ajax({
-                url: '<?php echo site_url('fetch-positions') ?>',
-                type: 'post',
-                data: {
-                    'dpt_id': department_id,
-                },
-                dataType: 'json',
-                success:function(response){
-                    $("#position").empty();
-                    $("#position").append('<option selected disabled> </option>');
-                    for (var i=0; i<response.length; i++) {
-                        $("#position").append('<option value="' + response[i].pos_id + '">' + response[i].pos_name + '</option>');
-                    }
-                  }
-            });
 
-        }
-
-        function checkUsername(){
-            let username =  $("#user_username").val();
-            $.ajax({
-                url: '<?php echo site_url('check-username') ?>',
-                type: 'post',
-                data: {
-                    'username': username,
-                },
-                dataType: 'json',
-                success:function(response){
-                   if(response.success && username.length > 5){
-                       $("#usernameError").hide();
-                       $('#last').css({display: 'block'})
-				   } else{
-                       $("#usernameError").show();
-                       $('#last').css({display: 'none'})
-				   }
-                }
-            });
-
-        }
-        
-        function togglePermission(){
-         
-            let user_type = $("#user_type").val();
-            if(user_type == 2){
-                $('#permission').hide()
-			}
-
-            if(user_type == 3){
-                $('#permission').show()
-            }
-            
-		}
-	
-	</script>
-	<script src="/assetsa/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 	<script>
         $(document).ready(function() {
             $('#permission').hide()
             $("#usernameError").hide();
-			
+
             $('#newemployeewizard').bootstrapWizard({
-				onTabShow: function(tab, navigation, index) {
+                onTabShow: function(tab, navigation, index) {
                     var $total = navigation.find('li').length;
                     var $current = index+1;
                     var $percent = ($current/$total) * 100;
                     $('#newemployeewizard .progress-bar').css({width:$percent+'%'});
-                  if($current === $total){
-                      $('#next').css({display: 'none'})
-                      $('#last').css({display: 'block'})
-                  } else{
-                      $('#next').css({display: 'block'})
-                      $('#last').css({display: 'none'})
-				  }
-                  
+                    if($current === $total){
+                        $('#next').css({display: 'none'})
+                        $('#last').css({display: 'block'})
+                    } else{
+                        $('#next').css({display: 'block'})
+                        $('#last').css({display: 'none'})
+                    }
+
                 },
-				
+
                 // onLast: function(tab, navigation, index){
-				// 	$('#new-employee-form').submit()
+                // 	$('#new-employee-form').submit()
                 // }
             });
 
@@ -615,7 +549,64 @@
 
 
         });
+        function get_positions(){
+            let department_id =  $("#department").val();
+           $.ajax({
+                url: '<?php echo site_url('fetch-positions') ?>',
+                type: 'post',
+                data: {
+                    'dpt_id': department_id,
+                },
+                dataType: 'json',
+                success:function(response){
+                    $("#position").empty();
+                    $("#position").append('<option selected disabled> </option>');
+                    for (var i=0; i<response.length; i++) {
+                        $("#position").append('<option value="' + response[i].pos_id + '">' + response[i].pos_name + '</option>');
+                    }
+                  }
+            });
+
+        }
+
+        function checkUsername(){
+            let username =  $("#user_username").val();
+            $.ajax({
+                url: '<?php echo site_url('check-username') ?>',
+                type: 'post',
+                data: {
+                    'username': username,
+                },
+                dataType: 'json',
+                success:function(response){
+                   if(response.success && username.length > 5){
+                       $("#usernameError").hide();
+                       $('#last').css({display: 'block'})
+				   } else{
+                       $("#usernameError").show();
+                       $('#last').css({display: 'none'})
+				   }
+                }
+            });
+
+        }
+        
+        function togglePermission(){
+         
+            let user_type = $("#user_type").val();
+            if(user_type == 2){
+                $('#permission').hide()
+			}
+
+            if(user_type == 3){
+                $('#permission').show()
+            }
+            
+		}
+	
 	</script>
+	<script src="/assetsa/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
 	<script src="/assetsa/js/pages/form-wizard.init.js"></script>
 	
 <?= $this->endSection() ?>
