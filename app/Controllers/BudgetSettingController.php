@@ -11,6 +11,7 @@ use App\Models\Notice;
 use App\Models\Position;
 use App\Models\UserModel;
 use CodeIgniter\Model;
+use App\Models\Employee;
 
 class BudgetSettingController extends BaseController
 {
@@ -29,6 +30,7 @@ class BudgetSettingController extends BaseController
 		$this->budget = new Budget();
 		$this->bh = new BudgetHeader();
 		$this->bc = new BudgetCategory();
+		$this->employee = new Employee();
 	}
 	public function budget_setups()
 	{
@@ -68,7 +70,7 @@ class BudgetSettingController extends BaseController
 					endif;
 				endif;
 				
-				if($_POST['budget_id']):
+				if(isset($_POST['budget_id'])):
 					
 					$id = $_POST['budget_id'];
 					unset($_POST['budget_id']);
@@ -159,8 +161,31 @@ class BudgetSettingController extends BaseController
 			$data['budget'] = $active_budget;
 			$data['budgets'] = $this->budget->findAll();
 			$data['categories'] = $this->bc->findAll();
-			$data['bhs'] = $this->bh->where('bh_budget_id', $b_id)->join('positions', 'budget_headers.bh_office = positions.pos_id')->orderBy('bh_code', 'ASC')->findAll();
-			return view('office/budget/budget_charts', $data);
+			$bhs = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
+				->orderBy('bh_code', 'ASC')
+				->findAll();
+			$new_bh = array();
+			$j = 0;
+			foreach ($bhs as $bh):
+				$offices = json_decode($bh['bh_office']);
+				$office_array = array();
+				$i = 0;
+				foreach ($offices as $office):
+					$employee = $this->employee->join('users', 'employees.employee_id = users.user_employee_id')
+						->join('departments', 'employees.employee_department_id = departments.dpt_id')
+						->join('positions', 'employees.employee_position_id = positions.pos_id')
+						->where('employees.employee_id', $office)
+						->first();
+					$employee_string = $employee['dpt_name']." - ".$employee['user_name']." (".$employee['pos_name'].")".'<br>';
+					$office_array[$i] = $employee_string;
+					$i++;
+				endforeach;
+				$bh['office_d'] = $office_array;
+				$new_bh[$j] = $bh;
+				$j++;
+			endforeach;
+			
+			$data['bhs'] = $new_bh;	return view('office/budget/budget_charts', $data);
 		
 		
 		
@@ -173,7 +198,31 @@ class BudgetSettingController extends BaseController
 			$data['budget'] = $active_budget;
 			$data['budgets'] = $this->budget->findAll();
 			$data['categories'] = $this->bc->findAll();
-			$data['bhs'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->join('positions', 'budget_headers.bh_office = positions.pos_id')->orderBy('bh_code', 'ASC')->findAll();
+			$bhs = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
+									->orderBy('bh_code', 'ASC')
+									->findAll();
+			$new_bh = array();
+			$j = 0;
+			foreach ($bhs as $bh):
+				$offices = json_decode($bh['bh_office']);
+				$office_array = array();
+				$i = 0;
+				foreach ($offices as $office):
+					$employee = $this->employee->join('users', 'employees.employee_id = users.user_employee_id')
+						->join('departments', 'employees.employee_department_id = departments.dpt_id')
+						->join('positions', 'employees.employee_position_id = positions.pos_id')
+						->where('employees.employee_id', $office)
+						->first();
+					$employee_string = $employee['dpt_name']." - ".$employee['user_name']." (".$employee['pos_name'].")".'<br>';
+					$office_array[$i] = $employee_string;
+					$i++;
+					endforeach;
+					$bh['office_d'] = $office_array;
+					$new_bh[$j] = $bh;
+					$j++;
+				endforeach;
+			
+			$data['bhs'] = $new_bh;
 			return view('office/budget/budget_charts', $data);
 		endif;
 		
@@ -185,6 +234,7 @@ class BudgetSettingController extends BaseController
 		if($this->request->getMethod() == 'post'):
 			
 			try {
+				$_POST['bh_office'] = json_encode($_POST['bh_office']);
 				$this->bh->save($_POST);
 				session()->setFlashData("action","action successful");
 				return redirect()->to(base_url('/new-budget-chart'));
@@ -204,14 +254,54 @@ class BudgetSettingController extends BaseController
 			$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->where('bh_acc_type', 0)->findAll();
 			$data['categories'] = $this->bc->findAll();
 			$data['positions'] = $this->position->findAll();
+			$data['department_employees'] = $this->_get_department_employees();
 			return view('office/budget/new_budget_chart', $data);
+		endif;
+	}
+	
+	public function edit_budget_chart($id){
+		
+		if($this->request->getMethod() == 'post'):
+			
+			try {
+				if($_POST['bh_acc_type'] == 0):
+					unset($_POST['bh_amount']);
+				else:
+					$_POST['bh_amount'] = str_replace(',', '', $_POST['bh_amount']);
+					endif;
+				$_POST['bh_office'] = json_encode($_POST['bh_office']);
+				$this->bh->save($_POST);
+				session()->setFlashData("action","action successful");
+				return redirect()->back();
+			} catch (\ReflectionException $e) {
+				session()->setFlashData("error",$e->getMessage());
+				return redirect()->back();
+			}
+		
+		endif;
+		
+		if($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['bhs'] = $bh = $this->bh->where('bh_id', $id)->first();
+			$active_budget = $this->budget->where('budget_id', $bh['bh_budget_id'])->first();
+			$data['budget'] = $active_budget;
+			$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
+									->where('bh_acc_type', 0)
+									->where('bh_cat', $bh['bh_cat'])
+									->orderBy('bh_code', 'ASC')
+									->findAll();
+			$data['categories'] = $this->bc->findAll();
+		
+			$data['department_employees'] = $this->_get_department_employees();
+			return view('office/budget/edit_budget_chart', $data);
 		endif;
 	}
 	
 	public function fetch_parent(){
 		$category = $_POST['cat'];
 		$budget_id = $_POST['b_id'];
-		$parents = $this->bh->where('bh_budget_id', $budget_id)->where('bh_acc_type', 0)->where('bh_cat', $category)->findAll();
+		$parents = $this->bh->where('bh_budget_id', $budget_id)->where('bh_acc_type', 0)->where('bh_cat', $category)->orderBy('bh_code', 'ASC')->findAll();
 		echo json_encode($parents);
 	}
 	
@@ -239,7 +329,7 @@ class BudgetSettingController extends BaseController
 	public function budget_categories(){
 		if($this->request->getMethod() == 'post'):
 			
-			if($_POST['bc_id']):
+			if(isset($_POST['bc_id'])):
 				
 				$id = $_POST['bc_id'];
 				unset($_POST['bc_id']);
@@ -276,5 +366,25 @@ class BudgetSettingController extends BaseController
 			$data['categories'] = $this->bc->findAll();
 			return view('office/budget/budget-category', $data);
 		endif;
+	}
+	
+	private function _get_department_employees() {
+		$department_employees = [];
+		$departments = $this->department->findAll();
+		foreach ($departments as $department) {
+			$department_employees[$department['dpt_name']] = [];
+			$employees = $this->employee
+				->where('employee_department_id', $department['dpt_id'])
+				->findAll();
+			foreach ($employees as $employee) {
+				$user = $this->user->where('user_employee_id', $employee['employee_id'])->first();
+				if ($user['user_status'] == 1 && ($user['user_type'] == 3 || $user['user_type'] == 2)) {
+					$employee['user'] = $user;
+					$employee['position'] = $this->position->find($employee['employee_position_id']);
+					array_push($department_employees[$department['dpt_name']], $employee);
+				}
+			}
+		}
+		return $department_employees;
 	}
 }

@@ -8,7 +8,7 @@ class BudgetCategory extends Model
 {
 	protected $DBGroup              = 'default';
 	protected $table                = 'budget_categories';
-	protected $primaryKey           = 'id';
+	protected $primaryKey           = 'bc_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';

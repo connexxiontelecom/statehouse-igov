@@ -12,20 +12,27 @@
 					<div class="page-title-right">
 						<ol class="breadcrumb m-0">
 							<li class="breadcrumb-item"><a href="<?= site_url('office') ?>">iGov</a></li>
-							<li class="breadcrumb-item"><a href="<?=site_url('budget-charts') ?>">Budget Chart</a></li>
-							<li class="breadcrumb-item active">Budget Setup</li>
+							<li class="breadcrumb-item"><a id="b_link" href="#">Budget Charts</a></li>
+							
+							
+							<li class="breadcrumb-item active">Edit Budget Header</li>
 						</ol>
 					</div>
 					<h4 class="page-title"> <?=$budget['budget_title'] ?> - <?=$budget['budget_year'] ?></h4>
 				</div>
 			</div>
 		</div>
+		
+		<form id="budget_form" method="post" action="<?=site_url('budget-charts') ?>">
+			<input type="hidden" name="bh_budget_id" value="<?=$bhs['bh_budget_id'] ?>">
+		
+		</form>
 		<!-- end page title -->
 		<div class="row" style="margin-top: -50px">
 			<div class="col-sm-6">
 				<div class="card">
 					<div class="card-body">
-						<h4 style="float: right" class="header-title">New Budget Header</h4>
+						<h4 style="float: right" class="header-title">Edit Budget Header</h4>
 						<div class="row mt-4">
 							<div class="col">
 								
@@ -47,13 +54,22 @@
 									</div>
 								<?php endif; ?>
 								
+								<form method="post" action="<?=site_url('budget_charts') ?>">
+									<input type="hidden" name="bh_budget_id" value="<?=$bhs['bh_budget_id'] ?>">
+									<div class="form-group mb-3">
+										<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">View Budget Chart</button>
+									
+									</div>
+								</form>
+								
+								
 								<form method="post">
 									
 									<div class="form-group mb-3">
 										<label for="account-type">Account Type</label>
 										<select class="form-control" name="bh_acc_type" id="account-type">
-											<option value="0">General</option>
-											<option value="1">Detail</option>
+											<option  <?php if($bhs['bh_acc_type'] == 0): echo "selected"; endif; ?> value="0">General</option>
+											<option   <?php if($bhs['bh_acc_type'] == 1): echo "selected"; endif; ?> value="1">Detail</option>
 										
 										</select>
 									</div>
@@ -62,31 +78,33 @@
 									<div class="form-group mb-3">
 										<label for="category">Category: </label>
 										<select class="form-control" name="bh_cat" onchange="get_parents()" id="category">
-											<option value="0" selected >Choose Category</option>
+											<option  selected >Choose Category</option>
 											<?php foreach ($categories as $category): ?>
-												<option value="<?=$category['bc_id'] ?>"> <?=$category['bc_name']; ?> </option>
+												<option  <?php if($bhs['bh_cat'] == $category['bc_id']): echo "selected"; endif; ?> value="<?=$category['bc_id'] ?>"> <?=$category['bc_name']; ?> </option>
 											<?php endforeach; ?>
 										
 										</select>
 									</div>
 									
 									<div class="form-group mb-3">
-										<label for="account-type">Parent</label>
+										<label for="parent">Parent</label>
 										<select class="form-control" name="bh_parent" id="parent">
-											<option value="0">None</option>
-											
+											<option <?php if($bhs['bh_parent'] == 0 || is_null($bhs['bh_parent'])): echo "selected"; endif; ?> value="0">None</option>
+											<?php foreach ($parents as $parent): ?>
+											<option <?php if($bhs['bh_parent'] == $parent['bh_code']): echo "selected"; endif; ?> value="<?=$parent['bh_code']; ?>"> <?=$parent['bh_title'] ?> -  <?=$parent['bh_code']; ?></option>
+											<?php endforeach; ?>
 										</select>
 									</div>
 							
 									
 									<div class="form-group mb-3">
 										<label for="example-input-normal">Code</label>
-										<input type="text" id="example-input-normal" name="bh_code" class="form-control" placeholder="Code" required>
+										<input type="text" id="example-input-normal" name="bh_code" value="<?=$bhs['bh_code'] ?>" class="form-control" placeholder="Code" required>
 									</div>
 									
 									<div class="form-group mb-3">
 										<label for="example-input-normal">Narration: </label>
-										<input type="text" id="example-input-normal" name="bh_title" class="form-control" placeholder="Narration" required>
+										<input type="text" id="example-input-normal" name="bh_title" value="<?=$bhs['bh_title']; ?>" class="form-control" placeholder="Narration" required>
 									</div>
 									
 									
@@ -94,8 +112,8 @@
 									<div class="form-group mb-3">
 										<label for="example-input-normal">Project: </label>
 										<select class="form-control" name="bh_project" id="project">
-											<option value="0">No</option>
-											<option value="1">Yes</option>
+											<option <?php if($bhs['bh_project'] == 0): echo "selected"; endif; ?> value="0">No</option>
+											<option  <?php if($bhs['bh_project'] == 1): echo "selected"; endif; ?>value="1">Yes</option>
 										
 										</select>
 									</div>
@@ -104,20 +122,24 @@
 										<label for="project">Project Status: </label>
 										<select class="form-control" name="bh_project_status" id="project">
 											<option value="0" selected >Choose Project Status</option>
-											<option value="1">New </option>
-											<option value="2">Ongoing</option>
+											<option value="1" <?php if($bhs['bh_project_status'] == 1): echo "selected"; endif; ?>>New </option>
+											<option value="2" <?php if($bhs['bh_project_status'] == 2): echo "selected"; endif; ?>>Ongoing</option>
 										
 										</select>
 									</div>
 									
+									<input type="hidden" name="bh_id" value="<?=$bhs['bh_id']; ?>">
+									
 									<div class="form-group mb-3">
 										<label for="category">Office: </label>
 										<select class="form-control select2-multiple" id="positions" name="bh_office[]" data-toggle="select2" multiple="multiple" required style="min-height: 38px">
-											<?php foreach ($department_employees as $department => $employees): ?>
+											<?php
+												$employee_array = json_decode($bhs['bh_office']);
+												foreach ($department_employees as $department => $employees): ?>
 												<?php if(!empty($employees)):?>
 													<optgroup label="<?=$department?>">
 														<?php foreach ($employees as $employee):?>
-															<option value="<?=$employee['employee_id']?>">
+															<option <?php if(in_array($employee['employee_id'], $employee_array)): echo "selected"; endif; ?> value="<?=$employee['employee_id']?>">
 																<?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
 															</option>
 														<?php endforeach;?>
@@ -125,6 +147,11 @@
 												<?php endif;?>
 											<?php endforeach; ?>
 										</select>
+									</div>
+									
+									<div class="form-group mb-3">
+										<label for="example-input-normal">Amount: </label>
+										<input type="text" id="example-input-normal" name="bh_amount" value="<?=$bhs['bh_amount']; ?>" class="form-control number" placeholder="Amount" required>
 									</div>
 									
 									<input type="hidden" name="bh_budget_id" value="<?=$budget['budget_id'] ?>">
@@ -150,6 +177,14 @@
 <?= $this->section('extra-scripts') ?>
 	<script src="/assets/libs/select2/js/select2.min.js"></script>
 	<script>
+
+        let form = document.getElementById("budget_form");
+
+        document.getElementById("b_link").addEventListener("click", function (e) {
+           e.preventDefault();
+            form.submit();
+        });
+		
         function get_parents(){
             let cat =  $("#category").val();
             let b_id = <?=$budget['budget_id'] ?>;
@@ -162,7 +197,7 @@
                     $("#parent").empty();
                     $("#parent").append('<option value="0">  None </option>');
                     for (let i=0; i<response.length; i++) {
-                        $("#parent").append('<option value="' + response[i].bh_code + '">' + response[i].bh_title + ' - '+ response[i].bh_code + '</option>');
+                        $("#parent").append('<option value="' + response[i].bh_code + '">' + response[i].bh_title + '</option>');
                     }
                     
                 }
