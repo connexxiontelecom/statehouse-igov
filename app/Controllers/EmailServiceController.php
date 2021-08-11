@@ -23,12 +23,17 @@ class EmailServiceController extends BaseController
 
     }
     public function getEmailSettings(){
-        return $this->emailsetting->where('employee_id', $this->session->user_employee_id)->first();
+        $settings =  $this->emailsetting->where('employee_id', $this->session->user_employee_id)->first();
+        if(!empty($settings)){
+            return $settings;
+        }else{
+            return redirect()->to('email-settings');
+        }
     }
 
     public function connectToMailServer(){
-        $settings = $this->getEmailSettings();
-        if(!empty($settings)){
+        $settings =  $this->emailsetting->where('employee_id', $this->session->user_employee_id)->first();
+        if(!is_null($settings)){
             $cm = new ClientManager();
             $client = $cm->make([
                 'host'=>$settings['hostname'],
@@ -41,7 +46,7 @@ class EmailServiceController extends BaseController
             ]);
             return $client->connect();
         }else{
-            return redirect('/email-settings');
+            return null; //redirect()->to('/email-settings');
         }
     }
     public function connectToMailServer2($mailbox){
@@ -60,46 +65,11 @@ class EmailServiceController extends BaseController
             return redirect('/email-settings');
         }
     }
-	/*public function index()
-	{
-		$connection = $this->connectToMailServer();
-		if($connection){
-            $page = 1;
-            $per_page = 10;
-            $uri = new \CodeIgniter\HTTP\URI(current_url(true));
-            $params = $uri->getQuery();
-            if($params){
-                $page = trim($params, 'page=');
-            }
-            $pages = array();
-		    $folder = $connection->getFolder('INBOX');
-		    $total  = $folder->query()->all()->count();
-            $messages = $folder->query()->all()->limit($per_page, $page)->get();
-		    for($i = 1; $i<= $total; $i++){
-		        array_push($pages, $i);
-            }
-		    $pagination = new \Zebra_Pagination();
-		    $pagination->records(count($pages));
-		    $pagination->records_per_page($per_page);
-		    $pages = array_slice($pages, (($pagination->get_page() - 1 ) * $per_page), $per_page );
-            $data = [
-                'firstTime'=>$this->session->firstTime,
-                'username'=>$this->session->username,
-                'pagination'=>$pagination,
-                'mailbox'=>'INBOX',
-                'total'=>$total,
-                'messages'=>$messages
-            ];
-            return view('pages/email/test', $data);
-        }else{
-		    return "No connection";
-        }
-	}*/
 
 	public function getMessagesInFolder($fold){
         $folder = null;
             $connection = $this->connectToMailServer();
-            if($connection){
+            if(!empty($connection)){
                 $page = 1;
                 $per_page = 10;
                 $uri = new \CodeIgniter\HTTP\URI(current_url(true));
@@ -128,7 +98,8 @@ class EmailServiceController extends BaseController
                 ];
                 return view('pages/email/test', $data);
             }else{
-                return redirect()->back()->with("error", "<strong>Whoops!</strong> We couldn't connect to your mail server.");
+                return redirect()->to('/email-settings')->with("error", "<strong>Whoops!</strong> We couldn't connect to your mail server. Ensure your settings are correct.");
+                    //redirect()->back()->with("error", "<strong>Whoops!</strong> We couldn't connect to your mail server.");
 
             }
     }
@@ -136,7 +107,7 @@ class EmailServiceController extends BaseController
     public function readMail($id, $mailbox){
         $folder = null;
         $connection = $this->connectToMailServer();
-        if($connection){
+        if(!empty($connection)){
             $folder = $connection->getFolder($mailbox);
             $message = $folder->query()->getMessage($id);
             $data = [

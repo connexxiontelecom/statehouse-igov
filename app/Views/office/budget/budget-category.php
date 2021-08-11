@@ -159,7 +159,7 @@
 						</div>
 					</div>
 					
-					<input type="hidden" value="<?=$category['bc_id']; ?>" name="dpt_id">
+					<input type="hidden" value="<?=$category['bc_id']; ?>" name="bc_id">
 					
 					<div class="row g-3">
 						<div class="col-lg-12 offset-lg-12">
