@@ -161,8 +161,31 @@ class BudgetSettingController extends BaseController
 			$data['budget'] = $active_budget;
 			$data['budgets'] = $this->budget->findAll();
 			$data['categories'] = $this->bc->findAll();
-			$data['bhs'] = $this->bh->where('bh_budget_id', $b_id)->join('positions', 'budget_headers.bh_office = positions.pos_id')->orderBy('bh_code', 'ASC')->findAll();
-			return view('office/budget/budget_charts', $data);
+			$bhs = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
+				->orderBy('bh_code', 'ASC')
+				->findAll();
+			$new_bh = array();
+			$j = 0;
+			foreach ($bhs as $bh):
+				$offices = json_decode($bh['bh_office']);
+				$office_array = array();
+				$i = 0;
+				foreach ($offices as $office):
+					$employee = $this->employee->join('users', 'employees.employee_id = users.user_employee_id')
+						->join('departments', 'employees.employee_department_id = departments.dpt_id')
+						->join('positions', 'employees.employee_position_id = positions.pos_id')
+						->where('employees.employee_id', $office)
+						->first();
+					$employee_string = $employee['dpt_name']." - ".$employee['user_name']." (".$employee['pos_name'].")".'<br>';
+					$office_array[$i] = $employee_string;
+					$i++;
+				endforeach;
+				$bh['office_d'] = $office_array;
+				$new_bh[$j] = $bh;
+				$j++;
+			endforeach;
+			
+			$data['bhs'] = $new_bh;	return view('office/budget/budget_charts', $data);
 		
 		
 		
