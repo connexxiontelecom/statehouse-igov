@@ -58,6 +58,7 @@ $routes->match(['post'], 'check-username', 'EmployeeSettingController::check_use
 
 $routes->match(['get', 'post'], 'budget-charts', 'BudgetSettingController::budget_charts', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-budget-chart', 'BudgetSettingController::new_budget_chart', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'edit-budget-chart/(:num)', 'BudgetSettingController::edit_budget_chart/$1', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'budget-setups', 'BudgetSettingController::budget_setups', ['filter' => 'auth']);
 
 $routes->match(['get'], 'view-budget-setup/(:num)', 'BudgetSettingController::view_budget/$1', ['filter' => 'auth']);

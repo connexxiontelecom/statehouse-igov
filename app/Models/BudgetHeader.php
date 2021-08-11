@@ -8,7 +8,7 @@ class BudgetHeader extends Model
 {
 	protected $DBGroup              = 'default';
 	protected $table                = 'budget_headers';
-	protected $primaryKey           = 'id';
+	protected $primaryKey           = 'bh_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
