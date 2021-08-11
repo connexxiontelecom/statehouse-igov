@@ -12,20 +12,27 @@
 					<div class="page-title-right">
 						<ol class="breadcrumb m-0">
 							<li class="breadcrumb-item"><a href="<?= site_url('office') ?>">iGov</a></li>
-							<li class="breadcrumb-item"><a href="<?=site_url('budget-setups') ?>">Budgets</a></li>
-							<li class="breadcrumb-item active">Budget Setup</li>
+							<li class="breadcrumb-item"><a id="b_link" href="#">Budget Charts</a></li>
+							
+							
+							<li class="breadcrumb-item active">Edit Budget Header</li>
 						</ol>
 					</div>
 					<h4 class="page-title"> <?=$budget['budget_title'] ?> - <?=$budget['budget_year'] ?></h4>
 				</div>
 			</div>
 		</div>
+		
+		<form id="budget_form" method="post" action="<?=site_url('budget-charts') ?>">
+			<input type="hidden" name="bh_budget_id" value="<?=$bhs['bh_budget_id'] ?>">
+		
+		</form>
 		<!-- end page title -->
 		<div class="row" style="margin-top: -50px">
 			<div class="col-sm-6">
 				<div class="card">
 					<div class="card-body">
-						<h4 style="float: right" class="header-title">New Budget Chart</h4>
+						<h4 style="float: right" class="header-title">Edit Budget Header</h4>
 						<div class="row mt-4">
 							<div class="col">
 								
@@ -46,6 +53,15 @@
 										<i class="mdi mdi-check-all mr-2"></i><strong>An Error Occurred</strong>
 									</div>
 								<?php endif; ?>
+								
+								<form method="post" action="<?=site_url('budget_charts') ?>">
+									<input type="hidden" name="bh_budget_id" value="<?=$bhs['bh_budget_id'] ?>">
+									<div class="form-group mb-3">
+										<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">View Budget Chart</button>
+									
+									</div>
+								</form>
+								
 								
 								<form method="post">
 									
@@ -156,6 +172,14 @@
 <?= $this->section('extra-scripts') ?>
 	<script src="/assets/libs/select2/js/select2.min.js"></script>
 	<script>
+
+        let form = document.getElementById("budget_form");
+
+        document.getElementById("b_link").addEventListener("click", function (e) {
+           e.preventDefault();
+            form.submit();
+        });
+		
         function get_parents(){
             let cat =  $("#category").val();
             let b_id = <?=$budget['budget_id'] ?>;

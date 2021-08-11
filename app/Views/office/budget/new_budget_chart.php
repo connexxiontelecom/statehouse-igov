@@ -12,7 +12,7 @@
 					<div class="page-title-right">
 						<ol class="breadcrumb m-0">
 							<li class="breadcrumb-item"><a href="<?= site_url('office') ?>">iGov</a></li>
-							<li class="breadcrumb-item"><a href="<?=site_url('budget-setups') ?>">Budgets</a></li>
+							<li class="breadcrumb-item"><a href="<?=site_url('budget-charts') ?>">Budget Chart</a></li>
 							<li class="breadcrumb-item active">Budget Setup</li>
 						</ol>
 					</div>
@@ -25,7 +25,7 @@
 			<div class="col-sm-6">
 				<div class="card">
 					<div class="card-body">
-						<h4 style="float: right" class="header-title">New Budget Chart</h4>
+						<h4 style="float: right" class="header-title">New Budget Header</h4>
 						<div class="row mt-4">
 							<div class="col">
 								
