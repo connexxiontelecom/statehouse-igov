@@ -68,7 +68,7 @@ class BudgetSettingController extends BaseController
 					endif;
 				endif;
 				
-				if($_POST['budget_id']):
+				if(isset($_POST['budget_id'])):
 					
 					$id = $_POST['budget_id'];
 					unset($_POST['budget_id']);
@@ -239,7 +239,7 @@ class BudgetSettingController extends BaseController
 	public function budget_categories(){
 		if($this->request->getMethod() == 'post'):
 			
-			if($_POST['bc_id']):
+			if(isset($_POST['bc_id'])):
 				
 				$id = $_POST['bc_id'];
 				unset($_POST['bc_id']);
