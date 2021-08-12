@@ -14,7 +14,7 @@ class ProjectParticipation extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['project_part_id', 'participant_id', 'part_type'];
+	protected $allowedFields        = ['project_part_id', 'participant_id', 'part_type', 'part_project_id'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -39,4 +39,12 @@ class ProjectParticipation extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+
+    public function getAllProjectParticipants($project_id){
+        $builder = $this->db->table('project_participations as pp');
+        $builder->join('employees as e','e.employee_id = pp.participant_id' );
+        $builder->where('pp.part_project_id = '.$project_id);
+        return $builder->get()->getResultObject();
+    }
 }

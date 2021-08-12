@@ -337,18 +337,13 @@
                 <i data-feather="book"></i>
                 <span> Project</span>
             </a>
-        </li>
-						<a href="<?= site_url('trainings') ?>">
-							<i data-feather="book"></i>
-							<span> Trainings </span>
-						</a>
-					</li>
+            </li>
                     <li>
-						<a href="<?= site_url('workflow-requests') ?>">
-							<i data-feather="book"></i>
-							<span> Workflow </span>
-						</a>
-					</li>
+            <a href="<?= site_url('workflow-requests') ?>">
+                <i data-feather="book"></i>
+                <span> Workflow </span>
+            </a>
+        </li>
           <li>
             <a href="<?= site_url('registry') ?>">
               <i data-feather="inbox"></i>
