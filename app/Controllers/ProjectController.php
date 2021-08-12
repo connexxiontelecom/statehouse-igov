@@ -124,6 +124,7 @@ class ProjectController extends BaseController
                 'firstTime'=>$this->session->firstTime,
                 'username'=>$this->session->username,
                 'participants'=>$this->projectparticipant->getAllProjectParticipants($id),
+                'attachments'=>$this->projectattachment->getAllProjectAttachmentsByProjectId($id)
             ];
             return view('pages/project/view', $data);
         }else{

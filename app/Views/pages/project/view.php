@@ -288,19 +288,10 @@
                         <div class="col-lg-6 col-xl-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title mb-3">Progress</h5>
-                                    <div class="mt-3 chartjs-chart" style="height: 320px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                        <canvas id="line-chart-example" width="430" style="display: block; height: 320px; width: 344px;" class="chartjs-render-monitor" height="400"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end card-->
-
-                            <div class="card">
-                                <div class="card-body">
                                     <h5 class="card-title mb-3">Files</h5>
-
-                                    <div class="card mb-1 shadow-none border">
+                                    <?php if(count($attachments) > 0): ?>
+                                    <?php foreach($attachments as $attachment):?>
+                                        <div class="card mb-1 shadow-none border">
                                         <div class="p-2">
                                             <div class="row align-items-center">
                                                 <div class="col-auto">
@@ -316,62 +307,17 @@
                                                 </div>
                                                 <div class="col-auto">
                                                     <!-- Button -->
-                                                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
+                                                    <a href="/uploads/posts/<?=$attachment->project_attachment ?>" class="btn btn-link btn-lg text-muted">
                                                         <i class="dripicons-download"></i>
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="card mb-1 shadow-none border">
-                                        <div class="p-2">
-                                            <div class="row align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="avatar-sm">
-                                                            <span class="avatar-title badge-soft-primary text-primary rounded">
-                                                                JPG
-                                                            </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col pl-0">
-                                                    <a href="javascript:void(0);" class="text-muted font-weight-bold">Dashboard-design.jpg</a>
-                                                    <p class="mb-0">3.25 MB</p>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <!-- Button -->
-                                                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                                                        <i class="dripicons-download"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card mb-0 shadow-none border">
-                                        <div class="p-2">
-                                            <div class="row align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="avatar-sm">
-                                                            <span class="avatar-title badge-soft-primary text-primary rounded">
-                                                                MP4
-                                                            </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col pl-0">
-                                                    <a href="javascript:void(0);" class="text-muted font-weight-bold">Admin-bug-report.mp4</a>
-                                                    <p class="mb-0">7.05 MB</p>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <!-- Button -->
-                                                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                                                        <i class="dripicons-download"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <h5 class="text-center">No attachments</h5>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

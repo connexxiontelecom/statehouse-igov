@@ -48,7 +48,7 @@
                             <?= session()->get('success') ?>
                         </div>
                     <?php endif; ?>
-                    <form action="<?= route_to('add-new-project') ?>" method="post">
+                    <form action="<?= route_to('add-new-project') ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field() ?>
                         <div class="row mb-2">
                             <div class="col-md-6">
