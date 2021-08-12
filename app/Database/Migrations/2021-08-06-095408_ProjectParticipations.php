@@ -30,7 +30,7 @@ class ProjectParticipations extends Migration
             ]
         );
         $this->forge->addKey('project_part_id', true);
-        $this->forge->createTable('project_participants');
+        $this->forge->createTable('project_participations');
 	}
 
 	public function down()
