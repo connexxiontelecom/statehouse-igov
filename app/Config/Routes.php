@@ -159,6 +159,8 @@ $routes->post('/email-settings', 'EmailController::processEmailSettings', ['filt
 #Project routes
 $routes->get('/manage-projects','ProjectController::index',['filter'=>'auth', 'as'=>'manage-projects']);
 $routes->get('/projects/create','ProjectController::showAddNewProjectForm',['filter'=>'auth', 'as'=>'add-new-project']);
+$routes->get('/projects/(:num)','ProjectController::viewProject/$1',['filter'=>'auth', 'as'=>'view-project']);
+$routes->post('/projects/create','ProjectController::setNewProject',['filter'=>'auth']);
 
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);

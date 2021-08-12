@@ -46,9 +46,42 @@
                             <th>Status</th>
                             <th class="text-center" style="width: 10%">Actions</th>
                         </tr>
+
                         </thead>
                         <tbody>
+                        <?php $serial = 1; ?>
+                        <?php foreach($projects as $project): ?>
+                            <tr>
+                                <td><?= $serial++?></td>
+                                <td><?= $project['project_name'] ?? '' ?></td>
+                                <td><?= $project['project_sponsor'] ?? '' ?></td>
+                                <td><?= date('d M, Y', strtotime($project['project_start_date'])) ?? '' ?></td>
+                                <td><?= date('d M, Y', strtotime($project['project_end_date'])) ?? '' ?></td>
+                                <td>
+                                    <?php if($project['project_status'] == 0): ?>
+                                        <label for="" class="badge badge-secondary">Pending</label>
+                                    <?php elseif ($project['project_status'] == 1): ?>
+                                    <label for="" class="badge badge-primary">Started</label>
+                                    <?php elseif ($project['project_status'] == 2): ?>
+                                    <label for="" class="badge badge-warning">In-progress</label>
+                                    <?php elseif ($project['project_status'] == 3): ?>
+                                    <label for="" class="badge badge-success">Completed</label>
+                                    <?php elseif ($project['project_status'] == 4): ?>
+                                    <label for="" class="badge badge-danger">Cancelled</label>
+                                    <?php endif; ?>
 
+                                </td>
+                                <td>
+                                    <div class="btn-group dropdown">
+                                        <a href="javascript: void(0);" class="table-action-btn dropdown-toggle arrow-none btn btn-light btn-sm" data-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-horizontal"></i></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href=""><i class="mdi mdi-pencil mr-2 text-muted font-18 vertical-middle"></i>Edit Project</a>
+                                            <a class="dropdown-item" href="<?= route_to('view-project', $project['project_id']) ?>"><i class="mdi mdi-check-all mr-2 text-muted font-18 vertical-middle"></i>View Project</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div> <!-- end card body-->
