@@ -46,7 +46,7 @@ class EmailServiceController extends BaseController
             ]);
             return $client->connect();
         }else{
-            return null; //redirect()->to('/email-settings');
+            return null;
         }
     }
     public function connectToMailServer2($mailbox){
@@ -69,39 +69,43 @@ class EmailServiceController extends BaseController
 	public function getMessagesInFolder($fold){
         $folder = null;
             $connection = $this->connectToMailServer();
-            if(!empty($connection)){
-                $page = 1;
-                $per_page = 10;
-                $uri = new \CodeIgniter\HTTP\URI(current_url(true));
-                $params = $uri->getQuery();
-                if($params){
-                    $page = trim($params, 'page=');
-                }
-                $pages = array();
-                $folder = $connection->getFolder($fold);
-                $total  = $folder->query()->all()->count();
-                $messages = $folder->query()->all()->limit($per_page, $page)->get();
-                for($i = 1; $i<= $total; $i++){
-                    array_push($pages, $i);
-                }
-                $pagination = new \Zebra_Pagination();
-                $pagination->records(count($pages));
-                $pagination->records_per_page($per_page);
-                $pages = array_slice($pages, (($pagination->get_page() - 1 ) * $per_page), $per_page );
-                $data = [
-                    'firstTime'=>$this->session->firstTime,
-                    'username'=>$this->session->username,
-                    'pagination'=>$pagination,
-                    'mailbox'=>$fold,
-                    'total'=>$total,
-                    'messages'=>$messages
-                ];
-                return view('pages/email/test', $data);
-            }else{
-                return redirect()->to('/email-settings')->with("error", "<strong>Whoops!</strong> We couldn't connect to your mail server. Ensure your settings are correct.");
-                    //redirect()->back()->with("error", "<strong>Whoops!</strong> We couldn't connect to your mail server.");
+            try{
+                if(!empty($connection)){
+                    $page = 1;
+                    $per_page = 10;
+                    $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+                    $params = $uri->getQuery();
+                    if($params){
+                        $page = trim($params, 'page=');
+                    }
+                    $pages = array();
+                    $folder = $connection->getFolder($fold);
+                    $total  = $folder->query()->all()->count();
+                    $messages = $folder->query()->all()->limit($per_page, $page)->get();
+                    for($i = 1; $i<= $total; $i++){
+                        array_push($pages, $i);
+                    }
+                    $pagination = new \Zebra_Pagination();
+                    $pagination->records(count($pages));
+                    $pagination->records_per_page($per_page);
+                    $pages = array_slice($pages, (($pagination->get_page() - 1 ) * $per_page), $per_page );
+                    $data = [
+                        'firstTime'=>$this->session->firstTime,
+                        'username'=>$this->session->username,
+                        'pagination'=>$pagination,
+                        'mailbox'=>$fold,
+                        'total'=>$total,
+                        'messages'=>$messages
+                    ];
+                    return view('pages/email/test', $data);
+                }else{
+                    return redirect()->to('/email-settings')->with("error", "<strong>Whoops!</strong> We couldn't connect to your mail server. Ensure your settings are correct.");
 
+                }
+            }catch(\Exception $exception){
+                return redirect()->to('/email-settings')->with("error", "<strong>Whoops!</strong> We couldn't connect to your mail server. ".$exception);
             }
+
     }
 
     public function readMail($id, $mailbox){
@@ -143,6 +147,36 @@ class EmailServiceController extends BaseController
         $subject = $this->request->getPost('subject');
         $to = $this->request->getPost('to');
         if(!empty($settings)){
+            $dmy = date("d-M-Y H:i:s");
+            $filename = "filename.pdf";
+            $attachment = chunk_split(base64_encode($filestring));
+            $boundary = "------=".md5(uniqid(rand()));
+
+            $msg = ("From: Somebody\r\n"
+                . "To: test@example.co.uk\r\n"
+                . "Date: $dmy\r\n"
+                . "Subject: This is the subject\r\n"
+                . "MIME-Version: 1.0\r\n"
+                . "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n"
+                . "\r\n\r\n"
+                . "--$boundary\r\n"
+                . "Content-Type: text/html;\r\n\tcharset=\"ISO-8859-1\"\r\n"
+                . "Content-Transfer-Encoding: 8bit \r\n"
+                . "\r\n\r\n"
+                . "Hello this is a test\r\n"
+                . "\r\n\r\n"
+                . "--$boundary\r\n"
+                . "Content-Transfer-Encoding: base64\r\n"
+                . "Content-Disposition: attachment; filename=\"$filename\"\r\n"
+                . "\r\n" . $attachment . "\r\n"
+                . "\r\n\r\n\r\n"
+                . "--$boundary--\r\n\r\n");
+
+            imap_append($mbox,$authhost,$msg, "\\Draft");
+
+            imap_close($mbox);
+
+
             $username = $settings['username'];
             $stream = $this->connectToMailServer2('INBOX.Sent');
             imap_append($stream, "{".$settings['hostname'].":".$settings['port_no']."/imap/ssl/validate-cert}INBOX.Sent"

@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/admin') ?>
 <?= $this->section('extra-styles') ?>
-	<link href="/assetsa/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
-	<link href="/assetsa/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+
 <?= $this->endSection() ?>
 <?= $this->section('content') ?>
 	<div class="container-fluid">
@@ -12,7 +12,7 @@
 					<div class="page-title-right">
 						<ol class="breadcrumb m-0">
 							<li class="breadcrumb-item"><a href="<?= site_url('office') ?>">iGov</a></li>
-							<li class="breadcrumb-item"><a href="<?=site_url('budget-setups') ?>">Budgets</a></li>
+							<li class="breadcrumb-item"><a href="<?=site_url('budget-charts') ?>">Budget Chart</a></li>
 							<li class="breadcrumb-item active">Budget Setup</li>
 						</ol>
 					</div>
@@ -22,10 +22,10 @@
 		</div>
 		<!-- end page title -->
 		<div class="row" style="margin-top: -50px">
-			<div class="col-xl-6">
+			<div class="col-sm-6">
 				<div class="card">
 					<div class="card-body">
-						<h4 style="float: right" class="header-title">New Budget Chart</h4>
+						<h4 style="float: right" class="header-title">New Budget Header</h4>
 						<div class="row mt-4">
 							<div class="col">
 								
@@ -102,7 +102,7 @@
 									
 									<div class="form-group mb-3">
 										<label for="project">Project Status: </label>
-										<select class="form-control" name="bh_project" id="project">
+										<select class="form-control" name="bh_project_status" id="project">
 											<option value="0" selected >Choose Project Status</option>
 											<option value="1">New </option>
 											<option value="2">Ongoing</option>
@@ -112,12 +112,18 @@
 									
 									<div class="form-group mb-3">
 										<label for="category">Office: </label>
-										<select class="form-control" name="bh_office"  id="office" required>
-											<option selected disabled >Choose Office</option>
-											<?php foreach ($positions as $position): ?>
-												<option value="<?=$position['pos_id'] ?>"> <?=$position['pos_name']; ?> </option>
+										<select class="form-control select2-multiple" id="positions" name="bh_office[]" data-toggle="select2" multiple="multiple" required style="min-height: 38px">
+											<?php foreach ($department_employees as $department => $employees): ?>
+												<?php if(!empty($employees)):?>
+													<optgroup label="<?=$department?>">
+														<?php foreach ($employees as $employee):?>
+															<option value="<?=$employee['employee_id']?>">
+																<?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+															</option>
+														<?php endforeach;?>
+													</optgroup>
+												<?php endif;?>
 											<?php endforeach; ?>
-										
 										</select>
 									</div>
 									
@@ -142,7 +148,7 @@
 
 <?= $this->endSection() ?>
 <?= $this->section('extra-scripts') ?>
-	
+	<script src="/assets/libs/select2/js/select2.min.js"></script>
 	<script>
         function get_parents(){
             let cat =  $("#category").val();
@@ -156,7 +162,7 @@
                     $("#parent").empty();
                     $("#parent").append('<option value="0">  None </option>');
                     for (let i=0; i<response.length; i++) {
-                        $("#parent").append('<option value="' + response[i].bh_code + '">' + response[i].bh_title + '</option>');
+                        $("#parent").append('<option value="' + response[i].bh_code + '">' + response[i].bh_title + ' - '+ response[i].bh_code + '</option>');
                     }
                     
                 }
@@ -165,20 +171,7 @@
         }
 		
 		</script>
-		
-	<!-- Vendor js -->
-	<script src="/assetsa/js/vendor.min.js"></script>
-	
-	<!-- Dragula js -->
-	<script src="/assetsa/libs/dragula/dragula.min.js"></script>
-	<!-- Dragula init js-->
-	<script src="/assetsa/js/pages/dragula.init.js"></script>
-	
-	<!-- Plugins js -->
-	<script src="/assetsa/libs/quill/quill.min.js"></script>
-	
-	<!-- Init js-->
-	<script src="/assetsa/js/pages/task.init.js"></script>
+
 
 
 <?= $this->endSection() ?>

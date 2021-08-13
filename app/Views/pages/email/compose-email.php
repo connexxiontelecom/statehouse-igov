@@ -3,8 +3,6 @@ $this->extend('layouts/master')
 ?>
 
 
-
-
 <?= $this->section('content') ?>
 <div class="row">
     <div class="col-12">
@@ -49,7 +47,7 @@ $this->extend('layouts/master')
                             <?= session()->get('success') ?>
                         </div>
                     <?php endif; ?>
-                    <form id="compose-email" action="<?= site_url('/compose-email') ?>" method="post">
+                    <form id="compose-email" action="<?= site_url('/compose-email') ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field() ?>
                         <div class="row">
                             <div class="col-12">
@@ -80,6 +78,13 @@ $this->extend('layouts/master')
                                         Please enter message.
                                     </div>
                                     <textarea name="message_body" style="display:none" id="hiddenArea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="fallback">
+                                    <input name="file" type="file" />
                                 </div>
                             </div>
                         </div>

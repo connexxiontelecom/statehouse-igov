@@ -644,14 +644,13 @@
 							<span> Meetings </span>
 						</a>
 					</li>
-					
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="bar-chart-2"></i>
-							<span> Trainings </span>
-						</a>
-					</li>
-					
+
+                    <li>
+                        <a href="<?= site_url('trainings') ?>">
+                            <i data-feather="bar-chart-2"></i>
+                            <span> Trainings </span>
+                        </a>
+                    </li>
 					<li>
 						<a href="apps-chat.html">
 							<i data-feather="message-square"></i>

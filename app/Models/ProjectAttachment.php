@@ -38,4 +38,10 @@ class ProjectAttachment extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+    public function getAllProjectAttachmentsByProjectId($project_id){
+        $builder = $this->db->table('project_attachments');
+        $builder->where('project_id = '.$project_id);
+        return $builder->get()->getResultObject();
+    }
 }

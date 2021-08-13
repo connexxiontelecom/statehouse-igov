@@ -58,6 +58,7 @@ $routes->match(['post'], 'check-username', 'EmployeeSettingController::check_use
 
 $routes->match(['get', 'post'], 'budget-charts', 'BudgetSettingController::budget_charts', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-budget-chart', 'BudgetSettingController::new_budget_chart', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'edit-budget-chart/(:num)', 'BudgetSettingController::edit_budget_chart/$1', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'budget-setups', 'BudgetSettingController::budget_setups', ['filter' => 'auth']);
 
 $routes->match(['get'], 'view-budget-setup/(:num)', 'BudgetSettingController::view_budget/$1', ['filter' => 'auth']);
@@ -158,6 +159,8 @@ $routes->post('/email-settings', 'EmailController::processEmailSettings', ['filt
 #Project routes
 $routes->get('/manage-projects','ProjectController::index',['filter'=>'auth', 'as'=>'manage-projects']);
 $routes->get('/projects/create','ProjectController::showAddNewProjectForm',['filter'=>'auth', 'as'=>'add-new-project']);
+$routes->get('/projects/(:num)','ProjectController::viewProject/$1',['filter'=>'auth', 'as'=>'view-project']);
+$routes->post('/projects/create','ProjectController::setNewProject',['filter'=>'auth']);
 
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
