@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\Employee;
 use App\Models\Project;
 use App\Models\ProjectAttachment;
+use App\Models\ProjectConversation;
 use App\Models\ProjectParticipation;
 use App\Models\UserModel;
 
@@ -22,6 +23,7 @@ class ProjectController extends BaseController
         $this->project = new Project();
         $this->projectparticipant = new ProjectParticipation();
         $this->projectattachment = new ProjectAttachment();
+        $this->projectconversation = new ProjectConversation();
 
     }
 	public function index()
@@ -124,11 +126,30 @@ class ProjectController extends BaseController
                 'firstTime'=>$this->session->firstTime,
                 'username'=>$this->session->username,
                 'participants'=>$this->projectparticipant->getAllProjectParticipants($id),
-                'attachments'=>$this->projectattachment->getAllProjectAttachmentsByProjectId($id)
+                'attachments'=>$this->projectattachment->getAllProjectAttachmentsByProjectId($id),
+                'conversations'=>$this->projectconversation->getProjectConversationByProjectId($id)
             ];
             return view('pages/project/view', $data);
         }else{
             return redirect()->back()->with("error", "<strong>Whoops!</strong> No record found");
+        }
+    }
+
+    public function setNewConversation(){
+        $inputs = $this->validate([
+            'comment' => ['rules'=> 'required', 'label'=>'Comment','errors' => [
+                'required' => 'Leave a comment']]
+        ]);
+        if (!$inputs) {
+            return redirect()->back()->with("error", "<strong>Whoops!</strong> ");
+        }else{
+            $data = [
+                'project_convo_participant_id'=>$this->session->user_employee_id,
+                'project_convo'=>$this->request->getPost('comment'),
+                'project_convo_project_id'=>$this->request->getPost('convo_project_id')
+            ];
+            $this->projectconversation->save($data);
+            return redirect()->back()->with("success", "<strong>Success!</strong> Comment registered");
         }
     }
 }

@@ -162,16 +162,6 @@
 
                                     <?= $project->project_description ?? '' ?>
 
-                                    <div class="mb-4">
-                                        <h5>Tags</h5>
-                                        <div class="text-uppercase">
-                                            <a href="#" class="badge badge-soft-primary mr-1">Html</a>
-                                            <a href="#" class="badge badge-soft-primary mr-1">Css</a>
-                                            <a href="#" class="badge badge-soft-primary mr-1">Bootstrap</a>
-                                            <a href="#" class="badge badge-soft-primary mr-1">JQuery</a>
-                                        </div>
-                                    </div>
-
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="mb-4">
@@ -209,81 +199,34 @@
 
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="dropdown float-right">
-                                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
-                                            <i class="dripicons-dots-3"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <!-- item-->
-                                            <a href="javascript:void(0);" class="dropdown-item">Latest</a>
-                                            <!-- item-->
-                                            <a href="javascript:void(0);" class="dropdown-item">Popular</a>
+                                    <h4 class="mt-0 mb-3">Comments (<?= number_format(count($conversations)) ?>)</h4>
+                                    <form action="<?= site_url('/leave-comment') ?>" method="post">
+                                        <?= csrf_field() ?>
+                                        <textarea name="comment" class="form-control form-control-light mb-2" style="resize:none;" placeholder="Write message" id="example-textarea" rows="3"></textarea>
+                                        <div class="text-right">
+                                            <input type="hidden" name="convo_project_id" value="<?= $project->project_id ?>">
+                                            <div class="btn-group mb-2 ml-2">
+                                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <h4 class="mt-0 mb-3">Comments (258)</h4>
-
-                                    <textarea class="form-control form-control-light mb-2" placeholder="Write message" id="example-textarea" rows="3"></textarea>
-                                    <div class="text-right">
-                                        <div class="btn-group mb-2">
-                                            <button type="button" class="btn btn-link btn-sm text-muted font-18"><i class="dripicons-paperclip"></i></button>
-                                        </div>
-                                        <div class="btn-group mb-2 ml-2">
-                                            <button type="button" class="btn btn-primary btn-sm">Submit</button>
-                                        </div>
-                                    </div>
+                                    </form>
+                                </div>
 
                                     <div class="mt-2">
-                                        <div class="media">
-                                            <img class="mr-2 avatar-sm rounded-circle" src="../assets/images/users/user-3.jpg" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="mt-0"><a href="contacts-profile.html" class="text-reset">Jeremy Tomlinson</a> <small class="text-muted">3 hours ago</small></h5>
-                                                Nice work, makes me think of The Money Pit.
-
-                                                <br>
-                                                <a href="javascript: void(0);" class="text-muted font-13 d-inline-block mt-2"><i class="mdi mdi-reply"></i> Reply</a>
-
-                                                <div class="media mt-3">
-                                                    <a class="pr-2" href="#">
-                                                        <img src="/assets/images/users/user-4.jpg" class="avatar-sm rounded-circle" alt="Generic placeholder image">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="mt-0"><a href="contacts-profile.html" class="text-reset">Kathleen Thomas</a> <small class="text-muted">1 hours ago</small></h5>
-                                                        i'm in the middle of a timelapse animation myself! (Very different though.) Awesome stuff.
-                                                    </div>
+                                        <?php foreach ($conversations as $conversation): ?>
+                                            <div class="media mb-2">
+                                                <img class="mr-2 avatar-sm rounded-circle" src="../assets/images/users/user-3.jpg" alt="Generic placeholder image">
+                                                <div class="media-body">
+                                                    <h5 class="mt-0">
+                                                        <a href="contacts-profile.html" class="text-reset"><?= $conversation->employee_f_name ?? '' ?> <?= $conversation->employee_l_name ?? '' ?></a> <small class="text-muted"><?= date('d M, Y h:i a', strtotime($conversation->created_at)) ?></small></h5>
+                                                    <?= $conversation->project_convo ?? '' ?>
+                                                    <br>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="media mt-3">
-                                            <img class="mr-2 avatar-sm rounded-circle" src="/assets/images/users/user-2.jpg" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="mt-0"><a href="contacts-profile.html" class="text-reset">Jonathan Tiner</a> <small class="text-muted">1 day ago</small></h5>
-                                                The parallax is a little odd but O.o that house build is awesome!!
-
-                                                <br>
-                                                <a href="javascript: void(0);" class="text-muted font-13 d-inline-block mt-2"><i class="mdi mdi-reply"></i> Reply</a>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="media mt-3">
-                                            <a class="pr-2" href="#">
-                                                <img src="/assets/images/users/user-1.jpg" class="rounded-circle" alt="Generic placeholder image" height="31">
-                                            </a>
-                                            <div class="media-body">
-                                                <input type="text" id="simpleinput" class="form-control form-control-sm form-control-light" placeholder="Add comment">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="text-center mt-2">
-                                        <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-spin mdi-loading mr-1 font-16"></i> Load more </a>
+                                        <?php endforeach; ?>
                                     </div>
                                 </div> <!-- end card-body-->
                             </div>
-                            <!-- end card-->
-                        </div> <!-- end col -->
 
                         <div class="col-lg-6 col-xl-4">
                             <div class="card">
@@ -302,12 +245,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col pl-0">
-                                                    <a href="javascript:void(0);" class="text-muted font-weight-bold">Ubold-sketch-design.zip</a>
-                                                    <p class="mb-0">2.3 MB</p>
+                                                    <a href="javascript:void(0);" class="text-muted font-weight-bold"><?= substr($project->project_name,0,23) ?></a>
                                                 </div>
                                                 <div class="col-auto">
                                                     <!-- Button -->
-                                                    <a href="/uploads/posts/<?=$attachment->project_attachment ?>" class="btn btn-link btn-lg text-muted">
+                                                    <a target="_blank" href="/uploads/posts/<?=$attachment->project_attachment ?>" class="btn btn-link btn-lg text-muted">
                                                         <i class="dripicons-download"></i>
                                                     </a>
                                                 </div>
