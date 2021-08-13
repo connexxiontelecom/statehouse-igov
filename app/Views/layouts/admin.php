@@ -495,7 +495,7 @@
 		<div class="h-100" data-simplebar>
 			
 			<!-- User box -->
-			<div class="user-box text-center">
+			<div class="user-box text-center" >
 				<img src="../assets/images/users/user-1.jpg" alt="user-img" title="Mat Helme"
 					 class="rounded-circle avatar-md">
 				<div class="dropdown">

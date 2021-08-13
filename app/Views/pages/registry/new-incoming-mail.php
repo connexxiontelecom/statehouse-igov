@@ -30,7 +30,7 @@
                 <h4 class="header-title mt-2 mb-4">Register Incoming Mail Form</h4>
               </div>
               <div class="col-lg-4">
-                <a href="<?=site_url('/central-registry')?>" type="button" class="btn btn-success float-right">Go Back</a>
+                <a href="<?=site_url('/registry')?>" type="button" class="btn btn-success float-right">Go Back</a>
               </div>
             </div>
             <form class="needs-validation" id="new-incoming-mail-form" novalidate>
