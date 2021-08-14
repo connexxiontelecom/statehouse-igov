@@ -28,6 +28,8 @@
           </div>
           <div class="col-lg-4">
             <div class="text-lg-right mt-3 mt-lg-0">
+              <a href="<?=site_url('/incoming-mail')?>" type="button" class="btn btn-primary waves-effect waves-light mr-1">Incoming Mail</a>
+              <a href="<?=site_url('/outgoing-mail')?>" type="button" class="btn btn-primary waves-effect waves-light mr-2">Outgoing Mail</a>
               <a href="<?=site_url('/registry')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
             </div>
           </div><!-- end col-->
@@ -43,8 +45,8 @@
           </div>
           <div class="col-6">
             <div class="text-right">
-              <h5 class="text-dark my-1"><?=$registry['manager']['user_name']?></h5>
-              <p class="text-muted mb-0 text-truncate">Registry Manager</p>
+              <h5 class="text-dark my-1"><span data-plugin="counterup"><?=count($registry_users)?></span></h5>
+              <p class="text-muted mb-0 text-truncate">Registry Access</p>
             </div>
           </div>
         </div>
@@ -58,7 +60,7 @@
           <div class="col-6">
             <div class="text-right">
               <h5 class="text-dark my-1"><span data-plugin="counterup"><?=count($mails)?></span></h5>
-              <p class="text-muted mb-0 text-truncate">At Your Desk</p>
+              <p class="text-muted mb-0 text-truncate">All Mails</p>
             </div>
           </div>
         </div>
@@ -72,7 +74,7 @@
           <div class="col-6">
             <div class="text-right">
               <h5 class="text-dark my-1"><span data-plugin="counterup"><?=count($unfiled_mails)?></span></h5>
-              <p class="text-muted mb-0 text-truncate">Unfiled</p>
+              <p class="text-muted mb-0 text-truncate">Unfiled Mails</p>
             </div>
           </div>
         </div>
@@ -86,7 +88,7 @@
           <div class="col-6">
             <div class="text-right">
               <h5 class="text-dark my-1"><span data-plugin="counterup"><?=count($in_transit)?></span></h5>
-              <p class="text-muted mb-0 text-truncate">Pending Transfers</p>
+              <p class="text-muted mb-0 text-truncate">Mails In Transit</p>
             </div>
           </div>
         </div>
@@ -101,7 +103,7 @@
 						<div class="col-lg-8">
               <h4 class="header-title">All Mails</h4>
               <p class="text-muted font-13">
-                Below are the registered correspondence currently at your desk or filed by you and managed by this registry.
+                Below are the registered correspondence currently managed by this registry.
               </p>
 						</div>
 					</div> <!-- end row -->

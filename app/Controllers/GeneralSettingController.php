@@ -95,7 +95,7 @@ class GeneralSettingController extends BaseController
 		endif;
 	}
 
-	public function registries() {
+	public function registry() {
 		if ($this->request->getMethod() == 'get'):
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
@@ -108,6 +108,21 @@ class GeneralSettingController extends BaseController
 		$this->registry->save($_POST);
 		session()->setFlashData("action","action successful");
 		return redirect()->to(base_url('/manage-registries'));
+	}
+
+	public function new_registry() {
+		if ($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['department_employees'] = $this->_get_department_employees();
+			return view('office/registry/new-registry', $data);
+		endif;
+		if (isset($_POST['registry_users'])) {
+			$_POST['registry_users'] = json_encode($_POST['registry_users']);
+		}
+		$this->registry->save($_POST);
+		session()->setFlashData("action","create successful");
+		return redirect()->to(base_url('/manage-registry')) ;
 	}
 
 	public function manage_registry($registry_id) {
@@ -123,7 +138,7 @@ class GeneralSettingController extends BaseController
 		}
 		$this->registry->save($_POST);
 		session()->setFlashData("action","update successful");
-		return redirect()->to(base_url('/manage-registries')) ;
+		return redirect()->to(base_url('/manage-registry')) ;
 	}
 
 	private function _get_registry($registry_id) {
