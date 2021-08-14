@@ -29,7 +29,11 @@
             </div>
             <div class="col-lg-4">
               <div class="text-lg-right mt-3 mt-lg-0">
-                <a href="<?=site_url('/view-registry/').$mail['registry']['registry_id']?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
+	              <?php if (session()->has_registry_access):?>
+                  <a href="<?=site_url('/view-registry/').$mail['registry']['registry_id']?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
+                <?php else:?>
+                  <a href="<?=site_url('/correspondence').$mail['registry']['registry_id']?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
+	              <?php endif?>
               </div>
             </div><!-- end col-->
           </div> <!-- end row -->
@@ -173,7 +177,7 @@
 	                    <?php foreach ($mail['department_employees'] as $department => $employees): ?>
 		                    <?php if(!empty($employees)):?>
                           <optgroup label="<?=$department?>">
-				                    <?php foreach ($employees as $employee): if ($employee['user']['user_id'] != session()->user_id):?>
+				                    <?php foreach ($employees as $employee): if ($employee['user']['user_id'] != $mail['m_desk']):?>
                               <option value="<?=$employee['user']['user_id']?>">
 						                    <?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
                               </option>

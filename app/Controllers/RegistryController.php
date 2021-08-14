@@ -323,8 +323,7 @@ class RegistryController extends BaseController
 		$mail = $this->mail->find($mail_id);
 		if ($mail):
 			$mail['attachments'] = $this->mail_attachment->where('ma_mail_id', $mail_id)->findAll();
-			$mail['department_employees'] = $this->_get_department_employees_by_registry($mail['m_registry_id']);
-			$mail['holder'] = '';
+			$mail['department_employees'] = $this->_get_department_employees($mail['m_registry_id']);
 			$mail['registry'] = $this->registry->find($mail['m_registry_id']);
 			$mail['current_desk'] = $this->user->find($mail['m_desk']);
 			$mail['stamped_by'] = $this->user->find($mail['m_by']);
@@ -333,7 +332,7 @@ class RegistryController extends BaseController
 		return $mail;
 	}
 
-	private function _get_department_employees_by_registry($registry_id) {
+	private function _get_department_employees($registry_id) {
 		$department_employees = [];
 		$departments = $this->department->findAll();
 		foreach ($departments as $department) {
@@ -343,13 +342,7 @@ class RegistryController extends BaseController
 				->findAll();
 			foreach ($employees as $employee) {
 				$user = $this->user->where('user_employee_id', $employee['employee_id'])->first();
-				$registry = $this->registry->find($registry_id);
-				$authorised_users = json_decode($registry['registry_users']);
-				if (
-					$user['user_status'] == 1
-					&& ($user['user_type'] == 3 || $user['user_type'] == 2)
-					&& ($registry['registry_manager_id'] == $user['user_id'] or in_array($user['user_id'], $authorised_users))
-				) {
+				if ($user['user_status'] == 1 && ($user['user_type'] == 3 || $user['user_type'] == 2)) {
 					$employee['user'] = $user;
 					$employee['position'] = $this->position->find($employee['employee_position_id']);
 					array_push($department_employees[$department['dpt_name']], $employee);
@@ -360,7 +353,7 @@ class RegistryController extends BaseController
 	}
 
 	private function _get_transfer_logs($mail_id) {
-		$transfer_logs = $this->mail_transfer->where('mt_mail_id', $mail_id)->orderBy('created_at', 'DESC')->findAll();
+		$transfer_logs = $this->mail_transfer->where('mt_mail_id', $mail_id)->orderBy('created_at', 'ASC')->findAll();
 		foreach ($transfer_logs as $key => $transfer_log) {
 			$transfer_from = $this->user->find($transfer_log['mt_from_id']);
 			$transfer_to = $this->user->find($transfer_log['mt_to_id']);

@@ -63,7 +63,7 @@ class Auth extends BaseController
 								'user_email'=>$data['user_email'],
 								'user_username' => $data['user_username'],
 								'user_name'=>$data['user_name'],
-								'registry_access' => $this->_check_registry_access($data['user_id']),
+								'has_registry_access' => $this->_check_registry_access($data['user_id']),
 								'isLoggedIn' => true,
 								'firstTime' => true,
 								'type' => $data['user_type']
