@@ -188,7 +188,7 @@ $routes->match(['post'], 'upload-mail-attachments', 'RegistryController::upload_
 $routes->match(['post', 'get'], 'delete-mail-attachments', 'RegistryController::delete_mail_attachments', ['filter' => 'auth']);
 $routes->match(['get'], 'mail-transfer-requests', 'RegistryController::mail_transfer_requests', ['filter' => 'auth']);
 $routes->match(['post'], 'confirm-transfer-request', 'RegistryController::confirm_transfer_request', ['filter' => 'auth']);
-
+$routes->match(['get'], 'correspondence', 'RegistryController::correspondence', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing

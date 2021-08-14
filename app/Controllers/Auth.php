@@ -63,7 +63,7 @@ class Auth extends BaseController
 								'user_email'=>$data['user_email'],
 								'user_username' => $data['user_username'],
 								'user_name'=>$data['user_name'],
-								'has_registry_access' => $this->_check_registry_access(),
+								'registry_access' => $this->_check_registry_access($data['user_id']),
 								'isLoggedIn' => true,
 								'firstTime' => true,
 								'type' => $data['user_type']
@@ -163,11 +163,11 @@ class Auth extends BaseController
 		return redirect()->to('/login');
 	}
 
-	private function _check_registry_access(): bool {
+	private function _check_registry_access($user_id) {
 		$registries = $this->registry->where('registry_status', 1)->findAll();
 		foreach ($registries as $registry) {
 			$registry_users = json_decode($registry['registry_users']);
-			if (in_array(session()->user_id, $registry_users)) {
+			if (in_array($user_id, $registry_users)) {
 				return true;
 			}
 		}

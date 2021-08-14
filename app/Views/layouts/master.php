@@ -344,7 +344,7 @@
                 <span> Workflow </span>
             </a>
         </li>
-          <?php if (session()->has_registry_access):?>
+          <?php if (session()->registry_access == 'has access'):?>
             <li>
               <a href="<?= site_url('registry') ?>">
                 <i data-feather="inbox"></i>
@@ -353,8 +353,8 @@
             </li>
           <?php endif;?>
           <li>
-            <a href="<?= site_url('registry') ?>">
-              <i data-feather="inbox"></i>
+            <a href="<?= site_url('correspondence') ?>">
+              <i data-feather="folder"></i>
               <span> Correspondence </span>
             </a>
           </li>
