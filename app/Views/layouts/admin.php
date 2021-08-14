@@ -558,9 +558,6 @@
 								<li>
 									<a href="<?= site_url('positions'); ?>">Position/Title</a>
 								</li>
-								<li>
-									<a href="<?= site_url('manage-registries'); ?>">Registries</a>
-								</li>
 							</ul>
 						</div>
 					</li>
@@ -625,6 +622,12 @@
 							</ul>
 						</div>
 					</li>
+          <li>
+            <a href="<?= site_url('manage-registry') ?>">
+              <i data-feather="inbox"></i>
+              <span> Registry </span>
+            </a>
+          </li>
 					<li>
 						<a href="apps-chat.html">
 							<i data-feather="file-text"></i>

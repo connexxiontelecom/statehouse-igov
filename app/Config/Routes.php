@@ -46,7 +46,9 @@ $routes->get('moderator', 'Auth::moderator', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'organization-profile', 'GeneralSettingController::organization_profile', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'departments', 'GeneralSettingController::departments', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'positions', 'GeneralSettingController::positions', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'manage-registries', 'GeneralSettingController::registries', ['filter' => 'auth']);
+
+$routes->match(['get', 'post'], 'manage-registry', 'GeneralSettingController::registry', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'new-registry', 'GeneralSettingController::new_registry', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'manage-registry/(:num)', 'GeneralSettingController::manage_registry/$1', ['filter' => 'auth']);
 
 $routes->match(['get', 'post'], 'notice-board', 'MessagingSettingController::notice_board', ['filter' => 'auth']);

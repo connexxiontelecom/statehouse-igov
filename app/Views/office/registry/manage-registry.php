@@ -28,23 +28,6 @@
             <input type="text" id="registry-name" name="registry_name" class="form-control" value="<?=$registry['registry_name']?>" required>
           </div>
           <div class="form-group mb-3">
-            <label for="registry-manager-id">Registry Manager</label>
-            <select class="form-control input-lg" data-toggle="select2" id="registry-manager-id" name="registry_manager_id">
-              <option value="" selected disabled>Select</option>
-						  <?php foreach ($department_employees as $department => $employees): ?>
-							  <?php if(!empty($employees)):?>
-                  <optgroup label="<?=$department?>">
-									  <?php foreach ($employees as $employee): if ($employee['user']['user_id'] != session()->user_id):?>
-                      <option value="<?=$employee['user']['user_id']?>" <?=$employee['user']['user_id'] == $registry['registry_manager_id'] ? 'selected': ''?>>
-											  <?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
-                      </option>
-									  <?php endif; endforeach;?>
-                  </optgroup>
-							  <?php endif;?>
-						  <?php endforeach; ?>
-            </select>
-          </div>
-          <div class="form-group mb-3">
             <label class="mb-2">Status</label>
             <br/>
             <div class="radio form-check-inline">
@@ -75,7 +58,7 @@
 					  <?php foreach ($department_employees as $department => $employees): ?>
 						  <?php if(!empty($employees)):?>
                 <h5 class="mb-2 font-size-16"><?=$department?></h5>
-							  <?php foreach ($employees as $employee): if ($employee['user']['user_id'] != $registry['registry_manager_id']):?>
+							  <?php foreach ($employees as $employee):?>
                   <div class="custom-control custom-checkbox mt-1">
                     <input type="checkbox" class="custom-control-input user" id="<?=$employee['user']['user_id']?>"
                            value="<?=$employee['user']['user_id']?>" name="registry_users[]"
@@ -85,7 +68,7 @@
 										  <?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
                     </label>
                   </div>
-							  <?php endif; endforeach;?>
+							  <?php endforeach;?>
 						  <?php endif;?>
 					  <?php endforeach; ?>
           </div>

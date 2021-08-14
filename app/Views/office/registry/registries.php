@@ -9,10 +9,10 @@
           <ol class="breadcrumb m-0">
             <li class="breadcrumb-item"><a href="<?= site_url('office') ?>">iGov</a></li>
             <li class="breadcrumb-item"><a href="javascript: void(0);">General Settings</a></li>
-            <li class="breadcrumb-item active">Registries</li>
+            <li class="breadcrumb-item active">Registry</li>
           </ol>
         </div>
-        <h4 class="page-title">Registries</h4>
+        <h4 class="page-title">Registry</h4>
       </div>
     </div>
   </div>
@@ -30,14 +30,13 @@
             </div>
 	        <?php endif; ?>
           <div>
-            <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-registry" style="float: right"> <i class="mdi mdi-plus mr-2"></i>New Registry</button>
+            <a href="<?=site_url('new-registry')?>" type="button" class="btn btn-primary" style="float: right"> <i class="mdi mdi-plus mr-2"></i>New Registry</a>
           </div>
           <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
             <thead>
             <tr>
               <th>S/N</th>
               <th>Registry Name</th>
-              <th>Registry Manager</th>
               <th>Registry Description</th>
               <th>Status</th>
               <th>Actions</th>
@@ -51,7 +50,6 @@
                 <tr>
                   <td><?=$i++;?></td>
                   <td><?=$registry['registry_name']?></td>
-                  <td><?=$registry['manager']['user_name']?></td>
                   <td><?=$registry['registry_description']?></td>
                   <td><?=$registry['registry_status'] == 0 ? 'Inactive' : 'Active'?></td>
                   <td>
