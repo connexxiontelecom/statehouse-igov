@@ -344,10 +344,18 @@
                 <span> Workflow </span>
             </a>
         </li>
+          <?php if (session()->has_registry_access):?>
+            <li>
+              <a href="<?= site_url('registry') ?>">
+                <i data-feather="inbox"></i>
+                <span> Registry </span>
+              </a>
+            </li>
+          <?php endif;?>
           <li>
             <a href="<?= site_url('registry') ?>">
               <i data-feather="inbox"></i>
-              <span> Registry </span>
+              <span> Correspondence </span>
             </a>
           </li>
           <li>

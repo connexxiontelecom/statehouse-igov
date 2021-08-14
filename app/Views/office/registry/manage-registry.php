@@ -78,7 +78,7 @@
     <div class="row">
       <div class="col-12">
         <div class="text-center mb-3">
-          <a href="<?=site_url('manage-registries')?>" type="button" class="btn w-sm btn-danger waves-effect">Cancel</a>
+          <a href="<?=site_url('manage-registry')?>" type="button" class="btn w-sm btn-danger waves-effect">Cancel</a>
           <button type="submit" class="btn w-sm btn-success waves-effect waves-light">Save</button>
         </div>
       </div>
