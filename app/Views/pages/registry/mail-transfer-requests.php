@@ -30,7 +30,7 @@
             </div>
             <div class="col-lg-4">
               <div class="text-lg-right mt-3 mt-lg-0">
-                <a href="<?=site_url('/registry')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
+                <a href="<?=site_url('/correspondence')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
               </div>
             </div><!-- end col-->
           </div> <!-- end row -->
