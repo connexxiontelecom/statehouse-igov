@@ -344,7 +344,7 @@
                 <span> Workflow </span>
             </a>
         </li>
-          <?php if (session()->registry_access == 'has access'):?>
+          <?php if (session()->has_registry_access):?>
             <li>
               <a href="<?= site_url('registry') ?>">
                 <i data-feather="inbox"></i>
