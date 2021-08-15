@@ -178,7 +178,7 @@ $routes->match(['get', 'post'], 'outgoing-mail', 'CentralRegistryController::out
 // registries routes
 $routes->match(['get'], 'registry', 'RegistryController::index', ['filter' => 'auth']);
 $routes->match(['get'], 'view-registry/(:any)', 'RegistryController::view_registry/$1', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'incoming-mail', 'RegistryController::incoming_mail', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'incoming-mail/(:num)', 'RegistryController::incoming_mail/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'manage-mail/(:num)', 'RegistryController::manage_mail/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'view-transfer-log/(:num)', 'RegistryController::view_transfer_log/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'view-filing-log/(:num)', 'RegistryController::view_filing_log/$1', ['filter' => 'auth']);

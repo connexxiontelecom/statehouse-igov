@@ -56,11 +56,11 @@ class RegistryController extends BaseController
 		return view('/pages/registry/manage-mail', $data);
 	}
 
-	public function incoming_mail() {
+	public function incoming_mail($registry_id = null) {
 		if($this->request->getMethod() == 'get'):
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$data['registries'] = $this->_get_registries();
+			$data['registry'] = $this->_get_registry($registry_id);
 			return view('/pages/registry/new-incoming-mail', $data);
 		endif;
 		$post_data = $this->request->getPost();
@@ -75,7 +75,7 @@ class RegistryController extends BaseController
 			'm_by' => $this->session->user_id,
 			'm_desk' => $this->session->user_id,
 			'm_direction' => 1,
-			'm_registry_id' => $post_data['m_registry_id']
+			'm_registry_id' => $registry_id
 		];
 		$mail_id = $this->mail->insert($mail_data);
 		if ($mail_id) {
@@ -261,7 +261,6 @@ class RegistryController extends BaseController
 	}
 
 	public function correspondence() {
-		//@TODO get all mail on this person's desk
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$data['mails'] = $this->_get_user_mails();
