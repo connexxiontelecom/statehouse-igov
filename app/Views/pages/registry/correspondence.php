@@ -110,6 +110,7 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
+
   <!-- third party js -->
   <script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -129,5 +130,12 @@
   <!-- Datatables init -->
   <script src="/assets/js/pages/datatables.init.js"></script>
 <?=view('pages/registry/_registry-scripts.php')?>
-
+  <script>
+    $(document).ready(() => {
+			<?php if (session()->getFlashdata('transfer_requests')):?>
+      jQuery.noConflict()
+      $('#warning-alert-modal-3').modal('show');
+			<?php endif;?>
+    })
+  </script>
 <?= $this->endSection(); ?>

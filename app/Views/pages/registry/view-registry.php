@@ -28,8 +28,8 @@
           </div>
           <div class="col-lg-4">
             <div class="text-lg-right mt-3 mt-lg-0">
-              <a href="<?=site_url('/incoming-mail')?>" type="button" class="btn btn-primary waves-effect waves-light mr-1">Incoming Mail</a>
-              <a href="<?=site_url('/outgoing-mail')?>" type="button" class="btn btn-primary waves-effect waves-light mr-2">Outgoing Mail</a>
+              <a href="<?=site_url('/incoming-mail/').$registry['registry_id']?>" type="button" class="btn btn-primary waves-effect waves-light mr-1">Incoming Mail</a>
+              <a href="<?=site_url('/outgoing-mail/').$registry['registry_id']?>" type="button" class="btn btn-primary waves-effect waves-light mr-2">Outgoing Mail</a>
               <a href="<?=site_url('/registry')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
             </div>
           </div><!-- end col-->

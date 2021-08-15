@@ -39,8 +39,7 @@
       let sender = $('#sender').val()
       let dateCorrespondence = $('#date-correspondence').val()
       let dateReceived = $('#date-received').val()
-      let registryID = $('#m-registry-id').val()
-      if (!refNo || !subject || !sender || !dateCorrespondence || !dateReceived || !registryID) {
+      if (!refNo || !subject || !sender || !dateCorrespondence || !dateReceived) {
         Swal.fire('Invalid Submission!', 'Please fill in all required fields', 'error')
       } else {
         let formData = new FormData(this)
