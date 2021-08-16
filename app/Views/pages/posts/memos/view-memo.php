@@ -3,43 +3,49 @@
 <?= $this->section('content'); ?>
 <div class="container-fluid">
 	<!-- start page title -->
-	<div class="row">
-		<div class="col-12">
-			<div class="page-title-box">
-				<div class="page-title-right">
-					<ol class="breadcrumb m-0">
-						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
-						<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
-						<li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">Memo Board</a></li>
-						<li class="breadcrumb-item active">View Memo</li>
-					</ol>
-				</div>
-				<h4 class="page-title">View Memo</h4>
-			</div>
-		</div>
-	</div>
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
+            <li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">Memo Board</a></li>
+            <li class="breadcrumb-item active">View Memo</li>
+          </ol>
+        </div>
+        <h4 class="page-title">View Memo</h4>
+      </div>
+    </div>
+  </div>
 	<!-- end page title -->
   <div class="row">
-    <div class="col-lg-7">
-      <div class="card d-block">
-        <div class="card-body">
-          <div class="row d-print-none">
-            <div class="col-lg-1">
-            </div>
-            <div class="col-lg-11">
-              <div class="text-lg-right">
-                <a href="javascript:window.print()" type="button" class="btn btn-success waves-effect waves-light mr-2"><i class="mdi mdi-printer"></i></a>
-	              <?php if($memo['p_by'] == session()->user_id && $memo['p_status'] == 0):?>
-                  <a href="<?=site_url('/edit-memo/').$memo['p_id']?>" type="button" class="btn btn-success">Edit</a>
-	              <?php endif;?>
-                <?php if($memo['p_signed_by'] == session()->user_id && $memo['p_status'] == 0):?>
-                  <button onclick="signDocument(<?=$memo['p_id']?>)" type="button" class="btn btn-success mr-1">Sign</button>
-                  <button onclick="declineDocument(<?=$memo['p_id']?>)" type="button" class="btn btn-danger mr-1">Decline</button>
-	              <?php endif;?>
-                <a href="<?=site_url('/memos')?>" type="button" class="btn btn-success">Go Back</a>
-              </div>
+    <div class="col-12">
+      <div class="card-box">
+        <div class="row d-print-none">
+          <div class="col-lg-1">
+          </div>
+          <div class="col-lg-11">
+            <div class="text-lg-right">
+              <a href="javascript:window.print()" type="button" class="btn btn-success waves-effect waves-light mr-2"><i class="mdi mdi-printer"></i></a>
+              <?php if($memo['p_by'] == session()->user_id && $memo['p_status'] == 0):?>
+                <a href="<?=site_url('/edit-memo/').$memo['p_id']?>" type="button" class="btn btn-success">Edit</a>
+              <?php endif;?>
+              <?php if($memo['p_signed_by'] == session()->user_id && $memo['p_status'] == 0):?>
+                <button onclick="signDocument(<?=$memo['p_id']?>)" type="button" class="btn btn-success mr-1">Sign</button>
+                <button onclick="declineDocument(<?=$memo['p_id']?>)" type="button" class="btn btn-danger mr-1">Decline</button>
+              <?php endif;?>
+              <a href="<?=site_url('/memos')?>" type="button" class="btn btn-success">Go Back</a>
             </div>
           </div>
+        </div>
+      </div> <!-- end card-box -->
+    </div><!-- end col-->
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card d-block">
+        <div class="card-body">
           <div class="row mb-3">
             <div class="auth-logo" style="margin: 0 auto">
               <div class="logo logo-dark">
@@ -114,7 +120,7 @@
               <?php if ($memo['p_status'] == 2 && $memo['p_signature']):?>
                 <img src="/uploads/signatures/<?=$memo['p_signature'] ?>" height="80">
                 <h5 class="font-size-14">
-                  <?=$memo['signed_by']['user_name'] ?> (<?=$memo['signed_by']['position']['pos_name']?>, <?=$memo['signed_by']['department']['dpt_name']?>)
+                  <?=$memo['signed_by']['user_name'] ?> <br> (<?=$memo['signed_by']['position']['pos_name']?>, <?=$memo['signed_by']['department']['dpt_name']?>)
                 </h5>
               <?php elseif ($memo['p_status'] == 4):?>
                 <p class="mt-2 mb-1 text-muted">This memo is rejected</p>
@@ -127,7 +133,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-5 d-print-none">
+    <div class="col-12 d-print-none">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title font-16 mb-3">Attachments</h5>
