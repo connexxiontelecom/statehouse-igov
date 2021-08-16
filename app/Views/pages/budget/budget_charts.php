@@ -22,7 +22,7 @@
 	<!-- end page title -->
 
 	
-	<div class="row" style="margin-top: -50px">
+	<div class="row">
 		<div class="col-sm-12">
 			<div class="card">
 				<div class="card-body">
