@@ -12,10 +12,10 @@
 					<div class="page-title-right">
 						<ol class="breadcrumb m-0">
 							<li class="breadcrumb-item"><a href="<?= site_url('office') ?>">iGov</a></li>
-							<li class="breadcrumb-item"><a id="b_link" href="#">Budget Charts</a></li>
+							<li class="breadcrumb-item"><a  href="<?=site_url('budget-input'); ?>">Budget Inputs</a></li>
 							
 							
-							<li class="breadcrumb-item active">Edit Budget Header</li>
+							<li class="breadcrumb-item active">Update Budget Input</li>
 						</ol>
 					</div>
 					<h4 class="page-title"> <?=$budget['budget_title'] ?> - <?=$budget['budget_year'] ?></h4>
@@ -25,7 +25,7 @@
 		
 	
 		<!-- end page title -->
-		<div class="row" style="margin-top: -50px">
+		<div class="row">
 			<div class="col-sm-6">
 				<div class="card">
 					<div class="card-body">
