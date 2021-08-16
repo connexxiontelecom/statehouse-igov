@@ -23,10 +23,7 @@
 			</div>
 		</div>
 		
-		<form id="budget_form" method="post" action="<?=site_url('budget-charts') ?>">
-			<input type="hidden" name="bh_budget_id" value="<?=$bhs['bh_budget_id'] ?>">
-		
-		</form>
+	
 		<!-- end page title -->
 		<div class="row" style="margin-top: -50px">
 			<div class="col-sm-6">
@@ -98,61 +95,70 @@
 			<div class="col-sm-6">
 				<div class="card">
 					<div class="card-body">
-						<h4 style="float: right" class="header-title">Edit Budget Header</h4>
+						<h4 style="float: right" class="header-title">Revisions</h4>
+						
 						<div class="row mt-4">
 							<div class="col">
-								
-								<?php if(session()->has('action')): ?>
-									<div class="alert alert-success alert-dismissible fade show" role="alert">
-										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-										<i class="mdi mdi-check-all mr-2"></i><strong>Action Successful !</strong>
-									</div>
-								<?php endif; ?>
-								
-								<?php if(session()->has('error')): ?>
-									<div class="alert alert-danger alert-dismissible fade show" role="alert">
-										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-										<i class="mdi mdi-check-all mr-2"></i><strong>An Error Occurred</strong>
-									</div>
-								<?php endif; ?>
-								
-								
-								<form method="post">
-									
-									
-									
-									<div class="form-group mb-3">
-										<label for="example-input-normal">Code</label>
-										<input type="text" id="example-input-normal" value="<?=$bhs['bh_code'] ?>" class="form-control" placeholder="Code" readonly required>
-									</div>
-									
-									<div class="form-group mb-3">
-										<label for="example-input-normal">Narration: </label>
-										<input type="text" id="example-input-normal"  value="<?=$bhs['bh_title']; ?>" class="form-control" placeholder="Narration" readonly required>
-									</div>
-									
-									
-									
-									
-									<div class="form-group mb-3">
-										<label for="example-input-normal">Amount: </label>
-										<input type="text" id="example-input-normal" name="bh_amount" value="<?=number_format($bhs['bh_amount'], 2); ?>" class="form-control number" placeholder="Amount" required>
-									</div>
-									<input type="hidden" name="bh_id" value="<?=$bhs['bh_id']; ?>">
-									
-									
-									<div class="form-group mb-3">
+								<?php if(empty($revisions)): ?>
+									<div class="card bg-pattern">
 										
-										<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
-									
+										<div class="card-body p-4">
+											
+											<div class="auth-logo">
+												<a href="/" class="logo logo-dark text-center">
+                                        <span class="logo-lg">
+                                            <img src="../assets/images/logo-sm.png" alt="" height="22">
+                                        </span>
+												</a>
+												
+												<a href="/" class="logo logo-light text-center">
+                                        <span class="logo-lg">
+                                            <img src="../assets/images/logo-sm.png" alt="" height="22">
+                                        </span>
+												</a>
+											</div>
+											
+											<div class="text-center mt-4">
+												<h1 class="text-error">Oops</h1>
+												<h3 class="mt-3 mb-2">No Budget Edits  yet</h3>
+											
+											</div>
+										
+										</div> <!-- end card-body -->
 									</div>
 								
+								<?php else: ?>
+									
+									<div class="table-responsive">
+										<table class="table table-borderless table-nowrap table-hover table-centered m-0">
+											
+											<thead class="thead-light">
+											<tr>
+												
+												<th>Date</th>
+												<th>Employee</th>
+												<th>Amount</th>
+											
+												
+											</tr>
+											</thead>
+											<tbody>
+											<?php foreach ($revisions as $revision): ?>
+											<tr>
+												<td> <?=$revision['brl_date']; ?></td>
+												<td> <?=$revision['employee_f_name']." ".$revision['employee_l_name'] ?></td>
+												<td> <?=number_format($revision['brl_amount'], 2) ?></td>
+											</tr>
+											
+											
+											<?php endforeach; ?>
+											
+											</tbody>
+										</table>
+									</div> <!-- end .table-responsive-->
 								
-								</form>
+								
+								<?php endif; ?>
 							</div> <!-- end col -->
 						</div> <!-- end row -->
 					

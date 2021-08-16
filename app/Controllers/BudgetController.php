@@ -71,6 +71,7 @@ class BudgetController extends BaseController
 			endforeach;
 			
 			$data['bhs'] = $new_bh;
+			
 		
 			return view('pages/budget/budget_charts', $data);
 		endif;
@@ -118,6 +119,12 @@ class BudgetController extends BaseController
 				->where('bh_cat', $bh['bh_cat'])
 				->orderBy('bh_code', 'ASC')
 				->findAll();
+			
+			
+			$data['revisions'] = $this->brl->where('brl_bh_id', $id)
+											->join('employees', 'employees.employee_id = budget_revision_logs.brl_employee_id')
+											->orderBy('brl_date', 'DESC')
+											->findAll();
 	
 			return view('pages/budget/edit_budget_chart', $data);
 		endif;
