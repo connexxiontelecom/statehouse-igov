@@ -189,6 +189,10 @@ $routes->match(['post', 'get'], 'delete-mail-attachments', 'RegistryController::
 $routes->match(['get'], 'mail-transfer-requests', 'RegistryController::mail_transfer_requests', ['filter' => 'auth']);
 $routes->match(['post'], 'confirm-transfer-request', 'RegistryController::confirm_transfer_request', ['filter' => 'auth']);
 $routes->match(['get'], 'correspondence', 'RegistryController::correspondence', ['filter' => 'auth']);
+
+#Budget Routes (employee)
+$routes->match(['get'], 'budget-input', 'BudgetController::budget_input', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'edit-budget-input/(:num)', 'BudgetController::edit_budget_input/$1', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing
