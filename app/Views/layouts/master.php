@@ -337,22 +337,25 @@
                 <i data-feather="book"></i>
                 <span> Project</span>
             </a>
-        </li>
-						<a href="<?= site_url('trainings') ?>">
-							<i data-feather="book"></i>
-							<span> Trainings </span>
-						</a>
-					</li>
+            </li>
                     <li>
-						<a href="<?= site_url('workflow-requests') ?>">
-							<i data-feather="book"></i>
-							<span> Workflow </span>
-						</a>
-					</li>
+            <a href="<?= site_url('workflow-requests') ?>">
+                <i data-feather="book"></i>
+                <span> Workflow </span>
+            </a>
+        </li>
+          <?php if (session()->has_registry_access):?>
+            <li>
+              <a href="<?= site_url('registry') ?>">
+                <i data-feather="inbox"></i>
+                <span> Registry </span>
+              </a>
+            </li>
+          <?php endif;?>
           <li>
-            <a href="<?= site_url('registry') ?>">
-              <i data-feather="inbox"></i>
-              <span> Registry </span>
+            <a href="<?= site_url('correspondence') ?>">
+              <i data-feather="folder"></i>
+              <span> Correspondence </span>
             </a>
           </li>
           <li>

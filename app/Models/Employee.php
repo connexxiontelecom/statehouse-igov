@@ -43,4 +43,8 @@ class Employee extends Model
     public function getEmployeeByUserEmployeeId($user_employee_id){
         return Employee::where('employee_id', $user_employee_id)->first();
     }
+
+    public function getAllEmployee(){
+        return Employee::findAll();
+    }
 }

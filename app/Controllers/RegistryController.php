@@ -35,18 +35,16 @@ class RegistryController extends BaseController
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$data['registries'] = $this->_get_registries();
-		$transfer_requests = $this->_get_transfer_requests();
-		if ($transfer_requests) session()->setFlashdata('transfer_requests', true);
-//		print_r($transfer_requests);
 		return view('/pages/registry/index', $data);
 	}
 
 	public function view_registry($registry_id = null) {
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
-		$data['mails'] = $this->_get_user_registry_mails($registry_id);
-		$data['unfiled_mails'] = $this->_get_user_registry_unfiled_mails($registry_id);
-		$data['in_transit'] = $this->_get_user_registry_in_transit_mails($registry_id);
+		$data['mails'] = $this->_get_registry_mails($registry_id);
+		$data['unfiled_mails'] = $this->_get_registry_unfiled_mails($registry_id);
+		$data['in_transit'] = $this->_get_registry_in_transit_mails($registry_id);
+		$data['registry_users'] = $this->_get_registry_users($registry_id);
 		$data['registry'] = $this->_get_registry($registry_id);
 		return view('/pages/registry/view-registry', $data);
 	}
@@ -58,11 +56,11 @@ class RegistryController extends BaseController
 		return view('/pages/registry/manage-mail', $data);
 	}
 
-	public function incoming_mail() {
+	public function incoming_mail($registry_id = null) {
 		if($this->request->getMethod() == 'get'):
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$data['registries'] = $this->_get_registries();
+			$data['registry'] = $this->_get_registry($registry_id);
 			return view('/pages/registry/new-incoming-mail', $data);
 		endif;
 		$post_data = $this->request->getPost();
@@ -77,7 +75,7 @@ class RegistryController extends BaseController
 			'm_by' => $this->session->user_id,
 			'm_desk' => $this->session->user_id,
 			'm_direction' => 1,
-			'm_registry_id' => $post_data['m_registry_id']
+			'm_registry_id' => $registry_id
 		];
 		$mail_id = $this->mail->insert($mail_data);
 		if ($mail_id) {
@@ -262,19 +260,20 @@ class RegistryController extends BaseController
 		return $this->response->setJSON($response);
 	}
 
+	public function correspondence() {
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$data['mails'] = $this->_get_user_mails();
+		$transfer_requests = $this->_get_transfer_requests();
+		if ($transfer_requests) session()->setFlashdata('transfer_requests', true);
+		return view('/pages/registry/correspondence', $data);
+	}
+
 	private function _get_registries() {
 		$registries = $this->registry->where('registry_status', 1)->findAll();
 		foreach ($registries as $key => $registry) {
 			$authorised_users = json_decode($registry['registry_users']);
-			if ($registry['registry_manager_id'] == session()->user_id || in_array(session()->user_id, $authorised_users)) {
-				$manager_user = $this->user->find($registry['registry_manager_id']);
-				$manager_employee = $this->employee->find($manager_user['user_employee_id']);
-				$manager_position = $this->position->find($manager_employee['employee_position_id']);
-				$manager_department = $this->department->find($manager_employee['employee_department_id']);
-				$registries[$key]['manager'] = $manager_user;
-				$registries[$key]['position'] = $manager_position;
-				$registries[$key]['department'] = $manager_department;
-			} else {
+			if (!in_array(session()->user_id, $authorised_users)) {
 				unset($registries[$key]);
 			}
 		}
@@ -282,52 +281,48 @@ class RegistryController extends BaseController
 	}
 
 	private function _get_registry($registry_id) {
+		return $this->registry->find($registry_id);
+	}
+
+	private function _get_registry_users($registry_id) {
 		$registry = $this->registry->find($registry_id);
-		$manager_user = $this->user->find($registry['registry_manager_id']);
-		$manager_employee = $this->employee->find($manager_user['user_employee_id']);
-		$manager_position = $this->position->find($manager_employee['employee_position_id']);
-		$manager_department = $this->department->find($manager_employee['employee_department_id']);
-		$registry['manager'] = $manager_user;
-		$registry['position'] = $manager_position;
-		$registry['department'] = $manager_department;
-		return $registry;
+		$users = json_decode($registry['registry_users']);
+		$registry_users = [];
+		foreach ($users as $user) {
+			array_push($registry_users, $this->user->find($user));
+		}
+		return $registry_users;
 	}
 
-	private function _get_user_registry_mails($registry_id) {
-		return $this->mail
-			->groupStart()
-				->where('m_desk', session()->user_id)
-			->groupEnd()
-			->where('m_registry_id', $registry_id)
-		->findAll();
+	private function _get_registry_mails($registry_id) {
+		return $this->mail->where('m_registry_id', $registry_id)->findAll();
 	}
 
-	private function _get_user_registry_unfiled_mails($registry_id) {
+	private function _get_registry_unfiled_mails($registry_id) {
 		return $this->mail
-			->groupStart()
-				->where('m_desk', session()->user_id)
-			->groupEnd()
 			->where('m_status !=', 3)
 			->where('m_registry_id', $registry_id)
 		->findAll();
 	}
 
-	private function _get_user_registry_in_transit_mails($registry_id) {
+	private function _get_registry_in_transit_mails($registry_id) {
 		return $this->mail
-			->groupStart()
-				->where('m_desk', session()->user_id)
-			->groupEnd()
 			->where('m_status', 1)
 			->where('m_registry_id', $registry_id)
 		->findAll();
+	}
+
+
+
+	private function _get_user_mails() {
+		return $this->mail->where('m_desk', session()->user_id)->findAll();
 	}
 
 	private function _get_mail($mail_id) {
 		$mail = $this->mail->find($mail_id);
 		if ($mail):
 			$mail['attachments'] = $this->mail_attachment->where('ma_mail_id', $mail_id)->findAll();
-			$mail['department_employees'] = $this->_get_department_employees_by_registry($mail['m_registry_id']);
-			$mail['holder'] = '';
+			$mail['department_employees'] = $this->_get_department_employees($mail['m_registry_id']);
 			$mail['registry'] = $this->registry->find($mail['m_registry_id']);
 			$mail['current_desk'] = $this->user->find($mail['m_desk']);
 			$mail['stamped_by'] = $this->user->find($mail['m_by']);
@@ -336,7 +331,7 @@ class RegistryController extends BaseController
 		return $mail;
 	}
 
-	private function _get_department_employees_by_registry($registry_id) {
+	private function _get_department_employees($registry_id) {
 		$department_employees = [];
 		$departments = $this->department->findAll();
 		foreach ($departments as $department) {
@@ -346,13 +341,7 @@ class RegistryController extends BaseController
 				->findAll();
 			foreach ($employees as $employee) {
 				$user = $this->user->where('user_employee_id', $employee['employee_id'])->first();
-				$registry = $this->registry->find($registry_id);
-				$authorised_users = json_decode($registry['registry_users']);
-				if (
-					$user['user_status'] == 1
-					&& ($user['user_type'] == 3 || $user['user_type'] == 2)
-					&& ($registry['registry_manager_id'] == $user['user_id'] or in_array($user['user_id'], $authorised_users))
-				) {
+				if ($user['user_status'] == 1 && ($user['user_type'] == 3 || $user['user_type'] == 2)) {
 					$employee['user'] = $user;
 					$employee['position'] = $this->position->find($employee['employee_position_id']);
 					array_push($department_employees[$department['dpt_name']], $employee);
@@ -363,7 +352,7 @@ class RegistryController extends BaseController
 	}
 
 	private function _get_transfer_logs($mail_id) {
-		$transfer_logs = $this->mail_transfer->where('mt_mail_id', $mail_id)->orderBy('created_at', 'DESC')->findAll();
+		$transfer_logs = $this->mail_transfer->where('mt_mail_id', $mail_id)->orderBy('created_at', 'ASC')->findAll();
 		foreach ($transfer_logs as $key => $transfer_log) {
 			$transfer_from = $this->user->find($transfer_log['mt_from_id']);
 			$transfer_to = $this->user->find($transfer_log['mt_to_id']);

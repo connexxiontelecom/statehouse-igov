@@ -495,7 +495,7 @@
 		<div class="h-100" data-simplebar>
 			
 			<!-- User box -->
-			<div class="user-box text-center">
+			<div class="user-box text-center" >
 				<img src="../assets/images/users/user-1.jpg" alt="user-img" title="Mat Helme"
 					 class="rounded-circle avatar-md">
 				<div class="dropdown">
@@ -557,9 +557,6 @@
 								</li>
 								<li>
 									<a href="<?= site_url('positions'); ?>">Position/Title</a>
-								</li>
-								<li>
-									<a href="<?= site_url('manage-registries'); ?>">Registries</a>
 								</li>
 							</ul>
 						</div>
@@ -625,6 +622,12 @@
 							</ul>
 						</div>
 					</li>
+          <li>
+            <a href="<?= site_url('manage-registry') ?>">
+              <i data-feather="inbox"></i>
+              <span> Registry </span>
+            </a>
+          </li>
 					<li>
 						<a href="apps-chat.html">
 							<i data-feather="file-text"></i>
@@ -644,14 +647,13 @@
 							<span> Meetings </span>
 						</a>
 					</li>
-					
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="bar-chart-2"></i>
-							<span> Trainings </span>
-						</a>
-					</li>
-					
+
+                    <li>
+                        <a href="<?= site_url('trainings') ?>">
+                            <i data-feather="bar-chart-2"></i>
+                            <span> Trainings </span>
+                        </a>
+                    </li>
 					<li>
 						<a href="apps-chat.html">
 							<i data-feather="message-square"></i>
