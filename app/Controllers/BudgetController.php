@@ -79,13 +79,13 @@ class BudgetController extends BaseController
 		if($this->request->getMethod() == 'post'):
 			
 			try {
-				if($_POST['bh_acc_type'] == 0):
-					unset($_POST['bh_amount']);
-				else:
-					$_POST['bh_amount'] = str_replace(',', '', $_POST['bh_amount']);
-				endif;
-				$_POST['bh_office'] = json_encode($_POST['bh_office']);
+				
+				
+				$_POST['bh_amount'] = str_replace(',', '', $_POST['bh_amount']);
+				
 				$this->bh->save($_POST);
+				
+				
 				session()->setFlashData("action","action successful");
 				return redirect()->back();
 			} catch (\ReflectionException $e) {
