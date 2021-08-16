@@ -191,7 +191,8 @@ $routes->match(['post'], 'confirm-transfer-request', 'RegistryController::confir
 $routes->match(['get'], 'correspondence', 'RegistryController::correspondence', ['filter' => 'auth']);
 
 #Budget Routes (employee)
-$routes->match(['get', 'post'], 'budget-input', 'BudgetController::budget_input', ['filter' => 'auth']);
+$routes->match(['get'], 'budget-input', 'BudgetController::budget_input', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'edit-budget-input/(:num)', 'BudgetController::edit_budget_input/$1', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing
