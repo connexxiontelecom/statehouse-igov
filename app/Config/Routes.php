@@ -162,6 +162,8 @@ $routes->get('/projects/create','ProjectController::showAddNewProjectForm',['fil
 $routes->get('/projects/(:num)','ProjectController::viewProject/$1',['filter'=>'auth', 'as'=>'view-project']);
 $routes->post('/projects/create','ProjectController::setNewProject',['filter'=>'auth']);
 $routes->post('/leave-comment','ProjectController::setNewConversation',['filter'=>'auth', 'as'=>'leave-comment']);
+$routes->get('/projects/edit/(:num)','ProjectController::editProject/$1',['filter'=>'auth', 'as'=>'edit-project']);
+$routes->post('/projects/update','ProjectController::editProject/$1',['filter'=>'auth', 'as'=>'update-project']);
 
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
