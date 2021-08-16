@@ -11,6 +11,7 @@ use App\Models\Employee;
 use App\Models\Notice;
 use App\Models\Position;
 use App\Models\UserModel;
+use App\Models\BudgetLog;
 
 class BudgetController extends BaseController
 {
@@ -29,6 +30,7 @@ class BudgetController extends BaseController
 		$this->bh = new BudgetHeader();
 		$this->bc = new BudgetCategory();
 		$this->employee = new Employee();
+		$this->brl = new BudgetLog();
 	}
 	
 	public function budget_input()
@@ -80,9 +82,19 @@ class BudgetController extends BaseController
 			
 			try {
 				
+			
 				
 				$_POST['bh_amount'] = str_replace(',', '', $_POST['bh_amount']);
 				
+					$brl_array = array(
+						'brl_employee_id' => $this->session->user_employee_id,
+						'brl_bh_id' => $_POST['bh_id'],
+						'brl_amount' => $_POST['bh_amount'],
+						'brl_date' => date('Y-m-d H:i:s')
+					);
+					
+					$this->brl->save($brl_array);
+			
 				$this->bh->save($_POST);
 				
 				

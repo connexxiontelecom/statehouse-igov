@@ -61,12 +61,12 @@
 									
 									<div class="form-group mb-3">
 										<label for="example-input-normal">Code</label>
-										<input type="text" id="example-input-normal" name="bh_code" value="<?=$bhs['bh_code'] ?>" class="form-control" placeholder="Code" readonly required>
+										<input type="text" id="example-input-normal" value="<?=$bhs['bh_code'] ?>" class="form-control" placeholder="Code" readonly required>
 									</div>
 									
 									<div class="form-group mb-3">
 										<label for="example-input-normal">Narration: </label>
-										<input type="text" id="example-input-normal" name="bh_title" value="<?=$bhs['bh_title']; ?>" class="form-control" placeholder="Narration" readonly required>
+										<input type="text" id="example-input-normal"  value="<?=$bhs['bh_title']; ?>" class="form-control" placeholder="Narration" readonly required>
 									</div>
 									
 									
@@ -74,10 +74,77 @@
 									
 									<div class="form-group mb-3">
 										<label for="example-input-normal">Amount: </label>
-										<input type="text" id="example-input-normal" name="bh_amount" value="<?=$bhs['bh_amount']; ?>" class="form-control number" placeholder="Amount" required>
+										<input type="text" id="example-input-normal" name="bh_amount" value="<?=number_format($bhs['bh_amount'], 2); ?>" class="form-control number" placeholder="Amount" required>
+									</div>
+									<input type="hidden" name="bh_id" value="<?=$bhs['bh_id']; ?>">
+									
+									
+									<div class="form-group mb-3">
+										
+										<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
+									
+									</div>
+								
+								
+								</form>
+							</div> <!-- end col -->
+						</div> <!-- end row -->
+					
+					
+					</div> <!-- end card-body -->
+				</div> <!-- end card-->
+			</div> <!-- end col -->
+			
+			<div class="col-sm-6">
+				<div class="card">
+					<div class="card-body">
+						<h4 style="float: right" class="header-title">Edit Budget Header</h4>
+						<div class="row mt-4">
+							<div class="col">
+								
+								<?php if(session()->has('action')): ?>
+									<div class="alert alert-success alert-dismissible fade show" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+										<i class="mdi mdi-check-all mr-2"></i><strong>Action Successful !</strong>
+									</div>
+								<?php endif; ?>
+								
+								<?php if(session()->has('error')): ?>
+									<div class="alert alert-danger alert-dismissible fade show" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+										<i class="mdi mdi-check-all mr-2"></i><strong>An Error Occurred</strong>
+									</div>
+								<?php endif; ?>
+								
+								
+								<form method="post">
+									
+									
+									
+									<div class="form-group mb-3">
+										<label for="example-input-normal">Code</label>
+										<input type="text" id="example-input-normal" value="<?=$bhs['bh_code'] ?>" class="form-control" placeholder="Code" readonly required>
 									</div>
 									
-									<input type="hidden" name="bh_budget_id" value="<?=$budget['budget_id'] ?>">
+									<div class="form-group mb-3">
+										<label for="example-input-normal">Narration: </label>
+										<input type="text" id="example-input-normal"  value="<?=$bhs['bh_title']; ?>" class="form-control" placeholder="Narration" readonly required>
+									</div>
+									
+									
+									
+									
+									<div class="form-group mb-3">
+										<label for="example-input-normal">Amount: </label>
+										<input type="text" id="example-input-normal" name="bh_amount" value="<?=number_format($bhs['bh_amount'], 2); ?>" class="form-control number" placeholder="Amount" required>
+									</div>
+									<input type="hidden" name="bh_id" value="<?=$bhs['bh_id']; ?>">
+									
+									
 									<div class="form-group mb-3">
 										
 										<button type="submit" class="ladda-button ladda-button-demo btn btn-primary btn-block" dir="ltr" data-style="zoom-in"">Submit</button>
