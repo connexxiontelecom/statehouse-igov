@@ -100,10 +100,12 @@ class BudgetController extends BaseController
 				
 				
 				session()->setFlashData("action","action successful");
-				return redirect()->back();
+//				return redirect()->back();
+				return redirect()->to(base_url('/budget-input'));
 			} catch (\ReflectionException $e) {
 				session()->setFlashData("error",$e->getMessage());
-				return redirect()->back();
+				//return redirect()->back();
+				return redirect()->to(base_url('/budget-input'));
 			}
 		
 		endif;
