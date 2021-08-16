@@ -370,12 +370,21 @@
               <span> Meetings </span>
             </a>
           </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i data-feather="clipboard"></i>
-              <span> Budgets </span>
-            </a>
-          </li>
+					
+					<li>
+						<a href="#budget" data-toggle="collapse">
+							<i data-feather="message-square"></i>
+							<span> Budgets </span>
+							<span class="menu-arrow"></span>
+						</a>
+						<div class="collapse" id="budget">
+							<ul class="nav-second-level">
+				
+								<li><a href="<?= site_url('/budget-input') ?>">Budget Input</a></li>
+							</ul>
+						</div>
+					</li>
+         
           <li>
             <a href="javascript:void(0)">
               <i data-feather="briefcase"></i>

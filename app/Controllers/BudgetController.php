@@ -42,7 +42,7 @@ class BudgetController extends BaseController
 			$data['budgets'] = $this->budget->findAll();
 			$data['categories'] = $this->bc->findAll();
 			$bhs = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
-				->where('bh_account_type', 1)
+				->where('bh_acc_type', 1)
 				->orderBy('bh_code', 'ASC')
 				->findAll();
 			$new_bh = array();

@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/admin') ?>
+<?= $this->extend('layouts/master') ?>
 <?= $this->section('extra-styles') ?>
 
 <?= $this->endSection() ?>
