@@ -151,7 +151,7 @@
 									
 									<div class="form-group mb-3">
 										<label for="example-input-normal">Amount: </label>
-										<input type="text" id="example-input-normal" name="bh_amount" value="<?=$bhs['bh_amount']; ?>" class="form-control number" placeholder="Amount" required>
+										<input type="text" id="example-input-normal" name="bh_amount" value="<?=number_format($bhs['bh_amount'], 2); ?>" class="form-control number" placeholder="Amount" required readonly>
 									</div>
 									
 									<input type="hidden" name="bh_budget_id" value="<?=$budget['budget_id'] ?>">
