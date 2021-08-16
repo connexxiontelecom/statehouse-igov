@@ -31,7 +31,7 @@ class BudgetController extends BaseController
 		$this->employee = new Employee();
 	}
 	
-	public function budget()
+	public function budget_input()
 	{
 		
 		if($this->request->getMethod() == 'get'):

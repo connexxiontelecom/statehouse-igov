@@ -100,8 +100,7 @@
 												<h1 class="text-error">Oops</h1>
 												<h3 class="mt-3 mb-2">No Budget Assigned to You yet</h3>
 												
-												<a href="<?=site_url('new-budget-chart') ?>" class="btn btn-success waves-effect waves-light">New Chart</a>
-											</div>
+												</div>
 										
 										</div> <!-- end card-body -->
 									</div>
