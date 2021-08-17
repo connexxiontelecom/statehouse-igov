@@ -45,7 +45,6 @@
               </div>
               <a href="<?=site_url('/my-memos')?>" type="button" class="btn btn-success waves-effect waves-light mr-1">My Memos</a>
               <a href="<?=site_url('/memos/requests')?>" type="button" class="btn btn-danger waves-effect waves-light">Signature Requests</a>
-
             </div>
           </div><!-- end col-->
         </div> <!-- end row -->
@@ -107,13 +106,23 @@
           </p>
           <strong>Recipients</strong>
           <div class="avatar-group">
-            <?php foreach ($memo['recipients'] as $recipient):?>
-            <div class="avatar-sm avatar-group-item">
-              <span class="avatar-title bg-soft-secondary text-secondary font-20 rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="<?=$recipient['pos_name']?>">
-                <?=substr($recipient['pos_name'], 0, 1)?>
-              </span>
-            </div>
-            <?php endforeach;?>
+            <?php if(!empty($memo['recipients'])):?>
+              <?php foreach ($memo['recipients'] as $recipient):?>
+              <div class="avatar-sm avatar-group-item">
+                <span class="avatar-title bg-soft-secondary text-secondary font-20 rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="<?=$recipient['pos_name']?>">
+                  <?=substr($recipient['pos_name'], 0, 1)?>
+                </span>
+              </div>
+              <?php endforeach; ?>
+            <?php else:?>
+              <?php foreach ($memo['external_recipients'] as $external_recipient):?>
+                <div class="avatar-sm avatar-group-item">
+                <span class="avatar-title bg-soft-secondary text-secondary font-20 rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="<?=$external_recipient?>">
+                  <?=substr($external_recipient, 0, 1)?>
+                </span>
+                </div>
+              <?php endforeach;?>
+            <?php endif; ?>
           </div>
         </div> <!-- end card box-->
       </div>
