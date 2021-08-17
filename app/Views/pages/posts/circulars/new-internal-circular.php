@@ -1,7 +1,6 @@
 <?= $this->extend('layouts/master'); ?>
 <?=$this->section('extra-styles'); ?>
 <link href="/assets/libs/multiselect/css/multi-select.css" rel="stylesheet" type="text/css" />
-<link href="/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
@@ -42,7 +41,7 @@
           </div>
           <form class="needs-validation" id="new-internal-circular-form" novalidate>
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="ref-no">Reference No</label><span style="color: red"> *</span>
                   <input type="text" class="form-control" id="ref-no" name="p_ref_no" required>
@@ -51,24 +50,24 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-2">
-                <div class="form-group mt-4">
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input"  name="all_department" value="1" id="allDepartment" >
-                    <label class="custom-control-label" for="allDepartment">Select All Departments</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
+              <div class="col-12">
                 <div class="form-group" id="department">
                   <label for="department">Departments</label><span style="color: red"> *</span>
                   <select class="form-control select2-multiple" id="department" data-toggle="select2" multiple="multiple" data-placeholder="Choose Department ..." name="p_recipients_id[]" required>
-				            <?php foreach ($departments as $department): ?>
+                    <?php foreach ($departments as $department): ?>
                       <option value="<?=$department['dpt_id']; ?>"> <?=$department['dpt_name']; ?></option>
-				            <?php endforeach; ?>
+                    <?php endforeach; ?>
                   </select>
                   <div class="invalid-feedback">
                     Please select all applicable departments.
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group mt-0">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input"  name="all_department" value="1" id="allDepartment" >
+                    <label class="custom-control-label" for="allDepartment">Select All Departments</label>
                   </div>
                 </div>
               </div>
@@ -106,15 +105,22 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-4">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="signed-by">Signed By</label><span style="color: red"> *</span>
-                  <select class="form-control" id="signed-by" name="p_signed_by" required>
+                  <select class="form-control" id="signed-by" name="p_signed_by" data-toggle="select2" required>
                     <option value="">Select user</option>
-					          <?php foreach($signed_by as $user):
-						          if($user['user_username'] !== $username):?>
-                        <option value="<?=$user['user_id']?>">  <?=$user['user_name'];?> </option>
-						          <?php endif; endforeach;?>
+                    <?php foreach ($department_employees as $department => $employees): ?>
+                      <?php if(!empty($employees)):?>
+                        <optgroup label="<?=$department?>">
+                          <?php foreach ($employees as $employee):?>
+                            <option value="<?=$employee['user']['user_id']?>">
+                              <?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+                            </option>
+                          <?php endforeach;?>
+                        </optgroup>
+                      <?php endif;?>
+                    <?php endforeach; ?>
                   </select>
                   <div class="invalid-feedback">
                     Please select the signer.
