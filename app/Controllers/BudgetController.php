@@ -40,10 +40,11 @@ class BudgetController extends BaseController
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
 			$active_budget = $this->budget->where('budget_status', 1)->first();
+			
 			$data['budget'] = $active_budget;
 			$data['budgets'] = $this->budget->findAll();
 			$data['categories'] = $this->bc->findAll();
-			$bhs = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
+			$bhs = $this->bh->where('bh_budget_id', @$active_budget['budget_id'])
 				->where('bh_acc_type', 1)
 				->orderBy('bh_code', 'ASC')
 				->findAll();
