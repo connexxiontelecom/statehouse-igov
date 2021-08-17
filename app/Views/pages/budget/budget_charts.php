@@ -4,6 +4,8 @@
 <?= $this->endSection() ?>
 <?= $this->section('content') ?>
 <div class="container-fluid">
+
+<?php if(!empty($budget)): ?>
 	<!-- start page title -->
 	<div class="row">
 		<div class="col-12">
@@ -118,6 +120,56 @@
 		
 		</div> <!-- end col -->
 	</div>
+<?php else: ?>
+	<div class="row">
+		<div class="col-12">
+			<div class="page-title-box">
+				<div class="page-title-right">
+					<ol class="breadcrumb m-0">
+						<li class="breadcrumb-item"><a href="<?= site_url() ?>">iGov</a></li>
+						
+						<li class="breadcrumb-item active">Budget Input</li>
+					</ol>
+				</div>
+				<h4 class="page-title"> No Active Budget</h4>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 col-lg-12 col-xl-12">
+			<div class="card bg-pattern">
+				
+				<div class="card-body p-4">
+					
+					<div class="auth-logo">
+						<a href="/" class="logo logo-dark text-center">
+                                        <span class="logo-lg">
+                                            <img src="../assets/images/logo-sm.png" alt="" height="22">
+                                        </span>
+						</a>
+						
+						<a href="/" class="logo logo-light text-center">
+                                        <span class="logo-lg">
+                                            <img src="../assets/images/logo-sm.png" alt="" height="22">
+                                        </span>
+						</a>
+					</div>
+					
+					<div class="text-center mt-4">
+						<h1 class="text-error">Oops</h1>
+						<h3 class="mt-3 mb-2">No Active Budget yet</h3>
+					
+					</div>
+				
+				</div> <!-- end card-body -->
+			</div>
+			<!-- end card -->
+		
+		</div> <!-- end col -->
+	</div>
+
+	
+<?php endif; ?>
 </div>
 
 
