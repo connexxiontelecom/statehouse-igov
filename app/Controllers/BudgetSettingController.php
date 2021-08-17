@@ -161,7 +161,7 @@ class BudgetSettingController extends BaseController
 			$data['budget'] = $active_budget;
 			$data['budgets'] = $this->budget->findAll();
 			$data['categories'] = $this->bc->findAll();
-			$bhs = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
+			$bhs = $this->bh->where('bh_budget_id', @$active_budget['budget_id'])
 				->orderBy('bh_code', 'ASC')
 				->findAll();
 			$new_bh = array();
@@ -198,7 +198,7 @@ class BudgetSettingController extends BaseController
 			$data['budget'] = $active_budget;
 			$data['budgets'] = $this->budget->findAll();
 			$data['categories'] = $this->bc->findAll();
-			$bhs = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
+			$bhs = $this->bh->where('bh_budget_id', @$active_budget['budget_id'])
 									->orderBy('bh_code', 'ASC')
 									->findAll();
 			$new_bh = array();
