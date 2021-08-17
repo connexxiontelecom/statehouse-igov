@@ -80,12 +80,11 @@
 					
 					<div class="row">
 						<div class="col-xl-12">
-							
+							<?php if($budget['budget_status'] == 1): ?>
 							<a href="<?=site_url('new-budget-chart') ?>" class="btn btn-success waves-effect waves-light"><i class="fas fa-plus"></i></a></a>
-							
+							<?php endif; ?>
 							
 							<?php if(!empty($bhs)): ?>
-								
 								
 								<table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
 									<thead>
