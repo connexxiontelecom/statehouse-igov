@@ -250,8 +250,8 @@ class BudgetSettingController extends BaseController
 			$data['username'] = $this->session->user_username;
 			$active_budget = $this->budget->where('budget_status', 1)->first();
 			$data['budget'] = $active_budget;
-			$data['bhs'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->findAll();
-			$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])->where('bh_acc_type', 0)->findAll();
+			$data['bhs'] = $this->bh->where('bh_budget_id', @$active_budget['budget_id'])->findAll();
+			$data['parents'] = $this->bh->where('bh_budget_id', @$active_budget['budget_id'])->where('bh_acc_type', 0)->findAll();
 			$data['categories'] = $this->bc->findAll();
 			$data['positions'] = $this->position->findAll();
 			$data['department_employees'] = $this->_get_department_employees();
