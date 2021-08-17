@@ -99,9 +99,14 @@
             <div class="col-6">
               <div class="float-left">
                 <h5 class="font-size-14 mb-0">To:</h5>
-                <?php foreach ($memo['recipients'] as $recipient): ?>
-                  <?=$recipient['pos_name']?> (<?=$recipient['department']['dpt_name']?>) <br>
-                <?php endforeach;?>
+                <?php if(!empty($memo['recipients'])):?>
+                  <?php foreach ($memo['recipients'] as $recipient): ?>
+                    <?=$recipient['pos_name']?> (<?=$recipient['department']['dpt_name']?>) <br>
+                  <?php endforeach; ?>
+                <?php else:?>
+                  <?php foreach ($memo['external_recipients'] as $external_recipient):?>
+                  <?=$external_recipient?> <br>
+                <?php endforeach; endif; ?>
               </div>
             </div>
           </div>

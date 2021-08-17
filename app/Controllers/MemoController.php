@@ -32,12 +32,6 @@ class MemoController extends PostController
 
 	public function internal_memo() {
 		if($this->request->getMethod() == 'get'):
-			$data['signed_by'] = $this->user->where('user_status', 1)
-				->groupStart()
-				->where('user_type', 2)
-				->orWhere('user_type', 3)
-				->groupEnd()
-				->findAll();
 			$data['department_employees'] = $this->_get_department_employees();
 			$data['pager'] = $this->post->pager;
 			$data['firstTime'] = $this->session->firstTime;
@@ -73,13 +67,8 @@ class MemoController extends PostController
 
 	public function external_memo(){
 		if($this->request->getMethod() == 'get'):
-			$data['signed_by'] = $this->user->where('user_status', 1)
-				->groupStart()
-				->where('user_type', 2)
-				->orWhere('user_type', 3)
-				->groupEnd()
-				->findAll();
-			$data['positions'] = $this->position->findAll();
+      $data['department_employees'] = $this->_get_department_employees();
+      $data['positions'] = $this->position->findAll();
 			$data['pager'] = $this->post->pager;
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
@@ -95,12 +84,14 @@ class MemoController extends PostController
 			'p_by' => $this->session->user_id,
 			'p_signed_by' => $post_data['p_signed_by'],
 			'p_direction' => 2,
-			'p_recipients_id' => json_encode($post_data['positions'])
+			'p_recipients_id' => $post_data['p_recipients']
 		];
 		$post_id = $this->post->insert($memo_data);
-		$attachments = $post_data['p_attachment'];
 		if ($post_id) {
-			$this->_upload_attachments($attachments, $post_id);
+      if (isset($post_data['m_attachments'])) {
+        $attachments = $post_data['m_attachments'];
+        $this->_upload_attachments($attachments, $post_id);
+      }
 			$response['success'] = true;
 			$response['message'] = 'Successfully created the external memo';
 		} else {
@@ -167,15 +158,17 @@ class MemoController extends PostController
 		foreach ($memos as $memo) {
 			$recipient_ids = json_decode($memo['p_recipients_id']);
 			$recipients = [];
-			foreach ($recipient_ids as $recipient_id) {
-				array_push($recipients, $this->position->find($recipient_id));
-			}
-			if (in_array($position_id, $recipient_ids) || $memo['p_signed_by'] == session()->user_id || $memo['p_by'] == session()->user_id) {
-				$memo['written_by'] = $this->user->find($memo['p_by']);
-				$memo['signed_by'] = $this->user->find($memo['p_signed_by']);
-				$memo['recipients'] = $recipients;
-				array_push($new_memos, $memo);
-			}
+			if ($recipient_ids) {
+        foreach ($recipient_ids as $recipient_id) {
+          array_push($recipients, $this->position->find($recipient_id));
+        }
+        if (in_array($position_id, $recipient_ids) || $memo['p_signed_by'] == session()->user_id || $memo['p_by'] == session()->user_id) {
+          $memo['written_by'] = $this->user->find($memo['p_by']);
+          $memo['signed_by'] = $this->user->find($memo['p_signed_by']);
+          $memo['recipients'] = $recipients;
+          array_push($new_memos, $memo);
+        }
+      }
 		}
 		return $new_memos;
 	}
@@ -190,9 +183,14 @@ class MemoController extends PostController
 		foreach ($memos as $key => $memo) {
 			$recipient_ids = json_decode($memo['p_recipients_id']);
 			$recipients = [];
-			foreach ($recipient_ids as $recipient_id) {
-				array_push($recipients, $this->position->find($recipient_id));
-			}
+			if ($recipient_ids) {
+        foreach ($recipient_ids as $recipient_id) {
+          array_push($recipients, $this->position->find($recipient_id));
+        }
+      } else {
+			  $external_recipients = explode("\n", $memo['p_recipients_id']);
+			  $memos[$key]['external_recipients'] = $external_recipients;
+      }
 			$memos[$key]['written_by'] = $this->user->find($memo['p_by']);
 			$memos[$key]['recipients'] = $recipients;
 		}
@@ -258,11 +256,16 @@ class MemoController extends PostController
 			$memo['attachments'] = $this->pa->where('pa_post_id', $memo_id)->findAll();
 			$recipient_ids = json_decode($memo['p_recipients_id']);
 			$recipients = [];
-			foreach ($recipient_ids as $recipient_id) {
-				$position =  $this->position->find($recipient_id);
-				$position['department'] = $this->department->find($position['pos_dpt_id']);
-				array_push($recipients, $position);
-			}
+			if ($recipient_ids) {
+        foreach ($recipient_ids as $recipient_id) {
+          $position =  $this->position->find($recipient_id);
+          $position['department'] = $this->department->find($position['pos_dpt_id']);
+          array_push($recipients, $position);
+        }
+      } else {
+        $external_recipients = explode("\n", $memo['p_recipients_id']);
+        $memo['external_recipients'] = $external_recipients;
+      }
 			$memo['recipients'] = $recipients;
 			$memo['organization'] = $this->organization->first();
 		}

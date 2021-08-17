@@ -1,6 +1,5 @@
 <?= $this->extend('layouts/master'); ?>
 <?=$this->section('extra-styles'); ?>
-<link href="/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
 <?=$this->endSection() ?>
@@ -103,15 +102,22 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-4">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="signed-by">Signed By</label><span style="color: red"> *</span>
-                  <select class="form-control" id="signed-by" name="p_signed_by" required>
+                  <select class="form-control" id="signed-by" name="p_signed_by" data-toggle="select2" required>
                     <option value="">Select user</option>
-                    <?php foreach($signed_by as $user):
-                    if($user['user_username'] !== $username):?>
-                      <option value="<?=$user['user_id']?>">  <?=$user['user_name'];?> </option>
-                    <?php endif; endforeach;?>
+                    <?php foreach ($department_employees as $department => $employees): ?>
+                      <?php if(!empty($employees)):?>
+                        <optgroup label="<?=$department?>">
+                          <?php foreach ($employees as $employee):?>
+                            <option value="<?=$employee['user']['user_id']?>">
+                              <?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+                            </option>
+                          <?php endforeach;?>
+                        </optgroup>
+                      <?php endif;?>
+                    <?php endforeach; ?>
                   </select>
                   <div class="invalid-feedback">
                     Please select the signer.
@@ -137,5 +143,4 @@
 <?=view('pages/posts/memos/_memo-scripts.php')?>
 <script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
 <script src="/assets/libs/dropify/js/dropify.min.js"></script>
-<script src="/assets/libs/select2/js/select2.min.js"></script>
 <?= $this->endSection(); ?>
