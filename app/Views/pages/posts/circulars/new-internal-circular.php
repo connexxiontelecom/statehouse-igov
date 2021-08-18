@@ -52,8 +52,8 @@
               </div>
               <div class="col-12">
                 <div class="form-group" id="department">
-                  <label for="department">Departments</label><span style="color: red"> *</span>
-                  <select class="form-control select2-multiple" id="department" data-toggle="select2" multiple="multiple" data-placeholder="Choose Department ..." name="p_recipients_id[]" required>
+                  <label for="departments">Departments</label><span style="color: red"> *</span>
+                  <select class="form-control select2-multiple" id="departments" data-toggle="select2" multiple="multiple" data-placeholder="Choose Department ..." name="p_recipients_id[]" required>
                     <?php foreach ($departments as $department): ?>
                       <option value="<?=$department['dpt_id']; ?>"> <?=$department['dpt_name']; ?></option>
                     <?php endforeach; ?>
@@ -131,7 +131,7 @@
             <div class="row g-3">
               <div class="col-lg-12 offset-lg-12">
                 <div class="form-group mt-2">
-                  <button type="button" onclick="createInternalCircular()" class="btn btn-primary btn-block">Submit</button>
+                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
                 </div>
               </div>
             </div>
