@@ -129,13 +129,14 @@
 
   <!-- Datatables init -->
   <script src="/assets/js/pages/datatables.init.js"></script>
-<?=view('pages/registry/_registry-scripts.php')?>
   <script>
     $(document).ready(() => {
-			<?php if (session()->getFlashdata('transfer_requests')):?>
+    <?php if (session()->getFlashdata('transfer_requests')):?>
       jQuery.noConflict()
       $('#warning-alert-modal-3').modal('show');
 			<?php endif;?>
     })
   </script>
+<?=view('pages/registry/_registry-scripts.php')?>
+
 <?= $this->endSection(); ?>
