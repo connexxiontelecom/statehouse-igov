@@ -14,7 +14,6 @@
 						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
 						<li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
 						<li class="breadcrumb-item"><a href="<?= site_url('/notices')?>">Notice Board</a></li>
-						<li class="breadcrumb-item"><a href="<?= site_url('/my-notices')?>">My Notices</a></li>
 						<li class="breadcrumb-item active">New Notice</li>
 					</ol>
 				</div>
@@ -32,12 +31,12 @@
               <h4 class="header-title">Create Notice Form</h4>
             </div>
             <div class="col-lg-4">
-              <a href="<?=site_url('/my-notices')?>" type="button" class="btn btn-success float-right">Go Back</a>
+              <a href="<?=site_url('/notices')?>" type="button" class="btn btn-success float-right">Go Back</a>
             </div>
           </div>
           <form class="needs-validation" id="new-notice-form" novalidate>
             <div class="row">
-              <div class="col-lg-4">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="ref-no">Reference No</label><span style="color: red"> *</span>
                   <input type="text" class="form-control" id="ref-no" name="p_ref_no" required>
@@ -46,7 +45,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-8">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="subject">Subject</label><span style="color: red"> *</span>
                   <input type="text" id="subject" class="form-control" name="p_subject" required>
@@ -78,16 +77,22 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-4">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="signed-by">Signed By</label><span style="color: red"> *</span>
-                  <select class="form-control" id="signed-by" name="p_signed_by" required>
+                  <select class="form-control" id="signed-by" name="p_signed_by" data-toggle="select2" required>
                     <option value="">Select user</option>
-                    <?php foreach($signed_by as $user): ?>
-                    <option value="<?=$user['user_id']?>">
-                      <?=$user['user_name'];?>
-                    </option>
-                    <?php endforeach;?>
+                    <?php foreach ($department_employees as $department => $employees): ?>
+                      <?php if(!empty($employees)):?>
+                        <optgroup label="<?=$department?>">
+                          <?php foreach ($employees as $employee):?>
+                            <option value="<?=$employee['user']['user_id']?>">
+                              <?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+                            </option>
+                          <?php endforeach;?>
+                        </optgroup>
+                      <?php endif;?>
+                    <?php endforeach; ?>
                   </select>
                   <div class="invalid-feedback">
                     Please select the signer.
