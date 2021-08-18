@@ -39,6 +39,7 @@
       let sender = $('#sender').val()
       let dateCorrespondence = $('#date-correspondence').val()
       let dateReceived = $('#date-received').val()
+      let registryID = $('#registry-id').val()
       if (!refNo || !subject || !sender || !dateCorrespondence || !dateReceived) {
         Swal.fire('Invalid Submission!', 'Please fill in all required fields', 'error')
       } else {
@@ -54,7 +55,7 @@
         }).then(confirm => {
           if (confirm.value) {
             $.ajax({
-              url: '<?=site_url('/incoming-mail')?>',
+              url: '<?=site_url('/incoming-mail/')?>'+registryID,
               type: 'post',
               data: formData,
               success: response => {
@@ -80,6 +81,7 @@
       let sender = $('#sender').val()
       let dateCorrespondence = $('#date-correspondence').val()
       let dateReceived = $('#date-received').val()
+      let registryID = $('#registry-id').val()
       if (!refNo || !subject || !sender || !dateCorrespondence || !dateReceived) {
         Swal.fire('Invalid Submission!', 'Please fill in all required fields', 'error')
       } else {
@@ -95,12 +97,12 @@
         }).then(confirm => {
           if (confirm.value) {
             $.ajax({
-              url: '<?=site_url('/outgoing-mail')?>',
+              url: '<?=site_url('/outgoing-mail/')?>'+registryID,
               type: 'post',
               data: formData,
               success: response => {
                 if (response.success) {
-                  Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/central-registry')?>')
+                  Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/view-registry/')?>'+registryID)
                 } else {
                   Swal.fire('Sorry!', response.message, 'error')
                 }

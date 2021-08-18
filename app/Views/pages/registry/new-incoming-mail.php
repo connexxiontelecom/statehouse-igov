@@ -103,6 +103,7 @@
         </div>
       </div>
     </div>
+    <input type="hidden" value="<?=$registry['registry_id']?>" id="registry-id">
     <div class="row">
       <div class="col-12 text-center">
         <button class="btn btn-success waves-effect waves-light m-1"><i class="fe-check-circle mr-1"></i> Register</button>
