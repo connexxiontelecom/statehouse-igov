@@ -92,6 +92,42 @@ class RegistryController extends BaseController
 		return $this->response->setJSON($response);
 	}
 
+	public function outgoing_mail($registry_id = null) {
+    if($this->request->getMethod() == 'get'):
+      $data['firstTime'] = $this->session->firstTime;
+      $data['username'] = $this->session->user_username;
+      $data['registry'] = $this->_get_registry($registry_id);
+      return view('/pages/registry/new-outgoing-mail', $data);
+    endif;
+    $post_data = $this->request->getPost();
+    $mail_data = [
+      'm_ref_no' => $post_data['m_ref_no'],
+      'm_subject' => $post_data['m_subject'],
+      'm_sender' => $post_data['m_sender'],
+      'm_date_correspondence' => $post_data['m_date_correspondence'],
+      'm_date_received' => $post_data['m_date_received'],
+      'm_notes' => $post_data['m_notes'],
+      'm_status' => 0,
+      'm_by' => $this->session->user_id,
+      'm_desk' => $this->session->user_id,
+      'm_direction' => 2,
+      'm_registry_id' => $registry_id
+    ];
+    $mail_id = $this->mail->insert($mail_data);
+    if ($mail_id) {
+      if (isset($post_data['m_attachments'])) {
+        $attachments = $post_data['m_attachments'];
+        $this->_upload_attachments($attachments, $mail_id);
+      }
+      $response['success'] = true;
+      $response['message'] = 'Successfully registered the outgoing mail';
+    } else {
+      $response['success'] = false;
+      $response['message'] = 'There was an error while registering the outgoing mail';
+    }
+    return $this->response->setJSON($response);
+  }
+
 	public function upload_mail_attachments() {
 		$file = $this->request->getFile('file');
 		if($file->isValid() && !$file->hasMoved()):
@@ -265,8 +301,9 @@ class RegistryController extends BaseController
 		$data['username'] = $this->session->user_username;
 		$data['mails'] = $this->_get_user_mails();
 		$transfer_requests = $this->_get_transfer_requests();
-		if ($transfer_requests) session()->setFlashdata('transfer_requests', true);
-		return view('/pages/registry/correspondence', $data);
+		if ($transfer_requests)
+		  session()->setFlashdata('transfer_requests', true);
+    return view('/pages/registry/correspondence', $data);
 	}
 
 	private function _get_registries() {
