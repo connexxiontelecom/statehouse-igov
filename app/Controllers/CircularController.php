@@ -63,13 +63,8 @@ class CircularController extends PostController
 
 	public function internal_circular() {
 		if($this->request->getMethod() == 'get'):
-			$data['signed_by'] = $this->user->where('user_status', 1)
-				->groupStart()
-				->where('user_type', 2)
-				->orWhere('user_type', 3)
-				->groupEnd()
-				->findAll();
-			$data['departments']= $this->department->findAll();
+      $data['department_employees'] = $this->_get_department_employees();
+      $data['departments']= $this->department->findAll();
 			$data['pager'] = $this->post->pager;
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
@@ -111,6 +106,36 @@ class CircularController extends PostController
 		endif;
 	}
 
+  public function external_circular(){
+    if($this->request->getMethod() == 'get'):
+      $data['department_employees'] = $this->_get_department_employees();
+      $data['departments']= $this->department->findAll();
+      $data['pager'] = $this->post->pager;
+      $data['firstTime'] = $this->session->firstTime;
+      $data['username'] = $this->session->user_username;
+      return view('/pages/posts/circulars/new-external-circular', $data);
+    endif;
+    $p_attachments = array();
+    if(isset($_POST['p_attachment'])):
+      $p_attachments = $_POST['p_attachment'];
+      unset($_POST['p_attachment']);
+    endif;
+    $_POST['p_by'] = $this->session->user_id;
+    $_POST['p_direction'] = 2;
+    $_POST['p_status'] = 0;
+    $_POST['p_type'] = 2;
+    $p_id = $this->post->insert($_POST);
+    if ($p_id):
+      $this->_upload_attachments($p_attachments, $p_id);
+      $response['success'] = true;
+      $response['message'] = 'Successfully created the external circular';
+    else:
+      $response['success'] = false;
+      $response['message'] = 'There was an error while creating the external circular';
+    endif;
+    return $this->response->setJSON($response);
+  }
+
 	public function view_circular($p_id){
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
@@ -118,21 +143,6 @@ class CircularController extends PostController
 		return view('/pages/posts/circulars/view-circular', $data);
 	}
 
-	public function external_circular(){
-		if($this->request->getMethod() == 'get'):
-			$data['signed_by'] = $this->user->where('user_status', 1)
-				->groupStart()
-				->where('user_type', 2)
-				->orWhere('user_type', 3)
-				->groupEnd()
-				->findAll();
-			$data['departments']= $this->department->findAll();
-			$data['pager'] = $this->post->pager;
-			$data['firstTime'] = $this->session->firstTime;
-			$data['username'] = $this->session->user_username;
-			return view('/pages/posts/circulars/new-external-circular', $data);
-		endif;
-	}
 
 	public function my_circulars(){
 		$data['firstTime'] = $this->session->firstTime;
@@ -176,9 +186,15 @@ class CircularController extends PostController
 		foreach ($circulars as $key => $circular) {
 			$recipient_ids = json_decode($circular['p_recipients_id']);
 			$recipients = [];
-			foreach ($recipient_ids as $recipient_id) {
-				array_push($recipients, $this->department->find($recipient_id));
-			}
+			if ($recipient_ids) {
+        foreach ($recipient_ids as $recipient_id) {
+          array_push($recipients, $this->department->find($recipient_id));
+        }
+      } else {
+        $external_recipients = explode("\n", $circular['p_recipients_id']);
+        $circulars[$key]['external_recipients'] = $external_recipients;
+      }
+
 			$created_by = $this->user->find($circular['p_by']);
 			$circulars[$key]['created_by'] = $created_by['user_name'];
 			$circulars[$key]['recipients'] = $recipients;
@@ -201,17 +217,56 @@ class CircularController extends PostController
 	private function _get_circular($circular_id) {
 		$circular = $this->post->find($circular_id);
 		if ($circular) {
-			$circular['created_by'] = $this->user->find($circular['p_by']);
-			$circular['signed_by'] = $this->user->find($circular['p_signed_by']);
-			$circular['attachments'] = $this->pa->where('pa_post_id', $circular_id)->findAll();
-			$recipient_ids = json_decode($circular['p_recipients_id']);
-			$recipients = [];
-			foreach ($recipient_ids as $recipient_id) {
-				array_push($recipients, $this->department->find($recipient_id));
-			}
+      $written_by = $this->user->find($circular['p_by']);
+      $written_by_employee = $this->employee->find($written_by['user_employee_id']);
+      $written_by_position = $this->position->find($written_by_employee['employee_position_id']);
+      $written_by_department = $this->department->find($written_by_position['pos_id']);
+      $circular['written_by'] = $written_by;
+      $circular['written_by']['position'] = $written_by_position;
+      $circular['written_by']['department'] = $written_by_department;
+      // signed by
+      $signed_by = $this->user->find($circular['p_signed_by']);
+      $signed_by_employee = $this->employee->find($signed_by['user_employee_id']);
+      $signed_by_position = $this->position->find($signed_by_employee['employee_position_id']);
+      $signed_by_department = $this->department->find($signed_by_position['pos_id']);
+      $circular['signed_by'] = $signed_by;
+      $circular['signed_by']['position'] = $signed_by_position;
+      $circular['signed_by']['department'] = $signed_by_department;
+
+      $circular['attachments'] = $this->pa->where('pa_post_id', $circular_id)->findAll();
+      $recipient_ids = json_decode($circular['p_recipients_id']);
+      $recipients = [];
+      if ($recipient_ids) {
+        foreach ($recipient_ids as $recipient_id) {
+          array_push($recipients, $this->department->find($recipient_id));
+        }
+      } else {
+        $external_recipients = explode("\n", $circular['p_recipients_id']);
+        $circular['external_recipients'] = $external_recipients;
+      }
 			$circular['recipients'] = $recipients;
 			$circular['organization'] = $this->organization->first();
 		}
 		return $circular;
 	}
+
+  private function _get_department_employees() {
+    $department_employees = [];
+    $departments = $this->department->findAll();
+    foreach ($departments as $department) {
+      $department_employees[$department['dpt_name']] = [];
+      $employees = $this->employee
+        ->where('employee_department_id', $department['dpt_id'])
+        ->findAll();
+      foreach ($employees as $employee) {
+        $user = $this->user->where('user_employee_id', $employee['employee_id'])->first();
+        if ($user['user_status'] == 1 && ($user['user_type'] == 3 || $user['user_type'] == 2)) {
+          $employee['user'] = $user;
+          $employee['position'] = $this->position->find($employee['employee_position_id']);
+          array_push($department_employees[$department['dpt_name']], $employee);
+        }
+      }
+    }
+    return $department_employees;
+  }
 }

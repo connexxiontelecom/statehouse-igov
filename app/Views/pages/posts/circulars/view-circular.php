@@ -19,28 +19,36 @@
     </div>
 	</div>
 	<!-- end page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card-box">
+        <div class="row d-print-none">
+          <div class="col-lg-4">
+            <h5>View <?=$circular['p_direction'] == 1 ? 'Internal':'External'?> Circular</h5>
+          </div>
+          <div class="col-lg-8">
+            <div class="text-lg-right">
+              <a href="javascript:window.print()" type="button" class="btn btn-success waves-effect waves-light mr-2"><i class="mdi mdi-printer"></i></a>
+              <?php if($circular['p_by'] == session()->user_id && $circular['p_status'] == 0):?>
+                <a href="<?=site_url('/edit-circular/').$circular['p_id']?>" type="button" class="btn btn-success">Edit</a>
+              <?php endif;?>
+              <?php if($circular['p_signed_by'] == session()->user_id && $circular['p_status'] == 0):?>
+                <button onclick="signDocument(<?=$circular['p_id']?>)" type="button" class="btn btn-success mr-1">Sign</button>
+                <button onclick="declineDocument(<?=$circular['p_id']?>)" type="button" class="btn btn-danger mr-1">Decline</button>
+              <?php endif;?>
+              <a href="<?=site_url('/circulars')?>" type="button" class="btn btn-success">Go Back</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 	<div class="row">
-		<div class="col-lg-7">
+		<div class="col-12">
 			<!-- project card -->
 			<div class="card d-block">
 				<div class="card-body">
-					<div class="row d-print-none">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-11">
-              <div class="text-lg-right">
-                <a href="javascript:window.print()" type="button" class="btn btn-success waves-effect waves-light mr-2"><i class="mdi mdi-printer"></i></a>
-		            <?php if($circular['p_by'] == session()->user_id && $circular['p_status'] == 0):?>
-                  <a href="<?=site_url('/edit-circular/').$circular['p_id']?>" type="button" class="btn btn-success">Edit</a>
-		            <?php endif;?>
-		            <?php if($circular['p_signed_by'] == session()->user_id && $circular['p_status'] == 0):?>
-                  <button onclick="signDocument(<?=$circular['p_id']?>)" type="button" class="btn btn-success mr-1">Sign</button>
-                  <button onclick="declineDocument(<?=$circular['p_id']?>)" type="button" class="btn btn-danger mr-1">Decline</button>
-		            <?php endif;?>
-                <a href="<?=site_url('/circulars')?>" type="button" class="btn btn-success">Go Back</a>
-              </div>
-            </div>
-					</div>
-          <div class="row">
+          <div class="row mb-3">
             <div class="auth-logo" style="margin: 0 auto;">
               <div class="logo logo-dark">
                 <span class="logo-lg">
@@ -84,17 +92,27 @@
           <div class="row">
             <div class="col-6">
               <div class="float-left">
-                <ul>
-	                <?php foreach ($circular['recipients'] as $recipient): ?>
-                    <li>
-	                    <?=$recipient['dpt_name']?>
-                    </li>
-	                <?php endforeach;?>
-                </ul>
+                <h5 class="font-size-14 mb-0">From:</h5>
+                <?=$circular['written_by']['user_name'] ?> (<?=$circular['written_by']['position']['pos_name']?>, <?=$circular['written_by']['department']['dpt_name']?>)
               </div>
             </div>
           </div>
           <div class="row">
+            <div class="col-6">
+              <div class="float-left">
+                <h5 class="font-size-14 mb-0">To:</h5>
+                <?php if(!empty($circular['recipients'])):?>
+                  <?php foreach ($circular['recipients'] as $recipient): ?>
+                    <?=$recipient['dpt_name']?>
+                  <?php endforeach;?>
+                <?php else:?>
+                  <?php foreach ($circular['external_recipients'] as $external_recipient):?>
+                    <?=$external_recipient?> <br>
+                  <?php endforeach; endif; ?>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
             <div class="col-12">
               <h3 class="title text-center text-uppercase"><u><?=$circular['p_subject']?></u></h3>
               <p>
@@ -112,9 +130,9 @@
 									<?=$circular['signed_by']['user_name'] ?>
                 </h5>
 							<?php elseif ($circular['p_status'] == 4):?>
-                <strong class="mt-2 mb-1 text-muted">This memo is rejected</strong>
+                <strong class="mt-2 mb-1 text-muted">This circular is rejected</strong>
 							<?php else:?>
-                <strong class="mt-2 mb-1 text-muted">This memo is unsigned</strong>
+                <strong class="mt-2 mb-1 text-muted">This circular is unsigned</strong>
 							<?php endif;?>
             </div>
             <div class="col-lg-4"></div>
@@ -123,7 +141,7 @@
 			</div> <!-- end card-->
 			<!-- end card-->
 		</div> <!-- end col -->
-		<div class="col-lg-5 d-print-none">
+		<div class="col-12 d-print-none">
 			<div class="card">
 				<div class="card-body">
 					<h5 class="card-title font-16 mb-3">Attachments</h5>
