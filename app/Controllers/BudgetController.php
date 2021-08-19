@@ -52,7 +52,7 @@ class BudgetController extends BaseController
 			$j = 0;
 			foreach ($bhs as $bh):
 				$offices = json_decode($bh['bh_office']);
-				if(in_array($this->session->user_employee_id, $offices)):
+//				if(in_array($this->session->user_employee_id, $offices)):
 					$office_array = array();
 					$i = 0;
 					foreach ($offices as $office):
@@ -68,10 +68,11 @@ class BudgetController extends BaseController
 					$bh['office_d'] = $office_array;
 					$new_bh[$j] = $bh;
 					$j++;
-				endif;
+//				endif;
 			endforeach;
 			
 			$data['bhs'] = $new_bh;
+			$data['employee_id'] = $this->session->user_employee_id;
 			
 		
 			return view('pages/budget/budget_charts', $data);
