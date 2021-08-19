@@ -45,7 +45,7 @@ class BudgetController extends BaseController
 			$data['budgets'] = $this->budget->findAll();
 			$data['categories'] = $this->bc->findAll();
 			$bhs = $this->bh->where('bh_budget_id', @$active_budget['budget_id'])
-				->where('bh_acc_type', 1)
+//				->where('bh_acc_type', 1)
 				->orderBy('bh_code', 'ASC')
 				->findAll();
 			$new_bh = array();
@@ -113,24 +113,34 @@ class BudgetController extends BaseController
 		endif;
 		
 		if($this->request->getMethod() == 'get'):
-			$data['firstTime'] = $this->session->firstTime;
-			$data['username'] = $this->session->user_username;
-			$data['bhs'] = $bh = $this->bh->where('bh_id', $id)->first();
-			$active_budget = $this->budget->where('budget_id', $bh['bh_budget_id'])->first();
-			$data['budget'] = $active_budget;
-			$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
-				->where('bh_acc_type', 0)
-				->where('bh_cat', $bh['bh_cat'])
-				->orderBy('bh_code', 'ASC')
-				->findAll();
+				
+				$data['firstTime'] = $this->session->firstTime;
+				$data['username'] = $this->session->user_username;
+				$data['bhs'] = $bh = $this->bh->where('bh_id', $id)->first();
 			
+			$offices = json_decode($bh['bh_office']);
+				if(in_array($this->session->user_employee_id, $offices)):
+				
+				
+				$active_budget = $this->budget->where('budget_id', $bh['bh_budget_id'])->first();
+				$data['budget'] = $active_budget;
+				$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
+					->where('bh_acc_type', 0)
+					->where('bh_cat', $bh['bh_cat'])
+					->orderBy('bh_code', 'ASC')
+					->findAll();
+				
+				
+				$data['revisions'] = $this->brl->where('brl_bh_id', $id)
+												->join('employees', 'employees.employee_id = budget_revision_logs.brl_employee_id')
+												->orderBy('brl_date', 'DESC')
+												->findAll();
+		
+				return view('pages/budget/edit_budget_chart', $data);
+			else:
 			
-			$data['revisions'] = $this->brl->where('brl_bh_id', $id)
-											->join('employees', 'employees.employee_id = budget_revision_logs.brl_employee_id')
-											->orderBy('brl_date', 'DESC')
-											->findAll();
-	
-			return view('pages/budget/edit_budget_chart', $data);
+			echo "access denied";
+			endif;
 		endif;
 	}
 }
