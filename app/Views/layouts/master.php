@@ -380,7 +380,7 @@
 						<div class="collapse" id="budget">
 							<ul class="nav-second-level">
 				
-								<li><a href="<?= site_url('/budget-input') ?>">Budget Chat</a></li>
+								<li><a href="<?= site_url('/budget-input') ?>">Budget Chart</a></li>
 							</ul>
 						</div>
 					</li>
