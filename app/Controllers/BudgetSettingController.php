@@ -284,6 +284,7 @@ class BudgetSettingController extends BaseController
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
 			$data['bhs'] = $bh = $this->bh->where('bh_id', $id)->first();
+			
 			$active_budget = $this->budget->where('budget_id', $bh['bh_budget_id'])->first();
 			$data['budget'] = $active_budget;
 			$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
