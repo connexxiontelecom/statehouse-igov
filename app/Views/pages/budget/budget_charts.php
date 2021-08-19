@@ -43,7 +43,7 @@
 										<th>Code</th>
 										<th>Item</th>
 										<th> Project Status</th>
-										<th> Responsible Office</th>
+<!--										<th> Responsible Office</th>-->
 										<th>Amount</th>
 										<th> Action </th>
 									</tr>
@@ -65,7 +65,7 @@
 													<td <?php if($bh['bh_acc_type'] == 0): echo 'style="font-weight: bold;"';  endif; ?>><?=$bh['bh_code'];?></td>
 													<td <?php if($bh['bh_acc_type'] == 0): echo 'style="font-weight: bold;"';  endif; ?>><?=$bh['bh_title'];?></td>
 													<td> <? if($bh['bh_project'] == 1 ): echo $bh['bh_project_status']; endif; ?></td>
-													<td> <?=implode('', $bh['office_d']); ?></td>
+<!--												<td> --><?//=implode(	'', $bh['office_d']); ?><!--</td>-->
 													<td>  <?php if($bh['bh_acc_type']): echo number_format($bh['bh_amount']); endif; ?></td>
 													
 													<td>
