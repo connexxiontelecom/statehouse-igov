@@ -119,7 +119,7 @@ class BudgetController extends BaseController
 				$data['bhs'] = $bh = $this->bh->where('bh_id', $id)->first();
 			
 			$offices = json_decode($bh['bh_office']);
-				if(in_array($this->session->user_employee_id, $offices)):
+				if(in_array($this->session->user_employee_id, $offices) && $bh['bh_acc_type'] == 1):
 				
 				
 				$active_budget = $this->budget->where('budget_id', $bh['bh_budget_id'])->first();

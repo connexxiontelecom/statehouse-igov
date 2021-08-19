@@ -69,7 +69,7 @@
 													<td>  <?php if($bh['bh_acc_type']): echo number_format($bh['bh_amount']); endif; ?></td>
 													
 													<td>
-														<?php 	if(in_array($employee_id, json_decode($bh['bh_office']))): ?>
+														<?php 	if(in_array($employee_id, json_decode($bh['bh_office'])) && $bh['bh_acc_type'] == 1): ?>
 															<a href="<?=site_url('edit-budget-input/'.$bh['bh_id']) ?>" class="btn btn-success waves-effect waves-light"><i class="far fa-edit"></i></a>
 														<?php endif; ?>
 													</td>
