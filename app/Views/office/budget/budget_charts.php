@@ -117,7 +117,12 @@
 													<td> <? if($bh['bh_project'] == 1 ): echo $bh['bh_project_status']; endif; ?></td>
 													<td> <?=implode('', $bh['office_d']); ?></td>
 													<td>  <?php if($bh['bh_acc_type']): echo number_format($bh['bh_amount']); endif; ?></td>
-													<td> <a href="<?=site_url('edit-budget-chart/'.$bh['bh_id']) ?>" class="btn btn-success waves-effect waves-light"><i class="far fa-edit"></i></a></td>
+													
+													<td>
+														
+														<a href="<?=site_url('edit-budget-chart/'.$bh['bh_id']) ?>" class="btn btn-success waves-effect waves-light"><i class="far fa-edit"></i></a>
+													
+													</td>
 												</tr>
 											<?php endif; endforeach; ?>
 									<?php endforeach; ?>
