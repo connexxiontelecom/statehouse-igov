@@ -284,17 +284,22 @@ class BudgetSettingController extends BaseController
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
 			$data['bhs'] = $bh = $this->bh->where('bh_id', $id)->first();
-			$active_budget = $this->budget->where('budget_id', $bh['bh_budget_id'])->first();
-			$data['budget'] = $active_budget;
-			$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
-									->where('bh_acc_type', 0)
-									->where('bh_cat', $bh['bh_cat'])
-									->orderBy('bh_code', 'ASC')
-									->findAll();
-			$data['categories'] = $this->bc->findAll();
-		
-			$data['department_employees'] = $this->_get_department_employees();
-			return view('office/budget/edit_budget_chart', $data);
+			
+			if(!empty($bh)):
+					$active_budget = $this->budget->where('budget_id', $bh['bh_budget_id'])->first();
+					$data['budget'] = $active_budget;
+					$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
+											->where('bh_acc_type', 0)
+											->where('bh_cat', $bh['bh_cat'])
+											->orderBy('bh_code', 'ASC')
+											->findAll();
+					$data['categories'] = $this->bc->findAll();
+				
+					$data['department_employees'] = $this->_get_department_employees();
+					return view('office/budget/edit_budget_chart', $data);
+			else:
+				return view('office/error_404', $data);
+				endif;
 		endif;
 	}
 	

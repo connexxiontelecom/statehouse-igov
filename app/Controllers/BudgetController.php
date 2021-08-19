@@ -44,34 +44,35 @@ class BudgetController extends BaseController
 			$data['budget'] = $active_budget;
 			$data['budgets'] = $this->budget->findAll();
 			$data['categories'] = $this->bc->findAll();
-			$bhs = $this->bh->where('bh_budget_id', @$active_budget['budget_id'])
-				->where('bh_acc_type', 1)
+			$data['bhs'] = $bhs = $this->bh->where('bh_budget_id', @$active_budget['budget_id'])
+//				->where('bh_acc_type', 1)
 				->orderBy('bh_code', 'ASC')
 				->findAll();
-			$new_bh = array();
-			$j = 0;
-			foreach ($bhs as $bh):
-				$offices = json_decode($bh['bh_office']);
-				if(in_array($this->session->user_employee_id, $offices)):
-					$office_array = array();
-					$i = 0;
-					foreach ($offices as $office):
-						$employee = $this->employee->join('users', 'employees.employee_id = users.user_employee_id')
-							->join('departments', 'employees.employee_department_id = departments.dpt_id')
-							->join('positions', 'employees.employee_position_id = positions.pos_id')
-							->where('employees.employee_id', $office)
-							->first();
-						$employee_string = $employee['dpt_name']." - ".$employee['user_name']." (".$employee['pos_name'].")".'<br>';
-						$office_array[$i] = $employee_string;
-						$i++;
-					endforeach;
-					$bh['office_d'] = $office_array;
-					$new_bh[$j] = $bh;
-					$j++;
-				endif;
-			endforeach;
+//			$new_bh = array();
+//			$j = 0;
+//			foreach ($bhs as $bh):
+//				$offices = json_decode($bh['bh_office']);
+////				if(in_array($this->session->user_employee_id, $offices)):
+//					$office_array = array();
+//					$i = 0;
+//					foreach ($offices as $office):
+//						$employee = $this->employee->join('users', 'employees.employee_id = users.user_employee_id')
+//							->join('departments', 'employees.employee_department_id = departments.dpt_id')
+//							->join('positions', 'employees.employee_position_id = positions.pos_id')
+//							->where('employees.employee_id', $office)
+//							->first();
+//						$employee_string = $employee['dpt_name']." - ".$employee['user_name']." (".$employee['pos_name'].")".'<br>';
+//						$office_array[$i] = $employee_string;
+//						$i++;
+//					endforeach;
+//					$bh['office_d'] = $office_array;
+//					$new_bh[$j] = $bh;
+//					$j++;
+////				endif;
+//			endforeach;
 			
-			$data['bhs'] = $new_bh;
+			//$data['bhs'] = $new_bh;
+			$data['employee_id'] = $this->session->user_employee_id;
 			
 		
 			return view('pages/budget/budget_charts', $data);
@@ -112,24 +113,40 @@ class BudgetController extends BaseController
 		endif;
 		
 		if($this->request->getMethod() == 'get'):
-			$data['firstTime'] = $this->session->firstTime;
-			$data['username'] = $this->session->user_username;
-			$data['bhs'] = $bh = $this->bh->where('bh_id', $id)->first();
-			$active_budget = $this->budget->where('budget_id', $bh['bh_budget_id'])->first();
-			$data['budget'] = $active_budget;
-			$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
-				->where('bh_acc_type', 0)
-				->where('bh_cat', $bh['bh_cat'])
-				->orderBy('bh_code', 'ASC')
-				->findAll();
-			
-			
-			$data['revisions'] = $this->brl->where('brl_bh_id', $id)
-											->join('employees', 'employees.employee_id = budget_revision_logs.brl_employee_id')
-											->orderBy('brl_date', 'DESC')
-											->findAll();
-	
-			return view('pages/budget/edit_budget_chart', $data);
+				
+				$data['firstTime'] = $this->session->firstTime;
+				$data['username'] = $this->session->user_username;
+				$data['bhs'] = $bh = $this->bh->where('bh_id', $id)->first();
+		
+				if(!empty($bh)):
+						
+						$offices = json_decode($bh['bh_office']);
+							if(in_array($this->session->user_employee_id, $offices) && $bh['bh_acc_type'] == 1):
+							
+							
+							$active_budget = $this->budget->where('budget_id', $bh['bh_budget_id'])->first();
+							$data['budget'] = $active_budget;
+							$data['parents'] = $this->bh->where('bh_budget_id', $active_budget['budget_id'])
+								->where('bh_acc_type', 0)
+								->where('bh_cat', $bh['bh_cat'])
+								->orderBy('bh_code', 'ASC')
+								->findAll();
+							
+							
+							$data['revisions'] = $this->brl->where('brl_bh_id', $id)
+															->join('employees', 'employees.employee_id = budget_revision_logs.brl_employee_id')
+															->orderBy('brl_date', 'DESC')
+															->findAll();
+					
+							return view('pages/budget/edit_budget_chart', $data);
+						else:
+						
+						return view('pages/error_404');
+						endif;
+				else:
+					return view('pages/error_404');
+				
+				endif;
 		endif;
 	}
 }
