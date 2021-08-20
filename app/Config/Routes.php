@@ -3,6 +3,7 @@
 namespace Config;
 
 // Create a new instance of our RouteCollection class.
+	$this->session = session();
 $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
@@ -21,7 +22,24 @@ $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
-$routes->set404Override();
+$routes->set404Override(function()
+{
+	if($this->session->type):
+		if($this->session->type == 1 || $this->session->type == 3):
+			return view('office/error_404');
+		endif;
+		
+		if($this->session->type == 2):
+			return view('pages/error_404');
+		endif;
+	else:
+//		$data['url'] = '';
+//		$data['errors'] = '';
+//		return view('auth/login', $data);
+		return view('pages/error_404');
+	endif;
+	
+});
 $routes->setAutoRoute(true);
 
 /*
