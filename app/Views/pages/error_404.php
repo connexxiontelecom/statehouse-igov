@@ -69,7 +69,9 @@
 								it happens to the best of us. You might want to check your internet connection.
 								Here's a little tip that might help you get back on track.</p>
 							
-							<a href="<?=site_url() ?>" class="btn btn-success waves-effect waves-light">Back to Dashboard</a>
+							<a href="<?=site_url() ?>" class="btn btn-success waves-effect waves-light"> <?php
+									$this->session = session();
+									if($this->session->type): echo "Back to Dashboard"; else: echo "Login"; endif; ?> </a>
 						</div>
 						<!-- end row -->
 					

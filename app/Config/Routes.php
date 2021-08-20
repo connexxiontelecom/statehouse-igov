@@ -3,7 +3,7 @@
 namespace Config;
 
 // Create a new instance of our RouteCollection class.
-	$this->session = session();
+$this->session = session();
 $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
