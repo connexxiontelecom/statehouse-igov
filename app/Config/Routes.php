@@ -3,6 +3,7 @@
 namespace Config;
 
 // Create a new instance of our RouteCollection class.
+	$this->session = session();
 $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
@@ -32,9 +33,10 @@ $routes->set404Override(function()
 			return view('pages/error_404');
 		endif;
 	else:
-		$data['url'] = '';
-		$data['errors'] = '';
-		return view('auth/login', $data);
+//		$data['url'] = '';
+//		$data['errors'] = '';
+//		return view('auth/login', $data);
+		return view('pages/error_404');
 	endif;
 	
 });
