@@ -334,7 +334,7 @@
         </li>
         <li>
             <a href="<?= route_to('manage-projects') ?>">
-                <i data-feather="book"></i>
+                <i data-feather="briefcase"></i>
                 <span> Project</span>
             </a>
             </li>

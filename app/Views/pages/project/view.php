@@ -58,8 +58,8 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="text-right">
-                                            <h3 class="text-dark mt-1"><span data-plugin="counterup">942</span></h3>
-                                            <p class="text-muted mb-1 text-truncate">Total Tasks</p>
+                                            <h3 class="text-dark mt-1"><span data-plugin="counterup"><?= number_format($project->project_budget ?? 0) ?></span></h3>
+                                            <p class="text-muted mb-1 text-truncate">Project Amount</p>
                                         </div>
                                     </div>
                                 </div> <!-- end row-->
@@ -76,8 +76,8 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="text-right">
-                                            <h3 class="text-dark mt-1"><span data-plugin="counterup">328</span></h3>
-                                            <p class="text-muted mb-1 text-truncate">Total Tasks Completed</p>
+                                            <h3 class="text-dark mt-1"><span data-plugin="counterup">0</span></h3>
+                                            <p class="text-muted mb-1 text-truncate">Expenses</p>
                                         </div>
                                     </div>
                                 </div> <!-- end row-->
@@ -94,8 +94,8 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="text-right">
-                                            <h3 class="text-dark mt-1"><span data-plugin="counterup">17</span></h3>
-                                            <p class="text-muted mb-1 text-truncate">Total Team Size</p>
+                                            <h3 class="text-dark mt-1"><span data-plugin="counterup"><?= count($participants ) ?></span></h3>
+                                            <p class="text-muted mb-1 text-truncate">Team Size</p>
                                         </div>
                                     </div>
                                 </div> <!-- end row-->
@@ -112,8 +112,8 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="text-right">
-                                            <h3 class="text-dark mt-1"><span data-plugin="counterup">412</span></h3>
-                                            <p class="text-muted mb-1 text-truncate">Total Hours Spent</p>
+                                            <h3 class="text-dark mt-1"><span data-plugin="counterup"><?= intval(abs(strtotime($project->project_end_date) - strtotime($project->project_start_date))/86400) ?></span></h3>
+                                            <p class="text-muted mb-1 text-truncate">Days left</p>
                                         </div>
                                     </div>
                                 </div> <!-- end row-->

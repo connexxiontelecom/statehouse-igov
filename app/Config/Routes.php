@@ -165,6 +165,11 @@ $routes->post('/leave-comment','ProjectController::setNewConversation',['filter'
 $routes->get('/projects/edit/(:num)','ProjectController::editProject/$1',['filter'=>'auth', 'as'=>'edit-project']);
 $routes->post('/projects/update','ProjectController::editProject/$1',['filter'=>'auth', 'as'=>'update-project']);
 
+#Contractor routes
+$routes->get('/manage-contractors', 'ContractorController::manageContractors',['filter'=>'auth', 'as'=>'manage-contractors']);
+$routes->get('/add-new-contractor', 'ContractorController::showNewContractorForm',['filter'=>'auth', 'as'=>'add-new-contractor']);
+$routes->post('/add-new-contractor', 'ContractorController::addNewContractor',['filter'=>'auth']);
+
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
 $routes->match(['get'], 'check-signature-exists', 'EmployeeController::check_signature_exists', ['filter' => 'auth']);

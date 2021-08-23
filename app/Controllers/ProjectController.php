@@ -3,9 +3,11 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Contractor;
 use App\Models\Employee;
 use App\Models\Project;
 use App\Models\ProjectAttachment;
+use App\Models\ProjectContractor;
 use App\Models\ProjectConversation;
 use App\Models\ProjectParticipation;
 use App\Models\UserModel;
@@ -24,6 +26,8 @@ class ProjectController extends BaseController
         $this->projectparticipant = new ProjectParticipation();
         $this->projectattachment = new ProjectAttachment();
         $this->projectconversation = new ProjectConversation();
+        $this->contractor = new Contractor();
+        $this->projectcontractor = new ProjectContractor();
 
     }
 	public function index()
@@ -41,12 +45,14 @@ class ProjectController extends BaseController
           'firstTime'=>$this->session->firstTime,
           'username'=>$this->session->username,
           'employees'=>$this->employee->getAllEmployee(),
+          'contractors'=>$this->contractor->getAllContractors()
         ];
         return view('pages/project/create',$data);
     }
 
 
     public function setNewProject(){
+
         $inputs = $this->validate([
             'project_name' => ['rules'=> 'required', 'label'=>'Project Name','errors' => [
                 'required' => 'Enter a name for this project']],
@@ -97,6 +103,18 @@ class ProjectController extends BaseController
                         'part_project_id'=>$project,
                     ];
                     $this->projectparticipant->save($part);
+                }
+            }
+            if(!empty($this->request->getPost('contractors'))) {
+                for ($i=0; $i<count($this->request->getPost('contractors')); $i++){
+                    $con = [
+                        'project_con_contractor_id' => $this->request->getPost('contractors')[$i],
+                        'project_con_scope' => $this->request->getPost('scope_of_work')[$i],
+                        'project_con_amount' => $this->request->getPost('amount')[$i],
+                        'project_con_project_id'=>$project,
+                    ];
+                    $this->projectcontractor->save($con);
+
                 }
             }
             if($this->request->getFileMultiple('attachments')){

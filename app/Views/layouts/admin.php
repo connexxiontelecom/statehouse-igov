@@ -685,13 +685,27 @@
 							</ul>
 						</div>
 					</li>
-					
-					<li>
-						<a href="apps-chat.html">
-							<i data-feather="briefcase"></i>
-							<span> Projects </span>
-						</a>
-					</li>
+                    <li>
+                        <a href="#projectMenu" data-toggle="collapse">
+                            <i data-feather="briefcase"></i>
+
+                            <span> Project </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="projectMenu">
+                            <ul class="nav-second-level">
+                                <li>
+                                    <a href="<?= route_to('manage-projects') ?>">Manage Projects</a>
+                                </li>
+
+                                <li>
+                                    <a href="<?=route_to('manage-contractors'); ?>">Contractors</a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </li>
 
                     <li>
                         <a href="<?= site_url('g-drive') ?>">

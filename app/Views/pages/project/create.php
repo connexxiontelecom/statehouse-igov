@@ -88,7 +88,7 @@
                             <div class="col-md-6">
                                 <label for="projectname">Team Members</label>
                                 <select class="form-control select2-hidden-accessible" multiple="multiple" data-toggle="select2" data-select2-id="5" tabindex="-1" aria-hidden="true" name="team_members[]">
-                                    <option disabled selected>-- Select project manager --</option>
+                                    <option disabled selected>-- Select team member --</option>
                                     <?php foreach($employees as $employee): ?>
                                         <option value="<?= $employee['employee_id'] ?>"><?= $employee['employee_f_name'] ?> <?= $employee['employee_l_name'] ?></option>
                                     <?php endforeach; ?>
@@ -173,7 +173,7 @@
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <div class="form-group">
                                     <label>Attachment(s)</label>
                                     <input type="file" name="attachments[]" class="form-control-file" multiple>
@@ -183,6 +183,55 @@
                                         </div>
                                     <?php endif; ?>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Does this project have contractor(s)</label>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                        <label class="custom-control-label" for="customCheck1">Yes</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 " id="products">
+                            <div class="item">
+                                <i class="ti-trash text-danger float-right remove-line" style="cursor: pointer;"></i>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Contractor</label>
+                                        <select class="form-control select2-hidden-accessible select-product"  data-toggle="select2"  tabindex="-1" aria-hidden="true" name="contractors[]">
+                                            <option disabled selected>-- Select contractor --</option>
+                                            <?php foreach($contractors as $contractor): ?>
+                                                <option value="<?= $contractor['contractor_id'] ?>"><?= $contractor['contractor_name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <?php if ($validation->getError('contractors')): ?>
+                                            <div class="text-danger">
+                                                <?= $validation->getError('contractors') ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Amount</label>
+                                        <input type="number" name="amount[]" placeholder="Amount" step="0.01" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="">Scope of Work</label>
+                                        <textarea name="scope_of_work[]" id="" placeholder="Scope of work" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <button class="btn btn-sm btn-primary add-line"> <i class="ti-plus mr-2"></i> Add Line</button>
                             </div>
                         </div>
                         <div class="row mb-2 mt-3">
@@ -216,4 +265,24 @@
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
 <script src="/assets/libs/select2/js/select2.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+        $(document).on('click', '.add-line', function(e){
+            e.preventDefault();
+            var new_selection = $('.item').first().clone();
+            $('#products').append(new_selection);
+
+            $(".select-contractor").select2({
+                placeholder: "Select product or service"
+            });
+            $(".select-contractor").last().next().next().remove();
+        });
+
+        $(document).on('click', '.remove-line', function(e){
+            e.preventDefault();
+            $(this).closest('.item').remove();
+        });
+    });
+</script>
 <?= $this->endSection(); ?>
