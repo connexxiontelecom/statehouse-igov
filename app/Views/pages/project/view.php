@@ -32,9 +32,17 @@
                             </p>
                         </div>
                         <div class="col-lg-4">
-                            <div class="text-lg-right mt-lg-0">
-                                <div class="btn-group mr-2">
-                                    <a href="<?= route_to('manage-projects') ?>" class="btn btn-success btn-sm"><i class="mdi mdi-library mr-1"></i> Manage Projects</a>
+
+                            <div class="float-right">
+
+                                <div class="dropdown">
+                                    <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Manage Project
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#reportModal">Submit Report</a>
+                                        <a class="dropdown-item" href="#">Update Status</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -225,7 +233,35 @@
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
-                                </div> <!-- end card-body-->
+                                </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="mt-0 mb-3">Report(s)</h4>
+                                    <div id="accordion" class="mb-3">
+                                        <?php foreach ($reports as $report): ?>
+                                        <div class="card mb-1">
+                                            <div class="card-header" id="heading_<?= $report->project_report_id  ?? '' ?>">
+                                                <h5 class="m-0">
+                                                    <a class="text-dark collapsed" data-toggle="collapse" href="#collapse_<?= $report->project_report_id  ?? '' ?>" aria-expanded="false">
+                                                        <i class=" mr-1 text-primary"></i>
+                                                        <?= $report->project_report_subject ?? '' ?>
+                                                    </a>
+                                                </h5>
+                                            </div>
+
+                                            <div id="collapse_<?= $report->project_report_id  ?? '' ?>" class="collapse" aria-labelledby="heading_<?= $report->project_report_id  ?? '' ?>" data-parent="#accordion" style="">
+                                                <div class="card-body">
+                                                    <?= $report->project_report_content ?? '' ?>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+
+
+                            </div>
                             </div>
 
                         <div class="col-lg-6 col-xl-4">
@@ -268,7 +304,52 @@
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Submit Report</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="<?= route_to('submit-project-report') ?>" method="post" enctype="multipart/form-data">
+                        <?= csrf_field() ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">Subject</label>
+                                    <input type="text" placeholder="Subject" name="subject" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">Attachment(s)</label>
+                                    <input type="file"  placeholder="Attachments" name="attachments[]" multiple class="form-control-file">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">Report</label>
+                                    <textarea name="report"  id="report" class="form-control" placeholder="Type report here..." cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center">
+                                <input type="hidden" name="project_report" value="<?= $project->project_id ?>">
+                                <div class="form-group">
+                                    <div class="btn-group">
+                                        <button class="btn btn-secondary btn-sm" type="button">Cancel</button>
+                                        <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>

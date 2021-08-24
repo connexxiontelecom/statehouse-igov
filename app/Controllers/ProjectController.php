@@ -10,6 +10,8 @@ use App\Models\ProjectAttachment;
 use App\Models\ProjectContractor;
 use App\Models\ProjectConversation;
 use App\Models\ProjectParticipation;
+use App\Models\ProjectReport;
+use App\Models\ProjectReportAttachment;
 use App\Models\UserModel;
 
 class ProjectController extends BaseController
@@ -28,6 +30,8 @@ class ProjectController extends BaseController
         $this->projectconversation = new ProjectConversation();
         $this->contractor = new Contractor();
         $this->projectcontractor = new ProjectContractor();
+        $this->projectreport = new ProjectReport();
+        $this->projectreportattachment = new ProjectReportAttachment();
 
     }
 	public function index()
@@ -216,11 +220,53 @@ class ProjectController extends BaseController
                 'username'=>$this->session->username,
                 'participants'=>$this->projectparticipant->getAllProjectParticipants($id),
                 'attachments'=>$this->projectattachment->getAllProjectAttachmentsByProjectId($id),
-                'conversations'=>$this->projectconversation->getProjectConversationByProjectId($id)
+                'conversations'=>$this->projectconversation->getProjectConversationByProjectId($id),
+                'reports'=>$this->projectreport->getProjectReportsByProjectId($id),
+                //'report_attachments'=>$this->projectreportattachment->getProjectReportAttachmentsByProjectId($id)
             ];
             return view('pages/project/view', $data);
         }else{
             return redirect()->back()->with("error", "<strong>Whoops!</strong> No record found");
+        }
+    }
+    public function submitReport(){
+        $inputs = $this->validate([
+            'project_report' => ['rules'=> 'required'],
+            'subject' => ['rules'=> 'required', 'errors'=>['required'=>'Enter report subject']],
+            'report' => ['rules'=> 'required', 'errors'=>['required'=>'Kindly type in your report']],
+        ]);
+        if (!$inputs) {
+            /*return view('pages/project/view', [
+                'validation' => $this->validator,
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
+                'employees'=>$this->employee->getAllEmployee(),
+            ]);*/
+            return redirect()->back()->with("error", "Something went wrong. Try again.");
+        }else{
+            $data = [
+                'project_report_project_id'=>$this->request->getPost('project_report'),
+                'project_report_submitted_by'=>$this->session->user_employee_id,
+                'project_report_subject'=>$this->request->getPost('subject'),
+                'project_report_content'=>$this->request->getPost('report'),
+            ];
+            $reportId = $this->projectreport->insert($data);
+            if($this->request->getFileMultiple('attachments')){
+                foreach ($this->request->getFileMultiple('attachments') as $attachment){
+                    if($attachment->isValid() ){
+                        $extension = $attachment->guessExtension();
+                        $filename = $attachment->getRandomName();
+                        $attachment->move('uploads/posts', $filename);
+                        $project_attachment = [
+                            'project_report_attachment_report_id' => $reportId,
+                            'project_report_attachment_project_id' => $this->request->getPost('project_report'),
+                            'project_report_attachment' => $filename
+                        ];
+                        $this->projectreportattachment->save($project_attachment);
+                    }
+                }
+            }
+            return redirect()->back()->with("success", "Congratulations! Your report was submitted.");
         }
     }
     public function editProject($id){

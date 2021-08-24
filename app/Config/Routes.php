@@ -164,6 +164,7 @@ $routes->post('/projects/create','ProjectController::setNewProject',['filter'=>'
 $routes->post('/leave-comment','ProjectController::setNewConversation',['filter'=>'auth', 'as'=>'leave-comment']);
 $routes->get('/projects/edit/(:num)','ProjectController::editProject/$1',['filter'=>'auth', 'as'=>'edit-project']);
 $routes->post('/projects/update','ProjectController::editProject/$1',['filter'=>'auth', 'as'=>'update-project']);
+$routes->post('/projects/submit-project-report','ProjectController::submitReport',['filter'=>'auth', 'as'=>'submit-project-report']);
 
 #Contractor routes
 $routes->get('/manage-contractors', 'ContractorController::manageContractors',['filter'=>'auth', 'as'=>'manage-contractors']);

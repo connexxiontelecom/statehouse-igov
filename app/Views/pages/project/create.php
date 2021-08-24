@@ -189,20 +189,21 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="">Does this project have contractor(s)</label>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                        <label class="custom-control-label" for="customCheck1">Yes</label>
-                                    </div>
+                                    <select name="does_contractor" id="does_contractor" class="form-control">
+                                        <option selected disabled>--Select option--</option>
+                                        <option value="1">Yes</option>
+                                        <option value="2">No</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-2 " id="products">
-                            <div class="item">
+                        <div class="row mb-2 contractor-container" id="products">
+                            <div class="item col-md-12">
                                 <i class="ti-trash text-danger float-right remove-line" style="cursor: pointer;"></i>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Contractor</label>
-                                        <select class="form-control select2-hidden-accessible select-product"  data-toggle="select2"  tabindex="-1" aria-hidden="true" name="contractors[]">
+                                        <select class="form-control select-product"  data-toggle="select2"  tabindex="-1" aria-hidden="true" name="contractors[]">
                                             <option disabled selected>-- Select contractor --</option>
                                             <?php foreach($contractors as $contractor): ?>
                                                 <option value="<?= $contractor['contractor_id'] ?>"><?= $contractor['contractor_name'] ?></option>
@@ -221,7 +222,7 @@
                                         <input type="number" name="amount[]" placeholder="Amount" step="0.01" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Scope of Work</label>
                                         <textarea name="scope_of_work[]" id="" placeholder="Scope of work" class="form-control"></textarea>
@@ -229,7 +230,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-3 contractor-container">
                             <div class="col-md-12 col-sm-12 col-lg-12">
                                 <button class="btn btn-sm btn-primary add-line"> <i class="ti-plus mr-2"></i> Add Line</button>
                             </div>
@@ -267,21 +268,27 @@
 <script src="/assets/libs/select2/js/select2.min.js"></script>
 <script>
     $(document).ready(function(){
-
+        $('.contractor-container').hide();
         $(document).on('click', '.add-line', function(e){
             e.preventDefault();
             var new_selection = $('.item').first().clone();
             $('#products').append(new_selection);
-
-            $(".select-contractor").select2({
-                placeholder: "Select product or service"
-            });
-            $(".select-contractor").last().next().next().remove();
+            //$(".select-contractor").select2();
+            $('.select-contractor').attr('data-toggle', 'select2');
         });
 
         $(document).on('click', '.remove-line', function(e){
             e.preventDefault();
             $(this).closest('.item').remove();
+        });
+
+        $(document).on('change', '#does_contractor', function(e){
+            e.preventDefault();
+            if($(this).val() == 1){
+                $('.contractor-container').show();
+            }else{
+                $('.contractor-container').hide();
+            }
         });
     });
 </script>
