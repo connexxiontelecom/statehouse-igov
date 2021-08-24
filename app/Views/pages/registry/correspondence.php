@@ -28,7 +28,9 @@
           </div>
           <div class="col-lg-4">
             <div class="text-lg-right mt-3 mt-lg-0">
-              <a href="<?=site_url('/mail-transfer-requests')?>" type="button" class="btn btn-danger waves-effect waves-light">Transfer Requests</a>
+              <?php if (!empty($transfer_requests)):?>
+                <a href="<?=site_url('/mail-transfer-requests')?>" type="button" class="btn btn-danger waves-effect waves-light">Transfer Requests</a>
+              <?php endif?>
             </div>
           </div><!-- end col-->
         </div> <!-- end row -->
