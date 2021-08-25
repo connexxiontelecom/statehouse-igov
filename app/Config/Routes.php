@@ -208,6 +208,9 @@ $routes->match(['get'], 'correspondence', 'RegistryController::correspondence', 
 #Budget Routes (employee)
 $routes->match(['get'], 'budget-input', 'BudgetController::budget_input', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'edit-budget-input/(:num)', 'BudgetController::edit_budget_input/$1', ['filter' => 'auth']);
+
+#Meeting
+$routes->match(['get'], 'meet', 'MeetingController::meet', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing
