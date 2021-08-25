@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/master'); ?>
+<?= $this->extend('layouts/admin'); ?>
 <?= $this->section('content'); ?>
 <div class="container-fluid">
     <!-- start page title -->
@@ -8,10 +8,10 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Manage Projects</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Manage Contractors</a></li>
                     </ol>
                 </div>
-                <h4 class="page-title">Manage Projects</h4>
+                <h4 class="page-title">Manage Contractors</h4>
             </div>
         </div>
     </div>
@@ -22,15 +22,15 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
-                            <h4 class="header-title">All Projects</h4>
+                            <h4 class="header-title">All Contractors</h4>
                             <p class="text-muted font-13">
-                                Below are your published projects
+                                Below are your list of contractors
                             </p>
                         </div>
                         <div class="col-lg-4">
                             <div class="text-lg-right mt-lg-0">
                                 <div class="btn-group mr-2">
-                                    <a href="<?= route_to('add-new-project') ?>" class="btn btn-success btn-sm"><i class="mdi mdi-plus-circle mr-1"></i> Add New Project</a>
+                                    <a href="<?= route_to('add-new-contractor') ?>" class="btn btn-success btn-sm"><i class="mdi mdi-plus-circle mr-1"></i> Add New Contractor</a>
                                 </div>
                             </div>
                         </div><!-- end col-->
@@ -39,54 +39,28 @@
                         <thead>
                         <tr>
                             <th class="text-center" style="width: 5%">S/n</th>
-                            <th>Project Name</th>
-                            <th>Sponsor</th>
-                            <th>Priority</th>
-                            <th>Start Date</th>
-                            <th>Due Date</th>
-                            <th>Status</th>
+                            <th>Contractor Name</th>
+                            <th>Email</th>
+                            <th>Mobile No.</th>
+                            <th>Website</th>
                             <th class="text-center" style="width: 10%">Actions</th>
                         </tr>
 
                         </thead>
                         <tbody>
                         <?php $serial = 1; ?>
-                        <?php foreach($projects as $project): ?>
+                        <?php foreach ($contractors as $contractor): ?>
                             <tr>
-                                <td><?= $serial++?></td>
-                                <td><?= $project['project_name'] ?? '' ?></td>
-                                <td><?= $project['project_sponsor'] ?? '' ?></td>
-                                <td>
-                                    <?php if($project['project_priority'] == 1): ?>
-                                        <label for="" class="badge badge-secondary">Normal</label>
-                                    <?php elseif ($project['project_priority'] == 2): ?>
-                                        <label for="" class="badge badge-primary">Medium</label>
-                                    <?php elseif ($project['project_priority'] == 3): ?>
-                                        <label for="" class="badge badge-danger">High</label>
-                                    <?php endif; ?>
-                                </td>
-                                <td><?= date('d M, Y', strtotime($project['project_start_date'])) ?? '' ?></td>
-                                <td><?= date('d M, Y', strtotime($project['project_end_date'])) ?? '' ?></td>
-                                <td>
-                                    <?php if($project['project_status'] == 0): ?>
-                                        <label for="" class="badge badge-secondary">Pending</label>
-                                    <?php elseif ($project['project_status'] == 1): ?>
-                                    <label for="" class="badge badge-primary">Started</label>
-                                    <?php elseif ($project['project_status'] == 2): ?>
-                                    <label for="" class="badge badge-warning">In-progress</label>
-                                    <?php elseif ($project['project_status'] == 3): ?>
-                                    <label for="" class="badge badge-success">Completed</label>
-                                    <?php elseif ($project['project_status'] == 4): ?>
-                                    <label for="" class="badge badge-danger">Cancelled</label>
-                                    <?php endif; ?>
-
-                                </td>
+                                <td><?= $serial++ ?></td>
+                                <td><?= $contractor['contractor_name'] ?></td>
+                                <td><?= $contractor['contractor_email'] ?></td>
+                                <td><?= $contractor['contractor_mobile_no'] ?></td>
+                                <td><?= $contractor['contractor_website'] ?></td>
                                 <td>
                                     <div class="btn-group dropdown">
                                         <a href="javascript: void(0);" class="table-action-btn dropdown-toggle arrow-none btn btn-light btn-sm" data-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-horizontal"></i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="<?= route_to('edit-project',  $project['project_id']) ?>"><i class="mdi mdi-pencil mr-2 text-muted font-18 vertical-middle"></i>Edit Project</a>
-                                            <a class="dropdown-item" href="<?= route_to('view-project', $project['project_id']) ?>"><i class="mdi mdi-check-all mr-2 text-muted font-18 vertical-middle"></i>View Project</a>
+                                            <a class="dropdown-item" href="javascript:void(0);"><i class="mdi mdi-check-all mr-2 text-muted font-18 vertical-middle"></i>View Contractor</a>
                                         </div>
                                     </div>
                                 </td>

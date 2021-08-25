@@ -4,21 +4,18 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Project extends Model
+class ProjectReport extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'projects';
-	protected $primaryKey           = 'project_id';
+	protected $table                = 'project_reports';
+	protected $primaryKey           = 'project_report_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['project_id','project_priority','project_status', 'project_description',
-        'project_sponsor','project_name','project_manager_id', 'project_start_date', 'project_end_date','project_budget',
-        'project_privacy'];
-
-
+	protected $allowedFields        = ['project_report_id', 'project_report_project_id','project_report_submitted_by',
+        'project_report_subject','project_report_content'];
 	// Dates
 	protected $useTimestamps        = false;
 	protected $dateFormat           = 'datetime';
@@ -43,17 +40,11 @@ class Project extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-    public function getAllProjects(){
-        $builder = $this->db->table('projects as p');
-        $builder->join('employees as e','e.employee_id = p.project_manager_id' );
-        $builder->orderBy('p.project_id', 'DESC');
-        return $builder->get()->getResultArray();
-    }
 
-    public function getProjectById($id){
-        $builder = $this->db->table('projects as p');
-        $builder->join('employees as e','e.employee_id = p.project_manager_id' );
-        $builder->where('p.project_id = '.$id);
-        return $builder->get()->getFirstRow();
+    public function getProjectReportsByProjectId($id){
+        $builder = $this->db->table('project_reports as pr');
+        $builder->where('pr.project_report_project_id = '.$id);
+        $builder->orderBy('pr.project_report_id', 'DESC');
+        return $builder->get()->getResultObject();
     }
 }

@@ -4,19 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Project extends Model
+class ProjectContractor extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'projects';
-	protected $primaryKey           = 'project_id';
+	protected $table                = 'project_contractors';
+	protected $primaryKey           = 'project_con_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['project_id','project_priority','project_status', 'project_description',
-        'project_sponsor','project_name','project_manager_id', 'project_start_date', 'project_end_date','project_budget',
-        'project_privacy'];
+	protected $allowedFields        = ['project_con_id','project_con_contractor_id','project_con_project_id', 'project_con_scope', 'project_con_amount'];
 
 
 	// Dates
@@ -42,18 +40,4 @@ class Project extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-
-    public function getAllProjects(){
-        $builder = $this->db->table('projects as p');
-        $builder->join('employees as e','e.employee_id = p.project_manager_id' );
-        $builder->orderBy('p.project_id', 'DESC');
-        return $builder->get()->getResultArray();
-    }
-
-    public function getProjectById($id){
-        $builder = $this->db->table('projects as p');
-        $builder->join('employees as e','e.employee_id = p.project_manager_id' );
-        $builder->where('p.project_id = '.$id);
-        return $builder->get()->getFirstRow();
-    }
 }

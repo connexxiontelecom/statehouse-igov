@@ -12,10 +12,10 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Add New Project</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Edit Project</a></li>
                     </ol>
                 </div>
-                <h4 class="page-title">Add New Project</h4>
+                <h4 class="page-title">Edit Project</h4>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
-                            <h4 class="header-title">Add New Project</h4>
+                            <h4 class="header-title">Edit Project</h4>
                             <p class="text-muted font-13">
                                 Below are your published projects
                             </p>
@@ -48,12 +48,12 @@
                             <?= session()->get('success') ?>
                         </div>
                     <?php endif; ?>
-                    <form action="<?= route_to('add-new-project') ?>" method="post" enctype="multipart/form-data">
+                    <form action="<?= route_to('update-project') ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field() ?>
                         <div class="row mb-2">
                             <div class="col-md-6">
                                 <label for="projectname">Project Name</label>
-                                <input type="text" id="project_name" name="project_name" class="form-control" placeholder="Project Name">
+                                <input type="text" id="project_name" value="<?= $project->project_name ?>" name="project_name" class="form-control" placeholder="Project Name">
                                 <?php if ($validation->getError('project_name')): ?>
                                     <div class="text-danger">
                                         <?= $validation->getError('project_name') ?>
@@ -62,7 +62,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="projectname">Sponsor</label>
-                                <input type="text" id="sponsor" name="sponsor" class="form-control" placeholder="Sponsor">
+                                <input type="text" id="sponsor" name="sponsor" value="<?= $project->project_sponsor ?>" class="form-control" placeholder="Sponsor">
                                 <?php if ($validation->getError('sponsor')): ?>
                                     <div class="text-danger">
                                         <?= $validation->getError('sponsor') ?>
@@ -73,7 +73,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="projectname">Project Manager</label>
-                                <select class="form-control select2-hidden-accessible" data-toggle="select2" data-select2-id="4" tabindex="-1" aria-hidden="true" name="project_manager">
+                                <select class="form-control select2-hidden-accessible"  data-toggle="select2" data-select2-id="4" tabindex="-1" aria-hidden="true" name="project_manager">
                                     <option disabled selected>-- Select project manager --</option>
                                     <?php foreach($employees as $employee): ?>
                                         <option value="<?= $employee['employee_id'] ?>"><?= $employee['employee_f_name'] ?> <?= $employee['employee_l_name'] ?></option>
@@ -88,7 +88,7 @@
                             <div class="col-md-6">
                                 <label for="projectname">Team Members</label>
                                 <select class="form-control select2-hidden-accessible" multiple="multiple" data-toggle="select2" data-select2-id="5" tabindex="-1" aria-hidden="true" name="team_members[]">
-                                    <option disabled selected>-- Select team member --</option>
+                                    <option disabled selected>-- Select project manager --</option>
                                     <?php foreach($employees as $employee): ?>
                                         <option value="<?= $employee['employee_id'] ?>"><?= $employee['employee_f_name'] ?> <?= $employee['employee_l_name'] ?></option>
                                     <?php endforeach; ?>
@@ -140,7 +140,7 @@
                             <div class="col-xl-6">
                                 <div class="form-group">
                                     <label for="project-budget">Budget</label>
-                                    <input type="number" step="0.01" id="budget" name="budget" class="form-control" placeholder="Budget">
+                                    <input type="number" step="0.01" id="budget" value="<?= $project->project_budget ?>" name="budget" class="form-control" placeholder="Budget">
                                     <?php if ($validation->getError('budget')): ?>
                                         <div class="text-danger">
                                             <?= $validation->getError('budget') ?>
@@ -173,7 +173,7 @@
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>Attachment(s)</label>
                                     <input type="file" name="attachments[]" class="form-control-file" multiple>
@@ -185,61 +185,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="">Does this project have contractor(s)</label>
-                                    <select name="does_contractor" id="does_contractor" class="form-control">
-                                        <option selected disabled>--Select option--</option>
-                                        <option value="1">Yes</option>
-                                        <option value="2">No</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-2 contractor-container" id="products">
-                            <div class="item col-md-12">
-                                <i class="ti-trash text-danger float-right remove-line" style="cursor: pointer;"></i>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="">Contractor</label>
-                                        <select class="form-control select-product"  data-toggle="select2"  tabindex="-1" aria-hidden="true" name="contractors[]">
-                                            <option disabled selected>-- Select contractor --</option>
-                                            <?php foreach($contractors as $contractor): ?>
-                                                <option value="<?= $contractor['contractor_id'] ?>"><?= $contractor['contractor_name'] ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <?php if ($validation->getError('contractors')): ?>
-                                            <div class="text-danger">
-                                                <?= $validation->getError('contractors') ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="">Amount</label>
-                                        <input type="number" name="amount[]" placeholder="Amount" step="0.01" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="">Scope of Work</label>
-                                        <textarea name="scope_of_work[]" id="" placeholder="Scope of work" class="form-control"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3 contractor-container">
-                            <div class="col-md-12 col-sm-12 col-lg-12">
-                                <button class="btn btn-sm btn-primary add-line"> <i class="ti-plus mr-2"></i> Add Line</button>
-                            </div>
-                        </div>
                         <div class="row mb-2 mt-3">
                             <div class="col-xl-12">
                                 <div class="form-group">
                                     <label for="project-overview">Project Overview</label>
-                                    <textarea class="form-control" id="project_overview" name="project_overview" rows="5" placeholder="Enter some brief about project.."></textarea>
+                                    <textarea class="form-control" id="project_overview" name="project_overview" rows="5" placeholder="Enter some brief about project.."><?= $project->project_description ?></textarea>
                                     <?php if ($validation->getError('project_overview')): ?>
                                         <div class="text-danger">
                                             <?= $validation->getError('project_overview') ?>
@@ -250,6 +200,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 d-flex justify-content-center">
+                                <input type="hidden" name="project" value="<?= $project->project_id ?>">
                                 <div class="btn-group ">
                                     <a href="" class="btn btn-secondary btn-sm">Cancel</a>
                                     <button class="btn btn-primary btn-sm" type="submit" name="submit">Submit</button>
@@ -266,30 +217,4 @@
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
 <script src="/assets/libs/select2/js/select2.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('.contractor-container').hide();
-        $(document).on('click', '.add-line', function(e){
-            e.preventDefault();
-            var new_selection = $('.item').first().clone();
-            $('#products').append(new_selection);
-            //$(".select-contractor").select2();
-            $('.select-contractor').attr('data-toggle', 'select2');
-        });
-
-        $(document).on('click', '.remove-line', function(e){
-            e.preventDefault();
-            $(this).closest('.item').remove();
-        });
-
-        $(document).on('change', '#does_contractor', function(e){
-            e.preventDefault();
-            if($(this).val() == 1){
-                $('.contractor-container').show();
-            }else{
-                $('.contractor-container').hide();
-            }
-        });
-    });
-</script>
 <?= $this->endSection(); ?>
