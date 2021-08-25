@@ -4,21 +4,18 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Project extends Model
+class Contractor extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'projects';
-	protected $primaryKey           = 'project_id';
+	protected $table                = 'contractors';
+	protected $primaryKey           = 'contractor_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['project_id','project_priority','project_status', 'project_description',
-        'project_sponsor','project_name','project_manager_id', 'project_start_date', 'project_end_date','project_budget',
-        'project_privacy'];
-
-
+	protected $allowedFields        = ['contractor_id','contractor_name','contractor_address','contractor_email',
+        'about_contractor','contractor_mobile_no','contractor_website','contractor_added_by'];
 	// Dates
 	protected $useTimestamps        = false;
 	protected $dateFormat           = 'datetime';
@@ -43,17 +40,17 @@ class Project extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-    public function getAllProjects(){
-        $builder = $this->db->table('projects as p');
-        $builder->join('employees as e','e.employee_id = p.project_manager_id' );
-        $builder->orderBy('p.project_id', 'DESC');
+
+
+    public function getAllContractors(){
+        $builder = $this->db->table('contractors');
         return $builder->get()->getResultArray();
     }
 
-    public function getProjectById($id){
-        $builder = $this->db->table('projects as p');
-        $builder->join('employees as e','e.employee_id = p.project_manager_id' );
-        $builder->where('p.project_id = '.$id);
+    public function getContractorById($id){
+        $builder = $this->db->table('contractors as c');
+        $builder->join('employees as e','e.employee_id = c.added_by' );
+        $builder->where('c.contractor_id = '.$id);
         return $builder->get()->getFirstRow();
     }
 }

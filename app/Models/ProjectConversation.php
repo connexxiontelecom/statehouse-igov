@@ -4,20 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Project extends Model
+class ProjectConversation extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'projects';
-	protected $primaryKey           = 'project_id';
+	protected $table                = 'project_conversations';
+	protected $primaryKey           = 'project_conversation_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['project_id','project_priority','project_status', 'project_description',
-        'project_sponsor','project_name','project_manager_id', 'project_start_date', 'project_end_date','project_budget',
-        'project_privacy'];
-
+	protected $allowedFields        = ['project_conversation_id', 'project_convo_participant_id', 'project_convo', 'project_convo_project_id'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -43,17 +40,10 @@ class Project extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-    public function getAllProjects(){
-        $builder = $this->db->table('projects as p');
-        $builder->join('employees as e','e.employee_id = p.project_manager_id' );
-        $builder->orderBy('p.project_id', 'DESC');
-        return $builder->get()->getResultArray();
-    }
-
-    public function getProjectById($id){
-        $builder = $this->db->table('projects as p');
-        $builder->join('employees as e','e.employee_id = p.project_manager_id' );
-        $builder->where('p.project_id = '.$id);
-        return $builder->get()->getFirstRow();
+    public function getProjectConversationByProjectId($id){
+        $builder = $this->db->table('project_conversations as pc');
+        $builder->join('employees as e','e.employee_id = pc.project_convo_participant_id' );
+        $builder->where('pc.project_convo_project_id = '.$id);
+        return $builder->get()->getResultObject();
     }
 }

@@ -4,20 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Project extends Model
+class Reminder extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'projects';
-	protected $primaryKey           = 'project_id';
+	protected $table                = 'reminders';
+	protected $primaryKey           = 'reminder_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['project_id','project_priority','project_status', 'project_description',
-        'project_sponsor','project_name','project_manager_id', 'project_start_date', 'project_end_date','project_budget',
-        'project_privacy'];
-
+	protected $allowedFields        = ['reminder_id', 'reminder_employee_id', 'title', 'reminder_start_date', 'reminder_end_date'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -43,17 +40,25 @@ class Project extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-    public function getAllProjects(){
-        $builder = $this->db->table('projects as p');
-        $builder->join('employees as e','e.employee_id = p.project_manager_id' );
-        $builder->orderBy('p.project_id', 'DESC');
-        return $builder->get()->getResultArray();
+
+    function fetchAllReminders($user_id){
+        return Reminder::where('reminder_employee_id',$user_id)->findAll();
     }
 
-    public function getProjectById($id){
-        $builder = $this->db->table('projects as p');
-        $builder->join('employees as e','e.employee_id = p.project_manager_id' );
-        $builder->where('p.project_id = '.$id);
-        return $builder->get()->getFirstRow();
+/*    function insert_event($data)
+    {
+        $this->db->insert('events', $data);
     }
+
+    function update_event($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('events', $data);
+    }
+
+    function delete_event($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('events');
+    }*/
 }
