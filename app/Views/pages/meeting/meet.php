@@ -1,6 +1,6 @@
 <?= $this->extend('layouts/master') ?>
 <?= $this->section('extra-styles') ?>
-<link rel="stylesheet" href="/vendor/index.css">
+<link rel="stylesheet" href="/vendors/index.css">
 <?= $this->endSection() ?>
 <?= $this->section('content') ?>
 <div class="container-fluid">
@@ -110,9 +110,9 @@
 <?= $this->section('extra-scripts') ?>
 
 <!--<script src="/assets/js/pages/sweet-alerts.init.js"></script>-->
-<script src="/vendor/jquery-3.4.1.min.js"></script>
-<script src="/vendor/bootstrap.bundle.min.js"></script>
-<script src="/vendor/AgoraRTC_N-4.6.3.js"></script>
-<script src="/vendor/index.js"></script>
+<script src="/vendors/jquery-3.4.1.min.js"></script>
+<script src="/vendors/bootstrap.bundle.min.js"></script>
+<script src="/vendors/AgoraRTC_N-4.6.3.js"></script>
+<script src="/vendors/index.js"></script>
 
 <?= $this->endSection() ?>
