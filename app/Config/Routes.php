@@ -211,6 +211,10 @@ $routes->match(['get', 'post'], 'edit-budget-input/(:num)', 'BudgetController::e
 // Task Routes
 $routes->match(['get'], 'tasks', 'TaskController::index', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-task', 'TaskController::new_task', ['filter' => 'auth']);
+
+
+#Meeting
+$routes->match(['get'], 'meet', 'MeetingController::meet', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing
