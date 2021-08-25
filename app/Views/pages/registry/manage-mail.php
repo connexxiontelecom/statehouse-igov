@@ -136,7 +136,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title mb-3">Attachments</h5>
-            <?php if($mail['post']):?>
+            <?php if(isset($mail['post'])):?>
               <div class="card mb-1 shadow-none border">
                 <div class="p-2">
                   <div class="row align-items-center">
