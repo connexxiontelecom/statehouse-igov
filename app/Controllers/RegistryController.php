@@ -8,6 +8,7 @@ use App\Models\MailAttachment;
 use App\Models\MailFiling;
 use App\Models\MailTransfer;
 use App\Models\Position;
+use App\Models\Post;
 use App\Models\Registry;
 use App\Models\UserModel;
 use App\Models\Employee;
@@ -29,6 +30,7 @@ class RegistryController extends BaseController
 		$this->mail_attachment = new MailAttachment();
 		$this->mail_transfer = new MailTransfer();
 		$this->mail_filing = new MailFiling();
+		$this->post = new Post();
 	}
 
 	public function index() {
@@ -97,13 +99,14 @@ class RegistryController extends BaseController
       $data['firstTime'] = $this->session->firstTime;
       $data['username'] = $this->session->user_username;
       $data['registry'] = $this->_get_registry($registry_id);
+      $data['department_employees'] = $this->_get_department_employees($registry_id);
+      $data['external_messages'] = $this->_get_external_messages();
       return view('/pages/registry/new-outgoing-mail', $data);
     endif;
     $post_data = $this->request->getPost();
     $mail_data = [
       'm_ref_no' => $post_data['m_ref_no'],
       'm_subject' => $post_data['m_subject'],
-      'm_sender' => $post_data['m_sender'],
       'm_date_correspondence' => $post_data['m_date_correspondence'],
       'm_date_received' => $post_data['m_date_received'],
       'm_notes' => $post_data['m_notes'],
@@ -111,7 +114,9 @@ class RegistryController extends BaseController
       'm_by' => $this->session->user_id,
       'm_desk' => $this->session->user_id,
       'm_direction' => 2,
-      'm_registry_id' => $registry_id
+      'm_registry_id' => $registry_id,
+      'm_source' => $post_data['m_source'],
+      'm_post_id' => $post_data['m_post_id'],
     ];
     $mail_id = $this->mail->insert($mail_data);
     if ($mail_id) {
@@ -301,6 +306,7 @@ class RegistryController extends BaseController
 		$data['username'] = $this->session->user_username;
 		$data['mails'] = $this->_get_user_mails();
 		$transfer_requests = $this->_get_transfer_requests();
+		$data['transfer_requests'] = $transfer_requests;
 		if ($transfer_requests)
 		  session()->setFlashdata('transfer_requests', true);
     return view('/pages/registry/correspondence', $data);
@@ -363,7 +369,9 @@ class RegistryController extends BaseController
 			$mail['registry'] = $this->registry->find($mail['m_registry_id']);
 			$mail['current_desk'] = $this->user->find($mail['m_desk']);
 			$mail['stamped_by'] = $this->user->find($mail['m_by']);
-			$mail['transfer_logs'] = $this->_get_transfer_logs($mail_id);
+			if ($mail['m_source']) $mail['source'] = $this->user->find($mail['m_source']);
+			if ($mail['m_post_id']) $mail['post'] = $this->post->find($mail['m_post_id']);
+ 			$mail['transfer_logs'] = $this->_get_transfer_logs($mail_id);
 		endif;
 		return $mail;
 	}
@@ -437,4 +445,18 @@ class RegistryController extends BaseController
 		}
 		return $transfer_requests;
 	}
+
+	private function _get_external_messages() {
+	  $posts = $this->post
+      ->where('p_direction', 2)
+      ->where('p_status', 2)
+    ->findAll();
+	  $external_messages = array('Circulars' => [], 'Memos' => [], 'Notices' => []);
+	  foreach ($posts as $post) {
+	    if ($post['p_type'] == 1) array_push($external_messages['Memos'], $post);
+	    if ($post['p_type'] == 2) array_push($external_messages['Circulars'], $post);
+	    if ($post['p_type'] == 3) array_push($external_messages['Notices'], $post);
+    }
+	  return $external_messages;
+  }
 }

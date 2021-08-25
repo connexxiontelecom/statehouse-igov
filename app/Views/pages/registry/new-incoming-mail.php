@@ -77,7 +77,7 @@
               <!-- Date View -->
               <div class="form-group">
                 <label for="date-received">Date Received</label><span style="color: red"> *</span>
-                <input type="date" class="form-control" id="date-received" name="m_date_received" required>
+                <input type="date" class="form-control" id="date-received" name="m_date_received" required value="<?=date('Y-m-d')?>">
                 <div class="invalid-feedback">
                   Please select a date received.
                 </div>
