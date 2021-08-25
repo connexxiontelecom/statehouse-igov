@@ -78,11 +78,11 @@
       e.preventDefault()
       let refNo = $('#ref-no').val()
       let subject = $('#subject').val()
-      let sender = $('#sender').val()
       let dateCorrespondence = $('#date-correspondence').val()
       let dateReceived = $('#date-received').val()
       let registryID = $('#registry-id').val()
-      if (!refNo || !subject || !sender || !dateCorrespondence || !dateReceived) {
+      let source = $('#m-source').val()
+      if (!refNo || !subject || !source || !dateCorrespondence || !dateReceived) {
         Swal.fire('Invalid Submission!', 'Please fill in all required fields', 'error')
       } else {
         let formData = new FormData(this)
@@ -216,7 +216,7 @@
           data: formData,
           success: response => {
             if (response.success) {
-              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/view-registry/')?>'+registryID)
+              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/correspondence')?>')
             } else {
               Swal.fire('Sorry!', response.message, 'error')
             }

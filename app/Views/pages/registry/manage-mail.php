@@ -74,10 +74,17 @@
             <p class="text-muted mb-2">
 	            <?=$mail['registry']['registry_name']?>
             </p>
-            <h5>Sender</h5>
-            <p class="text-muted mb-2">
-              <?=$mail['m_sender']?>
-            </p>
+            <?php if ($mail['m_direction'] == 1):?>
+              <h5>Sender</h5>
+              <p class="text-muted mb-2">
+                <?=$mail['m_sender']?>
+              </p>
+            <?php else:?>
+              <h5>Source</h5>
+              <p class="text-muted mb-2">
+                <?=$mail['source']['user_name']?>
+              </p>
+            <?php endif;?>
             <div class="mb-4">
               <h5>Notes</h5>
               <p class="text-muted mb-2">
@@ -129,6 +136,25 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title mb-3">Attachments</h5>
+            <?php if($mail['post']):?>
+              <div class="card mb-1 shadow-none border">
+                <div class="p-2">
+                  <div class="row align-items-center">
+                    <div class="col pl-0">
+                      <p class="mb-0 font-12">
+                        <?=$mail['post']['p_subject']?>
+                      </p>
+                    </div>
+                    <div class="col-auto">
+                      <!-- Button -->
+                      <a href="<?='/view-memo/'.$mail['post']['p_id']; ?>" class="btn btn-link font-16 text-muted">
+                        <i class="dripicons-eye"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php endif;?>
 			      <?php if(!empty($mail['attachments'])):
 				      foreach ($mail['attachments'] as $attachment):?>
                 <div class="card mb-1 shadow-none border">
@@ -172,7 +198,7 @@
                 <div class="col-12">
                   <div class="form-group">
                     <label for="mt-to-id">Mail Recipient</label>
-                    <select class="form-control input-lg" data-toggle="select2" id="mt-to-id">
+                    <select class="form-control input-lg" data-toggle="select2" id="mt-to-id" <?=$mail['m_desk'] != session()->user_id ? 'disabled' : ''?>>
                       <option value="" selected disabled>Select</option>
 	                    <?php foreach ($mail['department_employees'] as $department => $employees): ?>
 		                    <?php if(!empty($employees)):?>
@@ -195,7 +221,7 @@
                   </div>
                 </div>
                 <div class="col-12 mt-0">
-                  <button type="button" onclick="transferMail()" class="btn btn-success waves-effect waves-light btn-sm">Transfer Mail</button>
+                  <button type="button" onclick="transferMail()" class="btn btn-success waves-effect waves-light btn-sm" <?=$mail['m_desk'] != session()->user_id ? 'disabled' : ''?>>Transfer Mail</button>
                   <?php foreach($mail['transfer_logs'] as $transfer_log): if ($transfer_log['mt_status'] == 0): ?>
                     <span class="ml-1" data-toggle="tooltip" data-placement="right" title data-original-title="You cannot transfer while there is a pending transfer"><i data-feather="alert-triangle" class="icon-dual-warning"></i></span>
                   <?php break; endif; endforeach;?>
@@ -213,7 +239,7 @@
                 <div class="col-12">
                   <div class="form-group">
                     <label for="file-ref-no">File Cabinet Number</label>
-                    <input type="text" class="form-control" name="m_file_ref_no" id="file-ref-no" required/>
+                    <input type="text" class="form-control" name="m_file_ref_no" id="file-ref-no" required <?=$mail['m_desk'] != session()->user_id ? 'disabled' : ''?>/>
                     <div class="invalid-feedback">
                       Please enter a file cabinet number.
                     </div>
@@ -223,7 +249,7 @@
                   </div>
                 </div>
                 <div class="col-12 mt-0">
-                  <button class="btn btn-success waves-effect waves-light btn-sm">File Mail</button>
+                  <button class="btn btn-success waves-effect waves-light btn-sm" <?=$mail['m_desk'] != session()->user_id ? 'disabled' : ''?>>File Mail</button>
 	                <?php foreach($mail['transfer_logs'] as $transfer_log): if ($transfer_log['mt_status'] == 0): ?>
                     <span class="ml-1" data-toggle="tooltip" data-placement="right" title data-original-title="You cannot file while there is a pending transfer"><i data-feather="alert-triangle" class="icon-dual-warning"></i></span>
                   <?php break; endif; endforeach;?>

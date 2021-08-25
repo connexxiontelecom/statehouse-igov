@@ -55,13 +55,14 @@
     <div class="col-lg-4">
       <div class="card-box bg-pattern">
         <div class="text-center">
+          <img src="/assets/images/registry.png" alt="logo" class="avatar-xl rounded-circle mb-1">
           <h4 class="mb-1 font-20"><?=$registry['registry_name']?></h4>
         </div>
         <p class="font-14 text-center text-muted">
           <?=$registry['registry_description']?>
         </p>
         <div class="text-center">
-          <a href="<?=site_url('view-registry/').$registry['registry_id']?>" class="btn btn-sm btn-light">View Registry</a>
+          <a href="<?=site_url('view-registry/').$registry['registry_id']?>" class="btn btn-sm btn-light">Enter Registry</a>
         </div>
       </div> <!-- end card-box -->
     </div><!-- end col -->
