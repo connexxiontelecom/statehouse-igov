@@ -185,6 +185,7 @@ $routes->post('/projects/submit-project-report','ProjectController::submitReport
 #Reminder
 $routes->get('/reminder', 'ReminderController::index', ['filter'=>'auth', 'as'=>'reminder']);
 $routes->get('/load-calendar', 'ReminderController::loadCalendar', ['filter'=>'auth']);
+#$routes->get('/load-calendar', 'ReminderController::loadCalendar', ['filter'=>'auth']);
 $routes->post('/reminder/insert', 'ReminderController::insert', ['filter'=>'auth']);
 
 #Contractor routes

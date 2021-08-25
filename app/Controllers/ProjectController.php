@@ -12,6 +12,7 @@ use App\Models\ProjectConversation;
 use App\Models\ProjectParticipation;
 use App\Models\ProjectReport;
 use App\Models\ProjectReportAttachment;
+use App\Models\Reminder;
 use App\Models\UserModel;
 
 class ProjectController extends BaseController
@@ -32,6 +33,7 @@ class ProjectController extends BaseController
         $this->projectcontractor = new ProjectContractor();
         $this->projectreport = new ProjectReport();
         $this->projectreportattachment = new ProjectReportAttachment();
+        $this->reminder = new Reminder();
 
     }
 	public function index()
@@ -107,6 +109,13 @@ class ProjectController extends BaseController
                         'part_project_id'=>$project,
                     ];
                     $this->projectparticipant->save($part);
+                    $remind = [
+                        'title'=>$project_name,
+                        'reminder_start_date'=>$start_date,
+                        'reminder_end_date'=>$due_date,
+                        'reminder_employee_id'=>$participant
+                    ];
+                    $this->reminder->save($remind);
                 }
             }
             if(!empty($this->request->getPost('contractors'))) {
@@ -135,6 +144,7 @@ class ProjectController extends BaseController
                     }
                 }
             }
+
             return redirect()->back()->with("success", "<strong>Success!</strong> Your project was published.");
         }
 
@@ -236,12 +246,6 @@ class ProjectController extends BaseController
             'report' => ['rules'=> 'required', 'errors'=>['required'=>'Kindly type in your report']],
         ]);
         if (!$inputs) {
-            /*return view('pages/project/view', [
-                'validation' => $this->validator,
-                'firstTime'=>$this->session->firstTime,
-                'username'=>$this->session->username,
-                'employees'=>$this->employee->getAllEmployee(),
-            ]);*/
             return redirect()->back()->with("error", "Something went wrong. Try again.");
         }else{
             $data = [
