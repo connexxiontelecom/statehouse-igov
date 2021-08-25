@@ -372,6 +372,20 @@
           </li>
 					
 					<li>
+						<a href="#meeting" data-toggle="collapse">
+							<i data-feather="message-square"></i>
+							<span> Meetings </span>
+							<span class="menu-arrow"></span>
+						</a>
+						<div class="collapse" id="meeting">
+							<ul class="nav-second-level">
+								
+								<li><a href="<?= site_url('/meet') ?>">Meet</a></li>
+							</ul>
+						</div>
+					</li>
+					
+					<li>
 						<a href="#budget" data-toggle="collapse">
 							<i data-feather="message-square"></i>
 							<span> Budgets </span>
