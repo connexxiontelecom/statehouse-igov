@@ -64,6 +64,16 @@ class TaskController extends BaseController
     return $this->response->setJSON($response);
   }
 
+  public function task_details($task_id) {
+    if ($this->request->getMethod() == 'get') {
+      $data['firstTime'] = $this->session->firstTime;
+      $data['username'] = $this->session->user_username;
+      $data['task'] = $this->_get_task($task_id);
+//      print_r($data['task']);
+      return view('/pages/task/task-details', $data);
+    }
+  }
+
   private function _get_department_employees() {
     $department_employees = [];
     $departments = $this->department->findAll();
@@ -111,5 +121,19 @@ class TaskController extends BaseController
       $tasks[$key]['executor'] = $executor;
     }
     return $tasks;
+  }
+
+  private function _get_task($task_id) {
+    $task = $this->task->find($task_id);
+    if ($task) {
+      $task['primary_executor'] = $this->user->find($task['task_executor']);
+      $task['creator'] = $this->user->find($task['task_creator']);
+      $task['secondary_executors'] = [];
+      $secondary_executors = $this->task_executor->where('te_task_id', $task_id)->findAll();
+      foreach ($secondary_executors as $secondary_executor) {
+        $task['secondary_executors'][] = $this->user->find($secondary_executor['te_executor_id']);
+      }
+    }
+    return $task;
   }
 }
