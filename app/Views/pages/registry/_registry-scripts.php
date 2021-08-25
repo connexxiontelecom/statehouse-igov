@@ -39,8 +39,8 @@
       let sender = $('#sender').val()
       let dateCorrespondence = $('#date-correspondence').val()
       let dateReceived = $('#date-received').val()
-      let registryID = $('#m-registry-id').val()
-      if (!refNo || !subject || !sender || !dateCorrespondence || !dateReceived || !registryID) {
+      let registryID = $('#registry-id').val()
+      if (!refNo || !subject || !sender || !dateCorrespondence || !dateReceived) {
         Swal.fire('Invalid Submission!', 'Please fill in all required fields', 'error')
       } else {
         let formData = new FormData(this)
@@ -55,7 +55,7 @@
         }).then(confirm => {
           if (confirm.value) {
             $.ajax({
-              url: '<?=site_url('/incoming-mail')?>',
+              url: '<?=site_url('/incoming-mail/')?>'+registryID,
               type: 'post',
               data: formData,
               success: response => {
@@ -78,10 +78,11 @@
       e.preventDefault()
       let refNo = $('#ref-no').val()
       let subject = $('#subject').val()
-      let sender = $('#sender').val()
       let dateCorrespondence = $('#date-correspondence').val()
       let dateReceived = $('#date-received').val()
-      if (!refNo || !subject || !sender || !dateCorrespondence || !dateReceived) {
+      let registryID = $('#registry-id').val()
+      let source = $('#m-source').val()
+      if (!refNo || !subject || !source || !dateCorrespondence || !dateReceived) {
         Swal.fire('Invalid Submission!', 'Please fill in all required fields', 'error')
       } else {
         let formData = new FormData(this)
@@ -96,12 +97,12 @@
         }).then(confirm => {
           if (confirm.value) {
             $.ajax({
-              url: '<?=site_url('/outgoing-mail')?>',
+              url: '<?=site_url('/outgoing-mail/')?>'+registryID,
               type: 'post',
               data: formData,
               success: response => {
                 if (response.success) {
-                  Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/central-registry')?>')
+                  Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/view-registry/')?>'+registryID)
                 } else {
                   Swal.fire('Sorry!', response.message, 'error')
                 }
@@ -215,7 +216,7 @@
           data: formData,
           success: response => {
             if (response.success) {
-              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/view-registry/')?>'+registryID)
+              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/correspondence')?>')
             } else {
               Swal.fire('Sorry!', response.message, 'error')
             }

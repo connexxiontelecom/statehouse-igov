@@ -3,6 +3,7 @@
 namespace Config;
 
 // Create a new instance of our RouteCollection class.
+$this->session = session();
 $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
@@ -21,7 +22,20 @@ $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
-$routes->set404Override();
+$routes->set404Override(function()
+{
+	if($this->session->type):
+		if($this->session->type == 1 || $this->session->type == 3):
+			return view('office/error_404');
+		endif;
+		if($this->session->type == 2):
+			return view('pages/error_404');
+		endif;
+	else:
+		return view('pages/error_404');
+	endif;
+	
+});
 $routes->setAutoRoute(true);
 
 /*
@@ -46,7 +60,9 @@ $routes->get('moderator', 'Auth::moderator', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'organization-profile', 'GeneralSettingController::organization_profile', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'departments', 'GeneralSettingController::departments', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'positions', 'GeneralSettingController::positions', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'manage-registries', 'GeneralSettingController::registries', ['filter' => 'auth']);
+
+$routes->match(['get', 'post'], 'manage-registry', 'GeneralSettingController::registry', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'new-registry', 'GeneralSettingController::new_registry', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'manage-registry/(:num)', 'GeneralSettingController::manage_registry/$1', ['filter' => 'auth']);
 
 $routes->match(['get', 'post'], 'notice-board', 'MessagingSettingController::notice_board', ['filter' => 'auth']);
@@ -186,11 +202,11 @@ $routes->match(['post'], 'verify-signature', 'EmployeeController::verify_signatu
 $routes->match(['get'], 'central-registry', 'CentralRegistryController::index', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'outgoing-mail', 'CentralRegistryController::outgoing_mail', ['filter' => 'auth']);
 
-
 // registries routes
 $routes->match(['get'], 'registry', 'RegistryController::index', ['filter' => 'auth']);
 $routes->match(['get'], 'view-registry/(:any)', 'RegistryController::view_registry/$1', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'incoming-mail', 'RegistryController::incoming_mail', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'incoming-mail/(:num)', 'RegistryController::incoming_mail/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'outgoing-mail/(:num)', 'RegistryController::outgoing_mail/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'manage-mail/(:num)', 'RegistryController::manage_mail/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'view-transfer-log/(:num)', 'RegistryController::view_transfer_log/$1', ['filter' => 'auth']);
 $routes->match(['get'], 'view-filing-log/(:num)', 'RegistryController::view_filing_log/$1', ['filter' => 'auth']);
@@ -200,7 +216,18 @@ $routes->match(['post'], 'upload-mail-attachments', 'RegistryController::upload_
 $routes->match(['post', 'get'], 'delete-mail-attachments', 'RegistryController::delete_mail_attachments', ['filter' => 'auth']);
 $routes->match(['get'], 'mail-transfer-requests', 'RegistryController::mail_transfer_requests', ['filter' => 'auth']);
 $routes->match(['post'], 'confirm-transfer-request', 'RegistryController::confirm_transfer_request', ['filter' => 'auth']);
+$routes->match(['get'], 'correspondence', 'RegistryController::correspondence', ['filter' => 'auth']);
 
+#Budget Routes (employee)
+$routes->match(['get'], 'budget-input', 'BudgetController::budget_input', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'edit-budget-input/(:num)', 'BudgetController::edit_budget_input/$1', ['filter' => 'auth']);
+
+// Task Routes
+$routes->match(['get'], 'tasks', 'TaskController::index', ['filter' => 'auth']);
+
+
+#Meeting
+$routes->match(['get'], 'meet', 'MeetingController::meet', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing

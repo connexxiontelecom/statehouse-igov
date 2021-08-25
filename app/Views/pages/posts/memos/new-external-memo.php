@@ -13,7 +13,7 @@
           <ol class="breadcrumb m-0">
             <li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
             <li class="breadcrumb-item"><a href="javascript: void(0);">Messaging</a></li>
-            <li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">All Memos</a></li>
+            <li class="breadcrumb-item"><a href="<?= site_url('/memos')?>">Memo Board</a></li>
             <li class="breadcrumb-item active">New External Memo</li>
           </ol>
         </div>
@@ -36,7 +36,7 @@
           </div>
           <form class="needs-validation" id="new-external-memo-form" novalidate>
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="ref-no">Reference No</label><span style="color: red"> *</span>
                   <input type="text" class="form-control" id="ref-no" name="p_ref_no" required>
@@ -45,16 +45,13 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-12">
                 <div class="form-group" id="department-div">
-                  <label for="positions">Offices</label><span style="color: red"> *</span>
-                  <select class="form-control select2-multiple" id="positions" name="positions[]" data-toggle="select2" multiple="multiple" data-placeholder="Please select..." required>
-										<?php foreach ($positions as $position): ?>
-                      <option value="<?=$position['pos_id']; ?>"> <?=$position['pos_name']; ?></option>
-										<?php endforeach; ?>
-                  </select>
+                  <label for="p-recipients">Recipients</label><span style="color: red"> *</span>
+                  <textarea class="form-control" name="p_recipients" id="p-recipients" rows="3" required></textarea>
+                  <small class="form-text text-muted">Please enter each recipient and their official titles/designations on a new line.</small>
                   <div class="invalid-feedback">
-                    Please select all applicable offices.
+                    Please enter the recipients.
                   </div>
                 </div>
               </div>
@@ -82,7 +79,7 @@
               </div>
             </div>
             <div class="row mb-2">
-              <div class="col-lg-12">
+              <div class="col-12">
                 <div id="myId" class="dropzone">
                   <div class="dz-message needsclick">
                     <i class="hi text-muted dripicons-cloud-upload"></i>
@@ -92,15 +89,22 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-4">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="signed-by">Signed By</label><span style="color: red"> *</span>
-                  <select class="form-control" id="signed-by" name="p_signed_by" required>
+                  <select class="form-control" id="signed-by" name="p_signed_by" data-toggle="select2" required>
                     <option value="">Select user</option>
-										<?php foreach($signed_by as $user):
-											if($user['user_username'] !== $username):?>
-                        <option value="<?=$user['user_id']?>">  <?=$user['user_name'];?> </option>
-											<?php endif; endforeach;?>
+                    <?php foreach ($department_employees as $department => $employees): ?>
+                      <?php if(!empty($employees)):?>
+                        <optgroup label="<?=$department?>">
+                          <?php foreach ($employees as $employee):?>
+                            <option value="<?=$employee['user']['user_id']?>">
+                              <?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+                            </option>
+                          <?php endforeach;?>
+                        </optgroup>
+                      <?php endif;?>
+                    <?php endforeach; ?>
                   </select>
                   <div class="invalid-feedback">
                     Please select the signer.

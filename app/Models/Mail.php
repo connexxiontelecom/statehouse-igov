@@ -27,7 +27,10 @@ class Mail extends Model
 		'm_notes',
 		'm_by',
 		'm_desk',
-		'm_registry_id'
+		'm_registry_id',
+    'm_source',
+    'm_post_id',
+    'm_acknowledgement'
 	];
 
 	// Dates

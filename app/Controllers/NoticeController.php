@@ -36,13 +36,8 @@ class NoticeController extends PostController
 		if ($this->request->getMethod() == 'get') {
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$data['signed_by'] = $this->user->where('user_status', 1)
-				->groupStart()
-					->where('user_type', 2)
-					->orWhere('user_type', 3)
-				->groupEnd()
-				->findAll();
-			return view('/pages/posts/notices/new-notice', $data);
+      $data['department_employees'] = $this->_get_department_employees();
+      return view('/pages/posts/notices/new-notice', $data);
 		}
 		$post_data = $this->request->getPost();
 		$notice_data = [
@@ -175,5 +170,25 @@ class NoticeController extends PostController
 		}
 		return $notices;
 	}
+
+  private function _get_department_employees() {
+    $department_employees = [];
+    $departments = $this->department->findAll();
+    foreach ($departments as $department) {
+      $department_employees[$department['dpt_name']] = [];
+      $employees = $this->employee
+        ->where('employee_department_id', $department['dpt_id'])
+        ->findAll();
+      foreach ($employees as $employee) {
+        $user = $this->user->where('user_employee_id', $employee['employee_id'])->first();
+        if ($user['user_status'] == 1 && ($user['user_type'] == 3 || $user['user_type'] == 2)) {
+          $employee['user'] = $user;
+          $employee['position'] = $this->position->find($employee['employee_position_id']);
+          array_push($department_employees[$department['dpt_name']], $employee);
+        }
+      }
+    }
+    return $department_employees;
+  }
 
 }

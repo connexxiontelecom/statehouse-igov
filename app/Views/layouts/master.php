@@ -344,10 +344,24 @@
                 <span> Workflow </span>
             </a>
         </li>
+          <?php if (session()->has_registry_access):?>
+            <li>
+              <a href="<?= site_url('registry') ?>">
+                <i data-feather="inbox"></i>
+                <span> Registry </span>
+              </a>
+            </li>
+          <?php endif;?>
           <li>
-            <a href="<?= site_url('registry') ?>">
-              <i data-feather="inbox"></i>
-              <span> Registry </span>
+            <a href="<?= site_url('correspondence') ?>">
+              <i data-feather="folder"></i>
+              <span> Correspondence </span>
+            </a>
+          </li>
+          <li>
+            <a href="<?= site_url('tasks') ?>">
+              <i data-feather="clipboard"></i>
+              <span> Tasks </span>
             </a>
           </li>
           <li>
@@ -362,12 +376,35 @@
               <span> Meetings </span>
             </a>
           </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i data-feather="clipboard"></i>
-              <span> Budgets </span>
-            </a>
-          </li>
+					
+					<li>
+						<a href="#meeting" data-toggle="collapse">
+							<i data-feather="message-square"></i>
+							<span> Meetings </span>
+							<span class="menu-arrow"></span>
+						</a>
+						<div class="collapse" id="meeting">
+							<ul class="nav-second-level">
+								
+								<li><a href="<?= site_url('/meet') ?>">Meet</a></li>
+							</ul>
+						</div>
+					</li>
+					
+					<li>
+						<a href="#budget" data-toggle="collapse">
+							<i data-feather="message-square"></i>
+							<span> Budgets </span>
+							<span class="menu-arrow"></span>
+						</a>
+						<div class="collapse" id="budget">
+							<ul class="nav-second-level">
+				
+								<li><a href="<?= site_url('/budget-input') ?>">Budget Chart</a></li>
+							</ul>
+						</div>
+					</li>
+         
           <li>
             <a href="javascript:void(0)">
               <i data-feather="briefcase"></i>

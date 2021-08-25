@@ -48,8 +48,8 @@
       let subject = $('#subject').val()
       let signedBy = $('#signed-by').val()
       let refNo = $('#ref-no').val()
-      let positions = $('#positions').val()
-      if (!subject || !signedBy || !refNo || !positions || quillEditor.root.innerText.length < 2) {
+      let recipients = $('#p-recipients').val()
+      if (!subject || !signedBy || !refNo || !recipients || quillEditor.root.innerText.length < 2) {
         Swal.fire('Invalid Submission!', 'Please fill in all required fields', 'error')
       } else {
         let body = quillEditor.root.innerHTML

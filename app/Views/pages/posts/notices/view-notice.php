@@ -20,26 +20,33 @@
 	</div>
 	<!-- end page title -->
   <div class="row">
-    <div class="col-lg-7">
-      <div class="card d-block">
-        <div class="card-body">
-          <div class="row d-print-none">
-            <div class="col-lg-1">
-            </div>
-            <div class="col-lg-11">
-              <div class="text-lg-right">
-                <a href="javascript:window.print()" type="button" class="btn btn-success waves-effect waves-light mr-2"><i class="mdi mdi-printer"></i></a>
-								<?php if($notice['p_by'] == session()->user_id && $notice['p_status'] == 0):?>
-                  <a href="<?=site_url('/edit-notice/').$notice['p_id']?>" type="button" class="btn btn-success">Edit</a>
-								<?php endif;?>
-								<?php if($notice['p_signed_by'] == session()->user_id && $notice['p_status'] == 0):?>
-                  <button onclick="signDocument(<?=$notice['p_id']?>)" type="button" class="btn btn-success mr-1">Sign</button>
-                  <button onclick="declineDocument(<?=$notice['p_id']?>)" type="button" class="btn btn-danger mr-1">Decline</button>
-								<?php endif;?>
-                <a href="<?=site_url('/notices')?>" type="button" class="btn btn-success">Go Back</a>
-              </div>
+    <div class="col-12">
+      <div class="card-box">
+        <div class="row d-print-none">
+          <div class="col-lg-5">
+
+          </div>
+          <div class="col-lg-7">
+            <div class="text-lg-right">
+              <a href="javascript:window.print()" type="button" class="btn btn-success waves-effect waves-light mr-2"><i class="mdi mdi-printer"></i></a>
+              <?php if($notice['p_by'] == session()->user_id && $notice['p_status'] == 0):?>
+                <a href="<?=site_url('/edit-notice/').$notice['p_id']?>" type="button" class="btn btn-success">Edit</a>
+              <?php endif;?>
+              <?php if($notice['p_signed_by'] == session()->user_id && $notice['p_status'] == 0):?>
+                <button onclick="signDocument(<?=$notice['p_id']?>)" type="button" class="btn btn-success mr-1">Sign</button>
+                <button onclick="declineDocument(<?=$notice['p_id']?>)" type="button" class="btn btn-danger mr-1">Decline</button>
+              <?php endif;?>
+              <a href="<?=site_url('/notices')?>" type="button" class="btn btn-success">Go Back</a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card d-block">
+        <div class="card-body">
           <div class="row">
             <div class="auth-logo" style="margin: 0 auto">
               <div class="logo logo-dark">
@@ -109,7 +116,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-5 d-print-none">
+    <div class="col-12 d-print-none">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title font-16 mb-3">Attachments</h5>

@@ -15,7 +15,11 @@
 						<li class="breadcrumb-item active">Budget Setup</li>
 					</ol>
 				</div>
+				<?php if(!empty($budget)): ?>
 				<h4 class="page-title"> <?=$budget['budget_title'] ?> - <?=$budget['budget_year'] ?></h4>
+				<?php else: ?>
+					<h4 class="page-title"> No Active Budget</h4>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>
@@ -67,6 +71,8 @@
 		</div> <!-- end col -->
 	</div>
 	
+	<?php if(!empty($budget)): ?>
+	
 	<div class="row" style="margin-top: -50px">
 		<div class="col-sm-12">
 			<div class="card">
@@ -74,11 +80,11 @@
 					
 					<div class="row">
 						<div class="col-xl-12">
+							<?php if($budget['budget_status'] == 1): ?>
 							<a href="<?=site_url('new-budget-chart') ?>" class="btn btn-success waves-effect waves-light"><i class="fas fa-plus"></i></a></a>
-							
+							<?php endif; ?>
 							
 							<?php if(!empty($bhs)): ?>
-								
 								
 								<table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
 									<thead>
@@ -111,7 +117,12 @@
 													<td> <? if($bh['bh_project'] == 1 ): echo $bh['bh_project_status']; endif; ?></td>
 													<td> <?=implode('', $bh['office_d']); ?></td>
 													<td>  <?php if($bh['bh_acc_type']): echo number_format($bh['bh_amount']); endif; ?></td>
-													<td> <a href="<?=site_url('edit-budget-chart/'.$bh['bh_id']) ?>" class="btn btn-success waves-effect waves-light"><i class="far fa-edit"></i></a></td>
+													
+													<td>
+														
+														<a href="<?=site_url('edit-budget-chart/'.$bh['bh_id']) ?>" class="btn btn-success waves-effect waves-light"><i class="far fa-edit"></i></a>
+													
+													</td>
 												</tr>
 											<?php endif; endforeach; ?>
 									<?php endforeach; ?>
@@ -165,6 +176,43 @@
 		
 		</div> <!-- end col -->
 	</div>
+	
+	<?php else: ?>
+		<div class="row">
+			<div class="col-md-12 col-lg-12 col-xl-12">
+				<div class="card bg-pattern">
+					
+					<div class="card-body p-4">
+						
+						<div class="auth-logo">
+							<a href="/" class="logo logo-dark text-center">
+                                        <span class="logo-lg">
+                                            <img src="../assets/images/logo-sm.png" alt="" height="22">
+                                        </span>
+							</a>
+							
+							<a href="/" class="logo logo-light text-center">
+                                        <span class="logo-lg">
+                                            <img src="../assets/images/logo-sm.png" alt="" height="22">
+                                        </span>
+							</a>
+						</div>
+						
+						<div class="text-center mt-4">
+							<h1 class="text-error">Oops</h1>
+							<h3 class="mt-3 mb-2">No Active Budget yet</h3>
+						
+						</div>
+					
+					</div> <!-- end card-body -->
+				</div>
+				<!-- end card -->
+			
+			</div> <!-- end col -->
+		</div>
+	
+	
+	<?php endif; ?>
 </div>
 
 
