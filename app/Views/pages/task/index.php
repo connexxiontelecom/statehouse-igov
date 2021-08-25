@@ -48,6 +48,42 @@
               </tr>
               </thead>
               <tbody>
+                <?php $i=1; foreach ($tasks as $task):?>
+                <tr>
+                  <td><?=$i; $i++;?></td>
+                  <td><?=$task['task_subject']?></td>
+                  <td><?=$task['executor']['user_name']?></td>
+                  <td><?=$task['creator']['user_name']?></td>
+                  <td class="text-center">
+                    <?php
+                      if ($task['task_priority'] == 0) echo '<span class="badge badge-primary">Low</span>';
+                      elseif ($task['task_priority'] == 1) echo '<span class="badge badge-warning">Medium</span>';
+                      elseif ($task['task_priority'] == 2) echo '<span class="badge badge-danger">High</span>';
+                    ?>
+                  </td>
+                  <td>
+                    <?php $date = date_create($task['task_due_date']);
+                    echo date_format($date,"d M Y");
+                    ?>
+                  </td>
+                  <td class="text-center">
+                    <?php
+                      if ($task['task_status'] == 0) echo '<span class="badge badge-soft-primary badge-pill">Pending</span>';
+                      elseif ($task['task_status'] == 1) echo '<span class="badge badge-soft-secondary badge-pill">Ongoing</span>';
+                      elseif ($task['task_status'] == 2) echo '<span class="badge badge-soft-success badge-pill">Completed</span>';
+                      elseif ($task['task_status'] == 3) echo '<span class="badge badge-soft-danger badge-pill">Cancelled</span>';
+                    ?>
+                  </td>
+                  <td class="text-center">
+                    <a href="<?=site_url('manage-mail/').$task['task_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="Manage Mail">
+                      <i data-feather="edit-3" class="icon-dual"></i>.
+                    </a>
+                    <a href="<?=site_url('view-transfer-log/').$task['task_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="View Log">
+                      <i data-feather="file-text" class="icon-dual"></i>.
+                    </a>
+                  </td>
+                </tr>
+              <?php endforeach;?>
               </tbody>
             </table>
           </div> <!-- end card -->
