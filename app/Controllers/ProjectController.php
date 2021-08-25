@@ -222,7 +222,7 @@ class ProjectController extends BaseController
                 'attachments'=>$this->projectattachment->getAllProjectAttachmentsByProjectId($id),
                 'conversations'=>$this->projectconversation->getProjectConversationByProjectId($id),
                 'reports'=>$this->projectreport->getProjectReportsByProjectId($id),
-                //'report_attachments'=>$this->projectreportattachment->getProjectReportAttachmentsByProjectId($id)
+                'report_attachments'=>$this->projectreportattachment->getProjectReportAttachmentsByProjectId($id)
             ];
             return view('pages/project/view', $data);
         }else{

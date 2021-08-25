@@ -4,17 +4,18 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ProjectReportAttachment extends Model
+class Reminder extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'project_report_attachments';
-	protected $primaryKey           = 'project_report_attachment_id';
+	protected $table                = 'reminders';
+	protected $primaryKey           = 'reminder_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['project_report_attachment_id','project_report_attachment_report_id','project_report_attachment_project_id','project_report_attachment'];
+	protected $allowedFields        = ['reminder_id', 'reminder_employee_id', 'title', 'reminder_start_date', 'reminder_end_date'];
+
 	// Dates
 	protected $useTimestamps        = false;
 	protected $dateFormat           = 'datetime';
@@ -39,10 +40,25 @@ class ProjectReportAttachment extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-    public function getProjectReportAttachmentsByProjectId($id){
-        $builder = $this->db->table('project_report_attachments as pra');
-        $builder->where('pra.project_report_attachment_project_id = '.$id);
-        //$builder->where('pra.project_report_attachment_report_id = '.$report_id);
-        return $builder->get()->getResultObject();
+
+    function fetchAllReminders($user_id){
+        return Reminder::where('reminder_employee_id',$user_id)->findAll();
     }
+
+/*    function insert_event($data)
+    {
+        $this->db->insert('events', $data);
+    }
+
+    function update_event($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('events', $data);
+    }
+
+    function delete_event($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('events');
+    }*/
 }

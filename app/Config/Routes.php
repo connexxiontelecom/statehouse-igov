@@ -166,6 +166,11 @@ $routes->get('/projects/edit/(:num)','ProjectController::editProject/$1',['filte
 $routes->post('/projects/update','ProjectController::editProject/$1',['filter'=>'auth', 'as'=>'update-project']);
 $routes->post('/projects/submit-project-report','ProjectController::submitReport',['filter'=>'auth', 'as'=>'submit-project-report']);
 
+#Reminder
+$routes->get('/reminder', 'ReminderController::index', ['filter'=>'auth', 'as'=>'reminder']);
+$routes->get('/load-calendar', 'ReminderController::loadCalendar', ['filter'=>'auth']);
+$routes->post('/reminder/insert', 'ReminderController::insert', ['filter'=>'auth']);
+
 #Contractor routes
 $routes->get('/manage-contractors', 'ContractorController::manageContractors',['filter'=>'auth', 'as'=>'manage-contractors']);
 $routes->get('/add-new-contractor', 'ContractorController::showNewContractorForm',['filter'=>'auth', 'as'=>'add-new-contractor']);

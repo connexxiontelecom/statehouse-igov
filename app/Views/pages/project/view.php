@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/master'); ?>
+<?= $this->extend('layouts/admin'); ?>
 
 <?= $this->section('extra-styles') ?>
 <link href="/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
@@ -253,7 +253,11 @@
                                                 <div class="card-body">
                                                     <?= $report->project_report_content ?? '' ?>
                                                 </div>
-
+                                                <?php foreach ($report_attachments as $report_attachment): ?>
+                                                 <?php if($report_attachment->project_report_attachment_report_id == $report->project_report_id): ?>
+                                                        <a href="/uploads/posts/<?= $report_attachment->project_report_attachment ?>" target="_blank" class="btn btn-primary btn-sm">Download</a>
+                                                 <?php endif; ?>
+                                                <?php endforeach; ?>
                                             </div>
                                         </div>
                                         <?php endforeach; ?>
