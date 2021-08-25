@@ -75,10 +75,10 @@
                     ?>
                   </td>
                   <td class="text-center">
-                    <a href="<?=site_url('manage-mail/').$task['task_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="Manage Mail">
-                      <i data-feather="edit-3" class="icon-dual"></i>.
+                    <a href="<?=site_url('task-details/').$task['task_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="Task Details">
+                      <i data-feather="list" class="icon-dual"></i>.
                     </a>
-                    <a href="<?=site_url('view-transfer-log/').$task['task_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="View Log">
+                    <a href="<?=site_url('view-task-log/').$task['task_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="View Log">
                       <i data-feather="file-text" class="icon-dual"></i>.
                     </a>
                   </td>
