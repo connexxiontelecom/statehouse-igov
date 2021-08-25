@@ -188,7 +188,6 @@ $routes->match(['post'], 'verify-signature', 'EmployeeController::verify_signatu
 $routes->match(['get'], 'central-registry', 'CentralRegistryController::index', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'outgoing-mail', 'CentralRegistryController::outgoing_mail', ['filter' => 'auth']);
 
-
 // registries routes
 $routes->match(['get'], 'registry', 'RegistryController::index', ['filter' => 'auth']);
 $routes->match(['get'], 'view-registry/(:any)', 'RegistryController::view_registry/$1', ['filter' => 'auth']);
@@ -208,6 +207,10 @@ $routes->match(['get'], 'correspondence', 'RegistryController::correspondence', 
 #Budget Routes (employee)
 $routes->match(['get'], 'budget-input', 'BudgetController::budget_input', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'edit-budget-input/(:num)', 'BudgetController::edit_budget_input/$1', ['filter' => 'auth']);
+
+// Task Routes
+$routes->match(['get'], 'tasks', 'TaskController::index', ['filter' => 'auth']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

@@ -359,6 +359,12 @@
             </a>
           </li>
           <li>
+            <a href="<?= site_url('tasks') ?>">
+              <i data-feather="clipboard"></i>
+              <span> Tasks </span>
+            </a>
+          </li>
+          <li>
             <a href="javascript:void(0)">
               <i data-feather="file-text"></i>
               <span> Forms </span>
