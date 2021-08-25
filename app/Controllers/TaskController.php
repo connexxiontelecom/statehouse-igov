@@ -29,6 +29,7 @@ class TaskController extends BaseController
 	{
     $data['firstTime'] = $this->session->firstTime;
     $data['username'] = $this->session->user_username;
+    $data['tasks'] = $this->_get_tasks();
     return view('/pages/task/index', $data);
 	}
 
@@ -96,4 +97,19 @@ class TaskController extends BaseController
     }
   }
 
+  private function _get_tasks() {
+    $tasks = $this->task
+      ->groupStart()
+      ->where('task_executor', $this->session->user_id)
+      ->orWhere('task_creator', $this->session->user_id)
+      ->groupEnd()
+      ->findAll();
+    foreach ($tasks as $key => $task) {
+      $creator = $this->user->find($task['task_creator']);
+      $executor = $this->user->find($task['task_executor']);
+      $tasks[$key]['creator'] = $creator;
+      $tasks[$key]['executor'] = $executor;
+    }
+    return $tasks;
+  }
 }
