@@ -1,5 +1,7 @@
 <?= $this->extend('layouts/master'); ?>
 <?=$this->section('extra-styles'); ?>
+<link href="/assets/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/ladda/ladda-themeless.min.css" rel="stylesheet" type="text/css" />
 <?=$this->endSection() ?>
 <?= $this->section('content'); ?>
 <div class="container-fluid">
@@ -180,6 +182,14 @@
               It would be very nice to have.
             </div>
           </div>
+          <div class="border rounded mt-4">
+            <form action="#" class="comment-area-box">
+              <textarea rows="3" class="form-control border-0 resize-none" placeholder="Your feedback..."></textarea>
+              <div class="p-2 bg-light d-flex justify-content-between align-items-center">
+                <button type="submit" class="btn btn-sm btn-success"><i class='uil uil-message mr-1'></i>Submit</button>
+              </div>
+            </form>
+          </div> <!-- end .border-->
         </div>
       </div>
     </div>
@@ -187,7 +197,21 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title font-16 mb-3">Attachments</h5>
-
+          <form id="task-attachment-form" class="needs-validation" novalidate>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <div class="form-control-wrap">
+                    <input id="file" type="file" data-plugins="dropify" name="file" accept=".tif,.tiff,.bmp,.jpg,.jpeg,.gif,.png"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn">Submit</button>
+            <button type="submit" class="btn btn-primary" id="save-btn-loading" hidden disabled>
+              <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -195,5 +219,15 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
+<script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
+<script src="/assets/libs/dropify/js/dropify.min.js"></script>
+<!-- Loading buttons js -->
+<script src="/assets/libs/ladda/spin.min.js"></script>
+<script src="/assets/libs/ladda/ladda.min.js"></script>
+
+<!-- Buttons init js-->
+<!-- Init js-->
+<script src="/assets/js/pages/loading-btn.init.js"></script>
+<script src="/assets/js/pages/form-fileuploads.init.js"></script>
 <?=view('pages/task/_task-scripts.php')?>
 <?= $this->endSection(); ?>
