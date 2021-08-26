@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Controllers\RtcTokenBuilder;
+use DateTime;
 
 class MeetingController extends BaseController
 {
@@ -21,9 +23,10 @@ class MeetingController extends BaseController
 		return view('pages/meeting/meet', $data);
 	}
 	
+	/**
+	 * @throws \Exception
+	 */
 	public function new_meeting(){
-		
-		include("../src/RtcTokenBuilder.php");
 		
 		$appID = "970CA35de60c44645bbae8a215061b33";
 		$appCertificate = "5CFd2fd1755d40ecb72977518be15d3b";
