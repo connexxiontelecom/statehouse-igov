@@ -3,6 +3,7 @@
 use DateTime;
 use DateTimeZone;
 
+
 class Message
 {
     public $salt;
@@ -22,7 +23,7 @@ class Message
         $this->privileges = array();
     }
 
-    public function packContent(): bool|array
+    public function packContent()
     {
         $buffer = unpack("C*", pack("V", $this->salt));
         $buffer = array_merge($buffer, unpack("C*", pack("V", $this->ts)));
@@ -94,7 +95,7 @@ class AccessToken
         return false;
     }
 
-    static function init($appID, $appCertificate, $channelName, $uid)
+    static function init($appID, $appCertificate, $channelName, $uid): ?AccessToken
     {
         $accessToken = new AccessToken();
 
@@ -113,7 +114,7 @@ class AccessToken
         return $accessToken;
     }
 
-    static function initWithToken($token, $appCertificate, $channel, $uid)
+    static function initWithToken($token, $appCertificate, $channel, $uid): ?AccessToken
     {
         $accessToken = new AccessToken();
         if (!$accessToken->extract($token, $appCertificate, $channel, $uid)) {
@@ -128,7 +129,7 @@ class AccessToken
         return $this;
     }
 
-    function extract($token, $appCertificate, $channelName, $uid)
+    function extract($token, $appCertificate, $channelName, $uid): bool
     {
         $ver_len = 3;
         $appid_len = 32;
@@ -172,7 +173,7 @@ class AccessToken
         return true;
     }
 
-    function build()
+    function build(): string
     {
         $msg = $this->message->packContent();
         $val = array_merge(unpack("C*", $this->appID), unpack("C*", $this->channelName), unpack("C*", $this->uid), $msg);
@@ -189,7 +190,7 @@ class AccessToken
     }
 }
 
-function packString($value)
+function packString($value): string
 {
     return pack("v", strlen($value)) . $value;
 }
