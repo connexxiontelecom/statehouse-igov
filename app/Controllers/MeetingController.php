@@ -3,17 +3,22 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Controllers\RtcTokenBuilder;
+use App\Agora\RtcTokenBuilder;
 use DateTime;
+use DateTimeZone;
+//use RtcTokenBuilder;
 
 class MeetingController extends BaseController
 {
+
+	
 	public function __construct()
 	{
 		if (session()->get('type') == 1):
 			echo view('auth/access_denied');
 			exit;
 		endif;
+
 	}
 	
 	public function meet()

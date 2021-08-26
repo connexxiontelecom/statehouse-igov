@@ -211,6 +211,7 @@ $routes->match(['get', 'post'], 'edit-budget-input/(:num)', 'BudgetController::e
 
 #Meeting
 $routes->match(['get'], 'meet', 'MeetingController::meet', ['filter' => 'auth']);
+$routes->match(['get'], 'new-meeting', 'MeetingController::new_meeting', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing
