@@ -73,15 +73,10 @@ class MeetingController extends BaseController
 			$diff = $start_time->difference($end_time);
 		
 			$seconds =  $diff->getSeconds();
-//			echo strtotime($end_time);
-//
-//			echo '<br>';
-//
-//			echo strtotime($start_time->addSeconds($seconds));
-//
-//			echo '<br>';
+
 			if($seconds < 1):
-				
+				$response['success'] = false;
+				$response['message'] = 'Meeting Start Time Greater Than End Time';
 				
 				else:
 					$appID = "614ab02fa02f4e91ac65d20752251650";
@@ -96,15 +91,33 @@ class MeetingController extends BaseController
 					$privilegeExpiredTs =  strtotime($end_time);
 
 					$token = RtcTokenBuilder::buildTokenWithUid($appID, $appCertificate, $channelName, $uid, $role, $privilegeExpiredTs);
-					echo 'Token with int uid: ' . $token . PHP_EOL;
 //			echo '<br>';
 //			$token = RtcTokenBuilder::buildTokenWithUserAccount($appID, $appCertificate, $channelName, $uidStr, $role, $privilegeExpiredTs);
 //			echo 'Token with user account: ' . $token . PHP_EOL;
-//
+					$meeting_array = array(
+					'meeting_employees' => json_encode($_POST['meeting_employees']),
+					'meeting_token' => $token,
+					'meeting_name' => $_POST['meeting_name'],
+					'meeting_name_strip' => $_POST['meeting_name_strip'],
+					'meeting_start' => $start_time,
+					'meeting_end' => $end_time
+					);
+					
+					try {
+						$this->meeting->save($meeting_array);
+					
+						$response['success'] = true;
+						$response['message'] = 'Successfully created a new task';
+						
+					}catch (\Exception $e){
+						$response['success'] = false;
+						$response['message'] = 'Meeting Start Time Greater Than End Time';
+					}
+
 					endif;
 			
 			
-		
+			return $this->response->setJSON($response);
 		
 		endif;
 		

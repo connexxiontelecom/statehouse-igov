@@ -35,8 +35,8 @@
 			</div> <!-- end card-box -->
 		</div><!-- end col-->
 	</div>
-<!--	<form class="needs-validation" id="new-meeting-form" novalidate>-->
-	<form class="needs-validation" method="post" novalidate>
+	<form class="needs-validation" id="new-meeting-form" novalidate>
+<!--	<form class="needs-validation" method="post" novalidate>-->
 	<div class="row">
 			<div class="col-lg-7">
 				<div class="card-box">
