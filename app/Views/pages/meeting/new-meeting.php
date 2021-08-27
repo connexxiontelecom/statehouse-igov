@@ -35,14 +35,14 @@
 			</div> <!-- end card-box -->
 		</div><!-- end col-->
 	</div>
-	<form class="needs-validation" id="new-task-form" novalidate>
+	<form class="needs-validation" id="new-meeting-form" novalidate>
 		<div class="row">
 			<div class="col-lg-7">
 				<div class="card-box">
 					<h5 class="text-uppercase bg-light p-2 mt-0 mb-3">Meeting Details</h5>
 					<div class="form-group">
 						<label for="subject">Title</label><span style="color: red"> *</span>
-						<input type="text" id="subject" class="form-control" name="task_subject" required>
+						<input type="text" id="meeting_name" class="form-control" name="meeting_name" required>
 						<div class="invalid-feedback">
 							Please enter a Title.
 						</div>
@@ -50,7 +50,7 @@
 					
 					<div class="form-group">
 						<label for="due-date">Start Date</label><span style="color: red"> *</span>
-						<input type="text" id="datetime-datepicker" class="form-control datetime-datepicker" placeholder="Date and Time">
+						<input type="text" id="meeting_start" name="meeting_start" class="form-control datetime-datepicker" placeholder="Date and Time">
 						<div class="invalid-feedback">
 							Please select a due date.
 						</div>
@@ -58,7 +58,7 @@
 					
 					<div class="form-group">
 						<label for="due-date">End Date</label><span style="color: red"> *</span>
-						<input type="text" id="" class="form-control datetime-datepicker" placeholder="Date and Time">
+						<input type="text" id="meeting_end" class="form-control datetime-datepicker" name="meeting_end" placeholder="Date and Time">
 						<div class="invalid-feedback">
 							Please select a due date.
 						</div>
@@ -82,7 +82,7 @@
 								<?php foreach ($employees as $employee):?>
 									<div class="custom-control custom-checkbox mt-1">
 										<input type="checkbox" class="custom-control-input user" id="<?=$employee['employee_id']?>"
-										       value="<?=$employee['employee_id']?>" name="task_executors[]">
+										       value="<?=$employee['employee_id']?>" name="meeting_employees[]">
 										<label class="custom-control-label strikethrough" for="<?=$employee['employee_id']?>">
 											<?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
 										</label>
@@ -121,5 +121,5 @@
         })
     })
 </script>
-<?//=view('pages/task/_task-scripts.php')?>
+<?=view('pages/meeting/_meeting-scripts.php')?>
 <?= $this->endSection() ?>
