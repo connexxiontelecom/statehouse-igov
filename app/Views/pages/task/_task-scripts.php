@@ -38,5 +38,13 @@
         })
       }
     })
+
+    $('form#task-attachment-form').submit(function (e) {
+      e.preventDefault()
+      let files = $('#file')[0].files
+      if (!files[0]) {
+        Swal.fire('Invalid Submission!', 'Please upload a file before submitting', 'error')
+      }
+    })
   })
 </script>
