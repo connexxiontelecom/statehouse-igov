@@ -73,30 +73,33 @@ class MeetingController extends BaseController
 			$diff = $start_time->difference($end_time);
 		
 			$seconds =  $diff->getSeconds();
-		
-			echo $start_time->setTimestamp(strtotime( $start_time->addSeconds($seconds)));
-			
-			echo '<br>';
+//			echo strtotime($end_time);
+//
+//			echo '<br>';
+//
+//			echo strtotime($start_time->addSeconds($seconds));
+//
+//			echo '<br>';
 			if($seconds < 1):
 				
 				
 				else:
-//					$appID = "614ab02fa02f4e91ac65d20752251650";
-//					$appCertificate = "99a82063baac42629a76347d81bdfd45";
-//					$channelName = $_POST['meeting_name_strip'];
-//					$uid = 0;
-//					//$uidStr = "2882341273";
-//					$role = RtcTokenBuilder::RoleAttendee;
+					$appID = "614ab02fa02f4e91ac65d20752251650";
+					$appCertificate = "99a82063baac42629a76347d81bdfd45";
+					$channelName = $_POST['meeting_name_strip'];
+					$uid = 0;
+					//$uidStr = "2882341273";
+					$role = RtcTokenBuilder::RoleAttendee;
 //					$expireTimeInSeconds = 3600;
-////					$currentTimestamp =  $time->addSeconds(23)->getTimestamp();
-//					//$privilegeExpiredTs = $currentTimestamp + $expireTimeInSeconds;
-//					$privilegeExpiredTs = $start_time->addSeconds($seconds);
-//
-//					$token = RtcTokenBuilder::buildTokenWithUid($appID, $appCertificate, $channelName, $uid, $role, $privilegeExpiredTs);
-//					echo 'Token with int uid: ' . $token . PHP_EOL;
-////			echo '<br>';
-////			$token = RtcTokenBuilder::buildTokenWithUserAccount($appID, $appCertificate, $channelName, $uidStr, $role, $privilegeExpiredTs);
-////			echo 'Token with user account: ' . $token . PHP_EOL;
+//					$currentTimestamp =  $time->addSeconds(23)->getTimestamp();
+					//$privilegeExpiredTs = $currentTimestamp + $expireTimeInSeconds;
+					$privilegeExpiredTs =  strtotime($end_time);
+
+					$token = RtcTokenBuilder::buildTokenWithUid($appID, $appCertificate, $channelName, $uid, $role, $privilegeExpiredTs);
+					echo 'Token with int uid: ' . $token . PHP_EOL;
+//			echo '<br>';
+//			$token = RtcTokenBuilder::buildTokenWithUserAccount($appID, $appCertificate, $channelName, $uidStr, $role, $privilegeExpiredTs);
+//			echo 'Token with user account: ' . $token . PHP_EOL;
 //
 					endif;
 			

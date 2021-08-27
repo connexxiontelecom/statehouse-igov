@@ -35,8 +35,9 @@
 			</div> <!-- end card-box -->
 		</div><!-- end col-->
 	</div>
-	<form class="needs-validation" id="new-meeting-form" novalidate>
-		<div class="row">
+<!--	<form class="needs-validation" id="new-meeting-form" novalidate>-->
+	<form class="needs-validation" method="post" novalidate>
+	<div class="row">
 			<div class="col-lg-7">
 				<div class="card-box">
 					<h5 class="text-uppercase bg-light p-2 mt-0 mb-3">Meeting Details</h5>
