@@ -32,6 +32,8 @@ class MeetingController extends BaseController
 
 	}
 	
+	
+	
 	public function meetings(){
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
@@ -51,6 +53,11 @@ class MeetingController extends BaseController
 			endforeach;
 		$data['meetings'] = $meeting_array;
 		return view('pages/meeting/meetings', $data);
+	}
+	
+	public function join_meeting($token){
+	
+	
 	}
 	
 	public function meet()
