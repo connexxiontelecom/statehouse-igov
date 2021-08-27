@@ -4,6 +4,10 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Agora\RtcTokenBuilder;
+use App\Models\Department;
+use App\Models\Employee;
+use App\Models\Position;
+use App\Models\UserModel;
 use DateTime;
 use DateTimeZone;
 use App\Models\Meeting;
@@ -20,6 +24,10 @@ class MeetingController extends BaseController
 			exit;
 		endif;
 		$this->meeting = new Meeting();
+		$this->department = new Department();
+		$this->employee = new Employee();
+		$this->user = new UserModel();
+		$this->position = new Position();
 
 	}
 	
@@ -39,6 +47,7 @@ class MeetingController extends BaseController
 			
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
+			$data['department_employees'] = $this->_get_department_employees();
 			return view('pages/meeting/new-meeting', $data);
 			
 		
@@ -66,5 +75,25 @@ class MeetingController extends BaseController
 		endif;
 		
 		
+	}
+	
+	private function _get_department_employees() {
+		$department_employees = [];
+		$departments = $this->department->findAll();
+		foreach ($departments as $department) {
+			$department_employees[$department['dpt_name']] = [];
+			$employees = $this->employee
+				->where('employee_department_id', $department['dpt_id'])
+				->findAll();
+			foreach ($employees as $employee) {
+				$user = $this->user->where('user_employee_id', $employee['employee_id'])->first();
+				if ($user['user_status'] == 1 && ($user['user_type'] == 3 || $user['user_type'] == 2)) {
+					$employee['user'] = $user;
+					$employee['position'] = $this->position->find($employee['employee_position_id']);
+					array_push($department_employees[$department['dpt_name']], $employee);
+				}
+			}
+		}
+		return $department_employees;
 	}
 }

@@ -229,7 +229,7 @@ $routes->match(['get', 'post'], 'task-details/(:num)', 'TaskController::task_det
 
 #Meeting
 $routes->match(['get'], 'meet', 'MeetingController::meet', ['filter' => 'auth']);
-$routes->match(['get'], 'new-meeting', 'MeetingController::new_meeting', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'new-meeting', 'MeetingController::new_meeting', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing
