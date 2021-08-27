@@ -67,6 +67,8 @@ class MeetingController extends BaseController
 			$_POST['meeting_name_strip'] = preg_replace('/\s/','',$_POST['meeting_name']);
 			$start_time = new DateTime($_POST['meeting_start']);
 			$start_time = Time::createFromInstance($start_time);
+		
+		if(strtotime($start_time) > time()):
 			$end_time = new DateTime($_POST['meeting_end']);
 			$end_time = Time::createFromInstance($end_time);
 			
@@ -107,7 +109,7 @@ class MeetingController extends BaseController
 						$this->meeting->save($meeting_array);
 					
 						$response['success'] = true;
-						$response['message'] = 'Successfully created a new task';
+						$response['message'] = 'Successfully scheduled a meeting';
 						
 					}catch (\Exception $e){
 						$response['success'] = false;
@@ -115,6 +117,14 @@ class MeetingController extends BaseController
 					}
 
 					endif;
+		
+		else:
+			
+			$response['success'] = false;
+			$response['message'] = 'Meeting cannot start before now';
+		
+		
+		endif;
 			
 			
 			return $this->response->setJSON($response);
