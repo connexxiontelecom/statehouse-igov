@@ -29,7 +29,6 @@ class ReminderController extends BaseController
 	}
 
 	public function loadCalendar(){
-        //return $this->reminder->get24HoursReminders();
         $reminder_events = $this->reminder->fetchAllMyReminders($this->session->user_employee_id);
         return json_encode($reminder_events);
     }
