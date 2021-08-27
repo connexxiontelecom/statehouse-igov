@@ -63,29 +63,29 @@ class MeetingController extends BaseController
 		
 	
 			if(!empty($meeting)):
-				echo $token;
-			
-				echo '<br>';
-				echo '<br>';
-				echo substr($meeting['meeting_token'], 0, strlen($token));
-//				if($token == substr($meeting['meeting_token'], 0, strlen($token))):
-//						$employees = json_decode($meeting['meeting_employees']);
-//						if(in_array($this->session->user_employee_id, $employees)):
+//				echo $token;
 //
-//							$data['firstTime'] = $this->session->firstTime;
-//							$data['username'] = $this->session->user_username;
-//							$data['token'] = $meeting['meeting_token'];
-//							$data['app_id'] = "614ab02fa02f4e91ac65d20752251650";
-//							$data['channel'] = $meeting['meeting_name_strip'];
-//							return view('pages/meeting/join-meeting', $data);
-//
-//						else:
-//							throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-//						endif;
-//					else:
-//						throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-//
-//					endif;
+//				echo '<br>';
+//				echo '<br>';
+//				echo substr($meeting['meeting_token'], 0, strlen($token));
+				if(1):
+						$employees = json_decode($meeting['meeting_employees']);
+						if(in_array($this->session->user_employee_id, $employees)):
+
+							$data['firstTime'] = $this->session->firstTime;
+							$data['username'] = $this->session->user_username;
+							$data['token'] = $meeting['meeting_token'];
+							$data['app_id'] = "614ab02fa02f4e91ac65d20752251650";
+							$data['channel'] = $meeting['meeting_name_strip'];
+							return view('pages/meeting/join-meeting', $data);
+
+						else:
+							throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+						endif;
+					else:
+						throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+
+					endif;
 
 			else:
 
