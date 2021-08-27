@@ -32,6 +32,27 @@ class MeetingController extends BaseController
 
 	}
 	
+	public function meetings(){
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		
+		$meetings = $this->meeting->findAll();
+		
+		$meeting_array = array();
+		$i = 0;
+		foreach ($meetings as $meeting):
+			
+			$employees = json_decode($meeting['meeting_employees']);
+				if(in_array($this->session->user_employee_id, $employees)):
+					$meeting_array[$i] = $meeting;
+					$i++;
+				endif;
+		
+			endforeach;
+		$data['meetings'] = $meeting_array;
+		return view('pages/meeting/meetings', $data);
+	}
+	
 	public function meet()
 	{
 //		$data['firstTime'] = $this->session->firstTime;

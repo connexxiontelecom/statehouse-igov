@@ -252,8 +252,8 @@
             <div class="collapse" id="meeting">
               <ul class="nav-second-level">
 
-                <li><a href="<?= site_url('/meet') ?>">Meetings</a></li>
-				 <li><a href="<?= site_url('/new-meeting') ?>">Meeting</a></li>
+                <li><a href="<?= site_url('/meetings') ?>">Meetings</a></li>
+				 <li><a href="<?= site_url('/new-meeting') ?>">New Meeting</a></li>
               </ul>
             </div>
           </li>
