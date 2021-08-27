@@ -76,6 +76,33 @@ class TaskController extends BaseController
     }
   }
 
+  public function upload_attachment() {
+    $file = $this->request->getFile('file');
+    $post_data = $this->request->getPost();
+    if (!empty($file)) {
+      if ($file->isValid() && !$file->hasMoved()) {
+        $file_name = $file->getRandomName();
+        $file->move('uploads/tasks', $file_name);
+        $task_attachment_data = [
+          'ta_task_id' => $post_data['task_id'],
+          'ta_uploader_id' => $this->session->user_id,
+          'ta_link' => $file_name,
+        ];
+        if ($this->task_attachment->save($task_attachment_data)) {
+          $response['success'] = true;
+          $response['message'] = 'The attachment was successfully uploaded.';
+        } else {
+          $response['success'] = false;
+          $response['message'] = 'An error occurred while uploading the attachment.';
+        }
+        return $this->response->setJSON($response);
+      }
+    }
+    $response['success'] = false;
+    $response['message'] = 'An error occurred while uploading the attachment.';
+    return $this->response->setJSON($response);
+  }
+
   private function _get_department_employees() {
     $department_employees = [];
     $departments = $this->department->findAll();
