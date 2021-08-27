@@ -206,9 +206,10 @@
                   </div>
                 </div>
               </div>
+              <input type="hidden" name="task_id" id="task-id" value="<?=$task['task_id']?>">
             </div>
             <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn">Submit</button>
-            <button type="submit" class="btn btn-primary" id="save-btn-loading" hidden disabled>
+            <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn-loading" hidden disabled>
               <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
             </button>
           </form>

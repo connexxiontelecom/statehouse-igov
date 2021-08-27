@@ -42,8 +42,32 @@
     $('form#task-attachment-form').submit(function (e) {
       e.preventDefault()
       let files = $('#file')[0].files
+      let taskID = $('#task-id').val()
       if (!files[0]) {
         Swal.fire('Invalid Submission!', 'Please upload a file before submitting', 'error')
+      } else {
+        $('#save-btn').attr('hidden', true)
+        $('#save-btn-loading').attr('hidden', false)
+        let formData = new FormData()
+        formData.append('file', files[0])
+        formData.append('task_id', taskID)
+        $.ajax({
+          url: '<?=site_url('/upload-task-attachment')?>',
+          type: 'post',
+          data: formData,
+          success: response => {
+            $('#save-btn').attr('hidden', false)
+            $('#save-btn-loading').attr('hidden', true)
+            if (response.success) {
+              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/task-details/')?>'+taskID)
+            } else {
+              Swal.fire('Sorry!', response.message, 'error')
+            }
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        })
       }
     })
   })
