@@ -213,6 +213,43 @@
               <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
             </button>
           </form>
+          <div class="mt-5" style="height: 150px; overflow-y: auto">
+            <?php if(!empty($task['attachments'])):
+              foreach ($task['attachments'] as $attachment):?>
+                <div class="card mb-1 shadow-none border">
+                  <div class="p-2">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <div class="avatar-sm">
+                        <span class="avatar-title badge-soft-primary text-primary rounded">
+                           <?php echo strtoupper(substr($attachment['ta_link'], strpos($attachment['ta_link'], ".") + 1)); ?>
+                        </span>
+                        </div>
+                      </div>
+                      <div class="col pl-0">
+                        <a href="<?='/uploads/tasks/'.$attachment['ta_link']; ?>" target="_blank" class="mb-0 font-12"><?php
+                          $filename = 'uploads/tasks/'.$attachment['ta_link'];
+                          //											$handle = fopen($filename, "r");
+                          //											$contents = fread($handle, filesize($filename));
+                          //echo $filename;
+                          $size = round(filesize($filename)/(1024 * 1024), 4);
+                          echo $attachment['ta_link'] .'<br>';
+                          echo $size."MB";
+                          //											fclose($handle);
+
+                          ?></a>
+                      </div>
+                      <div class="col-auto">
+                        <!-- Button -->
+                        <a href="<?='/uploads/tasks/'.$attachment['ta_link']; ?>" download="<?=$attachment['ta_link']; ?>" target="_blank" class="btn btn-link font-16 text-muted">
+                          <i class="dripicons-download"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <?php endforeach; else: echo "No Attachments"; endif; ?>
+          </div>
         </div>
       </div>
     </div>
