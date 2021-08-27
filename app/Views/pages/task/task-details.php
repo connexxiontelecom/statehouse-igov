@@ -202,7 +202,7 @@
               <div class="col-12">
                 <div class="form-group">
                   <div class="form-control-wrap">
-                    <input id="file" type="file" data-plugins="dropify" name="file" accept=".tif,.tiff,.bmp,.jpg,.jpeg,.gif,.png"/>
+                    <input id="file" type="file" data-plugins="dropify" name="file" />
                   </div>
                 </div>
               </div>

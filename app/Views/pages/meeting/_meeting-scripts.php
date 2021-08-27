@@ -1,17 +1,17 @@
 <script>
   $(document).ready(() => {
-    $('form#new-task-form').submit(function (e) {
+    $('form#new-meeting-form').submit(function (e) {
       e.preventDefault()
-      let subject = $('#subject').val()
-      let executor = $('#executor').val()
-      let dueDate = $('#due-date').val()
-      if (!subject || !executor || !dueDate) {
+      let meeting_name = $('#meeting_name').val()
+      let meeting_start = $('#meeting_start').val()
+      let meeting_end = $('#meeting_end').val()
+      if (!meeting_name || !meeting_start || !meeting_end) {
         Swal.fire('Invalid Submission!', 'Please fill in all required fields', 'error')
       } else {
         let formData = new FormData(this)
         Swal.fire({
           title: 'Are you sure?',
-          text: 'This will create a new task in the iGov system',
+          text: 'This will create a new meeting in the iGov system',
           type: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Confirm',
@@ -20,12 +20,12 @@
         }).then(confirm => {
           if (confirm.value) {
             $.ajax({
-              url: '<?=site_url('new-task')?>',
+              url: '<?=site_url('new-meeting')?>',
               type: 'post',
               data: formData,
               success: response => {
                 if (response.success) {
-                  Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('tasks')?>')
+                  Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('meetings')?>')
                 } else {
                   Swal.fire('Sorry!', response.message, 'error')
                 }
@@ -36,14 +36,6 @@
             })
           }
         })
-      }
-    })
-
-    $('form#task-attachment-form').submit(function (e) {
-      e.preventDefault()
-      let files = $('#file')[0].files
-      if (!files[0]) {
-        Swal.fire('Invalid Submission!', 'Please upload a file before submitting', 'error')
       }
     })
   })
