@@ -45,7 +45,7 @@ class MeetingController extends BaseController
 		
 		$token = RtcTokenBuilder::buildTokenWithUid($appID, $appCertificate, $channelName, $uid, $role, $privilegeExpiredTs);
 		echo 'Token with int uid: ' . $token . PHP_EOL;
-		
+		echo '<br>';
 		$token = RtcTokenBuilder::buildTokenWithUserAccount($appID, $appCertificate, $channelName, $uidStr, $role, $privilegeExpiredTs);
 		echo 'Token with user account: ' . $token . PHP_EOL;
 	}
