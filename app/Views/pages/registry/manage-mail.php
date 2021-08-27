@@ -10,8 +10,7 @@
 					<div class="page-title-right">
 						<ol class="breadcrumb m-0">
 							<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
-							<li class="breadcrumb-item"><a href="<?= site_url('/registry')?>">Registry</a></li>
-							<li class="breadcrumb-item"><a href="<?= site_url('/view-registry/').$mail['registry']['registry_id']?>">View Registry</a></li>
+							<li class="breadcrumb-item"><a href="<?= site_url('/correspondence')?>">Correspondence</a></li>
 							<li class="breadcrumb-item active">Manage Mail</li>
 						</ol>
 					</div>
@@ -29,11 +28,7 @@
             </div>
             <div class="col-lg-4">
               <div class="text-lg-right mt-3 mt-lg-0">
-	              <?php if (session()->has_registry_access):?>
-                  <a href="<?=site_url('/view-registry/').$mail['registry']['registry_id']?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
-                <?php else:?>
-                  <a href="<?=site_url('/correspondence').$mail['registry']['registry_id']?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
-	              <?php endif?>
+                <a href="<?=site_url('/correspondence')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
               </div>
             </div><!-- end col-->
           </div> <!-- end row -->
@@ -136,7 +131,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title mb-3">Attachments</h5>
-            <?php if($mail['post']):?>
+            <?php if(isset($mail['post'])):?>
               <div class="card mb-1 shadow-none border">
                 <div class="p-2">
                   <div class="row align-items-center">

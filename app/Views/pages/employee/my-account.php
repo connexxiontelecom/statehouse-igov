@@ -1,7 +1,7 @@
 <?=$this->extend('layouts/master');?>
 <?=$this->section('extra-styles'); ?>
 <link href="/assets/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
-  <link href="/assets/libs/ladda/ladda-themeless.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/libs/ladda/ladda-themeless.min.css" rel="stylesheet" type="text/css" />
 <?=$this->endSection() ?>
 <?=$this->section('content');?>
 <div class="container-fluid">

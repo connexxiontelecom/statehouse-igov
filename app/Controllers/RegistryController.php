@@ -34,6 +34,7 @@ class RegistryController extends BaseController
 	}
 
 	public function index() {
+
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
 		$data['registries'] = $this->_get_registries();
