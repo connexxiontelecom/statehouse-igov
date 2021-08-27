@@ -1,4 +1,6 @@
+<link href="/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
 <?= $this->extend('layouts/master'); ?>
+
 <?= $this->section('content'); ?>
 <div class="container-fluid">
 	<!-- start page title -->
@@ -22,11 +24,11 @@
 			<div class="card-box">
 				<div class="row">
 					<div class="col-lg-8">
-						<h5 style="text-transform: capitalize">Create New Task</h5>
+						<h5 style="text-transform: capitalize">Create New Meeting</h5>
 					</div>
 					<div class="col-lg-4">
 						<div class="text-lg-right mt-3 mt-lg-0">
-							<a href="<?=site_url('/tasks')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
+							<a href="<?=site_url('/meetings')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
 						</div>
 					</div><!-- end col-->
 				</div> <!-- end row -->
@@ -37,47 +39,36 @@
 		<div class="row">
 			<div class="col-lg-7">
 				<div class="card-box">
-					<h5 class="text-uppercase bg-light p-2 mt-0 mb-3">Task Details</h5>
+					<h5 class="text-uppercase bg-light p-2 mt-0 mb-3">Meeting Details</h5>
 					<div class="form-group">
-						<label for="subject">Subject</label><span style="color: red"> *</span>
+						<label for="subject">Title</label><span style="color: red"> *</span>
 						<input type="text" id="subject" class="form-control" name="task_subject" required>
 						<div class="invalid-feedback">
-							Please enter a subject.
+							Please enter a Title.
 						</div>
 					</div>
 					
 					<div class="form-group">
-						<label for="due-date">Due Date</label><span style="color: red"> *</span>
-						<input type="date" class="form-control" id="due-date" name="task_due_date" required value="<?=date('Y-m-d')?>">
+						<label for="due-date">Start Date</label><span style="color: red"> *</span>
+						<input type="text" id="datetime-datepicker" class="form-control datetime-datepicker" placeholder="Date and Time">
 						<div class="invalid-feedback">
 							Please select a due date.
 						</div>
 					</div>
-					<div class="form-group mb-3">
-						<label class="mb-2">Priority</label>
-						<br/>
-						<div class="radio form-check-inline">
-							<input type="radio" id="inlineRadio1" value="0" name="task_priority" checked>
-							<label for="inlineRadio1"> Low </label>
-						</div>
-						<div class="radio form-check-inline">
-							<input type="radio" id="inlineRadio2" value="1" name="task_priority">
-							<label for="inlineRadio2"> Medium </label>
-						</div>
-						<div class="radio form-check-inline">
-							<input type="radio" id="inlineRadio3" value="2" name="task_priority">
-							<label for="inlineRadio3"> High </label>
-						</div>
-					</div>
+					
 					<div class="form-group">
-						<label for="overview">Overview</label>
-						<textarea class="form-control" id="overview" rows="5" name="task_overview"></textarea>
+						<label for="due-date">End Date</label><span style="color: red"> *</span>
+						<input type="text" id="" class="form-control datetime-datepicker" placeholder="Date and Time">
+						<div class="invalid-feedback">
+							Please select a due date.
+						</div>
 					</div>
+					
 				</div>
 			</div>
 			<div class="col-lg-5">
 				<div class="card-box">
-					<h5 class="text-uppercase bg-light p-2 mt-0 mb-3">Task Executors</h5>
+					<h5 class="text-uppercase bg-light p-2 mt-0 mb-3">Meeting Members</h5>
 					<div class="custom-control custom-checkbox float-left">
 						<input type="checkbox" class="custom-control-input" id="select-all">
 						<label class="custom-control-label" for="select-all">
@@ -106,7 +97,7 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="text-center mb-3">
-					<a href="<?=site_url('tasks')?>" type="button" class="btn w-sm btn-danger waves-effect">Cancel</a>
+					<a href="<?=site_url('meetings')?>" type="button" class="btn w-sm btn-danger waves-effect">Cancel</a>
 					<button type="submit" class="btn w-sm btn-success waves-effect waves-light">Save</button>
 				</div>
 			</div>
@@ -115,6 +106,12 @@
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts') ?>
+
+<script src="/assets/libs/flatpickr/flatpickr.min.js"></script>
+<script src="/assets/libs/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<script src="/assets/libs/clockpicker/bootstrap-clockpicker.min.js"></script>
+<script src="/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="/assets/js/pages/form-pickers.init.js"></script>
 <script>
     $('#select-all').click(e => {
         let selectAll = $('#select-all')[0]
