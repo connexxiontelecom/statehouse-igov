@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
 use App\Models\Task;
+use App\Models\TaskAttachment;
 use App\Models\TaskExecutor;
 use App\Models\UserModel;
 
@@ -23,6 +24,7 @@ class TaskController extends BaseController
     $this->employee = new Employee();
     $this->user = new UserModel();
     $this->position = new Position();
+    $this->task_attachment = new TaskAttachment();
   }
 
 	public function index()
