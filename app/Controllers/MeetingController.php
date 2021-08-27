@@ -133,9 +133,9 @@ class MeetingController extends BaseController
 					$appID = "614ab02fa02f4e91ac65d20752251650";
 					$appCertificate = "99a82063baac42629a76347d81bdfd45";
 					$channelName = $_POST['meeting_name_strip'];
-					$uid = 1;
+					$uid = 2882341273;
 					//$uidStr = "2882341273";
-					$role = RtcTokenBuilder::RolePublisher;
+					$role = RtcTokenBuilder::RoleAttendee;
 //					$expireTimeInSeconds = 3600;
 //					$currentTimestamp =  $time->addSeconds(23)->getTimestamp();
 					//$privilegeExpiredTs = $currentTimestamp + $expireTimeInSeconds;
