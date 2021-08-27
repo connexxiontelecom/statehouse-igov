@@ -60,8 +60,14 @@ class MeetingController extends BaseController
 			if(!empty($meeting)):
 				$employees = json_decode($meeting['meeting_employees']);
 				if(in_array($this->session->user_employee_id, $employees)):
+					
+					$data['firstTime'] = $this->session->firstTime;
+					$data['username'] = $this->session->user_username;
+					$data['token'] = $meeting['meeting_token'];
+					$data['app_id'] = "614ab02fa02f4e91ac65d20752251650";
+					$data['channel'] = $meeting['meeting_name_strip'];
+					return view('pages/meeting/join-meeting', $data);
 				
-					echo "i have permission to join";
 				else:
 					throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
 				endif;

@@ -14,7 +14,7 @@
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url() ?>">iGov</a></li>
 						<li class="breadcrumb-item"><a href="<?=site_url('meetings') ?>">Meetings</a></li>
-						<li class="breadcrumb-item active">Meeting</li>
+						<li class="breadcrumb-item active">Join Meeting</li>
 					</ol>
 				</div>
 				<h4 class="page-title"> Meeting</h4>
@@ -56,20 +56,17 @@
 								<form id="join-form">
 									<div class="row join-info-group">
 										<div class="col-sm">
-											<p class="join-info-text">AppID</p>
-											<input id="appid" type="text" placeholder="enter appid" required>
-											<p class="tips">If you don`t know what is your appid, checkout <a href="https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id">this</a></p>
-										</div>
+										
+											<input id="appid" type="hidden" value="<?=$app_id ?>" placeholder="enter appid" required>
+														</div>
 										<div class="col-sm">
-											<p class="join-info-text">Token(optional)</p>
-											<input id="token" type="text" placeholder="enter token">
-											<p class="tips">If you don`t know what is your token, checkout <a href="https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-namekeyadynamic-key">this</a></p>
-										</div>
+											
+											<input id="token" type="hidden" value="<?=$token ?>" placeholder="enter token">
+														</div>
 										<div class="col-sm">
-											<p class="join-info-text">Channel</p>
-											<input id="channel" type="text" placeholder="enter channel name" required>
-											<p class="tips">If you don`t know what is your channel, checkout <a href="https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#channel">this</a></p>
-										</div>
+											
+											<input id="channel" type="hidden" value="<?=$channel ?>" placeholder="enter channel name" required>
+														</div>
 									</div>
 									
 									<div class="button-group">
