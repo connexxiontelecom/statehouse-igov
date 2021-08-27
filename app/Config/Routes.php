@@ -226,6 +226,7 @@ $routes->match(['get', 'post'], 'edit-budget-input/(:num)', 'BudgetController::e
 $routes->match(['get'], 'tasks', 'TaskController::index', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-task', 'TaskController::new_task', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'task-details/(:num)', 'TaskController::task_details/$1', ['filter' => 'auth']);
+$routes->match(['post'], 'upload-task-attachment', 'TaskController::upload_attachment', ['filter' => 'auth']);
 
 #Meeting
 $routes->match(['get'], 'meet', 'MeetingController::meet', ['filter' => 'auth']);
