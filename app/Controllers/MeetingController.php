@@ -55,7 +55,22 @@ class MeetingController extends BaseController
 		return view('pages/meeting/meetings', $data);
 	}
 	
-	public function join_meeting($token){
+	public function join_meeting($meeting_id, $token){
+		$meeting = $this->meeting->where('meeting_id', $meeting_id)->first();
+			if(!empty($meeting)):
+				$employees = json_decode($meeting['meeting_employees']);
+				if(in_array($this->session->user_employee_id, $employees)):
+				
+					echo "i have permission to join";
+				else:
+					throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+				endif;
+	
+			else:
+	
+					throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+			endif;
+
 	
 	
 	}

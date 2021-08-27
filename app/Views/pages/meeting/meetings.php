@@ -55,7 +55,7 @@
 								
 									<td class="text-center">
 										
-										<a href="<?=site_url('join-meeting/').$meeting['meeting_token']?>" data-toggle="tooltip" data-placement="left" title data-original-title="join meeting">
+										<a href="<?=site_url('join-meeting/').$meeting['meeting_id'].'/'.$meeting['meeting_token']?>" data-toggle="tooltip" data-placement="left" title data-original-title="join meeting">
 											<i data-feather="video" class="icon-dual"></i>.
 										</a>
 									</td>
