@@ -81,7 +81,7 @@ class TaskController extends BaseController
     $post_data = $this->request->getPost();
     if (!empty($file)) {
       if ($file->isValid() && !$file->hasMoved()) {
-        $file_name = $file->getRandomName();
+        $file_name = time().'_'.$file->getClientName();
         $file->move('uploads/tasks', $file_name);
         $task_attachment_data = [
           'ta_task_id' => $post_data['task_id'],
@@ -157,6 +157,7 @@ class TaskController extends BaseController
     if ($task) {
       $task['primary_executor'] = $this->user->find($task['task_executor']);
       $task['creator'] = $this->user->find($task['task_creator']);
+      $task['attachments'] = $this->task_attachment->where('ta_task_id', $task_id)->findAll();
       $task['secondary_executors'] = [];
       $secondary_executors = $this->task_executor->where('te_task_id', $task_id)->findAll();
       foreach ($secondary_executors as $secondary_executor) {
