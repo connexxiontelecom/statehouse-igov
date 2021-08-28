@@ -28,7 +28,7 @@
           </div>
           <div class="col-lg-4">
             <div class="text-lg-right mt-3 mt-lg-0">
-              <a href="<?=site_url('/new-task')?>" type="button" class="btn btn-success waves-effect waves-light">New Task</a>
+              <a href="<?=site_url('/new-task')?>" type="button" class="btn btn-success waves-effect waves-light"><i class="mdi mdi-plus-circle mr-1"></i> New Task</a>
             </div>
           </div><!-- end col-->
         </div> <!-- end row -->
