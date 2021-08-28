@@ -230,6 +230,7 @@ $routes->match(['post'], 'upload-task-attachment', 'TaskController::upload_attac
 $routes->match(['get'], 'start-task/(:num)', 'TaskController::start_task/$1', ['filter' => 'auth']);
 $routes->match(['post'], 'complete-task', 'TaskController::complete_task', ['filter' => 'auth']);
 $routes->match(['post'], 'cancel-task', 'TaskController::cancel_task', ['filter' => 'auth']);
+$routes->match(['post'], 'submit-feedback', 'TaskController::submit_feedback', ['filter' => 'auth']);
 
 #Meeting
 $routes->match(['get'], 'meet', 'MeetingController::meet', ['filter' => 'auth']);

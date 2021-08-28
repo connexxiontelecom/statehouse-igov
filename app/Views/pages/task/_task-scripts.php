@@ -103,6 +103,34 @@
       }
     })
 
+    $('form#submit-feedback-form').submit(function (e) {
+      e.preventDefault()
+      let comment = $('#comment').val()
+      let taskID = $('#task-id').val()
+      if (!comment) {
+        Swal.fire('Invalid Submission!', 'Please enter a comment before submitting', 'error')
+      } else {
+        let formData = new FormData()
+        formData.append('comment', comment)
+        formData.append('task_id', taskID)
+        $.ajax({
+          url: '<?=site_url('/submit-feedback')?>',
+          type: 'post',
+          data: formData,
+          success: response => {
+            if (response.success) {
+              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/task-details/')?>'+taskID)
+            } else {
+              Swal.fire('Sorry!', response.message, 'error')
+            }
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        })
+      }
+    })
+
     $('form#task-attachment-form').submit(function (e) {
       e.preventDefault()
       let files = $('#file')[0].files
