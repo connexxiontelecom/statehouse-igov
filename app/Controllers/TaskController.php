@@ -8,6 +8,7 @@ use App\Models\Position;
 use App\Models\Task;
 use App\Models\TaskAttachment;
 use App\Models\TaskExecutor;
+use App\Models\TaskLog;
 use App\Models\UserModel;
 
 class TaskController extends BaseController
@@ -25,6 +26,7 @@ class TaskController extends BaseController
     $this->user = new UserModel();
     $this->position = new Position();
     $this->task_attachment = new TaskAttachment();
+    $this->task_log = new TaskLog();
   }
 
 	public function index()
@@ -122,6 +124,68 @@ class TaskController extends BaseController
       $response['message'] = 'An error occurred while starting the task.';
     }
     return $this->response->setJSON($response);
+  }
+
+  public function cancel_task() {
+    $post_data = $this->request->getPost();
+    $task = $this->task->find($post_data['task_id']);
+    if ($task && ($task['task_status'] == 0 || $task['task_status'] == 1)) {
+      $task_data = [
+        'task_id' => $task['task_id'],
+        'task_status' => 3
+      ];
+      if ($this->task->save($task_data)) {
+        $task_log_data = [
+          'tl_task_id' => $task['task_id'],
+          'tl_user_id' => $this->session->user_id,
+          'tl_action' => 'task_cancellation',
+          'tl_details' => $post_data['cancellation_reason']
+        ];
+        $this->task_log->insert($task_log_data);
+        $response['success'] = true;
+        $response['message'] = 'The task was successfully cancelled.';
+      } else {
+        $response['success'] = false;
+        $response['message'] = 'An error occurred while cancelling the task.';
+      }
+    } else {
+      $response['success'] = false;
+      $response['message'] = 'An error occurred while cancelling the task.';
+    }
+    return $this->response->setJSON($response);
+  }
+
+  public function complete_task() {
+    $post_data = $this->request->getPost();
+    $task = $this->task->find($post_data['task_id']);
+    if ($task && $task['task_status'] == 1) {
+      $task_data = [
+        'task_id' => $task['task_id'],
+        'task_status' => 2
+      ];
+      if ($this->task->save($task_data)) {
+        $task_log_data = [
+          'tl_task_id' => $task['task_id'],
+          'tl_user_id' => $this->session->user_id,
+          'tl_action' => 'task_completion',
+          'tl_details' => $post_data['completion_summary']
+        ];
+        $this->task_log->insert($task_log_data);
+        $response['success'] = true;
+        $response['message'] = 'The task was successfully completed.';
+      } else {
+        $response['success'] = false;
+        $response['message'] = 'An error occurred while completing the task.';
+      }
+    } else {
+      $response['success'] = false;
+      $response['message'] = 'An error occurred while completing the task.';
+    }
+    return $this->response->setJSON($response);
+  }
+
+  public function submit_feedback() {
+
   }
 
   private function _get_department_employees() {

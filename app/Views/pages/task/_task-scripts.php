@@ -39,6 +39,70 @@
       }
     })
 
+    $('form#task-cancellation-form').submit(function (e) {
+      e.preventDefault()
+      let reason = $('#reason').val()
+      let taskID = $('#task-id').val()
+      if (!reason) {
+        Swal.fire('Invalid Submission!', 'Please enter a cancellation reason before submitting', 'error')
+      } else {
+        $('#save-btn').attr('hidden', true)
+        $('#save-btn-loading').attr('hidden', false)
+        let formData = new FormData()
+        formData.append('cancellation_reason', reason)
+        formData.append('task_id', taskID)
+        $.ajax({
+          url: '<?=site_url('/cancel-task')?>',
+          type: 'post',
+          data: formData,
+          success: response => {
+            $('#save-btn').attr('hidden', false)
+            $('#save-btn-loading').attr('hidden', true)
+            if (response.success) {
+              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/task-details/')?>'+taskID)
+            } else {
+              Swal.fire('Sorry!', response.message, 'error')
+            }
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        })
+      }
+    })
+
+    $('form#task-completion-form').submit(function (e) {
+      e.preventDefault()
+      let summary = $('#summary').val()
+      let taskID = $('#task-id').val()
+      if (!summary) {
+        Swal.fire('Invalid Submission!', 'Please enter a completion summary before submitting', 'error')
+      } else {
+        $('#save-btn').attr('hidden', true)
+        $('#save-btn-loading').attr('hidden', false)
+        let formData = new FormData()
+        formData.append('completion_summary', summary)
+        formData.append('task_id', taskID)
+        $.ajax({
+          url: '<?=site_url('/complete-task')?>',
+          type: 'post',
+          data: formData,
+          success: response => {
+            $('#save-btn').attr('hidden', false)
+            $('#save-btn-loading').attr('hidden', true)
+            if (response.success) {
+              Swal.fire('Confirmed!', response.message, 'success').then(() => location.href = '<?=site_url('/task-details/')?>'+taskID)
+            } else {
+              Swal.fire('Sorry!', response.message, 'error')
+            }
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        })
+      }
+    })
+
     $('form#task-attachment-form').submit(function (e) {
       e.preventDefault()
       let files = $('#file')[0].files
