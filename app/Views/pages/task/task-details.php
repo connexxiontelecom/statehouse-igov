@@ -30,6 +30,15 @@
           </div>
           <div class="col-lg-8">
             <div class="text-lg-right mt-3 mt-lg-0">
+              <?php if ($task['task_status'] == 0):?>
+                <a href="javascript:void(0)" onclick="startTask(<?=$task['task_id']?>)" type="button" class="btn btn-success waves-effect waves-light mr-1"><i class="mdi mdi-clipboard-text-play-outline mr-1"></i> Start Task</a>
+              <?php endif;?>
+              <?php if ($task['task_status'] == 1):?>
+                <button type="button" class="btn btn-primary waves-effect waves-light mr-2" data-toggle="modal" data-target="#standard-modal-3"><i class="mdi mdi-check-outline mr-1"></i> Complete Task</button>
+              <?php endif;?>
+              <?php if ($task['task_status'] == 0 || $task['task_status'] == 1):?>
+                <button type="button" class="btn btn-warning waves-effect waves-light mr-2" data-toggle="modal" data-target="#standard-modal-2"><i class="mdi mdi-close-thick mr-1"></i> Cancel Task</button>
+              <?php endif;?>
               <a href="<?=site_url('/tasks')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
             </div>
           </div><!-- end col-->
@@ -41,31 +50,6 @@
     <div class="col-lg-7">
       <div class="card d-block">
         <div class="card-body">
-          <div class="dropdown float-right">
-            <a href="#" class="dropdown-toggle arrow-none text-muted"
-               data-toggle="dropdown" aria-expanded="false">
-              <i class='mdi mdi-dots-horizontal font-18'></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class='mdi mdi-attachment mr-1'></i>Attachment
-              </a>
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class='mdi mdi-pencil-outline mr-1'></i>Edit
-              </a>
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class='mdi mdi-content-copy mr-1'></i>Mark as Duplicate
-              </a>
-              <div class="dropdown-divider"></div>
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item text-danger">
-                <i class='mdi mdi-delete-outline mr-1'></i>Delete
-              </a>
-            </div> <!-- end dropdown menu-->
-          </div> <!-- end dropdown-->
           <h4><?=$task['task_subject']?></h4>
           <div class="row">
             <div class="col-md-4">
@@ -208,7 +192,7 @@
               </div>
               <input type="hidden" name="task_id" id="task-id" value="<?=$task['task_id']?>">
             </div>
-            <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn">Submit</button>
+            <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn" <?=$task['task_status'] != 1 ? 'disabled' : ''?>>Submit</button>
             <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn-loading" hidden disabled>
               <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
             </button>
@@ -254,6 +238,71 @@
       </div>
     </div>
   </div>
+  <div id="standard-modal-2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="task-cancellation-form" class="needs-validation" novalidate>
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Task Cancellation</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="reason">Cancellation Reason</label><span style="color:red;"> *</span>
+                  <textarea name="reason" id="reason" rows="4" class="form-control" required></textarea>
+                  <div class="invalid-feedback">
+                    Please enter a cancellation reason.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="save-btn">Submit & Cancel</button>
+            <button type="submit" class="btn btn-primary" id="save-btn-loading" hidden disabled>
+              <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
+            </button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div id="standard-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="task-completion-form" class="needs-validation" novalidate>
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Task Completion</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="summary">Completion Summary</label><span style="color:red;"> *</span>
+                  <textarea name="summary" id="summary" rows="4" class="form-control" required></textarea>
+                  <div class="invalid-feedback">
+                    Please enter a completion summary.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="save-btn">Submit & Complete</button>
+            <button type="submit" class="btn btn-primary" id="save-btn-loading" hidden disabled>
+              <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
+            </button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
