@@ -61,6 +61,12 @@ class TaskController extends BaseController
       if (isset($post_data['task_executors'])) {
         $this->_add_executors($post_data['task_executors'], $task_id);
       }
+      $task_log_data = [
+        'tl_task_id' => $task_id,
+        'tl_user_id' => $this->session->user_id,
+        'tl_action' => 'task_creation',
+      ];
+      $this->task_log->insert($task_log_data);
       $response['success'] = true;
       $response['message'] = 'Successfully created a new task';
     } else {
@@ -93,6 +99,13 @@ class TaskController extends BaseController
           'ta_link' => $file_name,
         ];
         if ($this->task_attachment->save($task_attachment_data)) {
+          $task_log_data = [
+            'tl_task_id' => $post_data['task_id'],
+            'tl_user_id' => $this->session->user_id,
+            'tl_action' => 'task_attachment_upload',
+            'tl_details' => $file_name
+          ];
+          $this->task_log->insert($task_log_data);
           $response['success'] = true;
           $response['message'] = 'The attachment was successfully uploaded.';
         } else {
@@ -115,6 +128,12 @@ class TaskController extends BaseController
         'task_status' => 1,
       ];
       if ($this->task->save($task_data)) {
+        $task_log_data = [
+          'tl_task_id' => $task['task_id'],
+          'tl_user_id' => $this->session->user_id,
+          'tl_action' => 'task_started',
+        ];
+        $this->task_log->insert($task_log_data);
         $response['success'] = true;
         $response['message'] = 'The task was successfully started.';
       } else {
@@ -196,6 +215,13 @@ class TaskController extends BaseController
         'tf_comment' => $post_data['comment']
       ];
       if ($this->task_feedback->save($task_feedback_data)) {
+        $task_log_data = [
+          'tl_task_id' => $task['task_id'],
+          'tl_user_id' => $this->session->user_id,
+          'tl_action' => 'feedback_submit',
+          'tl_details' => $post_data['comment']
+        ];
+        $this->task_log->insert($task_log_data);
         $response['success'] = true;
         $response['message'] = 'Your feedback was submitted.';
       } else {
@@ -207,6 +233,22 @@ class TaskController extends BaseController
       $response['message'] = 'An error occurred while submitting your feedback.';
     }
     return $this->response->setJSON($response);
+  }
+
+  public function view_task_log($task_id) {
+    $data['firstTime'] = $this->session->firstTime;
+    $data['username'] = $this->session->user_username;
+    $data['task'] = $this->_get_task($task_id);
+    $data['task_logs'] = $this->_get_task_logs($task_id);
+    return view('/pages/task/view-task-logs', $data);
+  }
+
+  private function _get_task_logs($task_id) {
+    $task_logs = $this->task_log->where('tl_task_id', $task_id)->orderBy('created_at', 'DESC')->findAll();
+    foreach ($task_logs as $key => $task_log) {
+      $task_logs[$key]['user'] = $this->user->find($task_log['tl_user_id']);
+    }
+    return $task_logs;
   }
 
   private function _get_department_employees() {

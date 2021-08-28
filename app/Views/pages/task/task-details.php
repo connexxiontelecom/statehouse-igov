@@ -37,8 +37,9 @@
                 <button type="button" class="btn btn-primary waves-effect waves-light mr-1" data-toggle="modal" data-target="#standard-modal-3"><i class="mdi mdi-check-outline mr-1"></i> Complete Task</button>
               <?php endif;?>
               <?php if ($task['task_executor'] == session()->user_id && ($task['task_status'] == 0 || $task['task_status'] == 1)):?>
-                <button type="button" class="btn btn-warning waves-effect waves-light mr-2" data-toggle="modal" data-target="#standard-modal-2"><i class="mdi mdi-close-thick mr-1"></i> Cancel Task</button>
+                <button type="button" class="btn btn-warning waves-effect waves-light mr-3" data-toggle="modal" data-target="#standard-modal-2"><i class="mdi mdi-close-thick mr-1"></i> Cancel Task</button>
               <?php endif;?>
+              <a href="<?=site_url('view-task-log/').$task['task_id']?>" type="button" class="btn btn-success waves-effect waves-light mr-1">View Log</a>
               <a href="<?=site_url('/tasks')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
             </div>
           </div><!-- end col-->
@@ -196,7 +197,7 @@
               <div class="col-12">
                 <div class="form-group">
                   <div class="form-control-wrap">
-                    <input id="file" type="file" data-plugins="dropify" name="file" />
+                    <input id="file" type="file" data-plugins="dropify" name="file" <?=$task['task_status'] != 1 ? 'disabled' : ''?>/>
                   </div>
                 </div>
               </div>
