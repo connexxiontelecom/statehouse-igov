@@ -398,7 +398,7 @@ class RegistryController extends BaseController
 	}
 
 	private function _get_transfer_logs($mail_id) {
-		$transfer_logs = $this->mail_transfer->where('mt_mail_id', $mail_id)->orderBy('created_at', 'ASC')->findAll();
+		$transfer_logs = $this->mail_transfer->where('mt_mail_id', $mail_id)->orderBy('created_at', 'DESC')->findAll();
 		foreach ($transfer_logs as $key => $transfer_log) {
 			$transfer_from = $this->user->find($transfer_log['mt_from_id']);
 			$transfer_to = $this->user->find($transfer_log['mt_to_id']);

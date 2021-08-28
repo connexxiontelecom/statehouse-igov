@@ -30,15 +30,16 @@
           </div>
           <div class="col-lg-8">
             <div class="text-lg-right mt-3 mt-lg-0">
-              <?php if ($task['task_status'] == 0):?>
+              <?php if ($task['task_executor'] == session()->user_id && $task['task_status'] == 0):?>
                 <a href="javascript:void(0)" onclick="startTask(<?=$task['task_id']?>)" type="button" class="btn btn-success waves-effect waves-light mr-1"><i class="mdi mdi-clipboard-text-play-outline mr-1"></i> Start Task</a>
               <?php endif;?>
-              <?php if ($task['task_status'] == 1):?>
-                <button type="button" class="btn btn-primary waves-effect waves-light mr-2" data-toggle="modal" data-target="#standard-modal-3"><i class="mdi mdi-check-outline mr-1"></i> Complete Task</button>
+              <?php if ($task['task_executor'] == session()->user_id && $task['task_status'] == 1):?>
+                <button type="button" class="btn btn-primary waves-effect waves-light mr-1" data-toggle="modal" data-target="#standard-modal-3"><i class="mdi mdi-check-outline mr-1"></i> Complete Task</button>
               <?php endif;?>
-              <?php if ($task['task_status'] == 0 || $task['task_status'] == 1):?>
-                <button type="button" class="btn btn-warning waves-effect waves-light mr-2" data-toggle="modal" data-target="#standard-modal-2"><i class="mdi mdi-close-thick mr-1"></i> Cancel Task</button>
+              <?php if ($task['task_executor'] == session()->user_id && ($task['task_status'] == 0 || $task['task_status'] == 1)):?>
+                <button type="button" class="btn btn-warning waves-effect waves-light mr-3" data-toggle="modal" data-target="#standard-modal-2"><i class="mdi mdi-close-thick mr-1"></i> Cancel Task</button>
               <?php endif;?>
+              <a href="<?=site_url('view-task-log/').$task['task_id']?>" type="button" class="btn btn-success waves-effect waves-light mr-1">View Log</a>
               <a href="<?=site_url('/tasks')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
             </div>
           </div><!-- end col-->
@@ -129,7 +130,7 @@
           </div> <!-- end row -->
           <h5 class="mt-3">Overview:</h5>
           <p class="text-muted mb-4">
-            <?=$task['task_overview'] ? $task['task_overview'] : 'No Overview'?>
+            <?=$task['task_overview'] ? $task['task_overview'] : '<span class="badge badge-outline-info">NO OVERVIEW</span>'?>
           </p>
           <h5 class="mt-3">Secondary Executors:</h5>
           <?php if (!empty($task['secondary_executors'])):?>
@@ -143,34 +144,44 @@
               <?php endforeach; ?>
             </div>
           <?php else:?>
-            <p class="text-muted">No Secondary Executors are assigned</p>
+            <p class="text-muted"><span class="badge badge-outline-info">NO SECONDARY EXECUTORS ASSIGNED</span></p>
           <?php endif;?>
         </div>
       </div>
       <div class="card">
         <div class="card-body">
-          <h4 class="mb-4 mt-0 font-16">Feedback</h4>
-          <div class="media">
-            <img class="mr-2 rounded-circle" src="../assets/images/users/user-3.jpg"
-                 alt="Generic placeholder image" height="32">
-            <div class="media-body">
-              <h5 class="mt-0">Jeremy Tomlinson <small class="text-muted float-right">5 hours ago</small></h5>
-              Nice work, makes me think of The Money Pit.
-            </div>
-          </div>
-          <div class="media mt-3">
-            <img class="mr-2 rounded-circle" src="../assets/images/users/user-5.jpg"
-                 alt="Generic placeholder image" height="32">
-            <div class="media-body">
-              <h5 class="mt-0">Kevin Martinez <small class="text-muted float-right">1 day ago</small></h5>
-              It would be very nice to have.
-            </div>
+          <h4 class="mt-0 font-16">Feedback</h4>
+          <div class="" style="max-height: 300px; overflow-y: auto">
+            <?php if (empty($task['task_feedbacks'])):?>
+              <span class="badge badge-outline-info">NO SUBMITTED FEEDBACKS</span>
+            <?php else:?>
+              <?php foreach ($task['task_feedbacks'] as $task_feedback):?>
+                <div class="media mt-3">
+                  <div class="avatar-sm mr-2">
+                    <span class="avatar-title bg-soft-secondary text-secondary font-20 rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="<?=$task_feedback['user']['user_name']?>">
+                      <?=substr($task_feedback['user']['user_name'], 0, 1)?>
+                    </span>
+                  </div>
+                  <div class="media-body">
+                    <h5 class="mt-0">
+                      <?=$task_feedback['user']['user_name']?>
+                      <small class="text-muted float-right">
+                        <?php $date = date_create($task_feedback['created_at']);
+                        echo date_format($date,"d F Y H:i a");
+                        ?>
+                      </small>
+                    </h5>
+                    <?=$task_feedback['tf_comment']?>
+                  </div>
+                </div>
+              <?php endforeach;?>
+            <?php endif;?>
           </div>
           <div class="border rounded mt-4">
-            <form action="#" class="comment-area-box">
-              <textarea rows="3" class="form-control border-0 resize-none" placeholder="Your feedback..."></textarea>
+            <form id="submit-feedback-form" action="#" class="comment-area-box">
+              <textarea id="comment" rows="3" class="form-control border-0 resize-none" placeholder="Your feedback..."></textarea>
               <div class="p-2 bg-light d-flex justify-content-between align-items-center">
-                <button type="submit" class="btn btn-sm btn-success"><i class='uil uil-message mr-1'></i>Submit</button>
+                <button type="submit" class="btn btn-sm btn-success float-right" <?=$task['task_status'] != 1 ? 'disabled' : ''?>><i class='mdi mdi-message-outline mr-1'></i>Submit</button>
               </div>
             </form>
           </div> <!-- end .border-->
@@ -186,7 +197,7 @@
               <div class="col-12">
                 <div class="form-group">
                   <div class="form-control-wrap">
-                    <input id="file" type="file" data-plugins="dropify" name="file" />
+                    <input id="file" type="file" data-plugins="dropify" name="file" <?=$task['task_status'] != 1 ? 'disabled' : ''?>/>
                   </div>
                 </div>
               </div>
@@ -197,7 +208,7 @@
               <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
             </button>
           </form>
-          <div class="mt-5" style="height: 150px; overflow-y: auto">
+          <div class="mt-5" style="max-height: 150px; overflow-y: auto">
             <?php if(!empty($task['attachments'])):
               foreach ($task['attachments'] as $attachment):?>
                 <div class="card mb-1 shadow-none border">
@@ -232,7 +243,7 @@
                     </div>
                   </div>
                 </div>
-              <?php endforeach; else: echo "No Attachments"; endif; ?>
+              <?php endforeach; else: echo '<span class="badge badge-outline-info">NO SUBMITTED ATTACHMENTS</span>'; endif; ?>
           </div>
         </div>
       </div>

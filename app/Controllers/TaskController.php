@@ -8,6 +8,7 @@ use App\Models\Position;
 use App\Models\Task;
 use App\Models\TaskAttachment;
 use App\Models\TaskExecutor;
+use App\Models\TaskFeedback;
 use App\Models\TaskLog;
 use App\Models\UserModel;
 
@@ -27,6 +28,7 @@ class TaskController extends BaseController
     $this->position = new Position();
     $this->task_attachment = new TaskAttachment();
     $this->task_log = new TaskLog();
+    $this->task_feedback = new TaskFeedback();
   }
 
 	public function index()
@@ -59,6 +61,12 @@ class TaskController extends BaseController
       if (isset($post_data['task_executors'])) {
         $this->_add_executors($post_data['task_executors'], $task_id);
       }
+      $task_log_data = [
+        'tl_task_id' => $task_id,
+        'tl_user_id' => $this->session->user_id,
+        'tl_action' => 'task_creation',
+      ];
+      $this->task_log->insert($task_log_data);
       $response['success'] = true;
       $response['message'] = 'Successfully created a new task';
     } else {
@@ -91,6 +99,13 @@ class TaskController extends BaseController
           'ta_link' => $file_name,
         ];
         if ($this->task_attachment->save($task_attachment_data)) {
+          $task_log_data = [
+            'tl_task_id' => $post_data['task_id'],
+            'tl_user_id' => $this->session->user_id,
+            'tl_action' => 'task_attachment_upload',
+            'tl_details' => $file_name
+          ];
+          $this->task_log->insert($task_log_data);
           $response['success'] = true;
           $response['message'] = 'The attachment was successfully uploaded.';
         } else {
@@ -113,6 +128,12 @@ class TaskController extends BaseController
         'task_status' => 1,
       ];
       if ($this->task->save($task_data)) {
+        $task_log_data = [
+          'tl_task_id' => $task['task_id'],
+          'tl_user_id' => $this->session->user_id,
+          'tl_action' => 'task_started',
+        ];
+        $this->task_log->insert($task_log_data);
         $response['success'] = true;
         $response['message'] = 'The task was successfully started.';
       } else {
@@ -185,7 +206,49 @@ class TaskController extends BaseController
   }
 
   public function submit_feedback() {
+    $post_data = $this->request->getPost();
+    $task = $this->task->find($post_data['task_id']);
+    if ($task && $task['task_status'] == 1) {
+      $task_feedback_data = [
+        'tf_task_id' => $task['task_id'],
+        'tf_user_id' => $this->session->user_id,
+        'tf_comment' => $post_data['comment']
+      ];
+      if ($this->task_feedback->save($task_feedback_data)) {
+        $task_log_data = [
+          'tl_task_id' => $task['task_id'],
+          'tl_user_id' => $this->session->user_id,
+          'tl_action' => 'feedback_submit',
+          'tl_details' => $post_data['comment']
+        ];
+        $this->task_log->insert($task_log_data);
+        $response['success'] = true;
+        $response['message'] = 'Your feedback was submitted.';
+      } else {
+        $response['success'] = false;
+        $response['message'] = 'An error occurred while submitting your feedback.';
+      }
+    } else {
+      $response['success'] = false;
+      $response['message'] = 'An error occurred while submitting your feedback.';
+    }
+    return $this->response->setJSON($response);
+  }
 
+  public function view_task_log($task_id) {
+    $data['firstTime'] = $this->session->firstTime;
+    $data['username'] = $this->session->user_username;
+    $data['task'] = $this->_get_task($task_id);
+    $data['task_logs'] = $this->_get_task_logs($task_id);
+    return view('/pages/task/view-task-logs', $data);
+  }
+
+  private function _get_task_logs($task_id) {
+    $task_logs = $this->task_log->where('tl_task_id', $task_id)->orderBy('created_at', 'DESC')->findAll();
+    foreach ($task_logs as $key => $task_log) {
+      $task_logs[$key]['user'] = $this->user->find($task_log['tl_user_id']);
+    }
+    return $task_logs;
   }
 
   private function _get_department_employees() {
@@ -222,17 +285,22 @@ class TaskController extends BaseController
   }
 
   private function _get_tasks() {
-    $tasks = $this->task
-      ->groupStart()
-      ->where('task_executor', $this->session->user_id)
-      ->orWhere('task_creator', $this->session->user_id)
-      ->groupEnd()
-      ->findAll();
+    $tasks = $this->task->findAll();
     foreach ($tasks as $key => $task) {
-      $creator = $this->user->find($task['task_creator']);
-      $executor = $this->user->find($task['task_executor']);
-      $tasks[$key]['creator'] = $creator;
-      $tasks[$key]['executor'] = $executor;
+      $task_executors = $this->task_executor->where('te_task_id', $task['task_id'])->findAll();
+      $task_executor_ids = [];
+      foreach ($task_executors as $task_executor)
+        array_push($task_executor_ids, $task_executor['te_executor_id']);
+      if ($task['task_executor'] != $this->session->user_id &&
+        $task['task_creator'] != $this->session->user_id &&
+        !in_array($this->session->user_id, $task_executor_ids)) {
+        unset($tasks[$key]);
+      } else {
+        $creator = $this->user->find($task['task_creator']);
+        $executor = $this->user->find($task['task_executor']);
+        $tasks[$key]['creator'] = $creator;
+        $tasks[$key]['executor'] = $executor;
+      }
     }
     return $tasks;
   }
@@ -248,6 +316,11 @@ class TaskController extends BaseController
       foreach ($secondary_executors as $secondary_executor) {
         $task['secondary_executors'][] = $this->user->find($secondary_executor['te_executor_id']);
       }
+      $task_feedbacks = $this->task_feedback->where('tf_task_id', $task_id)->findAll();
+      foreach ($task_feedbacks as $key => $task_feedback) {
+        $task_feedbacks[$key]['user'] = $this->user->find($task_feedback['tf_user_id']);
+      }
+      $task['task_feedbacks'] = $task_feedbacks;
     }
     return $task;
   }
