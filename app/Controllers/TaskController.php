@@ -103,6 +103,27 @@ class TaskController extends BaseController
     return $this->response->setJSON($response);
   }
 
+  public function start_task($task_id) {
+    $task = $this->task->find($task_id);
+    if ($task && $task['task_status'] == 0) {
+      $task_data = [
+        'task_id' => $task_id,
+        'task_status' => 1,
+      ];
+      if ($this->task->save($task_data)) {
+        $response['success'] = true;
+        $response['message'] = 'The task was successfully started.';
+      } else {
+        $response['success'] = false;
+        $response['message'] = 'An error occurred while starting the task.';
+      }
+    } else {
+      $response['success'] = false;
+      $response['message'] = 'An error occurred while starting the task.';
+    }
+    return $this->response->setJSON($response);
+  }
+
   private function _get_department_employees() {
     $department_employees = [];
     $departments = $this->department->findAll();

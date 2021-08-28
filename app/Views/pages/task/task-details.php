@@ -30,6 +30,9 @@
           </div>
           <div class="col-lg-8">
             <div class="text-lg-right mt-3 mt-lg-0">
+              <?php if ($task['task_status'] == 0):?>
+                <a href="javascript:void(0)" onclick="startTask(<?=$task['task_id']?>)" type="button" class="btn btn-success waves-effect waves-light mr-1">Start Task</a>
+              <?php endif;?>
               <a href="<?=site_url('/tasks')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
             </div>
           </div><!-- end col-->
@@ -208,7 +211,7 @@
               </div>
               <input type="hidden" name="task_id" id="task-id" value="<?=$task['task_id']?>">
             </div>
-            <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn">Submit</button>
+            <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn" <?=$task['task_status'] != 1 ? 'disabled' : ''?>>Submit</button>
             <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn-loading" hidden disabled>
               <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
             </button>
