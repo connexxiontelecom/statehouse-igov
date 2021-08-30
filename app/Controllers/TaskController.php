@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
+use App\Models\Reminder;
 use App\Models\Task;
 use App\Models\TaskAttachment;
 use App\Models\TaskExecutor;
@@ -25,6 +26,7 @@ class TaskController extends BaseController
     $this->user = new UserModel();
     $this->position = new Position();
     $this->task_attachment = new TaskAttachment();
+      $this->reminder = new Reminder();
   }
 
 	public function index()
@@ -53,6 +55,9 @@ class TaskController extends BaseController
       'task_status' => 0,
     ];
     $task_id = $this->task->insert($task_data);
+
+
+
     if ($task_id) {
       if (isset($post_data['task_executors'])) {
         $this->_add_executors($post_data['task_executors'], $task_id);
@@ -107,6 +112,16 @@ class TaskController extends BaseController
         $this->task_executor->save($executor_data);
       }
     }
+  }
+
+  private function _add_reminder($){
+      $remind = [
+          'title'=>$project_name,
+          'reminder_start_date'=>$start_date,
+          'reminder_end_date'=>$due_date,
+          'reminder_employee_id'=>$participant
+      ];
+      $this->reminder->save($remind);
   }
 
   private function _get_tasks() {
