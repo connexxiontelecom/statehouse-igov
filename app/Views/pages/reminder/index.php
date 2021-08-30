@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/admin'); ?>
+<?= $this->extend('layouts/master'); ?>
 
 <?= $this->section('extra-styles') ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
