@@ -47,7 +47,7 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $SMTPHost = 'connexxiontelecom.com';
+	public $SMTPHost = 'mail.connexxiontelecom.com';
 
 	/**
 	 * SMTP Username
