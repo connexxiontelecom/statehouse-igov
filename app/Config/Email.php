@@ -64,14 +64,14 @@ class Email extends BaseConfig
 	 * @var string
 	 */
 //	public $SMTPPass = 'connect@joseph';
-	public $SMTPPass = 'RM*Kv7J=p=[-FUOY}6';
+	public $SMTPPass = ')+1{A[)RVDyTK@LCSi';
 
 	/**
 	 * SMTP Port
 	 *
 	 * @var integer
 	 */
-	public $SMTPPort = 465;
+	public $SMTPPort = 587;
 
 	/**
 	 * SMTP Timeout (in seconds)
@@ -92,7 +92,7 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $SMTPCrypto = 'ssl';
+	public $SMTPCrypto = 'tls';
 
 	/**
 	 * Enable word-wrap
