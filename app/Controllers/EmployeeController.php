@@ -73,7 +73,7 @@ class EmployeeController extends BaseController
 					$data['subject'] = $subject;
 					$data['user'] = $user['user_name'];
 					$data['organization'] = $organization['org_name'];
-					$data['ver_code'] = $this->_get_verification_code('e-signature');
+					$data['ver_code'] =$code = $this->_get_verification_code('e-signature');
 					$message = view('email/signature-otp', $data);
 					$from['name'] = 'IGOV by Connexxion Telecom';
 					$from['email'] = 'support@connexxiontelecom.com';

@@ -62,7 +62,7 @@
           <p class="mb-3"><?=$user['organization']['org_name']?></p>
           <h4 class="font-13 text-muted text-uppercase mb-1">Added :</h4>
           <p class="mb-3">
-	          <?php $date = date_create($user['created_at']);
+	          <?php $date = date_create($user['employee']['employee_date']);
 	          echo date_format($date,"d F Y");
 	          ?>
           </p>
