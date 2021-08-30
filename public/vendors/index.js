@@ -70,7 +70,9 @@ async function join() {
 
     // play local video track
     localTracks.videoTrack.play("local-player");
-    $("#local-player-name").text(`localVideo(${options.uid})`);
+    // $("#local-player-name").text(`localVideo(${options.uid})`);
+    let uname = $("#user-name").val();
+    $("#local-player-name").text(`${uname}`);
 
     // publish local tracks to channel
     await client.publish(Object.values(localTracks));
@@ -102,14 +104,16 @@ async function leave() {
 
 async function subscribe(user, mediaType) {
     const uid = user.uid;
-    // subscribe to a remote user
+    const u_id = $("#user-name").val();
+     // subscribe to a remote user
     await client.subscribe(user, mediaType);
     console.log("subscribe success");
     if (mediaType === 'video') {
         const player = $(`
       <div id="player-wrapper-${uid}">
-        <p class="player-name">remoteUser(${uid})</p>
-        <div id="player-${uid}" class="player"></div>
+       
+         <p class="player-name">${uid}</p>
+        <div  id="player-${uid}" class="player"></div>
       </div>
     `);
         $("#remote-playerlist").append(player);
@@ -122,6 +126,7 @@ async function subscribe(user, mediaType) {
 
 function handleUserPublished(user, mediaType) {
     const id = user.uid;
+
     remoteUsers[id] = user;
     subscribe(user, mediaType);
 }
