@@ -74,6 +74,7 @@ class MeetingController extends BaseController
 
 							$data['firstTime'] = $this->session->firstTime;
 							$data['username'] = $this->session->user_username;
+							$data['user_name'] = $this->session->user_name;
 							$data['token'] = $meeting['meeting_token'];
 							$data['app_id'] = "614ab02fa02f4e91ac65d20752251650";
 							$data['channel'] = $meeting['meeting_name_strip'];

@@ -74,16 +74,28 @@
 										<button id="leave" type="button" class="btn btn-primary btn-sm" disabled>Leave</button>
 									</div>
 								</form>
+								<input type="hidden" id="user-name" value="<?=$user_name; ?>">
 								
-								<div class="row video-group">
-									<div class="col">
-										<p id="local-player-name" class="player-name"></p>
-										<div id="local-player" class="player"></div>
+								<div class="card video-group">
+									<div class="card-body">
+										<div class="row">
+											<div class="col-sm-4">
+												<div class="col" >
+													<p id="local-player-name" class="player-name"></p>
+													<div id="local-player" class="player" style="margin-left: -50px"></div>
+												</div>
+											</div>
+											<div class="col">
+												<div class="col">
+													<div id="remote-playerlist" style="margin-left: 150px"></div>
+												</div>
+											</div>
+										</div>
 									</div>
+								
+									
 									<div class="w-100"></div>
-									<div class="col">
-										<div id="remote-playerlist"></div>
-									</div>
+									
 								</div>
 							</div>
 						
@@ -110,6 +122,18 @@
 <script src="/vendors/jquery-3.4.1.min.js"></script>
 <script src="/vendors/bootstrap.bundle.min.js"></script>
 <script src="/vendors/AgoraRTC_N-4.6.3.js"></script>
+<script>
+	var user_name = <?=$user_name; ?>
+</script>
 <script src="/vendors/index.js"></script>
+<script>
+	window.addEventListener("beforeunload", function (e) {
+		var confirmationMessage = 'It looks like you have been editing something. '
+				+ 'If you leave before saving, your changes will be lost.';
+		
+		(e || window.event).returnValue = confirmationMessage;
+		return confirmationMessage;
+	});
+</script>
 
 <?= $this->endSection() ?>

@@ -32,6 +32,9 @@ input {
 .player {
     width: 480px;
     height: 320px;
+    position: relative;
+    padding-right: 12px;
+    padding-left: 12px;
 }
 
 .player-name {
