@@ -62,21 +62,54 @@ class PostController extends BaseController
 		$employee = $this->employee->find($user['user_employee_id']);
 		$organization = $this->organization->first();
 		$to = $employee['employee_mail'];
+		$phone = $employee['employee_phone'];
+		$phone = '234'.substr($phone, 1, strlen($phone));
 		$subject = 'Verify Document Signing';
 		$data['subject'] = $subject;
 		$data['user'] = $user['user_name'];
 		$data['organization'] = $organization['org_name'];
-		$data['ver_code'] = $this->_get_verification_code('doc_signing');
+
+		 $code = $this->_get_verification_code('doc_signing');
+		 $data['ver_code'] = $code;
 		$data['post'] = $post;
 		$message = view('email/doc-signing-otp', $data);
 		$from['name'] = 'IGOV by Connexxion Telecom';
 		$from['email'] = 'support@connexxiontelecom.com';
+		
+		$curl = curl_init();
+		
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => 'https://termii.com/api/sms/send',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS =>' {
+          "to": "'.$phone.'",
+           "from": "N-Alert",
+           "sms": "Your iGov confirmation code is: '.$code.' It expires in 10 Mins",
+           "type": "plain",
+           "channel": "dnd",
+           "api_key": "TLfrtWYbF5uWb0GLWjwDigrMb722yJgAp2B3jDoYYRzYOSjIU3PHwRIpGSZlga"
+                }',
+			CURLOPT_HTTPHEADER => array(
+				'Content-Type: application/json'
+			),
+		));
+		
+		$responses = curl_exec($curl);
+		
+		curl_close($curl);
+		//echo $responses;
 		if ($this->send_mail($to, $subject, $message, $from)) {
 			$response['success'] = true;
-			$response['message'] = 'A document signing verification code has been sent to your email.';
+			$response['message'] = 'A document signing verification code has been sent to your email. '.$responses;
 		} else {
 			$response['success'] = false;
-			$response['message'] = 'An error occurred while sending your document signing verification code';
+			$response['message'] = 'An error occurred while sending your document signing verification code '.$responses;
 			echo $this->email->printDebugger();
 		}
 		return $this->response->setJSON($response);

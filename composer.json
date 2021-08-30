@@ -11,7 +11,8 @@
 		"ddeboer/imap": "^1.12",
 		"stefangabos/zebra_pagination": "^2.4",
 		"webklex/php-imap": "^2.5",
-		"swiftmailer/swiftmailer": "^6.0"
+		"swiftmailer/swiftmailer": "^6.0",
+      "ext-curl": "*"
     },
 	"require-dev": {
 		"fakerphp/faker": "^1.14",
