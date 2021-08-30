@@ -40,6 +40,7 @@ class BaseController extends ResourceController
 	 */
 	protected $helpers = [];
 	protected $email;
+	protected $session;
 
 	/**
 	 * Constructor.

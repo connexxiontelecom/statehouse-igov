@@ -30,6 +30,16 @@
           </div>
           <div class="col-lg-8">
             <div class="text-lg-right mt-3 mt-lg-0">
+              <?php if ($task['task_executor'] == session()->user_id && $task['task_status'] == 0):?>
+                <a href="javascript:void(0)" onclick="startTask(<?=$task['task_id']?>)" type="button" class="btn btn-success waves-effect waves-light mr-1"><i class="mdi mdi-clipboard-text-play-outline mr-1"></i> Start Task</a>
+              <?php endif;?>
+              <?php if ($task['task_executor'] == session()->user_id && $task['task_status'] == 1):?>
+                <button type="button" class="btn btn-primary waves-effect waves-light mr-1" data-toggle="modal" data-target="#standard-modal-3"><i class="mdi mdi-check-outline mr-1"></i> Complete Task</button>
+              <?php endif;?>
+              <?php if ($task['task_executor'] == session()->user_id && ($task['task_status'] == 0 || $task['task_status'] == 1)):?>
+                <button type="button" class="btn btn-warning waves-effect waves-light mr-3" data-toggle="modal" data-target="#standard-modal-2"><i class="mdi mdi-close-thick mr-1"></i> Cancel Task</button>
+              <?php endif;?>
+              <a href="<?=site_url('view-task-log/').$task['task_id']?>" type="button" class="btn btn-success waves-effect waves-light mr-1">View Log</a>
               <a href="<?=site_url('/tasks')?>" type="button" class="btn btn-success waves-effect waves-light">Go Back</a>
             </div>
           </div><!-- end col-->
@@ -41,31 +51,6 @@
     <div class="col-lg-7">
       <div class="card d-block">
         <div class="card-body">
-          <div class="dropdown float-right">
-            <a href="#" class="dropdown-toggle arrow-none text-muted"
-               data-toggle="dropdown" aria-expanded="false">
-              <i class='mdi mdi-dots-horizontal font-18'></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class='mdi mdi-attachment mr-1'></i>Attachment
-              </a>
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class='mdi mdi-pencil-outline mr-1'></i>Edit
-              </a>
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item">
-                <i class='mdi mdi-content-copy mr-1'></i>Mark as Duplicate
-              </a>
-              <div class="dropdown-divider"></div>
-              <!-- item-->
-              <a href="javascript:void(0);" class="dropdown-item text-danger">
-                <i class='mdi mdi-delete-outline mr-1'></i>Delete
-              </a>
-            </div> <!-- end dropdown menu-->
-          </div> <!-- end dropdown-->
           <h4><?=$task['task_subject']?></h4>
           <div class="row">
             <div class="col-md-4">
@@ -145,7 +130,7 @@
           </div> <!-- end row -->
           <h5 class="mt-3">Overview:</h5>
           <p class="text-muted mb-4">
-            <?=$task['task_overview'] ? $task['task_overview'] : 'No Overview'?>
+            <?=$task['task_overview'] ? $task['task_overview'] : '<span class="badge badge-outline-info">NO OVERVIEW</span>'?>
           </p>
           <h5 class="mt-3">Secondary Executors:</h5>
           <?php if (!empty($task['secondary_executors'])):?>
@@ -159,34 +144,44 @@
               <?php endforeach; ?>
             </div>
           <?php else:?>
-            <p class="text-muted">No Secondary Executors are assigned</p>
+            <p class="text-muted"><span class="badge badge-outline-info">NO SECONDARY EXECUTORS ASSIGNED</span></p>
           <?php endif;?>
         </div>
       </div>
       <div class="card">
         <div class="card-body">
-          <h4 class="mb-4 mt-0 font-16">Feedback</h4>
-          <div class="media">
-            <img class="mr-2 rounded-circle" src="../assets/images/users/user-3.jpg"
-                 alt="Generic placeholder image" height="32">
-            <div class="media-body">
-              <h5 class="mt-0">Jeremy Tomlinson <small class="text-muted float-right">5 hours ago</small></h5>
-              Nice work, makes me think of The Money Pit.
-            </div>
-          </div>
-          <div class="media mt-3">
-            <img class="mr-2 rounded-circle" src="../assets/images/users/user-5.jpg"
-                 alt="Generic placeholder image" height="32">
-            <div class="media-body">
-              <h5 class="mt-0">Kevin Martinez <small class="text-muted float-right">1 day ago</small></h5>
-              It would be very nice to have.
-            </div>
+          <h4 class="mt-0 font-16">Feedback</h4>
+          <div class="" style="max-height: 300px; overflow-y: auto">
+            <?php if (empty($task['task_feedbacks'])):?>
+              <span class="badge badge-outline-info">NO SUBMITTED FEEDBACKS</span>
+            <?php else:?>
+              <?php foreach ($task['task_feedbacks'] as $task_feedback):?>
+                <div class="media mt-3">
+                  <div class="avatar-sm mr-2">
+                    <span class="avatar-title bg-soft-secondary text-secondary font-20 rounded-circle" data-toggle="tooltip" data-placement="top" title="" data-original-title="<?=$task_feedback['user']['user_name']?>">
+                      <?=substr($task_feedback['user']['user_name'], 0, 1)?>
+                    </span>
+                  </div>
+                  <div class="media-body">
+                    <h5 class="mt-0">
+                      <?=$task_feedback['user']['user_name']?>
+                      <small class="text-muted float-right">
+                        <?php $date = date_create($task_feedback['created_at']);
+                        echo date_format($date,"d F Y H:i a");
+                        ?>
+                      </small>
+                    </h5>
+                    <?=$task_feedback['tf_comment']?>
+                  </div>
+                </div>
+              <?php endforeach;?>
+            <?php endif;?>
           </div>
           <div class="border rounded mt-4">
-            <form action="#" class="comment-area-box">
-              <textarea rows="3" class="form-control border-0 resize-none" placeholder="Your feedback..."></textarea>
+            <form id="submit-feedback-form" action="#" class="comment-area-box">
+              <textarea id="comment" rows="3" class="form-control border-0 resize-none" placeholder="Your feedback..."></textarea>
               <div class="p-2 bg-light d-flex justify-content-between align-items-center">
-                <button type="submit" class="btn btn-sm btn-success"><i class='uil uil-message mr-1'></i>Submit</button>
+                <button type="submit" class="btn btn-sm btn-success float-right" <?=$task['task_status'] != 1 ? 'disabled' : ''?>><i class='mdi mdi-message-outline mr-1'></i>Submit</button>
               </div>
             </form>
           </div> <!-- end .border-->
@@ -202,20 +197,123 @@
               <div class="col-12">
                 <div class="form-group">
                   <div class="form-control-wrap">
-                    <input id="file" type="file" data-plugins="dropify" name="file" />
+                    <input id="file" type="file" data-plugins="dropify" name="file" <?=$task['task_status'] != 1 ? 'disabled' : ''?>/>
                   </div>
                 </div>
               </div>
+              <input type="hidden" name="task_id" id="task-id" value="<?=$task['task_id']?>">
             </div>
-            <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn">Submit</button>
-            <button type="submit" class="btn btn-primary" id="save-btn-loading" hidden disabled>
+            <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn" <?=$task['task_status'] != 1 ? 'disabled' : ''?>>Submit</button>
+            <button type="submit" class="btn btn-primary btn-sm float-right" id="save-btn-loading" hidden disabled>
               <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
             </button>
           </form>
+          <div class="mt-5" style="max-height: 150px; overflow-y: auto">
+            <?php if(!empty($task['attachments'])):
+              foreach ($task['attachments'] as $attachment):?>
+                <div class="card mb-1 shadow-none border">
+                  <div class="p-2">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <div class="avatar-sm">
+                        <span class="avatar-title badge-soft-primary text-primary rounded">
+                           <?php echo strtoupper(substr($attachment['ta_link'], strpos($attachment['ta_link'], ".") + 1)); ?>
+                        </span>
+                        </div>
+                      </div>
+                      <div class="col pl-0">
+                        <a href="<?='/uploads/tasks/'.$attachment['ta_link']; ?>" target="_blank" class="mb-0 font-12"><?php
+                          $filename = 'uploads/tasks/'.$attachment['ta_link'];
+                          //											$handle = fopen($filename, "r");
+                          //											$contents = fread($handle, filesize($filename));
+                          //echo $filename;
+                          $size = round(filesize($filename)/(1024 * 1024), 4);
+                          echo $attachment['ta_link'] .'<br>';
+                          echo $size."MB";
+                          //											fclose($handle);
+
+                          ?></a>
+                      </div>
+                      <div class="col-auto">
+                        <!-- Button -->
+                        <a href="<?='/uploads/tasks/'.$attachment['ta_link']; ?>" download="<?=$attachment['ta_link']; ?>" target="_blank" class="btn btn-link font-16 text-muted">
+                          <i class="dripicons-download"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <?php endforeach; else: echo '<span class="badge badge-outline-info">NO SUBMITTED ATTACHMENTS</span>'; endif; ?>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <div id="standard-modal-2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="task-cancellation-form" class="needs-validation" novalidate>
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Task Cancellation</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="reason">Cancellation Reason</label><span style="color:red;"> *</span>
+                  <textarea name="reason" id="reason" rows="4" class="form-control" required></textarea>
+                  <div class="invalid-feedback">
+                    Please enter a cancellation reason.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="save-btn">Submit & Cancel</button>
+            <button type="submit" class="btn btn-primary" id="save-btn-loading" hidden disabled>
+              <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
+            </button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div id="standard-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="task-completion-form" class="needs-validation" novalidate>
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Task Completion</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="summary">Completion Summary</label><span style="color:red;"> *</span>
+                  <textarea name="summary" id="summary" rows="4" class="form-control" required></textarea>
+                  <div class="invalid-feedback">
+                    Please enter a completion summary.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="save-btn">Submit & Complete</button>
+            <button type="submit" class="btn btn-primary" id="save-btn-loading" hidden disabled>
+              <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Please wait...
+            </button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>

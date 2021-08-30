@@ -166,6 +166,7 @@ $routes->post('/workflow-requests/leave-comment', 'WorkflowController::leaveComm
 
 $routes->get('/email/folder/(:any)', 'EmailServiceController::getMessagesInFolder/$1',['filter'=>'auth', 'as'=>'messages-in']);
 
+
 $routes->get('/read-mail/(:any)/(:any)', 'EmailServiceController::readMail/$1/$2', ['filter'=>'auth', 'as'=>'read-mail']);
 $routes->get('/compose-email', 'EmailController::composeEmail', ['filter'=>'auth']);
 $routes->post('/compose-email', 'EmailController::processMail', ['filter'=>'auth']);
@@ -227,11 +228,18 @@ $routes->match(['get', 'post'], 'edit-budget-input/(:num)', 'BudgetController::e
 $routes->match(['get'], 'tasks', 'TaskController::index', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-task', 'TaskController::new_task', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'task-details/(:num)', 'TaskController::task_details/$1', ['filter' => 'auth']);
+$routes->match(['post'], 'upload-task-attachment', 'TaskController::upload_attachment', ['filter' => 'auth']);
+$routes->match(['get'], 'start-task/(:num)', 'TaskController::start_task/$1', ['filter' => 'auth']);
+$routes->match(['post'], 'complete-task', 'TaskController::complete_task', ['filter' => 'auth']);
+$routes->match(['post'], 'cancel-task', 'TaskController::cancel_task', ['filter' => 'auth']);
+$routes->match(['post'], 'submit-feedback', 'TaskController::submit_feedback', ['filter' => 'auth']);
+$routes->match(['get'], 'view-task-log/(:num)', 'TaskController::view_task_log/$1', ['filter' => 'auth']);
 
 #Meeting
 $routes->match(['get'], 'meet', 'MeetingController::meet', ['filter' => 'auth']);
 $routes->match(['get'], 'meetings', 'MeetingController::meetings', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-meeting', 'MeetingController::new_meeting', ['filter' => 'auth']);
+$routes->addPlaceholder('meetingtoken', '[\s\S]');
 $routes->match(['get'], 'join-meeting/(:num)/(:any)', 'MeetingController::join_meeting/$1/$2', ['filter' => 'auth']);
 /*
  * --------------------------------------------------------------------
