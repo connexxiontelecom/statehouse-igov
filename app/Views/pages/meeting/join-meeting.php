@@ -111,5 +111,14 @@
 <script src="/vendors/bootstrap.bundle.min.js"></script>
 <script src="/vendors/AgoraRTC_N-4.6.3.js"></script>
 <script src="/vendors/index.js"></script>
+<script>
+	window.addEventListener("beforeunload", function (e) {
+		var confirmationMessage = 'It looks like you have been editing something. '
+				+ 'If you leave before saving, your changes will be lost.';
+		
+		(e || window.event).returnValue = confirmationMessage;
+		return confirmationMessage;
+	});
+</script>
 
 <?= $this->endSection() ?>
