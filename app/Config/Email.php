@@ -47,7 +47,7 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $SMTPHost = 'mail.connexxiontelecom.com';
+	public $SMTPHost = 'connexxiontelecom.com';
 
 	/**
 	 * SMTP Username
@@ -71,7 +71,7 @@ class Email extends BaseConfig
 	 *
 	 * @var integer
 	 */
-	public $SMTPPort = 587;
+	public $SMTPPort = 465;
 
 	/**
 	 * SMTP Timeout (in seconds)
@@ -92,7 +92,7 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $SMTPCrypto = 'tls';
+	public $SMTPCrypto = 'ssl';
 
 	/**
 	 * Enable word-wrap
