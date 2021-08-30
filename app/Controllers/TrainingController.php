@@ -45,7 +45,9 @@ class TrainingController extends BaseController
         $training = $this->training->getTrainingBySlug($slug);
         if(!empty($training)){
             $data = [
-                'training'=>$training
+                'training'=>$training,
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username
             ];
             return view('pages/training/edit', $data);
         }else{

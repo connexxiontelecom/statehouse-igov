@@ -166,6 +166,7 @@ $routes->post('/workflow-requests/leave-comment', 'WorkflowController::leaveComm
 
 $routes->get('/email/folder/(:any)', 'EmailServiceController::getMessagesInFolder/$1',['filter'=>'auth', 'as'=>'messages-in']);
 
+
 $routes->get('/read-mail/(:any)/(:any)', 'EmailServiceController::readMail/$1/$2', ['filter'=>'auth', 'as'=>'read-mail']);
 $routes->get('/compose-email', 'EmailController::composeEmail', ['filter'=>'auth']);
 $routes->post('/compose-email', 'EmailController::processMail', ['filter'=>'auth']);
@@ -185,6 +186,7 @@ $routes->post('/projects/submit-project-report','ProjectController::submitReport
 #Reminder
 $routes->get('/reminder', 'ReminderController::index', ['filter'=>'auth', 'as'=>'reminder']);
 $routes->get('/load-calendar', 'ReminderController::loadCalendar', ['filter'=>'auth']);
+#$routes->get('/load-calendar', 'ReminderController::loadCalendar', ['filter'=>'auth']);
 $routes->post('/reminder/insert', 'ReminderController::insert', ['filter'=>'auth']);
 
 #Contractor routes

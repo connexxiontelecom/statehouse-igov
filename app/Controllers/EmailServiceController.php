@@ -34,17 +34,27 @@ class EmailServiceController extends BaseController
     public function connectToMailServer(){
         $settings =  $this->emailsetting->where('employee_id', $this->session->user_employee_id)->first();
         if(!is_null($settings)){
-            $cm = new ClientManager();
-            $client = $cm->make([
-                'host'=>$settings['hostname'],
-                'port'=>$settings['port_no'],
-                'encryption'=>'ssl',
-                'validate_cert'=>true,
-                'username'=>$settings['username'],
-                'password'=>$settings['password'],
-                'protocol'=>'imap'
-            ]);
-            return $client->connect();
+            try {
+                $cm = new ClientManager();
+                $client = $cm->make([
+                    'host'=>$settings['hostname'],
+                    'port'=>$settings['port_no'],
+                    'encryption'=>'ssl',
+                    'validate_cert'=>true,
+                    'username'=>$settings['username'],
+                    'password'=>$settings['password'],
+                    'protocol'=>'imap'
+                ]);
+                if($client->isConnected()){
+                    return $client->connect();
+                }else{
+                    return false;
+                   // return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mailserver.");
+                }
+            }catch (\Exception $exception){
+                return redirect()->back()->with("error", "<strong>Whoops!</strong> Couldn't connect to your mailserver.");
+            }
+
         }else{
             return null;
         }
@@ -68,50 +78,46 @@ class EmailServiceController extends BaseController
 
 	public function getMessagesInFolder($fold){
         $folder = null;
-            $connection = $this->connectToMailServer();
-            try{
-                if(!empty($connection)){
-                    $page = 1;
-                    $per_page = 10;
-                    $uri = new \CodeIgniter\HTTP\URI(current_url(true));
-                    $params = $uri->getQuery();
-                    if($params){
-                        $page = trim($params, 'page=');
-                    }
-                    $pages = array();
-                    $folder = $connection->getFolder($fold);
-                    $total  = $folder->query()->all()->count();
-                    $messages = $folder->query()->all()->limit($per_page, $page)->get();
-                    for($i = 1; $i<= $total; $i++){
-                        array_push($pages, $i);
-                    }
-                    $pagination = new \Zebra_Pagination();
-                    $pagination->records(count($pages));
-                    $pagination->records_per_page($per_page);
-                    $pages = array_slice($pages, (($pagination->get_page() - 1 ) * $per_page), $per_page );
-                    $data = [
-                        'firstTime'=>$this->session->firstTime,
-                        'username'=>$this->session->username,
-                        'pagination'=>$pagination,
-                        'mailbox'=>$fold,
-                        'total'=>$total,
-                        'messages'=>$messages
-                    ];
-                    return view('pages/email/test', $data);
-                }else{
-                    return redirect()->to('/email-settings')->with("error", "<strong>Whoops!</strong> We couldn't connect to your mail server. Ensure your settings are correct.");
-
-                }
-            }catch(\Exception $exception){
-                return redirect()->to('/email-settings')->with("error", "<strong>Whoops!</strong> We couldn't connect to your mail server. ".$exception);
+        $connection = $this->connectToMailServer();
+        if($connection){
+            $page = 1;
+            $per_page = 10;
+            $uri = new \CodeIgniter\HTTP\URI(current_url(true));
+            $params = $uri->getQuery();
+            if($params){
+                $page = trim($params, 'page=');
             }
+            $pages = array();
+            $folder = $connection->getFolder($fold);
+            $total  = $folder->query()->all()->count();
+            $messages = $folder->query()->all()->limit($per_page, $page)->get();
+            for($i = 1; $i<= $total; $i++){
+                array_push($pages, $i);
+            }
+            $pagination = new \Zebra_Pagination();
+            $pagination->records(count($pages));
+            $pagination->records_per_page($per_page);
+            $pages = array_slice($pages, (($pagination->get_page() - 1 ) * $per_page), $per_page );
+            $data = [
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
+                'pagination'=>$pagination,
+                'mailbox'=>$fold,
+                'total'=>$total,
+                'messages'=>$messages
+            ];
+            return view('pages/email/test', $data);
+        }else{
+            return redirect()->to('/email-settings')->with("error", "<strong>Whoops!</strong> We couldn't connect to your mail server. Ensure your settings are correct.");
+
+        }
 
     }
 
     public function readMail($id, $mailbox){
         $folder = null;
         $connection = $this->connectToMailServer();
-        if(!empty($connection)){
+        if($connection){
             $folder = $connection->getFolder($mailbox);
             $message = $folder->query()->getMessage($id);
             $data = [

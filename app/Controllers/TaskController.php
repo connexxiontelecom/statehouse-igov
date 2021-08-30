@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
+use App\Models\Reminder;
 use App\Models\Task;
 use App\Models\TaskAttachment;
 use App\Models\TaskExecutor;
@@ -29,6 +30,7 @@ class TaskController extends BaseController
     $this->task_attachment = new TaskAttachment();
     $this->task_log = new TaskLog();
     $this->task_feedback = new TaskFeedback();
+      $this->reminder = new Reminder();
   }
 
 	public function index()
@@ -57,6 +59,9 @@ class TaskController extends BaseController
       'task_status' => 0,
     ];
     $task_id = $this->task->insert($task_data);
+
+
+
     if ($task_id) {
       if (isset($post_data['task_executors'])) {
         $this->_add_executors($post_data['task_executors'], $task_id);
@@ -134,6 +139,13 @@ class TaskController extends BaseController
           'tl_action' => 'task_started',
         ];
         $this->task_log->insert($task_log_data);
+        $executors = $this->task_executor->where('te_task_id', $task['task_id'])->findAll();
+        if(!empty($executors)){
+            foreach($executors as $executor){
+                $this->_add_reminder($task['task_id'], $executor['te_executor_id']);
+            }
+        }
+
         $response['success'] = true;
         $response['message'] = 'The task was successfully started.';
       } else {
@@ -273,6 +285,7 @@ class TaskController extends BaseController
 
   private function _add_executors($executors, $task_id) {
     if (count($executors) > 0) {
+        $task = $this->task->find($task_id);
       foreach ($executors as $executor) {
         $executor_data = [
           'te_task_id' => $task_id,
@@ -282,6 +295,19 @@ class TaskController extends BaseController
         $this->task_executor->save($executor_data);
       }
     }
+  }
+
+  public function _add_reminder($id, $employee){
+      $task = $this->task->find($id);
+      if(!empty($task)){
+          $remind = [
+              'title'=>$task['task_subject'],
+              'reminder_start_date'=>date('Y-m-d'),
+              'reminder_end_date'=>$task['task_due_date'],
+              'reminder_employee_id'=>$employee
+          ];
+          $this->reminder->save($remind);
+      }
   }
 
   private function _get_tasks() {
