@@ -66,6 +66,43 @@ class PostController extends BaseController
 		$data['subject'] = $subject;
 		$data['user'] = $user['user_name'];
 		$data['organization'] = $organization['org_name'];
+		
+		$curl = curl_init();
+		
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => 'https://termii.com/api/sms/send',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS =>' {
+          "to": "2347880234567",
+           "from": "talert",
+           "sms": "Hi there, testing Termii ",
+           "type": "plain",
+           "channel": "generic",
+           "api_key": "Your API Key",
+             "media": {
+                "url": "https://media.example.com/file",
+                "caption": "your media file"
+            }
+       }',
+			CURLOPT_HTTPHEADER => array(
+				'Content-Type: application/json'
+			),
+		));
+		
+		$response = curl_exec($curl);
+		
+		curl_close($curl);
+		//echo $response;
+		
+		
+		
+		
 		$data['ver_code'] = $this->_get_verification_code('doc_signing');
 		$data['post'] = $post;
 		$message = view('email/doc-signing-otp', $data);

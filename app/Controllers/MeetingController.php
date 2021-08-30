@@ -101,14 +101,43 @@ class MeetingController extends BaseController
 //		$data['firstTime'] = $this->session->firstTime;
 //		$data['username'] = $this->session->user_username;
 //		return view('pages/meeting/meet', $data);
+//
+//		$dt   = new DateTime('2021-09-10 00:00');
+//		try {
+//			$time = Time::createFromInstance($dt, 'en_US');
+//			echo $time;
+//		} catch (\Exception $e) {
+//			print_r($e);
+//		}
 		
-		$dt   = new DateTime('2021-09-10 00:00');
-		try {
-			$time = Time::createFromInstance($dt, 'en_US');
-			echo $time;
-		} catch (\Exception $e) {
-			print_r($e);
-		}
+		$curl = curl_init();
+		
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => 'https://termii.com/api/sms/send',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS =>' {
+          "to": "2348090945451",
+           "from": "N-Alert",
+           "sms": "Hi there, testing Termii ",
+           "type": "plain",
+           "channel": "dnd",
+           "api_key": "TLfrtWYbF5uWb0GLWjwDigrMb722yJgAp2B3jDoYYRzYOSjIU3PHwRIpGSZlga"
+                }',
+			CURLOPT_HTTPHEADER => array(
+				'Content-Type: application/json'
+			),
+		));
+		
+		$response = curl_exec($curl);
+		
+		curl_close($curl);
+		echo $response;
 	}
 	
 	/**
