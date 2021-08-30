@@ -41,8 +41,32 @@ class Reminder extends Model
 	protected $afterDelete          = [];
 
 
-    function fetchAllReminders($user_id){
-        return Reminder::where('reminder_employee_id',$user_id)->findAll();
+    function fetchAllMyReminders($user_id){
+        $builder = $this->db->table('reminders');
+        $builder->select('title');
+        $builder->select('reminder_start_date as start');
+        $builder->select('reminder_end_date as end');
+        $builder->where('reminder_employee_id',$user_id);
+        return $builder->get()->getResultArray();
+    }
+
+    function fetchAllReminders(){
+        $builder = $this->db->table('reminders');
+        $builder->select('title');
+        $builder->select('reminder_start_date as start');
+        $builder->select('reminder_end_date as end');
+        return $builder->get()->getResultArray();
+    }
+
+    function get24HoursReminders(){
+        $reminders = $this->fetchAllReminders();
+        foreach($reminders as $reminder){
+            $diff = round(abs(strtotime($reminder['end']) - strtotime(date('Y-m-d H:i:s')) ))/86400;
+            if( $diff > 1){
+                #Send reminder
+                return "send mail";
+            }
+        }
     }
 
 /*    function insert_event($data)

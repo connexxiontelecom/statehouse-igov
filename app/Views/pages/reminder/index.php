@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/master'); ?>
+<?= $this->extend('layouts/admin'); ?>
 
 <?= $this->section('extra-styles') ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
@@ -48,7 +48,7 @@
     $(document).ready(function(){
         var user = "<?= $employee_id ?>"
         var url = "<?php echo base_url(); ?>/load-calendar"
-        console.log("Data: "+url);
+
         var calendar = $('#calendar').fullCalendar({
             editable:true,
             header:{
@@ -56,7 +56,7 @@
                 center:'title',
                 right:'month,agendaWeek,agendaDay'
             },
-            events:"{'id':'2','title':'Stop crying','start':'2021-08-31 00:00:00','end':'2021-09-05 00:00:00'}",
+            events:url,
             selectable:true,
             selectHelper:true,
             select:function(start, end, allDay)
@@ -66,7 +66,7 @@
                 {
                     var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
                     var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
-                    console.log('Hello console');
+                    //console.log('Hello console');
                     $.ajax({
                         url:"<?= base_url(); ?>/reminder/insert",
                         type:"POST",
