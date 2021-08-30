@@ -173,6 +173,9 @@ $routes->post('/compose-email', 'EmailController::processMail', ['filter'=>'auth
 $routes->get('/email-settings', 'EmailController::showEmailSettingsForm', ['filter'=>'auth', 'as'=>'email-settings']);
 $routes->post('/email-settings', 'EmailController::processEmailSettings', ['filter'=>'auth']);
 
+
+$routes->get('/chat', 'ChatController::chat', ['filter'=>'auth']);
+
 #Project routes
 $routes->get('/manage-projects','ProjectController::index',['filter'=>'auth', 'as'=>'manage-projects']);
 $routes->get('/projects/create','ProjectController::showAddNewProjectForm',['filter'=>'auth', 'as'=>'add-new-project']);
@@ -186,7 +189,6 @@ $routes->post('/projects/submit-project-report','ProjectController::submitReport
 #Reminder
 $routes->get('/reminder', 'ReminderController::index', ['filter'=>'auth', 'as'=>'reminder']);
 $routes->get('/load-calendar', 'ReminderController::loadCalendar', ['filter'=>'auth']);
-#$routes->get('/load-calendar', 'ReminderController::loadCalendar', ['filter'=>'auth']);
 $routes->post('/reminder/insert', 'ReminderController::insert', ['filter'=>'auth']);
 
 #Contractor routes

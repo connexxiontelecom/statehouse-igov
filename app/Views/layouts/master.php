@@ -198,7 +198,7 @@
                 <li><a href="<?=site_url('circulars'); ?>">Circular</a></li>
                 <li><a href="<?=site_url('notices')?>">Notice Board</a></li>
                 <li><a href="<?= route_to('messages-in','INBOX') ?>">Email</a></li>
-                <li><a href="javascript:void(0)">Chat</a></li>
+                <li><a href="<?= route_to('chat') ?>">Chat</a></li>
               </ul>
             </div>
           </li>
