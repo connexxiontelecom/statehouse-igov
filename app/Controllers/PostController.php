@@ -106,10 +106,10 @@ class PostController extends BaseController
 		//echo $responses;
 		if ($this->send_mail($to, $subject, $message, $from)) {
 			$response['success'] = true;
-			$response['message'] = 'A document signing verification code has been sent to your email. '.$responses;
+			$response['message'] = 'A document signing verification code has been sent to your email.';
 		} else {
 			$response['success'] = false;
-			$response['message'] = 'An error occurred while sending your document signing verification code '.$responses;
+			$response['message'] = 'An error occurred while sending your document signing verification code';
 			echo $this->email->printDebugger();
 		}
 		return $this->response->setJSON($response);
