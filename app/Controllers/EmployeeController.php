@@ -57,6 +57,8 @@ class EmployeeController extends BaseController
 	public function setup_signature() {
 		$user = $this->user->find(session()->user_id);
 		$employee = $this->employee->find($user['user_employee_id']);
+		$phone = $employee['employee_phone'];
+		$phone = '234'.substr($phone, 1, strlen($phone));
 		$organization = $this->organization->first();
 		$file = $this->request->getFile('file');
 		if (!empty($file)) {
@@ -73,14 +75,48 @@ class EmployeeController extends BaseController
 					$data['subject'] = $subject;
 					$data['user'] = $user['user_name'];
 					$data['organization'] = $organization['org_name'];
-					$data['ver_code'] =$code = $this->_get_verification_code('e-signature');
+					$data['ver_code'] = $code = $this->_get_verification_code('e-signature');
+					
+					$curl = curl_init();
+					
+					curl_setopt_array($curl, array(
+						CURLOPT_URL => 'https://termii.com/api/sms/send',
+						CURLOPT_RETURNTRANSFER => true,
+						CURLOPT_ENCODING => '',
+						CURLOPT_MAXREDIRS => 10,
+						CURLOPT_TIMEOUT => 0,
+						CURLOPT_FOLLOWLOCATION => true,
+						CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+						CURLOPT_CUSTOMREQUEST => 'POST',
+						CURLOPT_POSTFIELDS =>' {
+							          "to": "'.$phone.'",
+							           "from": "N-Alert",
+							           "sms": "Your iGov signature code is: '.$code.' It expires in 10 Mins",
+							           "type": "plain",
+							           "channel": "dnd",
+							           "api_key": "TLfrtWYbF5uWb0GLWjwDigrMb722yJgAp2B3jDoYYRzYOSjIU3PHwRIpGSZlga"
+							                }',
+													CURLOPT_HTTPHEADER => array(
+														'Content-Type: application/json'
+													),
+												));
+												
+					$responses = curl_exec($curl);
+					
+					curl_close($curl);
+					
+//					$response['success'] = true;
+//					$response['message'] = $responses;
+					
+					
 					$message = view('email/signature-otp', $data);
 					$from['name'] = 'IGOV by Connexxion Telecom';
 					$from['email'] = 'support@connexxiontelecom.com';
 					if ($this->send_mail($to, $subject, $message, $from)) {
 						$response['success'] = true;
 						$response['message'] = 'An E-Signature verification code has been sent to your email.';
-					} else {
+					}
+					else {
 						$response['success'] = false;
 						$response['message'] = 'An error occurred while sending your E-Signature verification code';
 					}
