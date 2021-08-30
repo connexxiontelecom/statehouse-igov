@@ -19,6 +19,7 @@ class Home extends BaseController
 		$data['username'] = $this->session->user_username;
 		$data['firstTime'] = $this->session->firstTime;
 		$data['organization'] = $this->organization->first();
+//		$data['organization'] = [];
 		return view('pages/dashboard/index', $data);
 	}
 	

@@ -4,21 +4,28 @@
 	<!-- start page title -->
 
   <div class="row mt-2">
-    <div class="col-xl-4">
-      <div class="jumbotron mt-3">
-        <div class="media">
-          <img src="/uploads/organization/<?=$organization['org_logo'] ?>" height="100" class="align-self-center mr-3" alt="company logo">
-          <div class="media-body">
-            <h5 class="mt-0 mb-2"><?=$organization['org_name'] ?></h5>
-            <p class="mb-0"><?=$organization['org_address'] ?></p>
-            <p class="mb-0"><?=$organization['org_c_phone'] ?></p>
-            <p class="mb-0"><?=$organization['org_c_email'] ?></p>
-            <p class="mb-0"><?=$organization['org_web'] ?></p>
-          </div>
+    <div class="col-xl-3">
+      <div class="jumbotron jumbotron-fluid text-center mt-3">
+        <div class="container">
+          <?php if (empty($organization)):?>
+            <h5>Your organization information has not set up on iGov yet</h5>
+          <?php else:?>
+            <img src="/uploads/organization/<?=$organization['org_logo'] ?>" height="100" class="mb-3" alt="company logo">
+            <div class="media">
+              <div class="media-body">
+                <h5 class="mt-0 mb-2"><?=$organization['org_name'] ?></h5>
+                <p class="mb-0"><?=$organization['org_address'] ?></p>
+                <p class="mb-0"><?=$organization['org_c_phone'] ?></p>
+                <p class="mb-0"><?=$organization['org_c_email'] ?></p>
+                <p class="mb-0"><?=$organization['org_web'] ?></p>
+              </div>
+            </div>
+          <?php endif;?>
         </div>
+
       </div>
     </div>
-    <div class="col-xl-8">
+    <div class="col-xl-9">
       <div class="row">
         <div class="col-12">
           <div class="page-title-box">
@@ -30,7 +37,6 @@
               </span>
             </div>
             <h4 class="page-title">Welcome, <?=session()->user_name;?></h4>
-            <p class="text-muted mt-n3">Pick up where you left off on your iGov account.</p>
           </div>
         </div>
       </div>
@@ -43,7 +49,7 @@
             <a href="#profile1" data-toggle="tab" aria-expanded="true" class="nav-link">Profile</a>
           </li>
           <li class="nav-item">
-            <a href="#messages1" data-toggle="tab" aria-expanded="false" class="nav-link">Messages</a>
+            <a href="#messages1" data-toggle="tab" aria-expanded="false" class="nav-link">Staff Directory</a>
           </li>
         </ul>
         <div class="tab-content">
