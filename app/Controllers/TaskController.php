@@ -139,7 +139,13 @@ class TaskController extends BaseController
           'tl_action' => 'task_started',
         ];
         $this->task_log->insert($task_log_data);
-        $this->reminder->_add_reminder($task);
+        $executors = $this->task_executor->where('te_task_id', $task['task_id'])->findAll();
+        if(!empty($executors)){
+            foreach($executors as $executor){
+                $this->_add_reminder($task['task_id'], $executor['te_executor_id']);
+            }
+        }
+
         $response['success'] = true;
         $response['message'] = 'The task was successfully started.';
       } else {
@@ -279,6 +285,7 @@ class TaskController extends BaseController
 
   private function _add_executors($executors, $task_id) {
     if (count($executors) > 0) {
+        $task = $this->task->find($task_id);
       foreach ($executors as $executor) {
         $executor_data = [
           'te_task_id' => $task_id,
@@ -290,15 +297,14 @@ class TaskController extends BaseController
     }
   }
 
-  private function _add_reminder($task){
-      $task = $this->task->find($task['task_id']);
+  public function _add_reminder($id, $employee){
+      $task = $this->task->find($id);
       if(!empty($task)){
-
           $remind = [
-              'title'=>$project_name,
-              'reminder_start_date'=>$start_date,
-              'reminder_end_date'=>$due_date,
-              'reminder_employee_id'=>$participant
+              'title'=>$task['task_subject'],
+              'reminder_start_date'=>date('Y-m-d'),
+              'reminder_end_date'=>$task['task_due_date'],
+              'reminder_employee_id'=>$employee
           ];
           $this->reminder->save($remind);
       }
