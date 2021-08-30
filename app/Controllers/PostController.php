@@ -62,10 +62,19 @@ class PostController extends BaseController
 		$employee = $this->employee->find($user['user_employee_id']);
 		$organization = $this->organization->first();
 		$to = $employee['employee_mail'];
+		$phone = $employee['employee_phone'];
+		$phone = '234'.substr($phone, 1, strlen($phone));
 		$subject = 'Verify Document Signing';
 		$data['subject'] = $subject;
 		$data['user'] = $user['user_name'];
 		$data['organization'] = $organization['org_name'];
+
+		 $code = $this->_get_verification_code('doc_signing');
+		 $data['ver_code'] = $code;
+		$data['post'] = $post;
+		$message = view('email/doc-signing-otp', $data);
+		$from['name'] = 'IGOV by Connexxion Telecom';
+		$from['email'] = 'support@connexxiontelecom.com';
 		
 		$curl = curl_init();
 		
@@ -79,41 +88,28 @@ class PostController extends BaseController
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CUSTOMREQUEST => 'POST',
 			CURLOPT_POSTFIELDS =>' {
-          "to": "2347880234567",
-           "from": "talert",
-           "sms": "Hi there, testing Termii ",
+          "to": "'.$phone.'",
+           "from": "N-Alert",
+           "sms": "Your iGov confirmation code is: '.$code.' It expires in 10 Mins",
            "type": "plain",
-           "channel": "generic",
-           "api_key": "Your API Key",
-             "media": {
-                "url": "https://media.example.com/file",
-                "caption": "your media file"
-            }
-       }',
+           "channel": "dnd",
+           "api_key": "TLfrtWYbF5uWb0GLWjwDigrMb722yJgAp2B3jDoYYRzYOSjIU3PHwRIpGSZlga"
+                }',
 			CURLOPT_HTTPHEADER => array(
 				'Content-Type: application/json'
 			),
 		));
 		
-		$response = curl_exec($curl);
+		$responses = curl_exec($curl);
 		
 		curl_close($curl);
-		//echo $response;
-		
-		
-		
-		
-		$data['ver_code'] = $this->_get_verification_code('doc_signing');
-		$data['post'] = $post;
-		$message = view('email/doc-signing-otp', $data);
-		$from['name'] = 'IGOV by Connexxion Telecom';
-		$from['email'] = 'support@connexxiontelecom.com';
+		//echo $responses;
 		if ($this->send_mail($to, $subject, $message, $from)) {
 			$response['success'] = true;
-			$response['message'] = 'A document signing verification code has been sent to your email.';
+			$response['message'] = 'A document signing verification code has been sent to your email. '.$responses;
 		} else {
 			$response['success'] = false;
-			$response['message'] = 'An error occurred while sending your document signing verification code';
+			$response['message'] = 'An error occurred while sending your document signing verification code '.$responses;
 			echo $this->email->printDebugger();
 		}
 		return $this->response->setJSON($response);

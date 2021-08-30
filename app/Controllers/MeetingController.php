@@ -110,34 +110,7 @@ class MeetingController extends BaseController
 //			print_r($e);
 //		}
 		
-		$curl = curl_init();
-		
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => 'https://termii.com/api/sms/send',
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => '',
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS =>' {
-          "to": "2348090945451",
-           "from": "N-Alert",
-           "sms": "Hi there, testing Termii ",
-           "type": "plain",
-           "channel": "dnd",
-           "api_key": "TLfrtWYbF5uWb0GLWjwDigrMb722yJgAp2B3jDoYYRzYOSjIU3PHwRIpGSZlga"
-                }',
-			CURLOPT_HTTPHEADER => array(
-				'Content-Type: application/json'
-			),
-		));
-		
-		$response = curl_exec($curl);
-		
-		curl_close($curl);
-		echo $response;
+	
 	}
 	
 	/**
