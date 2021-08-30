@@ -22,7 +22,6 @@
             </div>
           <?php endif;?>
         </div>
-
       </div>
     </div>
     <div class="col-xl-9">
