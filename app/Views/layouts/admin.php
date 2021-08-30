@@ -629,13 +629,7 @@
             </a>
           </li>
 					<li>
-						<a href="<?= route_to('reminder') ?>">
-							<i data-feather="file-text"></i>
-							<span> Reminder </span>
-						</a>
-					</li>
-					<li>
-						<a href="apps-chat.html">
+						<a href="<?= route_to('chat') ?>">
 							<i data-feather="layout"></i>
 							<span> Forms </span>
 						</a>

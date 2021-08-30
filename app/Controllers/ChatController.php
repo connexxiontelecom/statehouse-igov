@@ -16,8 +16,13 @@ class ChatController extends BaseController
         $this->chat = new Chat();
 
     }
-	public function index()
+	public function chat()
 	{
-		//
+	    $data = [
+	      'firstTime'=>$this->session->firstTime,
+          'username'=>$this->session->username
+        ];
+	    return view('pages/chat/chat', $data);
+
 	}
 }
