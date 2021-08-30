@@ -101,14 +101,16 @@ class MeetingController extends BaseController
 //		$data['firstTime'] = $this->session->firstTime;
 //		$data['username'] = $this->session->user_username;
 //		return view('pages/meeting/meet', $data);
+//
+//		$dt   = new DateTime('2021-09-10 00:00');
+//		try {
+//			$time = Time::createFromInstance($dt, 'en_US');
+//			echo $time;
+//		} catch (\Exception $e) {
+//			print_r($e);
+//		}
 		
-		$dt   = new DateTime('2021-09-10 00:00');
-		try {
-			$time = Time::createFromInstance($dt, 'en_US');
-			echo $time;
-		} catch (\Exception $e) {
-			print_r($e);
-		}
+	
 	}
 	
 	/**
