@@ -612,9 +612,6 @@
 						<div class="collapse" id="workflowSettings">
 							<ul class="nav-second-level">
 								<li>
-									<a href="<?=site_url('new-employee'); ?>">New Employee</a>
-								</li>
-								<li>
 									<a href="<?=site_url('/workflow/settings'); ?>">Settings</a>
 								</li>
 

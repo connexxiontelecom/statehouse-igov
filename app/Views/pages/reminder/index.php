@@ -2,6 +2,9 @@
 
 <?= $this->section('extra-styles') ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+<link rel="stylesheet" href="/assets/css/alertify.css"/>
+<link rel="stylesheet" href="/assets/css/themes/semantic.css"/>
+
 <?= $this->endsection(); ?>
 <?= $this->section('content'); ?>
 <div class="container-fluid">
@@ -44,6 +47,7 @@
 <?= $this->section('extra-scripts'); ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+<script src="/assets/js/alertify.js"></script>
 <script>
     $(document).ready(function(){
         var user = "<?= $employee_id ?>"
@@ -61,7 +65,7 @@
             selectHelper:true,
             select:function(start, end, allDay)
             {
-                var title = prompt("Enter Title");
+                var title = prompt("Reminder Title")
                 if(title)
                 {
                     var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
