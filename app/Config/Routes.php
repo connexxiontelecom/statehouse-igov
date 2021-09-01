@@ -196,6 +196,16 @@ $routes->get('/manage-contractors', 'ContractorController::manageContractors',['
 $routes->get('/add-new-contractor', 'ContractorController::showNewContractorForm',['filter'=>'auth', 'as'=>'add-new-contractor']);
 $routes->post('/add-new-contractor', 'ContractorController::addNewContractor',['filter'=>'auth']);
 
+
+#Contractor routes
+$routes->get('/manage-vendors', 'ProcurementController::manageVendors',['filter'=>'auth', 'as'=>'manage-vendors']);
+$routes->get('/add-new-vendor', 'ProcurementController::showNewVendorForm',['filter'=>'auth', 'as'=>'add-new-vendor']);
+$routes->post('/add-new-vendor', 'ProcurementController::addNewVendor',['filter'=>'auth']);
+    #Product routes
+$routes->get('/manage-products', 'ProcurementController::manageProducts',['filter'=>'auth', 'as'=>'manage-products']);
+$routes->get('/add-new-product', 'ProcurementController::showNewProductForm',['filter'=>'auth', 'as'=>'add-new-product']);
+$routes->post('/add-new-product', 'ProcurementController::addNewProduct',['filter'=>'auth']);
+
 // employee routes
 $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter' => 'auth']);
 $routes->match(['get'], 'check-signature-exists', 'EmployeeController::check_signature_exists', ['filter' => 'auth']);

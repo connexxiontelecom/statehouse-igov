@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\Chat;
+use App\Models\Employee;
 
 class ChatController extends BaseController
 {
@@ -14,13 +15,15 @@ class ChatController extends BaseController
             exit;
         endif;
         $this->chat = new Chat();
+        $this->employee = new Employee();
 
     }
 	public function chat()
 	{
 	    $data = [
 	      'firstTime'=>$this->session->firstTime,
-          'username'=>$this->session->username
+          'username'=>$this->session->username,
+          'employees'=>$this->employee->getAllEmployee()
         ];
 	    return view('pages/chat/chat', $data);
 

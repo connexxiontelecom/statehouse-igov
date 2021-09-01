@@ -34,7 +34,7 @@
                         <div class="col-lg-4">
                             <div class="text-lg-right mt-lg-0">
                                 <div class="btn-group mr-2">
-                                    <a href="<?= route_to('manage-projects') ?>" class="btn btn-success btn-sm"><i class="mdi mdi-library mr-1"></i> Manage Projects</a>
+                                    <a href="<?= route_to('manage-projects') ?>" class="btn btn-success btn-sm"> Go Back</a>
                                 </div>
                             </div>
                         </div>

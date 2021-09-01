@@ -49,165 +49,64 @@
                             <span class="mdi mdi-magnify"></span>
                         </div>
                     </form>
-                    <!-- end search box -->
-
-                    <h6 class="font-13 text-muted text-uppercase">Group Chats</h6>
-                    <div class="p-2">
-                        <a href="javascript: void(0);" class="text-reset mb-2 d-block">
-                            <i class="mdi mdi-checkbox-blank-circle-outline mr-1 text-success"></i>
-                            <span class="mb-0 mt-1">App Development</span>
-                        </a>
-
-                        <a href="javascript: void(0);" class="text-reset mb-2 d-block">
-                            <i class="mdi mdi-checkbox-blank-circle-outline mr-1 text-warning"></i>
-                            <span class="mb-0 mt-1">Office Work</span>
-                        </a>
-                    </div>
 
                     <h6 class="font-13 text-muted text-uppercase mb-2">Contacts</h6>
 
                     <!-- users -->
                     <div class="row">
                         <div class="col">
-                            <div data-simplebar="init" style="max-height: 375px"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
-                                                    <a href="javascript:void(0);" class="text-body">
+                            <div data-simplebar="init" style="max-height: 375px">
+                                <div class="simplebar-wrapper" style="margin: 0px;">
+                                    <div class="simplebar-height-auto-observer-wrapper">
+                                        <div class="simplebar-height-auto-observer">
+
+                                        </div>
+                                    </div>
+                                    <div class="simplebar-mask">
+                                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                            <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
+                                                <div class="simplebar-content" style="padding: 0px;">
+                                                    <?php foreach($employees as $employee): ?>
+                                                    <a href="javascript:void(0);"  data-name="<?= $employee['employee_f_name'] ?? '' ?> <?= $employee['employee_l_name'] ?>" data-emp="<?= $employee['employee_id'] ?>" class="text-body employee-wrapper">
                                                         <div class="media p-2">
-                                                            <img src="../assets/images/users/user-2.jpg" class="mr-2 rounded-circle" height="42" alt="Brandon Smith">
+                                                            <img src="/assets/images/users/user-2.jpg" class="mr-2 rounded-circle" height="42" alt="Brandon Smith">
                                                             <div class="media-body">
                                                                 <h5 class="mt-0 mb-0 font-14">
-                                                                    <span class="float-right text-muted font-weight-normal font-12">4:30am</span>
-                                                                    Brandon Smith
+                                                                    <?= $employee['employee_f_name'] ?? '' ?> <?= $employee['employee_l_name'] ?>
                                                                 </h5>
                                                                 <p class="mt-1 mb-0 text-muted font-14">
-                                                                    <span class="w-25 float-right text-right"><span class="badge badge-soft-danger">3</span></span>
-                                                                    <span class="w-75">How are you today?</span>
+                                                                    <span class="w-75"><?= $employee['employee_level'] ?? '' ?></span>
                                                                 </p>
                                                             </div>
                                                         </div>
                                                     </a>
-
-                                                    <a href="javascript:void(0);" class="text-body">
-                                                        <div class="media p-2">
-                                                            <img src="../assets/images/users/user-5.jpg" class="mr-2 rounded-circle" height="42" alt="James Z">
-                                                            <div class="media-body">
-                                                                <h5 class="mt-0 mb-0 font-14">
-                                                                    <span class="float-right text-muted font-weight-normal font-12">5:30am</span>
-                                                                    James Z
-                                                                </h5>
-                                                                <p class="mt-1 mb-0 text-muted font-14">
-                                                                    <span class="w-75">Hey! a reminder for tomorrow's meeting...</span>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-
-                                                    <a href="javascript:void(0);" class="text-body">
-                                                        <div class="media p-2">
-                                                            <img src="../assets/images/users/user-7.jpg" class="mr-2 rounded-circle" height="42" alt="Maria C">
-                                                            <div class="media-body">
-                                                                <h5 class="mt-0 mb-0 font-14">
-                                                                    <span class="float-right text-muted font-weight-normal font-12">Thu</span>
-                                                                    Maria C
-                                                                </h5>
-                                                                <p class="mt-1 mb-0 text-muted font-14">
-                                                                    <span class="w-25 float-right text-right"><span class="badge badge-soft-danger">2</span></span>
-                                                                    <span class="w-75">Are we going to have this week's planning meeting today?</span>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-
-                                                    <a href="javascript:void(0);" class="text-body">
-                                                        <div class="media bg-light p-2">
-                                                            <img src="../assets/images/users/user-10.jpg" class="mr-2 rounded-circle" height="42" alt="Rhonda D">
-                                                            <div class="media-body">
-                                                                <h5 class="mt-0 mb-0 font-14">
-                                                                    <span class="float-right text-muted font-weight-normal font-12">Wed</span>
-                                                                    Rhonda D
-                                                                </h5>
-                                                                <p class="mt-1 mb-0 text-muted font-14">
-                                                                    <span class="w-75">Please check these design assets...</span>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-
-                                                    <a href="javascript:void(0);" class="text-body">
-                                                        <div class="media p-2">
-                                                            <img src="../assets/images/users/user-3.jpg" class="mr-2 rounded-circle" height="42" alt="Michael H">
-                                                            <div class="media-body">
-                                                                <h5 class="mt-0 mb-0 font-14">
-                                                                    <span class="float-right text-muted font-weight-normal font-12">Tue</span>
-                                                                    Michael H
-                                                                </h5>
-                                                                <p class="mt-1 mb-0 text-muted font-14">
-                                                                    <span class="w-75">Are you free for 15 min? I would like to discuss something...</span>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-
-                                                    <a href="javascript:void(0);" class="text-body">
-                                                        <div class="media p-2">
-                                                            <img src="../assets/images/users/user-6.jpg" class="mr-2 rounded-circle" height="42" alt="Thomas R">
-                                                            <div class="media-body">
-                                                                <h5 class="mt-0 mb-0 font-14">
-                                                                    <span class="float-right text-muted font-weight-normal font-12">Tue</span>
-                                                                    Thomas R
-                                                                </h5>
-                                                                <p class="mt-1 mb-0 text-muted font-14">
-                                                                    <span class="w-75">Let's have meeting today between me, you and Tony...</span>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-
-                                                    <a href="javascript:void(0);" class="text-body">
-                                                        <div class="media p-2">
-                                                            <img src="../assets/images/users/user-8.jpg" class="mr-2 rounded-circle" height="42" alt="Thomas J">
-                                                            <div class="media-body">
-                                                                <h5 class="mt-0 mb-0 font-14">
-                                                                    <span class="float-right text-muted font-weight-normal font-12">Tue</span>
-                                                                    Thomas J
-                                                                </h5>
-                                                                <p class="mt-1 mb-0 text-muted font-14">
-                                                                    <span class="w-75">Howdy?</span>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-
-                                                    <a href="javascript:void(0);" class="text-body">
-                                                        <div class="media p-2">
-                                                            <img src="../assets/images/users/user-4.jpg" class="mr-2 rounded-circle" height="42" alt="Ricky J">
-                                                            <div class="media-body">
-                                                                <h5 class="mt-0 mb-0 font-14">
-                                                                    <span class="float-right text-muted font-weight-normal font-12">Mon</span>
-                                                                    Ricky J
-                                                                </h5>
-                                                                <p class="mt-1 mb-0 text-muted font-14">
-                                                                    <span class="w-75">Are you interested in learning?</span>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-
-                                                </div></div></div></div><div class="simplebar-placeholder" style="width: auto; height: 736px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 191px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div> <!-- end slimscroll-->
-                        </div> <!-- End col -->
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="simplebar-placeholder" style="width: auto; height: 736px;">
+                                    </div>
+                                </div>
+                                <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                                    <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+                                </div>
+                                <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                                    <div class="simplebar-scrollbar" style="height: 191px; transform: translate3d(0px, 0px, 0px); display: block;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- end users -->
-                </div> <!-- end card-body-->
-            </div> <!-- end card-->
+                </div>
+            </div>
         </div>
-        <!-- end chat users-->
-
-        <!-- chat area -->
         <div class="col-xl-9 col-lg-8">
 
             <div class="card">
                 <div class="card-body py-2 px-3 border-bottom border-light">
                     <div class="media py-1">
-                        <img src="../assets/images/users/user-5.jpg" class="mr-2 rounded-circle" height="36" alt="Brandon Smith">
+                        <img src="/assets/images/users/user-5.jpg" class="mr-2 rounded-circle" height="36" alt="Brandon Smith">
                         <div class="media-body">
                             <h5 class="mt-0 mb-0 font-15">
                                 <a href="contacts-profile.html" class="text-reset">James Zavel</a>
@@ -217,16 +116,7 @@
                             </p>
                         </div>
                         <div>
-                            <a href="javascript: void(0);" class="text-reset font-19 py-1 px-2 d-inline-block" data-toggle="tooltip" data-placement="top" title="" data-original-title="Voice Call">
-                                <i class="fe-phone-call"></i>
-                            </a>
-                            <a href="javascript: void(0);" class="text-reset font-19 py-1 px-2 d-inline-block" data-toggle="tooltip" data-placement="top" title="" data-original-title="Video Call">
-                                <i class="fe-video"></i>
-                            </a>
-                            <a href="javascript: void(0);" class="text-reset font-19 py-1 px-2 d-inline-block" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add Users">
-                                <i class="fe-user-plus"></i>
-                            </a>
-                            <a href="javascript: void(0);" class="text-reset font-19 py-1 px-2 d-inline-block" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete Chat">
+                            <a href="javascript: void(0);" class="text-reset font-19 py-1 px-2 d-inline-block" data-toggle="tooltip" data-placement="top" title="" data-original-title="Clear Chat">
                                 <i class="fe-trash-2"></i>
                             </a>
                         </div>
@@ -476,7 +366,7 @@
                                         <div class="col mb-2 mb-sm-0">
                                             <input type="text" class="form-control border-0" placeholder="Enter your text" required="">
                                             <div class="invalid-feedback">
-                                                Please enter your messsage
+                                                Please enter your message
                                             </div>
                                         </div>
                                         <div class="col-sm-auto">
@@ -484,22 +374,26 @@
                                                 <a href="#" class="btn btn-light"><i class="fe-paperclip"></i></a>
                                                 <button type="submit" class="btn btn-success chat-send btn-block"><i class="fe-send"></i></button>
                                             </div>
-                                        </div> <!-- end col -->
-                                    </div> <!-- end row-->
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
-                        </div> <!-- end col-->
+                        </div>
                     </div>
-                    <!-- end row -->
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
+                </div>
+            </div>
         </div>
-        <!-- end chat area-->
 
     </div>
 
 </div>
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-
+<script>
+    $(document).ready(function(){
+        $(document).on('click', '.employee-wrapper', function(e){
+            alert('Emp:'+$(this).data('emp')+" Name: "+$(this).data('name'));
+        });
+    });
+</script>
 <?= $this->endSection(); ?>

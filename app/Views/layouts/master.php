@@ -223,6 +223,24 @@
               <span>Projects</span>
             </a>
           </li>
+            <li>
+                <a href="#procurementMenu" data-toggle="collapse">
+                    <i data-feather="grid"></i>
+
+                    <span> Procurement </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="procurementMenu">
+                    <ul class="nav-second-level">
+                        <li>
+                            <a href="<?= route_to('manage-vendors') ?>">Manage Vendors</a>
+                        </li>
+                        <li>
+                            <a href="<?= route_to('manage-products') ?>">Manage Products</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
           <li>
             <a href="#budget" data-toggle="collapse">
               <i data-feather="book"></i>
