@@ -223,24 +223,40 @@
               <span>Projects</span>
             </a>
           </li>
-            <li>
-                <a href="#procurementMenu" data-toggle="collapse">
-                    <i data-feather="grid"></i>
+          <li>
+            <a href="#procurementMenu" data-toggle="collapse">
+              <i data-feather="grid"></i>
 
-                    <span> Procurement </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="procurementMenu">
-                    <ul class="nav-second-level">
-                        <li>
-                            <a href="<?= route_to('manage-vendors') ?>">Manage Vendors</a>
-                        </li>
-                        <li>
-                            <a href="<?= route_to('manage-products') ?>">Manage Products</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+              <span> Procurement </span>
+              <span class="menu-arrow"></span>
+            </a>
+            <div class="collapse" id="procurementMenu">
+              <ul class="nav-second-level">
+                <li>
+                  <a href="<?= route_to('manage-vendors') ?>">Manage Vendors</a>
+                </li>
+                <li>
+                  <a href="<?= route_to('manage-products') ?>">Manage Products</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <a href="#fleet" data-toggle="collapse">
+              <i data-feather="truck"></i>
+              <span>Manage Fleet</span>
+              <span class="menu-arrow"></span>
+            </a>
+            <div class="collapse" id="fleet">
+              <ul class="nav-second-level">
+                <li><a href="<?=site_url('active-vehicles')?>">Active Vehicles</a></li>
+                <li><a href="#">Drivers</a></li>
+                <li><a href="#">Renewal Schedule</a></li>
+                <li><a href="#">Maintenance Schedule</a></li>
+                <li><a href="#">Disposed Vehicles</a></li>
+              </ul>
+            </div>
+          </li>
           <li>
             <a href="#budget" data-toggle="collapse">
               <i data-feather="book"></i>
