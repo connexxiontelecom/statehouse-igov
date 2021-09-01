@@ -260,7 +260,7 @@
           <li>
             <a href="#budget" data-toggle="collapse">
               <i data-feather="book"></i>
-              <span> Budgets </span>
+              <span> Finance </span>
               <span class="menu-arrow"></span>
             </a>
             <div class="collapse" id="budget">
