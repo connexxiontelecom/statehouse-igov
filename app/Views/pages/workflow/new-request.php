@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <a href="<?=site_url('/workflow-requests')?>" type="button" class="btn btn-sm btn-primary float-right"> <i class="mdi mdi-arrow-left mr-2"></i>Go Back</a>
+                            <a href="<?=site_url('/workflow-requests')?>" type="button" class="btn btn-sm btn-success float-right"> Go Back</a>
                         </div>
                     </div>
                     <?php $validation = \Config\Services::validation(); ?>

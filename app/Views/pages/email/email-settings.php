@@ -1,5 +1,5 @@
 <?=
-$this->extend('layouts/master')
+$this->extend('layouts/admin')
 ?>
 
 
