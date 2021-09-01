@@ -625,6 +625,26 @@
               <span> Registry </span>
             </a>
           </li>
+          <li>
+            <a href="#fleet-settings" data-toggle="collapse">
+              <i data-feather="truck"></i>
+              <span> Fleet Settings </span>
+              <span class="menu-arrow"></span>
+            </a>
+            <div class="collapse" id="fleet-settings">
+              <ul class="nav-second-level">
+                <li>
+                  <a href="<?=site_url('renewal-types'); ?>">Renewal Types</a>
+                </li>
+                <li>
+                  <a href="<?=site_url('/workflow/settings'); ?>">Vehicle Type</a>
+                </li>
+                <li>
+                  <a href="<?=site_url('/workflow/settings'); ?>">Maintenance Type</a>
+                </li>
+              </ul>
+            </div>
+          </li>
 					<li>
 						<a href="<?= route_to('chat') ?>">
 							<i data-feather="layout"></i>
