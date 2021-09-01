@@ -260,6 +260,7 @@ $routes->match(['get'], 'join-meeting/(:num)/(:any)', 'MeetingController::join_m
 
 // Fleet routes
 $routes->match(['get'], 'active-vehicles', 'FleetController::active_vehicles', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'new-vehicle', 'FleetController::new_vehicle', ['filter' => 'auth']);
 
 
 /*
