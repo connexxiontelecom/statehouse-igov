@@ -3,10 +3,13 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\FleetDriver;
 use App\Models\FleetMaintenanceType;
 use App\Models\FleetRenewalType;
 use App\Models\FleetVehicle;
 use App\Models\FleetVehicleType;
+use App\Models\UserModel;
+use App\Models\Employee;
 
 class FleetController extends BaseController
 {
@@ -19,6 +22,9 @@ class FleetController extends BaseController
 		$this->fleet_vehicle_type = new FleetVehicleType();
 		$this->fleet_maintenance_type = new FleetMaintenanceType();
 		$this->fleet_renewal_type = new FleetRenewalType();
+		$this->fleet_driver = new FleetDriver();
+		$this->user = new UserModel();
+		$this->employee = new Employee();
 	}
 
 	public function active_vehicles() {
@@ -50,9 +56,50 @@ class FleetController extends BaseController
 			$response['message'] = 'Successfully added the new vehicle';
 		} else {
 			$response['success'] = false;
-			$response['message'] = 'There was an error while creating the new vehicle';
+			$response['message'] = 'There was an error while adding the new vehicle';
 		}
 		return $this->response->setJSON($response);
+	}
+
+	public function drivers() {
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$data['drivers'] = $this->_get_drivers();
+		return view('/pages/fleet/drivers', $data);
+	}
+
+	public function new_driver() {
+		if($this->request->getMethod() == 'get'):
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$data['employees'] = $this->employee->findAll();
+			return view('/pages/fleet/new-driver', $data);
+		endif;
+		$_POST['fd_status'] = 1;
+		$file = $this->request->getFile('file');
+		if (!empty($file)) {
+			if ($file->isValid() && !$file->hasMoved()) {
+				$file_name = time().'_'.$file->getClientName();
+				$file->move('uploads/fleets', $file_name);
+				$_POST['fd_moi_attachment'] = $file_name;
+			}
+		}
+		if ($this->fleet_driver->save($_POST)) {
+			$response['success'] = true;
+			$response['message'] = 'Successfully added the new driver';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'There was an error while adding the new driver';
+		}
+		return $this->response->setJSON($response);
+	}
+
+	private function _get_drivers() {
+		$drivers = $this->fleet_driver->where('fd_status', 1)->findAll();
+		foreach ($drivers as $key => $driver) {
+			$drivers[$key]['employee'] = $this->employee->find($driver['fd_user_id']);
+		}
+		return $drivers;
 	}
 
 	private function _get_vehicles($status) {
