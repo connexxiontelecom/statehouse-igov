@@ -81,6 +81,8 @@ $routes->match(['get'], 'view-budget-setup/(:num)', 'BudgetSettingController::vi
 $routes->match(['get', 'post'], 'budget-categories', 'BudgetSettingController::budget_categories', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'fetch-parent', 'BudgetSettingController::fetch_parent', ['filter' => 'auth']);
 
+$routes->match(['get', 'post'], 'renewal-types', 'FleetSettingController::renewal_types', ['filter' => 'auth']);
+
 // post routes
 $routes->match(['post'], 'upload-post-attachments', 'PostController::upload_post_attachments', ['filter' => 'auth']);
 $routes->match(['post', 'get'], 'delete-post-attachments', 'PostController::delete_post_attachments', ['filter' => 'auth']);
