@@ -637,7 +637,7 @@
                   <a href="<?=site_url('renewal-types'); ?>">Renewal Types</a>
                 </li>
                 <li>
-                  <a href="<?=site_url('/workflow/settings'); ?>">Vehicle Type</a>
+                  <a href="<?=site_url('vehicle-types'); ?>">Vehicle Type</a>
                 </li>
                 <li>
                   <a href="<?=site_url('/workflow/settings'); ?>">Maintenance Type</a>
