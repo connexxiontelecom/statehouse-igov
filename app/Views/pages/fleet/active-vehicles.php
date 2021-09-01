@@ -41,9 +41,9 @@
 									<th class="text-center" style="width: 5%">S/n</th>
 									<th>Alias</th>
 									<th>Chassis No.</th>
-									<th>Purchase Date</th>
-									<th>Plate No.</th>
-									<th>Vehicle Type</th>
+									<th style="width: 10%">Purchase Date</th>
+									<th style="width: 10%">Plate No.</th>
+									<th style="width: 10%">Vehicle Type</th>
 									<th class="text-center" style="width: 5%">Actions</th>
 								</tr>
 								</thead>
@@ -54,15 +54,15 @@
                     <td><?=$active_vehicle['fv_brand'].'-'.$active_vehicle['fv_maker'].'-'.$active_vehicle['fv_year'].'-'.$active_vehicle['fv_color']?></td>
                     <td><?=$active_vehicle['fv_chassis_no']?></td>
                     <td>
-	                    <?php $date = date_create($active_vehicle['fv_purchase_price']);
+	                    <?php $date = date_create($active_vehicle['fv_purchase_date']);
 	                      echo date_format($date,"d M Y");
 	                    ?>
                     </td>
                     <td><?=$active_vehicle['fv_plate_no']?></td>
                     <td><?=$active_vehicle['vehicle_type']['fvt_name']?></td>
-                    <td>
-                      <a href="javascript:void(00" data-toggle="tooltip" data-placement="left" title data-original-title="Manage Vehicle">
-                        <i data-feather="eye" class="icon-dual"></i>.
+                    <td class="text-center">
+                      <a href="javascript:void(0)" data-toggle="tooltip" data-placement="left" title data-original-title="Manage Vehicle">
+                        <i data-feather="edit-3" class="icon-dual"></i>.
                       </a>
                     </td>
                   </tr>
