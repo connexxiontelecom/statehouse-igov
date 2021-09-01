@@ -640,7 +640,7 @@
                   <a href="<?=site_url('vehicle-types'); ?>">Vehicle Type</a>
                 </li>
                 <li>
-                  <a href="<?=site_url('/workflow/settings'); ?>">Maintenance Type</a>
+                  <a href="<?=site_url('maintenance-types'); ?>">Maintenance Type</a>
                 </li>
               </ul>
             </div>
