@@ -165,30 +165,22 @@ class RegistryController extends BaseController
 			$response['message'] = 'This mail has a transfer request still pending. Please cancel the pending request before submitting a new transfer request.';
 			return $this->response->setJSON($response);
 		}
-		$mail = $this->mail->find($post_data['mt_mail_id']);
-		$registry = $this->registry->find($mail['m_registry_id']);
-		$authorised_users = json_decode($registry['registry_users']);
-		if ($registry['registry_manager_id'] == $post_data['mt_to_id'] || in_array($post_data['mt_to_id'], $authorised_users)) {
-			$mail_transfer_data = [
-				'mt_mail_id' => $post_data['mt_mail_id'],
-				'mt_from_id' => session()->user_id,
-				'mt_to_id' => $post_data['mt_to_id'],
+		$mail_transfer_data = [
+			'mt_mail_id' => $post_data['mt_mail_id'],
+			'mt_from_id' => session()->user_id,
+			'mt_to_id' => $post_data['mt_to_id'],
+		];
+		if ($this->mail_transfer->save($mail_transfer_data)) {
+			$mail_data = [
+				'm_id' => $post_data['mt_mail_id'],
+				'm_status' => 1
 			];
-			if ($this->mail_transfer->save($mail_transfer_data)) {
-				$mail_data = [
-					'm_id' => $post_data['mt_mail_id'],
-					'm_status' => 1
-				];
-				$this->mail->save($mail_data);
-				$response['success'] = true;
-				$response['message'] = 'The mail transfer request has been submitted to the recipient.';
-			} else {
-				$response['success'] = false;
-				$response['message'] = 'There was an error while submitting the transfer request to the recipient';
-			}
+			$this->mail->save($mail_data);
+			$response['success'] = true;
+			$response['message'] = 'The mail transfer request has been submitted to the recipient.';
 		} else {
 			$response['success'] = false;
-			$response['message'] = 'The recipient does not have access to this registry.';
+			$response['message'] = 'There was an error while submitting the transfer request to the recipient';
 		}
 		return $this->response->setJSON($response);
 	}
