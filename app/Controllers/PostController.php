@@ -10,6 +10,7 @@ use App\Models\Organization;
 use App\Models\Position;
 use App\Models\Post;
 use App\Models\PostAttachment;
+use App\Models\Token;
 use App\Models\UserModel;
 use App\Models\Verification;
 
@@ -30,6 +31,7 @@ class PostController extends BaseController
 		$this->pa = new PostAttachment();
 		$this->organization = new Organization();
 		$this->verification = new Verification();
+		$this->token = new Token();
 	}
 
 	public function upload_post_attachments(){
@@ -135,7 +137,11 @@ class PostController extends BaseController
 			'ver_code' => $ver_code,
 			'ver_status' => 0
 		])->first();
-		if ($verification) {
+		$token = $this->token->where([
+			'token_symbol' => $ver_code,
+			'token_user_id' => $this->session->user_id,
+		])->first();
+		if ($verification || $token) {
 			$verification_data = [
 				'ver_id' => $verification['ver_id'],
 				'ver_status' => 1,

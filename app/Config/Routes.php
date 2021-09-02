@@ -179,6 +179,8 @@ $routes->post('/email-settings', 'EmailController::processEmailSettings', ['filt
 
 
 $routes->get('/chat', 'ChatController::chat', ['filter'=>'auth']);
+$routes->post('/chat-messages', 'ChatController::getMessages', ['filter'=>'auth']);
+$routes->post('/send-message', 'ChatController::sendMessage', ['filter'=>'auth']);
 
 #Project routes
 $routes->get('/manage-projects','ProjectController::index',['filter'=>'auth', 'as'=>'manage-projects']);
@@ -201,10 +203,11 @@ $routes->get('/add-new-contractor', 'ContractorController::showNewContractorForm
 $routes->post('/add-new-contractor', 'ContractorController::addNewContractor',['filter'=>'auth']);
 
 
-#Contractor routes
+#Vendor routes
 $routes->get('/manage-vendors', 'ProcurementController::manageVendors',['filter'=>'auth', 'as'=>'manage-vendors']);
 $routes->get('/add-new-vendor', 'ProcurementController::showNewVendorForm',['filter'=>'auth', 'as'=>'add-new-vendor']);
 $routes->post('/add-new-vendor', 'ProcurementController::addNewVendor',['filter'=>'auth']);
+$routes->post('/update-vendor', 'ProcurementController::updateVendor',['filter'=>'auth', 'as'=>'update-vendor']);
     #Product routes
 $routes->get('/manage-products', 'ProcurementController::manageProducts',['filter'=>'auth', 'as'=>'manage-products']);
 $routes->get('/add-new-product', 'ProcurementController::showNewProductForm',['filter'=>'auth', 'as'=>'add-new-product']);
@@ -215,6 +218,8 @@ $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter
 $routes->match(['get'], 'check-signature-exists', 'EmployeeController::check_signature_exists', ['filter' => 'auth']);
 $routes->match(['post'], 'setup-signature', 'EmployeeController::setup_signature', ['filter' => 'auth']);
 $routes->match(['post'], 'verify-signature', 'EmployeeController::verify_signature', ['filter' => 'auth']);
+$routes->match(['post'], 'submit-token', 'EmployeeController::submit_token', ['filter' => 'auth']);
+$routes->match(['post'], 'confirm-token', 'EmployeeController::confirm_token', ['filter' => 'auth']);
 
 // central registry routes
 $routes->match(['get'], 'central-registry', 'CentralRegistryController::index', ['filter' => 'auth']);
