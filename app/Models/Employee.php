@@ -47,4 +47,7 @@ class Employee extends Model
     public function getAllEmployee(){
         return Employee::findAll();
     }
+    public function getAllEmployeeExceptAuthUser($user){
+        return Employee::where('employee_id != '.$user)->findAll();
+    }
 }

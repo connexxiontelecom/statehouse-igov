@@ -68,6 +68,36 @@ class ProcurementController extends BaseController
         }
     }
 
+    public function updateVendor(){
+        $inputs = $this->validate([
+            'vendor_name' => ['rules'=> 'required', 'label'=>'Vendor Name','errors' => [
+                'required' => 'Enter vendor name']],
+            'email' => ['rules'=> 'required', 'errors'=>['required'=>'Enter valid email address']],
+            'mobile_no' => ['rules'=> 'required', 'errors'=>['required'=>'Enter a functional mobile number']],
+            'vendor_key' => ['rules'=> 'required', 'errors'=>['required'=>'Vendor key is missing']],
+            'address' => ['rules'=>'required', 'errors'=>['Enter contractor office address']]
+        ]);
+        if (!$inputs) {
+            return view('pages/procurement/add-new-vendor', [
+                'validation' => $this->validator,
+                'firstTime'=>$this->session->firstTime,
+                'username'=>$this->session->username,
+            ]);
+        }else{
+            $data = [
+                'vendor_name'=>$this->request->getPost('vendor_name'),
+                'vendor_email'=>$this->request->getPost('email'),
+                'vendor_mobile_no'=>$this->request->getPost('mobile_no'),
+                'vendor_website'=>$this->request->getPost('website'),
+                'about_vendor'=>$this->request->getPost('about_vendor'),
+                'vendor_address'=>$this->request->getPost('address')
+            ];
+
+            $this->vendor->update($this->request->getPost('vendor_key') ,$data);
+            return redirect()->back()->with("success", "<strong>Success!</strong> Your changes were saved.");
+        }
+    }
+
     public function manageProducts()
     {
         $data = [
@@ -116,4 +146,5 @@ class ProcurementController extends BaseController
             return redirect()->back()->with("success", "<strong>Success!</strong> New product added");
         }
     }
+
 }
