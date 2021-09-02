@@ -40,4 +40,18 @@ class Chat extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+
+	public function getMessagesWithUserByUserId($from_user_id, $to_user_id){
+        $builder = $this->db->table('chats as c');
+        //$builder->join('employees as e','e.employee_id = c.added_by' );
+        $builder->where('c.chat_to_id = '.$to_user_id);
+        $builder->orWhere('c.chat_from_id = '.$from_user_id);
+        return $builder->get()->getResultObject();
+    }
+    public function getMessages(){
+	    return Chat::findAll();
+        /*$builder = $this->db->table('chats as c');
+        return $builder->get()->getResult();*/
+    }
 }

@@ -42,7 +42,8 @@ class Product extends Model
 
 
     public function getAllProducts(){
-        $builder = $this->db->table('products');
+        $builder = $this->db->table('products as p');
+        $builder->join('vendors as v','p.vendor_id = v.vendor_id');
         return $builder->get()->getResultArray();
     }
 

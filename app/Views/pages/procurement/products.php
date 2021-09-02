@@ -99,23 +99,20 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="quantity">Vendor</label>
-                                                        <input type="text" value="<?= $product['vendor_id'] ?>" readonly class="form-control">
+                                                        <input type="text" value="<?= $product['vendor_name'] ?>" readonly class="form-control">
 
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-12 d-flex justify-content-center">
+                                                    <div class="col-md-12 d-flex justify-content-center mt-3">
                                                         <div class="btn-group ">
-                                                            <a href="" class="btn btn-secondary btn-sm">Cancel</a>
-                                                            <button class="btn btn-primary btn-sm" type="submit" name="submit">Submit</button>
+                                                            <input type="hidden" name="product_key" value="<?= $product['product_id'] ?>">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button class="btn btn-primary btn-sm" type="submit" name="submit">Save changes</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
                                         </div>
                                     </div>
                                 </div>
