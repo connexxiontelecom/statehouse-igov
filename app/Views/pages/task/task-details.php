@@ -12,6 +12,7 @@
         <div class="page-title-right">
           <ol class="breadcrumb m-0">
             <li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">e-Office</a></li>
             <li class="breadcrumb-item"><a href="<?= site_url('/tasks')?>">Tasks</a></li>
             <li class="breadcrumb-item active">Task Details</li>
           </ol>
@@ -30,13 +31,13 @@
           </div>
           <div class="col-lg-8">
             <div class="text-lg-right mt-3 mt-lg-0">
-              <?php if ($task['task_executor'] == session()->user_id && $task['task_status'] == 0):?>
+              <?php if ($task['task_creator'] == session()->user_id && $task['task_status'] == 0):?>
                 <a href="javascript:void(0)" onclick="startTask(<?=$task['task_id']?>)" type="button" class="btn btn-success waves-effect waves-light mr-1"><i class="mdi mdi-clipboard-text-play-outline mr-1"></i> Start Task</a>
               <?php endif;?>
-              <?php if ($task['task_executor'] == session()->user_id && $task['task_status'] == 1):?>
+              <?php if ($task['task_creator'] == session()->user_id && $task['task_status'] == 1):?>
                 <button type="button" class="btn btn-primary waves-effect waves-light mr-1" data-toggle="modal" data-target="#standard-modal-3"><i class="mdi mdi-check-outline mr-1"></i> Complete Task</button>
               <?php endif;?>
-              <?php if ($task['task_executor'] == session()->user_id && ($task['task_status'] == 0 || $task['task_status'] == 1)):?>
+              <?php if ($task['task_creator'] == session()->user_id && ($task['task_status'] == 0 || $task['task_status'] == 1)):?>
                 <button type="button" class="btn btn-warning waves-effect waves-light mr-3" data-toggle="modal" data-target="#standard-modal-2"><i class="mdi mdi-close-thick mr-1"></i> Cancel Task</button>
               <?php endif;?>
               <a href="<?=site_url('view-task-log/').$task['task_id']?>" type="button" class="btn btn-success waves-effect waves-light mr-1">View Log</a>

@@ -8,7 +8,7 @@
 	<meta content="Coderthemes" name="author" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<!-- App favicon -->
-	<link rel="shortcut icon" href="/assetsa/images/favicon.ico">
+	<link rel="shortcut icon" href="/assetsa/images/logo-sm.png">
 	
 	<!-- App css -->
 	<link href="/assetsa/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />

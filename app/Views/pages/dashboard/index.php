@@ -4,17 +4,6 @@
 	<!-- start page title -->
 
   <div class="row mt-2">
-    <div class="col-xl-4">
-      <div class="jumbotron mt-3">
-        <div class="media">
-          <img src="/uploads/organization/<?=$organization['org_logo'] ?? '' ?>" height="100" class="align-self-center mr-3" alt="company logo">
-          <div class="media-body">
-            <h5 class="mt-0 mb-2"><?=$organization['org_name'] ?? '' ?></h5>
-            <p class="mb-0"><?=$organization['org_address'] ?? ''  ?></p>
-            <p class="mb-0"><?=$organization['org_c_phone'] ?? ''  ?></p>
-            <p class="mb-0"><?=$organization['org_c_email'] ?? ''  ?></p>
-            <p class="mb-0"><?=$organization['org_web']  ?? '' ?></p>
-          </div>
     <div class="col-xl-3">
       <div class="jumbotron jumbotron-fluid text-center mt-3">
         <div class="container">

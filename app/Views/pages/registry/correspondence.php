@@ -8,7 +8,8 @@
 				<div class="page-title-right">
 					<ol class="breadcrumb m-0">
 						<li class="breadcrumb-item"><a href="<?= site_url('/') ?>">iGov</a></li>
-						<li class="breadcrumb-item active">Correspondence</li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">e-Office</a></li>
+            <li class="breadcrumb-item active">Correspondence</li>
 					</ol>
 				</div>
 				<h4 class="page-title">Correspondence</h4>
