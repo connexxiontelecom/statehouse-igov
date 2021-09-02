@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Organization;
 use App\Models\Position;
 use App\Models\Employee;
+use App\Models\Token;
 use App\Models\UserModel;
 use App\Models\Verification;
 
@@ -22,6 +23,7 @@ class EmployeeController extends BaseController
 		$this->employee = new Employee();
 		$this->user = new UserModel();
 		$this->verification = new Verification();
+		$this->token = new Token();
 	}
 
 	public function my_account() {
@@ -149,6 +151,60 @@ class EmployeeController extends BaseController
 		} else {
 			$response['success'] = false;
 			$response['message'] = 'An error occurred while verifying your e-signature.';
+		}
+		return $this->response->setJSON($response);
+	}
+
+	public function submit_token() {
+		$post_data = $this->request->getPost();
+		$user = $this->user->find($this->session->user_id);
+		$employee = $this->employee->find($user['user_employee_id']);
+		$verified = $this->verification->where([
+			'ver_user_id' => $this->session->user_id,
+			'ver_type' => 'e-signature',
+			'ver_status' => 1
+		])->first();
+		if (!$employee['employee_signature'] || !$verified) {
+			$response['success'] = false;
+			$response['message'] = 'You must create and verify your E-Signature before creating your Security Token.';
+			return $this->response->setJSON($response);
+		}
+		$token_data = [
+			'token_symbol' => $post_data['token_symbol'],
+			'token_user_id' => $this->session->user_id,
+			'token_status' => 0
+		];
+		$token_exists = $this->token->where('token_user_id', $this->session->user_id)->first();
+		if ($token_exists) {
+			$token_data['token_id'] = $token_exists['token_id'];
+		}
+		if ($this->token->save($token_data)) {
+			$response['success'] = true;
+			$response['message'] = 'Please enter your password to confirm the security token.';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'an error occurred while saving your security token.';
+		}
+		return $this->response->setJSON($response);
+	}
+
+	public function confirm_token() {
+		$post_data = $this->request->getPost();
+		$password = $post_data['password'];
+		$user = $this->user->find($this->session->user_id);
+		$password_verified = password_verify($password, $user['user_password']);
+		if ($password_verified) {
+			$token = $this->token->where('token_user_id', $this->session->user_id)->first();
+			$token_data = [
+				'token_id' => $token['token_id'],
+				'token_status' => 1
+			];
+			$this->token->save($token_data);
+			$response['success'] = true;
+			$response['message'] = 'Your token was confirmed successfully';
+		} else {
+			$response['success'] = false;
+			$response['message'] = 'Your token could not be confirmed as you entered your password incorrectly';
 		}
 		return $this->response->setJSON($response);
 	}

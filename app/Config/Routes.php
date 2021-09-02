@@ -215,6 +215,8 @@ $routes->match(['get'], 'my-account', 'EmployeeController::my_account', ['filter
 $routes->match(['get'], 'check-signature-exists', 'EmployeeController::check_signature_exists', ['filter' => 'auth']);
 $routes->match(['post'], 'setup-signature', 'EmployeeController::setup_signature', ['filter' => 'auth']);
 $routes->match(['post'], 'verify-signature', 'EmployeeController::verify_signature', ['filter' => 'auth']);
+$routes->match(['post'], 'submit-token', 'EmployeeController::submit_token', ['filter' => 'auth']);
+$routes->match(['post'], 'confirm-token', 'EmployeeController::confirm_token', ['filter' => 'auth']);
 
 // central registry routes
 $routes->match(['get'], 'central-registry', 'CentralRegistryController::index', ['filter' => 'auth']);

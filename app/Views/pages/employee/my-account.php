@@ -114,6 +114,28 @@
           </div>
         <?php endif;?>
       </div>
+      <div class="card-box">
+        <h5 class="card-title font-16 mb-3">Security Token</h5>
+        <form id="manage-token-form" class="needs-validation" novalidate onsubmit="submitToken(); return false;">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="token-symbol">Token Symbol</label>
+                <input type="text" class="form-control" name="token_symbol" id="token-symbol" required/>
+                <div class="invalid-feedback">
+                  Please enter a token symbol.
+                </div>
+                <span class="help-block">
+                  <small>Please enter a security token you can use in place of the OTP verification code.</small>
+                </span>
+              </div>
+            </div>
+            <div class="col-12 mt-0">
+              <button class="btn btn-success waves-effect waves-light btn-sm">Submit Token</button>
+          </div>
+<!--          <input type="hidden" id="mail-id" value="--><?//=$mail['m_id']?><!--">-->
+        </form>
+      </div>
     </div>
   </div>
   <!-- Standard modal content -->
@@ -185,6 +207,41 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+  <div id="standard-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="confirm-security-token-form" class="needs-validation" novalidate>
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Confirm Security Token</h4>
+<!--            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="password">IGOV Password</label>
+                  <input type="password" class="form-control" name="password" id="password" required/>
+                  <div class="invalid-feedback">
+                    Please enter your password.
+                  </div>
+                  <span class="help-block">
+                    <small>Please enter your password to confirm it is you creating this token.</small>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer"
+            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            <button type="button" onclick="confirmSecurityToken()" class="btn btn-primary" id="save-btn">Submit</button>
+          </div>
+          <input type="hidden" id="post-id">
+          <input type="hidden" id="e-signature">
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
 </div>
 
 <?=$this->endSection();?>
