@@ -34,11 +34,11 @@
 							</a>
 							
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-								<a class="dropdown-item" href="#">New Renewal</a>
-								<a class="dropdown-item" href="#">New Maintenance Schedule</a>
+								<a class="dropdown-item" data-toggle="modal" data-target="#new-renewal">New Renewal</a>
+								<a class="dropdown-item" data-toggle="modal" data-target="#new-maintenance">New Maintenance Schedule</a>
 								<a class="dropdown-item" href="#">Assign Vehicle</a>
 								<a class="dropdown-item" href="#">Assignment Logs</a>
-								<a class="dropdown-item" href="#">Edit Vehicle</a>
+								<a class="dropdown-item" data-toggle="modal" data-target="#update-vehicle">Edit Vehicle</a>
 							
 							</div>
 						</div>
@@ -96,10 +96,10 @@
 						<!-- end row -->
 						
 						
-						
+						<hr>
 						<div class="row">
 							<div class="col-sm-6">
-								
+								<h4 class="mb-4">Maintenance Schedule </h4>
 								<div class="table-responsive mt-4">
 									<table class="table table-bordered table-centered mb-0">
 										<thead class="thead-light">
@@ -184,6 +184,7 @@
 								</div>
 							</div> <!-- end col -->
 							<div class="col-sm-6">
+								<h4 class="mb-4">Renewal Schedule </h4>
 								<div class="table-responsive mt-4">
 									<table class="table table-bordered table-centered mb-0">
 										<thead class="thead-light">
@@ -276,6 +277,69 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="new-renewal" tabindex="-1" role="dialog"
+	 aria-labelledby="scrollableModalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="scrollableModalTitle">New Renewal</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+			
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="new-maintenance" tabindex="-1" role="dialog"
+	 aria-labelledby="scrollableModalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="scrollableModalTitle">New Maintenance</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+			
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="update-vehicle" tabindex="-1" role="dialog"
+	 aria-labelledby="scrollableModalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="scrollableModalTitle">Update Vehicle</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+			
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
 
@@ -297,5 +361,73 @@
 
 <!-- Datatables init -->
 <script src="/assets/js/pages/datatables.init.js"></script>
+
+<script>
+	
+	$(function(){
+		$('#maintenance_id').change(function() {
+			let activity_date = $('#activity_date').val();
+			if (activity_date == null) {
+				alert('Please Enter Last Activity Date')
+			} else{
+				var selected = $(this).find('option:selected');
+				var maintenance_interval = selected.data('foo');
+				
+				activity_date = new Date(activity_date);
+				let next_date = activity_date.setDate(activity_date.getDate() + (maintenance_interval * 30));
+				next_date = new Date(next_date)
+				$('#next_activity_date').val(next_date.toLocaleDateString())
+			}
+			
+		});
+	});
+	
+	// function changeDate(){
+	// 	let maintenance_interval = document.getElementById('maintenance_id').data('foo');
+	//
+	//
+	//
+	// }
+	$(document).ready(function(){
+		
+		$('#assignVehicle').parsley().on('field:validated', function() {
+		
+		}).on('form:submit', function() {
+			var config = {
+				onUploadProgress: function(progressEvent) {
+					var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+				}
+			};
+			var form_data = new FormData();
+			form_data.append('driver',$('#assign_driver').val());
+			form_data.append('vehicle',$('#vehicleId').val());
+			form_data.append('reason', $('#reason').val());
+			form_data.append('due_date', $('#due_date').val());
+			form_data.append('assign_employee', $('#assign_employee').val());
+			$('#assignVehicleBtn').text('Processing...');
+			axios.post('/logistics/vehicle/assign',form_data, config)
+					.then(response=>{
+						$.notify(response.data.message, 'success');
+						$('#assignVehicleBtn').text('Done');
+						location.reload();
+						$('#assignVehicleModal').modal('hide');
+						setTimeout(function () {
+							$("#assignVehicleBtn").text("Save");
+							$("#simpletable").load(location.href + " #simpletable");
+						}, 2000);
+						
+					})
+					.catch(errors=>{
+						var errs = Object.values(errors.response.data.error);
+						$.notify(errs, "error");
+						$('#assignVehicleBtn').text('Error!');
+						setTimeout(function () {
+							$("#assignVehicleBtn").text("Save");
+						}, 2000);
+					});
+			return false;
+		});
+	});
+</script>
 <?=view('pages/fleet/_fleet-scripts.php')?>
 <?= $this->endSection(); ?>
