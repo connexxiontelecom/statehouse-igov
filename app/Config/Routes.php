@@ -268,7 +268,7 @@ $routes->match(['get'], 'active-vehicles', 'FleetController::active_vehicles', [
 $routes->match(['get', 'post'], 'new-vehicle', 'FleetController::new_vehicle', ['filter' => 'auth']);
 $routes->match(['get'], 'drivers', 'FleetController::drivers', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-driver', 'FleetController::new_driver', ['filter' => 'auth']);
-$routes->match(['get'], 'manage-vehicle/(:num)', 'FleetController::manage_vehicle/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'manage-vehicle/(:num)', 'FleetController::manage_vehicle/$1', ['filter' => 'auth']);
 
 
 /*

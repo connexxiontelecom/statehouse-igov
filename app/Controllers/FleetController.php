@@ -155,8 +155,36 @@ class FleetController extends BaseController
 		
 			if($request_type == 1):
 			
+				$ms_fv_id = $_POST['ms_fv_id'];
+				$ms_fmt_id = $_POST['ms_fmt_id'];
+				$date = date_create_from_format('d/m/Y', $_POST['ms_schedule_due_date']);
+				$date = date_format($date, 'Y-m-d');
+				$check = $this->ms->where('ms_fv_id', $ms_fv_id)->where('ms_fmt_id', $ms_fmt_id)->first();
+				
+				if(empty($check)):
+					
+					$ms_array = array(
+						'ms_fv_id' => $ms_fv_id,
+						'ms_fmt_id' => $ms_fmt_id,
+						'ms_schedule_date' => $_POST['ms_schedule_date'],
+						'ms_schedule_due_date' => $date,
+						'ms_employee_id' => $_POST['ms_employee_id'],
+					);
+					
+					
+					else:
+						$ms_array = array(
+							'ms_id'=> $check['ms_id'],
+							'ms_fv_id' => $ms_fv_id,
+							'ms_fmt_id' => $ms_fmt_id,
+							'ms_schedule_date' => $_POST['ms_schedule_date'],
+							'ms_schedule_due_date' => $date,
+							'ms_employee_id' => $_POST['ms_employee_id'],
+						);
+				
+					endif;
 			
-			
+			$this->ms->save($ms_array);
 			
 			endif;
 			

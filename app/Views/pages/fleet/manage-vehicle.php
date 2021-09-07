@@ -321,7 +321,7 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<input type="date" class="form-control" name="maintenance_schedule_date" id="activity_date" required>
+									<input type="date" class="form-control" name="ms_schedule_date" id="activity_date" required>
 								</div>
 							</div>
 						</div>
@@ -393,6 +393,7 @@
 					</div>
 					
 					<input type="hidden" name="ms_fv_id" value="<?=$vehicle['fv_id']; ?>">
+					<input type="hidden" name="type" value="1">
 					
 					
 					<div class="row g-3">
