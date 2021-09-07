@@ -40,8 +40,8 @@ class MaintenanceSchedule extends Migration
 				'created_at datetime default current_timestamp',
 			]
 		);
-		$this->forge->addKey('token_id', true);
-		$this->forge->createTable('tokens');
+		$this->forge->addKey('ms_id', true);
+		$this->forge->createTable('maintenance_schedules');
 	}
 
 	public function down()
