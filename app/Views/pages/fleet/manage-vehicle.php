@@ -310,12 +310,76 @@
 				</button>
 			</div>
 			<div class="modal-body">
+				<form method="post" action="">
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Last Activity Date</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<input type="date" class="form-control" name="maintenance_schedule_date" id="activity_date" required>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Select Maintenance Type</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<select class="form-control" name="maintenance_id" id="maintenance_id">
+										<option disabled selected> select  </option>
+										<?php foreach ($fmts as $fmt): ?>
+										<option value="<?=$fmt['fmt_id'] ?>" data-foo="<?=$fmt['fmt_interval']; ?>"> <?=$fmt['fmt_name']; ?> (Every <?=$fmt['fmt_interval']; ?> month(s) </option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Next Activity Date</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<input type="text" class="form-control" name="maintenance_schedule_due_date" id="next_activity_date" readonly required>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div class="row g-3">
+						<div class="col-lg-12 offset-lg-12">
+							<div class="form-group mt-2">
+							</div>
+						</div>
+					</div>
 			
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="submit" name="add" class="btn btn-primary" >Save</button>
+			
 			</div>
+			</form>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -342,31 +406,16 @@
 </div><!-- /.modal -->
 <?= $this->endSection(); ?>
 <?= $this->section('extra-scripts'); ?>
-
-<!-- third party js -->
-<script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-<script src="/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-<script src="/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-<script src="/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
-<script src="/assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
-<script src="/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-<script src="/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-<script src="/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
-<script src="/assets/libs/pdfmake/build/pdfmake.min.js"></script>
-<script src="/assets/libs/pdfmake/build/vfs_fonts.js"></script>
-<!-- third party js ends -->
-
-<!-- Datatables init -->
-<script src="/assets/js/pages/datatables.init.js"></script>
-
 <script>
+	$(document).ready(function() {
 	
+	})
 	$(function(){
 		$('#maintenance_id').change(function() {
+		
 			let activity_date = $('#activity_date').val();
+			
+		
 			if (activity_date == null) {
 				alert('Please Enter Last Activity Date')
 			} else{
@@ -376,58 +425,17 @@
 				activity_date = new Date(activity_date);
 				let next_date = activity_date.setDate(activity_date.getDate() + (maintenance_interval * 30));
 				next_date = new Date(next_date)
+				
+				
 				$('#next_activity_date').val(next_date.toLocaleDateString())
 			}
 			
 		});
 	});
 	
-	// function changeDate(){
-	// 	let maintenance_interval = document.getElementById('maintenance_id').data('foo');
-	//
-	//
-	//
-	// }
-	$(document).ready(function(){
-		
-		$('#assignVehicle').parsley().on('field:validated', function() {
-		
-		}).on('form:submit', function() {
-			var config = {
-				onUploadProgress: function(progressEvent) {
-					var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
-				}
-			};
-			var form_data = new FormData();
-			form_data.append('driver',$('#assign_driver').val());
-			form_data.append('vehicle',$('#vehicleId').val());
-			form_data.append('reason', $('#reason').val());
-			form_data.append('due_date', $('#due_date').val());
-			form_data.append('assign_employee', $('#assign_employee').val());
-			$('#assignVehicleBtn').text('Processing...');
-			axios.post('/logistics/vehicle/assign',form_data, config)
-					.then(response=>{
-						$.notify(response.data.message, 'success');
-						$('#assignVehicleBtn').text('Done');
-						location.reload();
-						$('#assignVehicleModal').modal('hide');
-						setTimeout(function () {
-							$("#assignVehicleBtn").text("Save");
-							$("#simpletable").load(location.href + " #simpletable");
-						}, 2000);
-						
-					})
-					.catch(errors=>{
-						var errs = Object.values(errors.response.data.error);
-						$.notify(errs, "error");
-						$('#assignVehicleBtn').text('Error!');
-						setTimeout(function () {
-							$("#assignVehicleBtn").text("Save");
-						}, 2000);
-					});
-			return false;
-		});
-	});
+
+
+
 </script>
-<?=view('pages/fleet/_fleet-scripts.php')?>
+
 <?= $this->endSection(); ?>

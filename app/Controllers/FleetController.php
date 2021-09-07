@@ -127,7 +127,8 @@ class FleetController extends BaseController
 			->first();
 		
 		if(!empty($vehicle)):
-		
+		$data['fmts'] = $this->fleet_maintenance_type->findAll();
+		$data['frs'] = $this->fleet_renewal_type->findAll();
 		return view('/pages/fleet/manage-vehicle', $data);
 		
 		else:
