@@ -10,6 +10,7 @@ use App\Models\FleetVehicle;
 use App\Models\FleetVehicleType;
 use App\Models\UserModel;
 use App\Models\Employee;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 class FleetController extends BaseController
 {
@@ -109,4 +110,31 @@ class FleetController extends BaseController
 		}
 		return $vehicles;
 	}
+	
+	public function renewal_schedule(){
+	
+	
+	
+	}
+	
+	public function manage_vehicle($fv_id){
+	
+		
+		$data['firstTime'] = $this->session->firstTime;
+		$data['username'] = $this->session->user_username;
+		$data['vehicle'] = $vehicle = $this->fleet_vehicle->where('fv_id', $fv_id)
+			->join('fleet_vehicle_types', 'fleet_vehicles.fv_fvt_id = fleet_vehicle_types.fvt_id')
+			->first();
+		
+		if(!empty($vehicle)):
+		
+		return view('/pages/fleet/manage-vehicle', $data);
+		
+		else:
+			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+			
+		endif;
+		
+	}
+	
 }

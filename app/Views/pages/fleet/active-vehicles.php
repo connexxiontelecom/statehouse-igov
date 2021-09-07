@@ -61,7 +61,7 @@
                     <td><?=$active_vehicle['fv_plate_no']?></td>
                     <td><?=$active_vehicle['vehicle_type']['fvt_name']?></td>
                     <td class="text-center">
-                      <a href="javascript:void(0)" data-toggle="tooltip" data-placement="left" title data-original-title="Manage Vehicle">
+                      <a href="<?=site_url('manage-vehicle')."/".$active_vehicle['fv_id']; ?>" data-toggle="tooltip" data-placement="left" title data-original-title="Manage Vehicle">
                         <i data-feather="edit-3" class="icon-dual"></i>.
                       </a>
                     </td>
