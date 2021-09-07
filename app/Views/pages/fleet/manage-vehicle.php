@@ -338,7 +338,7 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<select class="form-control" name="maintenance_id" id="maintenance_id">
+									<select class="form-control" name="ms_fmt_id" id="maintenance_id">
 										<option disabled selected> select  </option>
 										<?php foreach ($fmts as $fmt): ?>
 										<option value="<?=$fmt['fmt_id'] ?>" data-foo="<?=$fmt['fmt_interval']; ?>"> <?=$fmt['fmt_name']; ?> (Every <?=$fmt['fmt_interval']; ?> month(s) </option>
@@ -359,11 +359,40 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<input type="text" class="form-control" name="maintenance_schedule_due_date" id="next_activity_date" readonly required>
+									<input type="text" class="form-control" name="ms_schedule_due_date" id="next_activity_date" readonly required>
 								</div>
 							</div>
 						</div>
 					</div>
+					
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Select Employee</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<select class="form-control" id="positions" name="ms_employee_id" data-toggle="select2"  required style="min-height: 38px">
+										<?php foreach ($department_employees as $department => $employees): ?>
+											<?php if(!empty($employees)):?>
+												<optgroup label="<?=$department?>">
+													<?php foreach ($employees as $employee):?>
+														<option value="<?=$employee['employee_id']?>">
+															<?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+														</option>
+													<?php endforeach;?>
+												</optgroup>
+											<?php endif;?>
+										<?php endforeach; ?>
+									</select>	</div>
+							</div>
+						</div>
+					</div>
+					
+					<input type="hidden" name="ms_fv_id" value="<?=$vehicle['fv_id']; ?>">
 					
 					
 					<div class="row g-3">

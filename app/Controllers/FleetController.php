@@ -10,6 +10,10 @@ use App\Models\FleetVehicle;
 use App\Models\FleetVehicleType;
 use App\Models\UserModel;
 use App\Models\Employee;
+use App\Models\MaintenanceSchedules;
+use App\Models\Department;
+use App\Models\Position;
+
 use CodeIgniter\Exceptions\PageNotFoundException;
 
 class FleetController extends BaseController
@@ -26,6 +30,10 @@ class FleetController extends BaseController
 		$this->fleet_driver = new FleetDriver();
 		$this->user = new UserModel();
 		$this->employee = new Employee();
+		$this->ms = new MaintenanceSchedules();
+		$this->department = new Department();
+		$this->user = new UserModel();
+		$this->position = new Position();
 	}
 
 	public function active_vehicles() {
@@ -118,7 +126,9 @@ class FleetController extends BaseController
 	}
 	
 	public function manage_vehicle($fv_id){
-	
+		
+		if($this->request->getMethod() == 'get'):
+		
 		
 		$data['firstTime'] = $this->session->firstTime;
 		$data['username'] = $this->session->user_username;
@@ -129,13 +139,52 @@ class FleetController extends BaseController
 		if(!empty($vehicle)):
 		$data['fmts'] = $this->fleet_maintenance_type->findAll();
 		$data['frs'] = $this->fleet_renewal_type->findAll();
+		$data['department_employees'] = $this->_get_department_employees();
 		return view('/pages/fleet/manage-vehicle', $data);
 		
 		else:
 			throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
 			
 		endif;
+	endif;
 		
+		
+		if($this->request->getMethod() == 'post'):
+			
+			$request_type = $_POST['type'];
+		
+			if($request_type == 1):
+			
+			
+			
+			
+			endif;
+			
+			
+		
+		
+		endif;
+		
+	}
+	
+	private function _get_department_employees() {
+		$department_employees = [];
+		$departments = $this->department->findAll();
+		foreach ($departments as $department) {
+			$department_employees[$department['dpt_name']] = [];
+			$employees = $this->employee
+				->where('employee_department_id', $department['dpt_id'])
+				->findAll();
+			foreach ($employees as $employee) {
+				$user = $this->user->where('user_employee_id', $employee['employee_id'])->first();
+				if ($user['user_status'] == 1 && ($user['user_type'] == 3 || $user['user_type'] == 2)) {
+					$employee['user'] = $user;
+					$employee['position'] = $this->position->find($employee['employee_position_id']);
+					array_push($department_employees[$department['dpt_name']], $employee);
+				}
+			}
+		}
+		return $department_employees;
 	}
 	
 }
