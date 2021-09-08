@@ -7,6 +7,8 @@ use App\Models\Notification;
 use App\Models\Organization;
 use App\Models\Position;
 use App\Models\Post;
+use App\Models\Task;
+use App\Models\TaskExecutor;
 use App\Models\UserModel;
 use App\Models\Employee;
 
@@ -19,6 +21,8 @@ class Home extends BaseController
   private $post;
   private $position;
   private $department;
+  private $task;
+  private $task_executor;
 
 	public function __construct()
 	{
@@ -33,6 +37,8 @@ class Home extends BaseController
     $this->post = new Post();
     $this->position = new Position();
     $this->department = new Department();
+    $this->task = new Task();
+    $this->task_executor = new TaskExecutor();
   }
 
 	public function index()
@@ -50,6 +56,7 @@ class Home extends BaseController
 		$data['overview_stats']['unsigned_memos'] = $this->_count_unsigned_memos();
 		$data['overview_stats']['unsigned_circulars'] = $this->_count_unsigned_circulars();
 		$data['overview_stats']['unsigned_notices'] = $this->_count_unsigned_notices();
+		$data['recent_tasks'] = $this->_get_tasks();
 		return view('pages/dashboard/index', $data);
 	}
 
@@ -233,5 +240,30 @@ class Home extends BaseController
       $notices[$key]['signed_by'] = $signed_by;
     }
     return count($notices);
+  }
+
+  private function _get_tasks() {
+    $tasks = $this->task->findAll();
+    foreach ($tasks as $key => $task) {
+      $limit = 3;
+      if ($limit >= 1) {
+        $task_executors = $this->task_executor->where('te_task_id', $task['task_id'])->findAll();
+        $task_executor_ids = [];
+        foreach ($task_executors as $task_executor)
+          array_push($task_executor_ids, $task_executor['te_executor_id']);
+        if ($task['task_executor'] != $this->session->user_id &&
+          $task['task_creator'] != $this->session->user_id &&
+          !in_array($this->session->user_id, $task_executor_ids)) {
+          unset($tasks[$key]);
+        } else {
+          $creator = $this->user->find($task['task_creator']);
+          $executor = $this->user->find($task['task_executor']);
+          $tasks[$key]['creator'] = $creator;
+          $tasks[$key]['executor'] = $executor;
+        }
+        $limit--;
+      }
+    }
+    return $tasks;
   }
 }
