@@ -170,6 +170,7 @@ class FleetController extends BaseController
 			endforeach;
 			
 			$data['assignment_logs'] = $new_al;
+			//print_r($new_al);
 		return view('/pages/fleet/manage-vehicle', $data);
 		
 		else:

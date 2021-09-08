@@ -179,6 +179,46 @@
 							</div> <!-- end col -->
 						</div>
 						
+						<hr>
+						
+						<div class="row">
+							
+							<div class="col-sm-12">
+								<h4 class="mb-4">Assignment Logs </h4>
+								<div class="table-responsive mt-4">
+									<table class="table table-bordered table-centered mb-0">
+										<thead class="thead-light">
+										<tr>
+											<th>#</th>
+											<th>Driver</th>
+											<th>Employee</th>
+											<th> Assigned BY</th>
+											<th>Due Date</th>
+											<th>Purpose</th>
+											
+										</tr>
+										</thead>
+										<tbody>
+										<?php $sn=1; foreach($assignment_logs as $al): ?>
+											<tr>
+												<td> <?=$sn++; ?></td>
+												<td><?=$al['driver']['employee_f_name'].' '.$al['driver']['employee_l_name'] ?></td>
+												<td> <?=$al['employee_f_name']." ".$al['employee_l_name'] ?></td>
+												<td><?=$al['by']['employee_f_name'].' '.$al['by']['employee_l_name'] ?> </td>
+												<td><?=date('d F, Y', strtotime($al['al_due_date']))?></td>
+												<td>
+													<?=$al['al_purpose'];?>
+												</td>
+												
+											</tr>
+										<?php endforeach; ?>
+										
+										</tbody>
+									</table>
+								</div>
+							</div> <!-- end col -->
+						</div>
+						
 					
 					</div> <!-- end card-->
 				</div>
