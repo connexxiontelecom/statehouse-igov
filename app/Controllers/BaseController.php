@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Notification;
 use App\Models\Verification;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
