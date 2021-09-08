@@ -1,6 +1,6 @@
 <?= $this->extend('layouts/master'); ?>
 <?= $this->section('content'); ?>
-<div class="container-fluid">
+<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
 	<!-- start page title -->
 	<div class="row">
 		<div class="col-12">
@@ -104,6 +104,7 @@
 									<table class="table table-bordered table-centered mb-0">
 										<thead class="thead-light">
 										<tr>
+											<th>#</th>
 											<th>Maintenance Type</th>
 											<th>Last Activity Date</th>
 											<th>Next Activity Date</th>
@@ -112,8 +113,9 @@
 										</tr>
 										</thead>
 										<tbody>
-										<?php foreach($v_mts as $v_mt): ?>
+										<?php $sn=1; foreach($v_mts as $v_mt): ?>
 										<tr <?php if($v_mt['ms_schedule_due_date'] < date('Y-m-d')): ?> style="background-color: lightcoral" <?php endif; ?>>
+											<td> <?=$sn++; ?></td>
 											<td><?=$v_mt['fmt_name'] ?></td>
 											<td><?=date('d F, Y', strtotime($v_mt['ms_schedule_date']))?></td>
 											<td>
@@ -136,81 +138,30 @@
 									<table class="table table-bordered table-centered mb-0">
 										<thead class="thead-light">
 										<tr>
-											<th>Outlets</th>
-											<th>Price</th>
-											<th>Stock</th>
-											<th>Revenue</th>
+											<th>#</th>
+											<th>Renewal Type</th>
+											<th>Renew Date</th>
+											<th>Due Date</th>
+											<th>Responsible Employee</th>
+											<th>Status</th>
 										</tr>
 										</thead>
 										<tbody>
-										<tr>
-											<td>ASOS Ridley Outlet - NYC</td>
-											<td>$139.58</td>
-											<td>
-												<div class="row align-items-center no-gutters">
-													<div class="col-auto">
-														<span class="mr-2">27%</span>
-													</div>
-													<div class="col">
-														<div class="progress progress-sm">
-															<div class="progress-bar bg-danger" role="progressbar" style="width: 27%" aria-valuenow="27" aria-valuemin="0" aria-valuemax="100"></div>
-														</div>
-													</div>
-												</div>
-											</td>
-											<td>$1,89,547</td>
-										</tr>
-										<tr>
-											<td>Marco Outlet - SRT</td>
-											<td>$149.99</td>
-											<td>
-												<div class="row align-items-center no-gutters">
-													<div class="col-auto">
-														<span class="mr-2">71%</span>
-													</div>
-													<div class="col">
-														<div class="progress progress-sm">
-															<div class="progress-bar bg-success" role="progressbar" style="width: 71%" aria-valuenow="71" aria-valuemin="0" aria-valuemax="100"></div>
-														</div>
-													</div>
-												</div>
-											</td>
-											<td>$87,245</td>
-										</tr>
-										<tr>
-											<td>Chairtest Outlet - HY</td>
-											<td>$135.87</td>
-											<td>
-												<div class="row align-items-center no-gutters">
-													<div class="col-auto">
-														<span class="mr-2">82%</span>
-													</div>
-													<div class="col">
-														<div class="progress progress-sm">
-															<div class="progress-bar bg-success" role="progressbar" style="width: 82%" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"></div>
-														</div>
-													</div>
-												</div>
-											</td>
-											<td>$5,87,478</td>
-										</tr>
-										<tr>
-											<td>Nworld Group - India</td>
-											<td>$159.89</td>
-											<td>
-												<div class="row align-items-center no-gutters">
-													<div class="col-auto">
-														<span class="mr-2">42%</span>
-													</div>
-													<div class="col">
-														<div class="progress progress-sm">
-															<div class="progress-bar bg-warning" role="progressbar" style="width: 42%" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100"></div>
-														</div>
-													</div>
-												</div>
-											</td>
-											<td>$55,781</td>
-										</tr>
+										<?php $sn=1; foreach($v_rs as $v_r): ?>
+											<tr <?php if($v_r['rs_due_date'] < date('Y-m-d')): ?> style="background-color: lightcoral" <?php endif; ?>>
+												<td> <?=$sn++; ?></td>
+												<td><?=$v_r['frt_name'] ?></td>
+												<td><?=date('d F, Y', strtotime($v_r['rs_renew_date']))?></td>
+												<td>
+													<?=date('d F, Y', strtotime($v_r['rs_due_date']))?>
+												</td>
+												<td><?=$v_r['employee_f_name'].' '.$v_r['employee_l_name'] ?></td>
+												<td>
+													<?php if($v_r['rs_due_date'] > date('Y-m-d')): echo 'Not Due'; else: echo 'Due for Renewal'; endif; ?>
+												</td>
+											</tr>
+										<?php endforeach; ?>
+										
 										</tbody>
 									</table>
 								</div>
@@ -339,6 +290,7 @@
 				<button type="submit" name="add" class="btn btn-primary" >Save</button>
 			
 			</div>
+		</form>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

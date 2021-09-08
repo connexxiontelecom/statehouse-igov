@@ -201,6 +201,46 @@ class FleetController extends BaseController
 			
 			endif;
 			
+			if($request_type == 2):
+				
+				$rs_fv_id = $_POST['rs_fv_id'];
+				$rs_frt_id = $_POST['rs_frt_id'];
+				$rs_renew_date = $_POST['rs_renew_date'];
+				$rs_due_date = $_POST['rs_due_date'];
+				$rs_employee_id = $_POST['rs_employee_id'];
+				
+				$check = $this->rs->where('rs_fv_id', $rs_fv_id)->where('rs_frt_id', $rs_frt_id)->first();
+				
+				if(empty($check)):
+					
+					$ms_array = array(
+						'rs_fv_id' => $rs_fv_id,
+						'rs_frt_id' => $rs_frt_id,
+						'rs_renew_date' => $rs_renew_date,
+						'rs_due_date' => $rs_due_date,
+						'rs_employee_id' => $rs_employee_id,
+					);
+				
+				
+				else:
+					$ms_array = array(
+						'rs_id' => $check['rs_id'],
+						'rs_fv_id' => $rs_fv_id,
+						'rs_frt_id' => $rs_frt_id,
+						'rs_renew_date' => $rs_renew_date,
+						'rs_due_date' => $rs_due_date,
+						'rs_employee_id' => $rs_employee_id,
+					);
+				
+				endif;
+				
+				$this->rs->save($ms_array);
+				session()->setFlashData("action","action successful");
+				$url = base_url('manage-vehicle').'/'.$fv_id;
+				return redirect()->to($url);
+			
+			endif;
+			
 			
 		
 		
