@@ -186,7 +186,7 @@ class FleetController extends BaseController
 			
 			$this->ms->save($ms_array);
 				session()->setFlashData("action","action successful");
-				$url = base_url('manege-vehicle').'/'.$fv_id;
+				$url = base_url('manage-vehicle').'/'.$fv_id;
 				return redirect()->to($url);
 			
 			endif;
