@@ -9,15 +9,15 @@
       <h4 class="header-title mb-3">Memos</h4>
       <div class="widget-chart text-center" dir="ltr">
         <h5 class="text-muted mt-3">All memos</h5>
-        <h2><?=$overview_stats['memos']?></h2>
+        <h2 data-plugin="counterup"><?=$overview_stats['memos']?></h2>
         <div class="row mt-3">
           <div class="col-6">
             <p class="text-muted font-15 mb-1 text-truncate">My memos</p>
-            <h4><?=$overview_stats['my_memos']?></h4>
+            <h4 data-plugin="counterup"><?=$overview_stats['my_memos']?></h4>
           </div>
           <div class="col-6">
             <p class="text-muted font-15 mb-1 text-truncate">Signature requests</p>
-              <h4><?=$overview_stats['unsigned_memos']?></h4>
+            <h4 data-plugin="counterup"><?=$overview_stats['unsigned_memos']?></h4>
           </div>
         </div> <!-- end row -->
       </div>
@@ -32,15 +32,15 @@
       <h4 class="header-title mb-3">Circulars</h4>
       <div class="widget-chart text-center" dir="ltr">
         <h5 class="text-muted mt-3">All circulars</h5>
-        <h2>0</h2>
+        <h2 data-plugin="counterup"><?=$overview_stats['circulars']?></h2>
         <div class="row mt-3">
           <div class="col-6">
             <p class="text-muted font-15 mb-1 text-truncate">My circulars</p>
-            <h4>0</h4>
+            <h4 data-plugin="counterup"><?=$overview_stats['my_circulars']?></h4>
           </div>
           <div class="col-6">
             <p class="text-muted font-15 mb-1 text-truncate">Signature requests</p>
-            <h4>1</h4>
+            <h4 data-plugin="counterup"><?=$overview_stats['unsigned_circulars']?></h4>
           </div>
         </div> <!-- end row -->
       </div>
@@ -55,15 +55,15 @@
       <h4 class="header-title mb-3">Notices</h4>
       <div class="widget-chart text-center" dir="ltr">
         <h5 class="text-muted mt-3">All notices</h5>
-        <h2>10</h2>
+        <h2 data-plugin="counterup"><?=$overview_stats['notices']?></h2>
         <div class="row mt-3">
           <div class="col-6">
             <p class="text-muted font-15 mb-1 text-truncate">My notice</p>
-            <h4>3</h4>
+            <h4 data-plugin="counterup"><?=$overview_stats['my_notices']?></h4>
           </div>
           <div class="col-6">
             <p class="text-muted font-15 mb-1 text-truncate">Signature requests</p>
-            <h4>5</h4>
+            <h4 data-plugin="counterup"><?=$overview_stats['unsigned_circulars']?></h4>
           </div>
         </div> <!-- end row -->
 
