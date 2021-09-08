@@ -23,6 +23,26 @@
           <?php endif;?>
         </div>
       </div>
+      <div class="card-box" style="border-radius: 10px">
+        <small class="float-right">
+          <a class="text-success" href="<?=site_url('/reminders')?>">View more</a>
+        </small>
+        <h4 class="header-title mb-3">Upcoming <span class="text-muted">Reminders</span></h4>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Investments and crops project
+            <small>Today</small>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Investment Address At Central Bank
+            <small>13 Oct 2020</small>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Action Needed
+            <small>13 Oct 2020</small>
+          </li>
+        </ul>
+      </div> <!-- end card-box-->
     </div>
     <div class="col-xl-9">
       <div class="row">
@@ -45,23 +65,21 @@
             <a href="#overview" data-toggle="tab" aria-expanded="false" class="nav-link active">Overview</a>
           </li>
           <li class="nav-item">
-            <a href="#profile1" data-toggle="tab" aria-expanded="true" class="nav-link">Profile</a>
+            <a href="#notifications" data-toggle="tab" aria-expanded="true" class="nav-link">Activities</a>
           </li>
           <li class="nav-item">
-            <a href="#messages1" data-toggle="tab" aria-expanded="false" class="nav-link">Staff Directory</a>
+            <a href="#directory" data-toggle="tab" aria-expanded="false" class="nav-link">Directory</a>
           </li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane fade show active" id="overview">
             <?=view('pages/dashboard/_overview')?>
           </div>
-          <div class="tab-pane fade" id="profile1">
-            <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-            <p class="mb-0">Vakal text here dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+          <div class="tab-pane fade" id="notifications">
+	          <?=view('pages/dashboard/_notifications')?>
           </div>
-          <div class="tab-pane" id="messages1">
-            <p>Vakal text here dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-            <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+          <div class="tab-pane" id="directory">
+	          <?=view('pages/dashboard/_directory')?>
           </div>
         </div>
       </div>
