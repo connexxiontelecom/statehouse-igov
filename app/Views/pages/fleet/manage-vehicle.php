@@ -432,7 +432,7 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<select class="form-control" id="positions" name="a_employee_id" data-toggle="select2"  required style="min-height: 38px">
+									<select class="form-control" id="positions" name="al_employee_id" data-toggle="select2"  required style="min-height: 38px">
 										<?php foreach ($department_employees as $department => $employees): ?>
 											<?php if(!empty($employees)):?>
 												<optgroup label="<?=$department?>">
@@ -459,7 +459,7 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<select class="form-control" i name="a_employee_id" data-toggle="select2"  required style="min-height: 38px">
+									<select class="form-control"  name="al_fd_id" data-toggle="select2"  required style="min-height: 38px">
 										<?php foreach ($drivers as $driver): ?>
 											
 											<option value="<?=$driver['fd_id'] ?>"> <?=$driver['employee']['employee_f_name'].' '.$driver['employee']['employee_l_name']; ?></option>
@@ -481,7 +481,7 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<textarea class="form-control" name="a_purpose" required>
+									<textarea class="form-control" name="al_purpose" required>
 									
 									</textarea>
 								</div>
@@ -499,7 +499,7 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<input type="date" class="form-control" name="a_due_date"  readonly required>
+									<input type="date" class="form-control" name="al_due_date"  readonly required>
 								</div>
 							</div>
 						</div>
@@ -507,7 +507,7 @@
 					
 				
 					
-					<input type="hidden" name="a_fv_id" value="<?=$vehicle['fv_id']; ?>">
+					<input type="hidden" name="al_fv_id" value="<?=$vehicle['fv_id']; ?>">
 					<input type="hidden" name="type" value="3">
 					
 					
