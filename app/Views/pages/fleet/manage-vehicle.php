@@ -104,81 +104,28 @@
 									<table class="table table-bordered table-centered mb-0">
 										<thead class="thead-light">
 										<tr>
-											<th>Outlets</th>
-											<th>Price</th>
-											<th>Stock</th>
-											<th>Revenue</th>
+											<th>Maintenance Type</th>
+											<th>Last Activity Date</th>
+											<th>Next Activity Date</th>
+											<th>Responsible Employee</th>
+											<th>Status</th>
 										</tr>
 										</thead>
 										<tbody>
-										<tr>
-											<td>ASOS Ridley Outlet - NYC</td>
-											<td>$139.58</td>
+										<?php foreach($v_mts as $v_mt): ?>
+										<tr <?php if($v_mt['ms_schedule_due_date'] < date('Y-m-d')): ?> style="background-color: lightcoral" <?php endif; ?>>
+											<td><?=$v_mt['fmt_name'] ?></td>
+											<td><?=date('d F, Y', strtotime($v_mt['ms_schedule_date']))?></td>
 											<td>
-												<div class="row align-items-center no-gutters">
-													<div class="col-auto">
-														<span class="mr-2">27%</span>
-													</div>
-													<div class="col">
-														<div class="progress progress-sm">
-															<div class="progress-bar bg-danger" role="progressbar" style="width: 27%" aria-valuenow="27" aria-valuemin="0" aria-valuemax="100"></div>
-														</div>
-													</div>
-												</div>
+												<?=date('d F, Y', strtotime($v_mt['ms_schedule_due_date']))?>
 											</td>
-											<td>$1,89,547</td>
-										</tr>
-										<tr>
-											<td>Marco Outlet - SRT</td>
-											<td>$149.99</td>
+											<td><?=$v_mt['employee_f_name'].' '.$v_mt['employee_l_name'] ?></td>
 											<td>
-												<div class="row align-items-center no-gutters">
-													<div class="col-auto">
-														<span class="mr-2">71%</span>
-													</div>
-													<div class="col">
-														<div class="progress progress-sm">
-															<div class="progress-bar bg-success" role="progressbar" style="width: 71%" aria-valuenow="71" aria-valuemin="0" aria-valuemax="100"></div>
-														</div>
-													</div>
-												</div>
+												<?php if($v_mt['ms_schedule_due_date'] > date('Y-m-d')): echo 'Not Due'; else: echo 'Due for Maintenance'; endif; ?>
 											</td>
-											<td>$87,245</td>
 										</tr>
-										<tr>
-											<td>Chairtest Outlet - HY</td>
-											<td>$135.87</td>
-											<td>
-												<div class="row align-items-center no-gutters">
-													<div class="col-auto">
-														<span class="mr-2">82%</span>
-													</div>
-													<div class="col">
-														<div class="progress progress-sm">
-															<div class="progress-bar bg-success" role="progressbar" style="width: 82%" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"></div>
-														</div>
-													</div>
-												</div>
-											</td>
-											<td>$5,87,478</td>
-										</tr>
-										<tr>
-											<td>Nworld Group - India</td>
-											<td>$159.89</td>
-											<td>
-												<div class="row align-items-center no-gutters">
-													<div class="col-auto">
-														<span class="mr-2">42%</span>
-													</div>
-													<div class="col">
-														<div class="progress progress-sm">
-															<div class="progress-bar bg-warning" role="progressbar" style="width: 42%" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100"></div>
-														</div>
-													</div>
-												</div>
-											</td>
-											<td>$55,781</td>
-										</tr>
+										<?php endforeach; ?>
+										
 										</tbody>
 									</table>
 								</div>
@@ -289,11 +236,108 @@
 				</button>
 			</div>
 			<div class="modal-body">
+				
+				<form method="post" action="">
+					
+					
+					
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Renewal Type</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<select class="form-control" name="ms_fmt_id" id="maintenance_id">
+										<option disabled selected> select  </option>
+										<?php foreach ($fmts as $fmt): ?>
+											<option value="<?=$fmt['fmt_id'] ?>" data-foo="<?=$fmt['fmt_interval']; ?>"> <?=$fmt['fmt_name']; ?> (Every <?=$fmt['fmt_interval']; ?> month(s) </option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Select Employee</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<select class="form-control" id="positions" name="ms_employee_id" data-toggle="select2"  required style="min-height: 38px">
+										<?php foreach ($department_employees as $department => $employees): ?>
+											<?php if(!empty($employees)):?>
+												<optgroup label="<?=$department?>">
+													<?php foreach ($employees as $employee):?>
+														<option value="<?=$employee['employee_id']?>">
+															<?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+														</option>
+													<?php endforeach;?>
+												</optgroup>
+											<?php endif;?>
+										<?php endforeach; ?>
+									</select>	</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Renew Date</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<input type="date" class="form-control" name="ms_schedule_date" id="activity_date" required>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Next Activity Date</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<input type="text" class="form-control" name="ms_schedule_due_date" id="next_activity_date" readonly required>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					
+					<input type="hidden" name="ms_fv_id" value="<?=$vehicle['fv_id']; ?>">
+					<input type="hidden" name="type" value="1">
+					
+					
+					<div class="row g-3">
+						<div class="col-lg-12 offset-lg-12">
+							<div class="form-group mt-2">
+							</div>
+						</div>
+					</div>
 			
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="submit" name="add" class="btn btn-primary" >Save</button>
+			
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
