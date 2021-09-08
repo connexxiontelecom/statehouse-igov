@@ -13,6 +13,7 @@ use App\Models\Employee;
 use App\Models\MaintenanceSchedules;
 use App\Models\Department;
 use App\Models\Position;
+use App\Models\RenewalSchedule;
 
 use CodeIgniter\Exceptions\PageNotFoundException;
 
@@ -34,6 +35,7 @@ class FleetController extends BaseController
 		$this->department = new Department();
 		$this->user = new UserModel();
 		$this->position = new Position();
+		$this->rs = new RenewalSchedule();
 	}
 
 	public function active_vehicles() {
@@ -140,7 +142,10 @@ class FleetController extends BaseController
 		$data['fmts'] = $this->fleet_maintenance_type->findAll();
 		$data['frs'] = $this->fleet_renewal_type->findAll();
 		$data['department_employees'] = $this->_get_department_employees();
-		
+		$data['v_rs'] = $this->rs->where('rs_fv_id', $fv_id)
+								->join('fleet_renewal_types', 'renewal_schedules.rs_frt_id = fleet_renewal_types.frt_id')
+								->join('employees', 'renewal_schedules.rs_employee_id = employees.employee_id')
+								->findAll();
 		$data['v_mts'] = $this->ms->where('ms_fv_id', $fv_id)
 									->join('fleet_maintenance_types', 'maintenance_schedules.ms_fmt_id = fleet_maintenance_types.fmt_id')
 									->join('employees', 'maintenance_schedules.ms_employee_id = employees.employee_id')
