@@ -8,7 +8,6 @@
 		"php": "^7.3||^8.0",
 		"codeigniter4/framework": "^4",
       "ext-json": "*",
-		"ddeboer/imap": "^1.12",
 		"stefangabos/zebra_pagination": "^2.4",
 		"webklex/php-imap": "^2.5",
 		"swiftmailer/swiftmailer": "^6.0",

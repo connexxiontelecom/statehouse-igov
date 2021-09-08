@@ -9,15 +9,15 @@
       <h4 class="header-title mb-3">Memos</h4>
       <div class="widget-chart text-center" dir="ltr">
         <h5 class="text-muted mt-3">All memos</h5>
-        <h2>12</h2>
+        <h2><?=$overview_stats['memos']?></h2>
         <div class="row mt-3">
           <div class="col-6">
             <p class="text-muted font-15 mb-1 text-truncate">My memos</p>
-            <h4>2</h4>
+            <h4><?=$overview_stats['my_memos']?></h4>
           </div>
           <div class="col-6">
             <p class="text-muted font-15 mb-1 text-truncate">Signature requests</p>
-            <h4>0</h4>
+              <h4><?=$overview_stats['unsigned_memos']?></h4>
           </div>
         </div> <!-- end row -->
       </div>
