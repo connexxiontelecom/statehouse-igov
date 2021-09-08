@@ -1,33 +1,5 @@
 <p class="text-muted">Get up to date with all the latest activities on your iGov account.</p>
 
-<div class="row mt-3">
-  <div class="col-xl-12">
-    <div class="card-box" style="border-radius: 10px">
-      <small class="float-right">
-        <a class="text-success" href="<?=site_url('/reminders')?>">View more</a>
-      </small>
-      <h4 class="header-title mb-3">Upcoming <span class="text-muted">Reminders</span></h4>
-      <div class="list-group" style="max-height: 300px; overflow-y: auto">
-        <a href="javascript:void(0)" class="list-group-item list-group-item-action">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Investments and crops project</h5>
-            <small>Today</small>
-          </div>
-          <small><span class="badge badge-pill badge-outline-pink">project</span></small>
-        </a>
-        <a href="javascript:void(0)" class="list-group-item list-group-item-action">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Investment Address At Central Bank</h5>
-            <small class="text-muted">Friday, 13 October 2020</small>
-          </div>
-          <small class="text-muted"><span class="badge badge-pill badge-outline-blue">task</span></small>
-        </a>
-      </div>
-    </div> <!-- end card-box-->
-
-  </div>
-</div>
-
 <div class="row">
   <div class="col-xl-4">
     <div class="card-box" style="border-radius: 10px">
