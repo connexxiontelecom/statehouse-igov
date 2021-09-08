@@ -37,7 +37,7 @@
 								<a class="dropdown-item" data-toggle="modal" data-target="#new-renewal">New Renewal</a>
 								<a class="dropdown-item" data-toggle="modal" data-target="#new-maintenance">New Maintenance Schedule</a>
 								<a class="dropdown-item" data-toggle="modal" data-target="#assign-car">Assign Vehicle</a>
-								<a class="dropdown-item" href="#">Assignment Logs</a>
+							
 								<a class="dropdown-item" data-toggle="modal" data-target="#update-vehicle">Edit Vehicle</a>
 							
 							</div>
