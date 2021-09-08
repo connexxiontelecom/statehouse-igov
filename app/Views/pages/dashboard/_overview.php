@@ -85,36 +85,41 @@
           <tr>
             <th>Subject</th>
             <th>Primary Executor</th>
-            <th>Priority</th>
-            <th>Status</th>
+            <th class="text-center">Priority</th>
+            <th class="text-center">Status</th>
             <th class="text-center">Actions</th>
           </tr>
           </thead>
           <tbody>
+          <?php foreach ($recent_tasks as $task):?>
           <tr>
-            <td>
-              <h5 class="m-0 font-weight-normal">Investment Address At Central Bank	</h5>
-            </td>
-            <td>
-              Isaiah Timothy
-            </td>
-            <td>
-              <span class="badge badge-danger">High</span>
-            </td>
-
-            <td>
-              <span class="badge badge-soft-primary badge-pill">Pending</span>
-            </td>
-
+            <td><h5><?=$task['task_subject']?></h5></td>
+            <td><?=$task['executor']['user_name']?></td>
             <td class="text-center">
-              <a href="javascript:void(0)" data-toggle="tooltip" data-placement="left" title data-original-title="Task Details">
-                <i data-feather="list" class="icon-dual"></i>.
-              </a>
-              <a href="javascript:void(0)" data-toggle="tooltip" data-placement="left" title data-original-title="View Log">
-                <i data-feather="file-text" class="icon-dual"></i>.
-              </a>
+            <?php
+                if ($task['task_priority'] == 0) echo '<span class="badge badge-primary">Low</span>';
+                elseif ($task['task_priority'] == 1) echo '<span class="badge badge-warning">Medium</span>';
+                elseif ($task['task_priority'] == 2) echo '<span class="badge badge-danger">High</span>';
+            ?>
             </td>
+            <td class="text-center">
+                <?php
+                if ($task['task_status'] == 0) echo '<span class="badge badge-soft-primary badge-pill">Pending</span>';
+                elseif ($task['task_status'] == 1) echo '<span class="badge badge-soft-secondary badge-pill">Ongoing</span>';
+                elseif ($task['task_status'] == 2) echo '<span class="badge badge-soft-success badge-pill">Completed</span>';
+                elseif ($task['task_status'] == 3) echo '<span class="badge badge-soft-danger badge-pill">Cancelled</span>';
+                ?>
+            </td>
+              <td class="text-center">
+                <a href="<?=site_url('task-details/').$task['task_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="Task Details">
+                  <i data-feather="list" class="icon-dual"></i>.
+                </a>
+                <a href="<?=site_url('view-task-log/').$task['task_id']?>" data-toggle="tooltip" data-placement="left" title data-original-title="View Log">
+                  <i data-feather="file-text" class="icon-dual"></i>.
+                </a>
+              </td>
           </tr>
+          <?php endforeach;?>
           </tbody>
         </table>
       </div> <!-- end .table-responsive-->
