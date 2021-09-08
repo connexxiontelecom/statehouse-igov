@@ -150,6 +150,7 @@ class FleetController extends BaseController
 									->join('fleet_maintenance_types', 'maintenance_schedules.ms_fmt_id = fleet_maintenance_types.fmt_id')
 									->join('employees', 'maintenance_schedules.ms_employee_id = employees.employee_id')
 									->findAll();
+		$data['drivers'] = $this->_get_drivers();
 		return view('/pages/fleet/manage-vehicle', $data);
 		
 		else:

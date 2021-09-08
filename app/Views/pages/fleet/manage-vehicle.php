@@ -36,7 +36,7 @@
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 								<a class="dropdown-item" data-toggle="modal" data-target="#new-renewal">New Renewal</a>
 								<a class="dropdown-item" data-toggle="modal" data-target="#new-maintenance">New Maintenance Schedule</a>
-								<a class="dropdown-item" href="#">Assign Vehicle</a>
+								<a class="dropdown-item" data-toggle="modal" data-target="#assign-car">Assign Vehicle</a>
 								<a class="dropdown-item" href="#">Assignment Logs</a>
 								<a class="dropdown-item" data-toggle="modal" data-target="#update-vehicle">Edit Vehicle</a>
 							
@@ -390,6 +390,125 @@
 					
 					<input type="hidden" name="ms_fv_id" value="<?=$vehicle['fv_id']; ?>">
 					<input type="hidden" name="type" value="1">
+					
+					
+					<div class="row g-3">
+						<div class="col-lg-12 offset-lg-12">
+							<div class="form-group mt-2">
+							</div>
+						</div>
+					</div>
+			
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="submit" name="add" class="btn btn-primary" >Save</button>
+			
+			</div>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="assign-car" tabindex="-1" role="dialog"
+	 aria-labelledby="scrollableModalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="scrollableModalTitle">New Assign</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form method="post" action="">
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Select Employee</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<select class="form-control" id="positions" name="a_employee_id" data-toggle="select2"  required style="min-height: 38px">
+										<?php foreach ($department_employees as $department => $employees): ?>
+											<?php if(!empty($employees)):?>
+												<optgroup label="<?=$department?>">
+													<?php foreach ($employees as $employee):?>
+														<option value="<?=$employee['employee_id']?>">
+															<?=$employee['position']['pos_name'].' ('.$employee['user']['user_name'].')'?>
+														</option>
+													<?php endforeach;?>
+												</optgroup>
+											<?php endif;?>
+										<?php endforeach; ?>
+									</select>	</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Select Driver</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<select class="form-control" i name="a_employee_id" data-toggle="select2"  required style="min-height: 38px">
+										<?php foreach ($drivers as $driver): ?>
+											
+											<option value="<?=$driver['fd_id'] ?>"> <?=$driver['employee']['employee_f_name'].' '.$driver['employee']['employee_l_name']; ?></option>
+											
+										<?php endforeach; ?>
+									</select>	</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Purpose</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<textarea class="form-control" name="a_purpose" required>
+									
+									</textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row g-3 align-center">
+						<div class="col-lg-12">
+							<div class="form-group">
+								
+								<span class="form-note">Due Date</span>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<div class="form-control-wrap">
+									<input type="date" class="form-control" name="a_due_date"  readonly required>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				
+					
+					<input type="hidden" name="a_fv_id" value="<?=$vehicle['fv_id']; ?>">
+					<input type="hidden" name="type" value="3">
 					
 					
 					<div class="row g-3">
