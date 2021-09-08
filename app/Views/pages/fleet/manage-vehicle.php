@@ -78,6 +78,17 @@
 									<h4 class="mb-4">Color No :  <b><?=$vehicle['fv_color']; ?></b></h4>
 									<hr>
 									<h4 class="mb-4">Year :  <b><?=$vehicle['fv_year']; ?></b></h4>
+									
+									<hr>
+									<?php
+									$count_logs = count($assignment_logs) - 1;
+									$driver_name = $assignment_logs[$count_logs]['driver']['employee_f_name'].' '.$assignment_logs[$count_logs]['driver']['employee_l_name'];
+									$assigned_by = $assignment_logs[$count_logs]['by']['employee_f_name']. ' '.$assignment_logs[$count_logs]['by']['employee_l_name']
+									
+									?>
+									<h4 class="mb-4">Assigned To:  <b><?=$driver_name; ?></b></h4>
+									<hr>
+									<h4 class="mb-4">Assigned By:  <b><?=$assigned_by; ?></b></h4>
 									<hr>
 									<h4 class="mb-4">Status :  <b><?php if($vehicle['fv_status'] == 1) { echo 'Active'; }else{
 										echo 'Inactive';

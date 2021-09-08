@@ -153,11 +153,23 @@ class FleetController extends BaseController
 									->join('employees', 'maintenance_schedules.ms_employee_id = employees.employee_id')
 									->findAll();
 		$data['drivers'] = $this->_get_drivers();
-		$data['assignment_logs'] = $this->al->where('al_fv_id', $fv_id)
+		 $als = $this->al->where('al_fv_id', $fv_id)
 											->join('employees', 'assignment_logs.al_employee_id = employees.employee_id')
-											->join('fleet_drivers', 'assignment_logs.al_fd_id = fleet_drivers.fd_id')
-											->join('users', 'fleet_drivers.fd_user_id = users.user_id')
 											->findAll();
+		
+		 $i = 0;
+		$new_al = array();
+		foreach ($als as $al):
+			$al['by'] = $this->employee->where('employee_id', $al['al_by'])->first();
+			$al['driver'] = $this->fleet_driver->where('fd_id', $al['al_fd_id'])
+												->join('employees', 'fleet_drivers.fd_user_id = employees.employee_id')
+												->first();
+			$new_al[$i] = $al;
+			$i++;
+			
+			endforeach;
+			
+			$data['assignment_logs'] = $new_al;
 		return view('/pages/fleet/manage-vehicle', $data);
 		
 		else:
