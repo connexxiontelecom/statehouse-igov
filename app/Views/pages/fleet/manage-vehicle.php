@@ -251,10 +251,10 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<select class="form-control" name="ms_fmt_id" id="maintenance_id">
+									<select class="form-control" name="rs_frt_id" >
 										<option disabled selected> select  </option>
-										<?php foreach ($fmts as $fmt): ?>
-											<option value="<?=$fmt['fmt_id'] ?>" data-foo="<?=$fmt['fmt_interval']; ?>"> <?=$fmt['fmt_name']; ?> (Every <?=$fmt['fmt_interval']; ?> month(s) </option>
+										<?php foreach ($frs as $fr): ?>
+											<option value="<?=$fr['frt_id'] ?>" > <?=$fr['frt_name']; ?>  </option>
 										<?php endforeach; ?>
 									</select>
 								</div>
@@ -272,7 +272,7 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<select class="form-control" id="positions" name="ms_employee_id" data-toggle="select2"  required style="min-height: 38px">
+									<select class="form-control"  name="rs_employee_id" data-toggle="select2"  required style="min-height: 38px">
 										<?php foreach ($department_employees as $department => $employees): ?>
 											<?php if(!empty($employees)):?>
 												<optgroup label="<?=$department?>">
@@ -299,7 +299,7 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<input type="date" class="form-control" name="ms_schedule_date" id="activity_date" required>
+									<input type="date" class="form-control" name="rs_renew_date"  required>
 								</div>
 							</div>
 						</div>
@@ -308,13 +308,13 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								
-								<span class="form-note">Next Activity Date</span>
+								<span class="form-note">Due Date</span>
 							</div>
 						</div>
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<input type="text" class="form-control" name="ms_schedule_due_date" id="next_activity_date" readonly required>
+									<input type="date" class="form-control" name="rs_due_date"   required>
 								</div>
 							</div>
 						</div>
@@ -322,8 +322,8 @@
 					
 					
 					
-					<input type="hidden" name="ms_fv_id" value="<?=$vehicle['fv_id']; ?>">
-					<input type="hidden" name="type" value="1">
+					<input type="hidden" name="rs_fv_id" value="<?=$vehicle['fv_id']; ?>">
+					<input type="hidden" name="type" value="2">
 					
 					
 					<div class="row g-3">
