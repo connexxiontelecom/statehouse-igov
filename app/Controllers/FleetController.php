@@ -14,6 +14,7 @@ use App\Models\MaintenanceSchedules;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\RenewalSchedule;
+use App\Models\AssignmentLogs;
 
 use CodeIgniter\Exceptions\PageNotFoundException;
 
@@ -36,6 +37,7 @@ class FleetController extends BaseController
 		$this->user = new UserModel();
 		$this->position = new Position();
 		$this->rs = new RenewalSchedule();
+		$this->al = new AssignmentLogs();
 	}
 
 	public function active_vehicles() {
@@ -151,6 +153,11 @@ class FleetController extends BaseController
 									->join('employees', 'maintenance_schedules.ms_employee_id = employees.employee_id')
 									->findAll();
 		$data['drivers'] = $this->_get_drivers();
+		$data['assignment_logs'] = $this->al->where('al_fv_id', $fv_id)
+											->join('employees', 'assignment_logs.al_employee_id = employees.employee_id')
+											->join('fleet_drivers', 'assignment_logs.al_fd_id = fleet_drivers.fd_id')
+											->join('users', 'fleet_drivers.fd_user_id = users.user_id')
+											->findAll();
 		return view('/pages/fleet/manage-vehicle', $data);
 		
 		else:
@@ -236,6 +243,23 @@ class FleetController extends BaseController
 				endif;
 				
 				$this->rs->save($ms_array);
+				session()->setFlashData("action","action successful");
+				$url = base_url('manage-vehicle').'/'.$fv_id;
+				return redirect()->to($url);
+			
+			endif;
+			
+			if($request_type == 3):
+				$al_array = array(
+					'al_fd_id' => $_POST['al_fd_id'],
+					'al_employee_id' => $_POST['al_employee_id'],
+					'al_fv_id' => $_POST['al_fv_id'],
+					'al_due_date' => $_POST['al_due_date'],
+					'al_purpose' => $_POST['al_purpose'],
+					'al_by' => $this->session->user_employee_id,
+				);
+			
+				$this->al->save($al_array);
 				session()->setFlashData("action","action successful");
 				$url = base_url('manage-vehicle').'/'.$fv_id;
 				return redirect()->to($url);

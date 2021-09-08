@@ -499,7 +499,7 @@
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="form-control-wrap">
-									<input type="date" class="form-control" name="al_due_date"  readonly required>
+									<input type="date" class="form-control" name="al_due_date"  required>
 								</div>
 							</div>
 						</div>

@@ -37,6 +37,10 @@ class AssignmentLogsMi extends Migration
 					'type' => 'DATE',
 				],
 				
+				'al_by' =>[
+					'type' => 'INT',
+				],
+				
 				'created_at datetime default current_timestamp',
 			]
 		);
