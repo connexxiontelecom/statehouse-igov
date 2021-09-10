@@ -24,12 +24,12 @@
 	<!-- end page title -->
 	
 	
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="card">
-				<div class="card-body">
+	<div class="row" style="background-color: black">
+		<div class="col-sm-12"  style="background-color: black">
+			<div class="card"  style="background-color: black">
+				<div class="card-body"  style="background-color: black">
 					
-					<div class="row">
+					<div class="row"  style="background-color: black">
 						<div class="col-xl-12">
 							
 							
