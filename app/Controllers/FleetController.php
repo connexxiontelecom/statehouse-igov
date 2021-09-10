@@ -308,10 +308,25 @@ class FleetController extends BaseController
 			
 			$data['firstTime'] = $this->session->firstTime;
 			$data['username'] = $this->session->user_username;
-			$data['v_rs'] = $this->rs->join('fleet_renewal_types', 'renewal_schedules.rs_frt_id = fleet_renewal_types.frt_id')
+			$v_rs = $this->rs->join('fleet_renewal_types', 'renewal_schedules.rs_frt_id = fleet_renewal_types.frt_id')
 				->join('employees', 'renewal_schedules.rs_employee_id = employees.employee_id')
 				->join('fleet_vehicles', 'renewal_schedules.rs_fv_id = fleet_vehicles.fv_id')
 				->findAll();
+			
+			$new_rs = array();
+			$i = 0;
+			foreach ($v_rs as $v_r):
+				$new_rs[$i] = array(
+					
+					'title' => $v_r['frt_name']." (".$v_r['fv_brand'].'-'.$v_r['fv_maker'].'-'.$v_r['fv_year'].'-'.$v_r['fv_color'].")",
+					'start' => $v_r['rs_renew_date'],
+					'end'=> $v_r['rs_renew_date'],
+					'className'=> "bg-primary"
+				);
+				$i++;
+			endforeach;
+			
+			$data['data'] =  json_encode($new_rs);
 			return view('/pages/fleet/renewal-schedule-calendar', $data);
 		endif;
 		
@@ -359,6 +374,76 @@ class FleetController extends BaseController
 				->join('employees', 'maintenance_schedules.ms_employee_id = employees.employee_id')
 				->findAll();
 			return view('/pages/fleet/maintenance-schedules', $data);
+		endif;
+		
+	}
+	
+	public function maintenance_schedule_calendar(){
+		if($this->request->getMethod() == 'get'):
+			
+			
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$v_mts = $this->ms->join('fleet_maintenance_types', 'maintenance_schedules.ms_fmt_id = fleet_maintenance_types.fmt_id')
+				->join('fleet_vehicles', 'maintenance_schedules.ms_fv_id = fleet_vehicles.fv_id')
+				->join('employees', 'maintenance_schedules.ms_employee_id = employees.employee_id')
+				->findAll();
+			
+			$v_rs = $this->rs->join('fleet_renewal_types', 'renewal_schedules.rs_frt_id = fleet_renewal_types.frt_id')
+				->join('employees', 'renewal_schedules.rs_employee_id = employees.employee_id')
+				->join('fleet_vehicles', 'renewal_schedules.rs_fv_id = fleet_vehicles.fv_id')
+				->findAll();
+			
+			$new_vmts = array();
+			$i = 0;
+			foreach ($v_mts as $v_mt):
+				$new_vmts[$i] = array(
+					
+					'title' => $v_mt['fmt_name']." (".$v_mt['fv_brand'].'-'.$v_mt['fv_maker'].'-'.$v_mt['fv_year'].'-'.$v_mt['fv_color'].")",
+					'start' => $v_mt['ms_schedule_due_date'],
+					'end'=> $v_mt['ms_schedule_due_date'],
+					'className'=> "bg-primary"
+				);
+				$i++;
+			endforeach;
+			$data['data'] = json_encode($new_vmts);
+			return view('/pages/fleet/maintenance-schedule-calendar', $data);
+		endif;
+		
+	}
+	
+	public function maintenance_schedule_data(){
+		if($this->request->getMethod() == 'get'):
+			
+			
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			
+			$v_mts = $this->ms->join('fleet_maintenance_types', 'maintenance_schedules.ms_fmt_id = fleet_maintenance_types.fmt_id')
+				->join('fleet_vehicles', 'maintenance_schedules.ms_fv_id = fleet_vehicles.fv_id')
+				->join('employees', 'maintenance_schedules.ms_employee_id = employees.employee_id')
+				->findAll();
+			
+			$v_rs = $this->rs->join('fleet_renewal_types', 'renewal_schedules.rs_frt_id = fleet_renewal_types.frt_id')
+				->join('employees', 'renewal_schedules.rs_employee_id = employees.employee_id')
+				->join('fleet_vehicles', 'renewal_schedules.rs_fv_id = fleet_vehicles.fv_id')
+				->findAll();
+			
+			$new_vmts = array();
+			$i = 0;
+			foreach ($v_mts as $v_mt):
+				$new_vmts[$i] = array(
+					
+					'title' => $v_mt['fmt_name']." (".$v_mt['fv_brand'].'-'.$v_mt['fv_maker'].'-'.$v_mt['fv_year'].'-'.$v_mt['fv_color'].")",
+					'start' => $v_mt['ms_schedule_due_date'],
+					'end'=> $v_mt['ms_schedule_due_date'],
+					'className'=> "bg-primary"
+				);
+				$i++;
+			endforeach;
+			
+			return json_encode($new_vmts);
+			//return view('/pages/fleet/renewal-schedule-calendar', $data);
 		endif;
 		
 	}
