@@ -48,6 +48,7 @@
 										<th>Due Date</th>
 										<th>Responsible Employee</th>
 										<th>Status</th>
+										<th> Action </th>
 									</tr>
 									</thead>
 									<tbody>
@@ -63,6 +64,11 @@
 											<td><?=$v_r['employee_f_name'].' '.$v_r['employee_l_name'] ?></td>
 											<td>
 												<?php if($v_r['rs_due_date'] > date('Y-m-d')): echo 'Not Due'; else: echo 'Due for Renewal'; endif; ?>
+											</td>
+											<td>
+												<a href="<?=site_url('manage-vehicle')."/".$v_r['fv_id']; ?>" data-toggle="tooltip" data-placement="left" title data-original-title="Manage Vehicle">
+													<i data-feather="edit-3" class="icon-dual"></i>.
+												</a>
 											</td>
 										</tr>
 									<?php endforeach; ?>
