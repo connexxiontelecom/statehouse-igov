@@ -317,6 +317,36 @@ class FleetController extends BaseController
 		
 	}
 	
+	public function renewal_schedule_data(){
+		if($this->request->getMethod() == 'get'):
+			
+			
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+			$v_rs = $this->rs->join('fleet_renewal_types', 'renewal_schedules.rs_frt_id = fleet_renewal_types.frt_id')
+				->join('employees', 'renewal_schedules.rs_employee_id = employees.employee_id')
+				->join('fleet_vehicles', 'renewal_schedules.rs_fv_id = fleet_vehicles.fv_id')
+				->findAll();
+			
+			$new_rs = array();
+			$i = 0;
+			foreach ($v_rs as $v_r):
+				$new_rs[$i] = array(
+					
+					'title' => $v_r['frt_name']." (".$v_r['fv_brand'].'-'.$v_r['fv_maker'].'-'.$v_r['fv_year'].'-'.$v_r['fv_color'].")",
+					'start' => $v_r['rs_renew_date'],
+					'end'=> $v_r['rs_renew_date'],
+					'className'=> "bg-primary"
+				);
+				$i++;
+			endforeach;
+			
+			return json_encode($new_rs);
+			//return view('/pages/fleet/renewal-schedule-calendar', $data);
+		endif;
+		
+	}
+	
 	private function _get_department_employees() {
 		$department_employees = [];
 		$departments = $this->department->findAll();
