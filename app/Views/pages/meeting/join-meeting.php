@@ -24,12 +24,12 @@
 	<!-- end page title -->
 	
 	
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="card">
-				<div class="card-body">
+	<div class="row" style="background-color: black">
+		<div class="col-sm-12"  style="background-color: black">
+			<div class="card"  style="background-color: black">
+				<div class="card-body"  style="background-color: black">
 					
-					<div class="row">
+					<div class="row"  style="background-color: black">
 						<div class="col-xl-12">
 							
 							
@@ -76,8 +76,8 @@
 								</form>
 								<input type="hidden" id="user-name" value="<?=$user_name; ?>">
 								
-								<div class="card video-group">
-									<div class="card-body">
+								<div class="card video-group" style="background-color:black">
+									<div class="card-body" style="margin-left: 3%;">
 										<div class="row">
 											<div class="col-sm-4">
 												<div class="col" >

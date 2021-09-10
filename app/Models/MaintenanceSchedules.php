@@ -14,7 +14,7 @@ class MaintenanceSchedules extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['ms_fmt_id', 'ms_fv_id', 'ms_employee_id', 'ms_schedule_date', 'ms_schedule_due_date'];
+	protected $allowedFields        = ['ms_id', 'ms_fmt_id', 'ms_fv_id', 'ms_employee_id', 'ms_schedule_date', 'ms_schedule_due_date'];
 
 	// Dates
 	protected $useTimestamps        = false;

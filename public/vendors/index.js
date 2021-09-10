@@ -112,7 +112,7 @@ async function subscribe(user, mediaType) {
         const player = $(`
       <div id="player-wrapper-${uid}">
        
-         <p class="player-name">${uid}</p>
+         <p class="player-name">.</p>
         <div  id="player-${uid}" class="player"></div>
       </div>
     `);
