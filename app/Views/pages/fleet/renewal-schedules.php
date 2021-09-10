@@ -28,7 +28,9 @@
 						</p>
 					</div>
 					<div class="col-lg-4">
-					
+						<div class="text-lg-right mt-3 mt-lg-0">
+							<a href="<?=site_url('/renewal-schedule-calendar')?>" type="button" class="btn btn-success waves-effect waves-light"><i class="mdi mdi-plus-circle mr-1"></i> Calendar View</a>
+						</div>
 					</div><!-- end col-->
 				</div> <!-- end row -->
 				<div class="row">
