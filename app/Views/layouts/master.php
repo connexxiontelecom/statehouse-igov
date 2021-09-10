@@ -252,7 +252,7 @@
                 <li><a href="<?=site_url('active-vehicles')?>">Active Vehicles</a></li>
                 <li><a href="<?=site_url('drivers')?>">Drivers</a></li>
                 <li><a href="<?=site_url('renewal-schedules'); ?>">Renewal Schedule</a></li>
-                <li><a href="#">Maintenance Schedule</a></li>
+                <li><a href="<?=site_url('maintenance-schedules'); ?>">Maintenance Schedule</a></li>
                 <li><a href="#">Disposed Vehicles</a></li>
               </ul>
             </div>

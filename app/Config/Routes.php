@@ -272,7 +272,9 @@ $routes->match(['get', 'post'], 'manage-vehicle/(:num)', 'FleetController::manag
 $routes->match(['get', 'post'], 'renewal-schedules', 'FleetController::renewal_schedules', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'renewal-schedule-calendar', 'FleetController::renewal_schedule_calendar', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'renewal-schedule-data', 'FleetController::renewal_schedule_data', ['filter' => 'auth']);
-
+$routes->match(['get', 'post'], 'maintenance-schedules', 'FleetController::maintenance_schedules', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'maintenance-schedule-calendar', 'FleetController::maintenance_schedule_calendar', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'maintenance-schedule-data', 'FleetController::maintenance_schedule_data', ['filter' => 'auth']);
 
 /*
  * --------------------------------------------------------------------

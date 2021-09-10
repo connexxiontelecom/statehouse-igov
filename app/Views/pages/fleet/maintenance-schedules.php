@@ -56,7 +56,7 @@
 									</thead>
 									<tbody>
 									<?php $sn=1; foreach($v_mts as $v_mt): ?>
-										<tr <?php if($v_mt['rs_due_date'] < date('Y-m-d')): ?> style="background-color: lightcoral" <?php endif; ?>>
+										<tr <?php if($v_mt['ms_schedule_due_date'] < date('Y-m-d')): ?> style="background-color: lightcoral" <?php endif; ?>>
 											<td> <?=$sn++; ?></td>
 										
 											<td> <?=$v_mt['fv_brand'].'-'.$v_mt['fv_maker'].'-'.$v_mt['fv_year'].'-'.$v_mt['fv_color']?></td>
