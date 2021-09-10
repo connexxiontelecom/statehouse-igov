@@ -347,6 +347,22 @@ class FleetController extends BaseController
 		
 	}
 	
+	public function maintenance_schedules(){
+		if($this->request->getMethod() == 'get'):
+			
+			
+			$data['firstTime'] = $this->session->firstTime;
+			$data['username'] = $this->session->user_username;
+		
+			$data['v_mts'] = $this->join('fleet_maintenance_types', 'maintenance_schedules.ms_fmt_id = fleet_maintenance_types.fmt_id')
+				->join('fleet_vehicles', 'maintenance_schedules.ms_fv_id = fleet_vehicles.fv_id')
+				->join('employees', 'maintenance_schedules.ms_employee_id = employees.employee_id')
+				->findAll();
+			return view('/pages/fleet/maintenance-schedules', $data);
+		endif;
+		
+	}
+	
 	private function _get_department_employees() {
 		$department_employees = [];
 		$departments = $this->department->findAll();
