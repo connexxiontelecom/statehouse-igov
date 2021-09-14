@@ -42,6 +42,7 @@ class BaseController extends ResourceController
 	protected $helpers = [];
 	protected $email;
 	protected $session;
+	protected $notification;
 
 	/**
 	 * Constructor.
@@ -65,6 +66,8 @@ class BaseController extends ResourceController
 		$this->client = \Config\Services::curlrequest();
 		$pager = \Config\Services::pager();
 		helper('text');
+
+		$this->notification = new Notification();
 	}
 	
 	protected function send_mail($to, $subject, $message, $from) {

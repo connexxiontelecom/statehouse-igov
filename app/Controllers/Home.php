@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Department;
-use App\Models\Notification;
 use App\Models\Organization;
 use App\Models\Position;
 use App\Models\Post;
@@ -15,7 +14,6 @@ use App\Models\Employee;
 class Home extends BaseController
 {
   private $organization;
-  private $notification;
   private $user;
   private $employee;
   private $post;
@@ -31,7 +29,6 @@ class Home extends BaseController
 			exit;
 		endif;
 		$this->organization = new Organization();
-		$this->notification = new Notification();
     $this->user = new UserModel();
     $this->employee = new Employee();
     $this->post = new Post();
