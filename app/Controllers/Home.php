@@ -43,7 +43,7 @@ class Home extends BaseController
 		$data['username'] = $this->session->user_username;
 		$data['firstTime'] = $this->session->firstTime;
 		$data['organization'] = $this->organization->first();
-		$data['notifications'] = [];
+		$data['notifications'] = $this->_get_notifications();
 		$data['overview_stats']['memos'] = $this->_count_memos();
 		$data['overview_stats']['circulars'] = $this->_count_circulars();
 		$data['overview_stats']['notices'] = $this->_count_notices();
@@ -55,10 +55,6 @@ class Home extends BaseController
 		$data['overview_stats']['unsigned_notices'] = $this->_count_unsigned_notices();
 		$data['recent_tasks'] = $this->_get_tasks();
 		return view('pages/dashboard/index', $data);
-	}
-
-	private function _get_notifications() {
-		return $this->notification->where('target_id', $this->session->user_id)->findAll();
 	}
 
 	private function _count_memos() {

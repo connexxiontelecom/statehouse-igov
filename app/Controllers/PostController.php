@@ -220,14 +220,15 @@ class PostController extends BaseController
 		];
 		if ($post['p_type'] == 1) {
 			$notification_data['action'] = 'sign_memo';
-			$notification_data['target_id'] = json_decode($post['p_recipients_id']);
+			$notification_data['target_ids'] = $post['p_recipients_id'];
 			$notification_data['description'] = site_url('view-memo/').$post['p_id'];
 		} else if ($post['p_type'] == 2) {
 			$notification_data['action'] = 'sign_circular';
-			$notification_data['target_id'] = json_decode($post['p_recipients_id']);
+			$notification_data['target_ids'] = $post['p_recipients_id'];
 			$notification_data['description'] = site_url('view-circular/').$post['p_id'];
 		} else {
 			$notification_data['action'] = 'sign_notice';
+      // send to everyone
 			$notification_data['description'] = site_url('view-notice/').$post['p_id'];
 		}
 		$this->notification->insert($notification_data);
@@ -240,15 +241,15 @@ class PostController extends BaseController
 		];
 		if ($post['p_type'] == 1) {
 			$notification_data['action'] = 'decline_memo';
-			$notification_data['target_id'] = $post['p_by'];
+			$notification_data['target_ids'] = json_encode(array($post['p_by']));
 			$notification_data['description'] = site_url('view-memo/').$post['p_id'];
 		} else if ($post['p_type'] == 2) {
 			$notification_data['action'] = 'decline_circular';
-			$notification_data['target_id'] = $post['p_by'];
+			$notification_data['target_ids'] = json_encode(array($post['p_by']));
 			$notification_data['description'] = site_url('view-circular/').$post['p_id'];
 		} else {
 			$notification_data['action'] = 'decline_notice';
-			$notification_data['target_id'] = $post['p_by'];
+			$notification_data['target_ids'] = json_encode(array($post['p_by']));
 			$notification_data['description'] = site_url('view-notice/').$post['p_id'];
 		}
 		$this->notification->insert($notification_data);

@@ -65,7 +65,7 @@
             <a href="#overview" data-toggle="tab" aria-expanded="false" class="nav-link active">Overview</a>
           </li>
           <li class="nav-item">
-            <a href="#notifications" data-toggle="tab" aria-expanded="true" class="nav-link">Activities</a>
+            <a href="#notifications" data-toggle="tab" aria-expanded="true" class="nav-link">Notifications <span class="badge badge-danger mt-n1">140</span></a>
           </li>
           <li class="nav-item">
             <a href="#directory" data-toggle="tab" aria-expanded="false" class="nav-link">Directory</a>

@@ -49,14 +49,14 @@
 						<div class="noti-scroll" data-simplebar>
 							
 							<!-- item-->
-<!--							<a href="javascript:void(0);" class="dropdown-item notify-item active">-->
-<!--								<div class="notify-icon">-->
-<!--									<img src="../assets/images/users/user-1.jpg" class="img-fluid rounded-circle" alt="" /> </div>-->
-<!--								<p class="notify-details">Cristina Pride</p>-->
-<!--								<p class="text-muted mb-0 user-msg">-->
-<!--									<small>Hi, How are you? What about our next meeting</small>-->
-<!--								</p>-->
-<!--							</a>-->
+							<a href="javascript:void(0);" class="dropdown-item notify-item active">
+								<div class="notify-icon">
+									<img src="../assets/images/users/user-1.jpg" class="img-fluid rounded-circle" alt="" /> </div>
+								<p class="notify-details">Cristina Pride</p>
+								<p class="text-muted mb-0 user-msg">
+									<small>Hi, How are you? What about our next meeting</small>
+								</p>
+							</a>
 						
 						<!-- All-->
 						<a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
@@ -496,7 +496,7 @@
 					   class="btn btn-danger btn-block mt-3" target="_blank"><i class="mdi mdi-basket mr-1"></i> Purchase Now</a>
 				
 				</div>
-			
+        <embed src="success.wav" autostart="false" width="0" height="0" id="sound1" enablejavascript="true">
 			</div>
 		</div>
 	</div> <!-- end slimscroll-menu-->
@@ -505,6 +505,6 @@
 	
 	
 	
-	
-	
 <?php echo view('templates/_footer'); ?>
+
+

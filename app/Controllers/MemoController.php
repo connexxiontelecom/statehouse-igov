@@ -60,7 +60,7 @@ class MemoController extends PostController
 				'action' => 'new_internal_memo',
 				'description' => site_url('view-memo/').$post_id,
 				'initiator_id' => $this->session->user_id,
-				'target_id' => $post_data['p_signed_by'],
+				'target_ids' => json_encode(array($post_data['p_signed_by'])),
 				'notification_status' => 0
 			];
 			$this->notification->insert($notification_data);
@@ -104,7 +104,7 @@ class MemoController extends PostController
 				'action' => 'new_external_memo',
 				'description' => site_url('view-memo/').$post_id,
 				'initiator_id' => $this->session->user_id,
-				'target_id' => $post_data['p_signed_by'],
+				'target_ids' => json_encode(array($post_data['p_signed_by'])),
 				'notification_status' => 0
 			];
 			$this->notification->insert($notification_data);

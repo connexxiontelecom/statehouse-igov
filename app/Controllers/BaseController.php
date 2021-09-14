@@ -97,4 +97,29 @@ class BaseController extends ResourceController
 		$verification->save($verification_data);
 		return $ver_code;
 	}
+
+  protected function _get_notifications() {
+    $notifications = $this->notification->orderBy('created_at', 'DESC')->findAll();
+    foreach ($notifications as $key => $notification) {
+      if ($notification['initiator_id'] != $this->session->user_id && !in_array($this->session->user_id, json_decode($notification['target_ids']))) {
+        // if neither initiator nor target unset
+        unset($notifications[$key]);
+      } else {
+        $action = $notification['action'];
+        switch ($action) {
+          case 'new_internal_memo':
+            $notifications[$key]['subject'] = 'New Internal Memo Created!';
+            $notifications[$key]['has_link'] = true;
+            $notifications[$key]['cta'] = 'Click to view memo';
+            if ($notification['initiator_id'] == $this->session->user_id) {
+              $notifications[$key]['body'] = 'You created a new internal memo';
+            } else {
+              $notifications[$key]['body'] = 'An internal memo was created, and you were assigned as signatory.';
+            }
+            break;
+        }
+      }
+    }
+    return $notifications;
+  }
 }
