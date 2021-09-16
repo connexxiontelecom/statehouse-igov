@@ -508,11 +508,11 @@
         }
         notifications.forEach(notification => {
           $('#unseen-notifications').append(`
-          <a href="javascript:void(0);" class="dropdown-item notify-item">
+          <a href="javascript:void(0);" onclick="viewNotification(${notification})" class="dropdown-item notify-item">
             <div class="notify-icon">
-          <span class="avatar-title bg-soft-secondary text-secondary rounded-circle">
-            <i class="fe-bell noti-icon"></i>
-          </span>
+              <span class="avatar-title bg-soft-secondary text-secondary rounded-circle">
+                <i class="fe-bell noti-icon"></i>
+              </span>
             </div>
             <p class="notify-details">${notification.subject}</p>
             <p class="text-muted mb-0 user-msg">
@@ -527,6 +527,10 @@
       processData: false
     })
     setTimeout(getNotifications, 5000)
+  }
+
+  function viewNotification(notification) {
+    console.log(notification)
   }
 </script>
 
