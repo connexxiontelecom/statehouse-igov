@@ -18,7 +18,7 @@ class Notification extends Model
 		'action',
 		'description',
 		'initiator_id',
-		'target_id',
+		'target_ids',
 		'notification_status',
 	];
 

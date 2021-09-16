@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Department;
-use App\Models\Notification;
 use App\Models\Organization;
 use App\Models\Position;
 use App\Models\Post;
@@ -15,7 +14,6 @@ use App\Models\Employee;
 class Home extends BaseController
 {
   private $organization;
-  private $notification;
   private $user;
   private $employee;
   private $post;
@@ -31,7 +29,6 @@ class Home extends BaseController
 			exit;
 		endif;
 		$this->organization = new Organization();
-		$this->notification = new Notification();
     $this->user = new UserModel();
     $this->employee = new Employee();
     $this->post = new Post();
@@ -46,7 +43,7 @@ class Home extends BaseController
 		$data['username'] = $this->session->user_username;
 		$data['firstTime'] = $this->session->firstTime;
 		$data['organization'] = $this->organization->first();
-		$data['notifications'] = [];
+		$data['notifications'] = $this->_get_notifications();
 		$data['overview_stats']['memos'] = $this->_count_memos();
 		$data['overview_stats']['circulars'] = $this->_count_circulars();
 		$data['overview_stats']['notices'] = $this->_count_notices();
@@ -57,12 +54,18 @@ class Home extends BaseController
 		$data['overview_stats']['unsigned_circulars'] = $this->_count_unsigned_circulars();
 		$data['overview_stats']['unsigned_notices'] = $this->_count_unsigned_notices();
 		$data['recent_tasks'] = $this->_get_tasks();
+    $unseen_notifications = $this->_get_unseen_notifications();
+    $this->session->set('unseen_notifications_count', count($unseen_notifications));
+    $this->session->set('unseen_notifications', $unseen_notifications);
+    if ($unseen_notifications)
+      session()->setFlashdata('unseen_notifications', true);
 		return view('pages/dashboard/index', $data);
 	}
 
-	private function _get_notifications() {
-		return $this->notification->where('target_id', $this->session->user_id)->findAll();
-	}
+  public function get_unseen_notifications() {
+    $response['notifications'] = $this->_get_notifications();
+    return $this->response->setJSON($response);
+  }
 
 	private function _count_memos() {
     $user_id = session()->get('user_id');
@@ -265,5 +268,16 @@ class Home extends BaseController
       }
     }
     return $tasks;
+  }
+
+  private function _get_unseen_notifications() {
+    $notifications = $this->notification->where('notification_status', 0)->findAll();
+    foreach ($notifications as $key => $notification) {
+      if ($notification['initiator_id'] != $this->session->user_id && !in_array($this->session->user_id, json_decode($notification['target_ids']))) {
+        // if neither initiator nor target unset
+        unset($notifications[$key]);
+      }
+    }
+    return $notifications;
   }
 }

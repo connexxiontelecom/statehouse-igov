@@ -1,5 +1,7 @@
 <?= $this->extend('layouts/master') ?>
-<?= $this->section('content') ?>
+<?= $this->section('content');
+//print_r($notifications);
+?>
 <div class="container-fluid">
 	<!-- start page title -->
 
@@ -65,7 +67,7 @@
             <a href="#overview" data-toggle="tab" aria-expanded="false" class="nav-link active">Overview</a>
           </li>
           <li class="nav-item">
-            <a href="#notifications" data-toggle="tab" aria-expanded="true" class="nav-link">Activities</a>
+            <a href="#notifications" data-toggle="tab" aria-expanded="true" class="nav-link">Notifications <span class="badge badge-danger mt-n1"><?= session()->unseen_notifications_count?></span></a>
           </li>
           <li class="nav-item">
             <a href="#directory" data-toggle="tab" aria-expanded="false" class="nav-link">Directory</a>
@@ -83,9 +85,22 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
+  <div id="warning-alert-modal-3" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-body p-4">
+          <div class="text-center">
+            <i class="dripicons-bell h1 text-warning"></i>
+            <h4 class="mt-2">Unseen Notifications</h4>
+            <p class="mt-3">You have <?= session()->unseen_notifications_count?> new notification(s) to attend to.</p>
+            <a href="javascript:void(0)" type="button" class="btn btn-success my-2" data-dismiss="modal">Continue</a>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 	<!-- end page title -->
 </div> <!-- container -->
 <?= $this->endSection() ?>
@@ -108,4 +123,13 @@
 
   <!-- Datatables init -->
   <script src="/assets/js/pages/datatables.init.js"></script>
+
+  <script>
+    $(document).ready(() => {
+      <?php if (session()->getFlashdata('unseen_notifications')):?>
+      jQuery.noConflict()
+      $('#warning-alert-modal-3').modal('show');
+      <?php endif;?>
+    })
+  </script>
 <?= $this->endSection(); ?>

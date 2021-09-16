@@ -70,9 +70,8 @@ class PostController extends BaseController
 		$data['subject'] = $subject;
 		$data['user'] = $user['user_name'];
 		$data['organization'] = $organization['org_name'];
-
-		 $code = $this->_get_verification_code('doc_signing');
-		 $data['ver_code'] = $code;
+		$code = $this->_get_verification_code('doc_signing');
+		$data['ver_code'] = $code;
 		$data['post'] = $post;
 		$message = view('email/doc-signing-otp', $data);
 		$from['name'] = 'IGOV by Connexxion Telecom';
@@ -107,6 +106,14 @@ class PostController extends BaseController
 		curl_close($curl);
 		//echo $responses;
 		if ($this->send_mail($to, $subject, $message, $from)) {
+			$notification_data = [
+				'action' => 'send_doc_signing_verification',
+//				'description' => site_url('view-memo/').$post_id,
+				'initiator_id' => $this->session->user_id,
+				'target_id' => $this->session->user_id,
+				'notification_status' => 0
+			];
+			$this->notification->insert($notification_data);
 			$response['success'] = true;
 			$response['message'] = 'A document signing verification code has been sent to your email.';
 		} else {
@@ -153,6 +160,7 @@ class PostController extends BaseController
 				'p_signature' => $post_request_data['p_signature']
 			];
 			if ($this->post->save($post_data)) {
+				$this->_create_post_sign_notification($post_request_data);
 				$response['success'] = true;
 				$response['message'] = 'The document was signed successfully';
 			} else {
@@ -183,6 +191,7 @@ class PostController extends BaseController
 			'p_status' => 4,
 		];
 		if ($this->post->save($post_data)) {
+			$this->_create_post_decline_notification($post_request_data);
 			$response['success'] = true;
 			$response['message'] = 'The document was successfully declined';
 		} else {
@@ -202,5 +211,47 @@ class PostController extends BaseController
 				$this->pa->save($attachment_data);
 			}
 		}
+	}
+
+	private function _create_post_sign_notification($post) {
+		$notification_data = [
+			'initiator_id' => $this->session->user_id,
+			'notification_status' => 0
+		];
+		if ($post['p_type'] == 1) {
+			$notification_data['action'] = 'sign_memo';
+			$notification_data['target_ids'] = $post['p_recipients_id'];
+			$notification_data['description'] = site_url('view-memo/').$post['p_id'];
+		} else if ($post['p_type'] == 2) {
+			$notification_data['action'] = 'sign_circular';
+			$notification_data['target_ids'] = $post['p_recipients_id'];
+			$notification_data['description'] = site_url('view-circular/').$post['p_id'];
+		} else {
+			$notification_data['action'] = 'sign_notice';
+      // send to everyone
+			$notification_data['description'] = site_url('view-notice/').$post['p_id'];
+		}
+		$this->notification->insert($notification_data);
+	}
+
+	private function _create_post_decline_notification($post) {
+		$notification_data = [
+			'initiator_id' => $this->session->user_id,
+			'notification_status' => 0
+		];
+		if ($post['p_type'] == 1) {
+			$notification_data['action'] = 'decline_memo';
+			$notification_data['target_ids'] = json_encode(array($post['p_by']));
+			$notification_data['description'] = site_url('view-memo/').$post['p_id'];
+		} else if ($post['p_type'] == 2) {
+			$notification_data['action'] = 'decline_circular';
+			$notification_data['target_ids'] = json_encode(array($post['p_by']));
+			$notification_data['description'] = site_url('view-circular/').$post['p_id'];
+		} else {
+			$notification_data['action'] = 'decline_notice';
+			$notification_data['target_ids'] = json_encode(array($post['p_by']));
+			$notification_data['description'] = site_url('view-notice/').$post['p_id'];
+		}
+		$this->notification->insert($notification_data);
 	}
 }
