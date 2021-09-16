@@ -54,6 +54,8 @@ $routes->get('/', 'Home::index', ['filter' => 'auth']);
 $routes->get('/logout', 'Auth::logout', ['filter' => 'auth']);
 $routes->get('/test', 'TestController::index');
 
+$routes->get('/get-unseen-notifications', 'Home::get_unseen_notifications', ['filter' => 'auth']);
+
 //office route
 $routes->get('office', 'Office::index', ['filter' => 'auth']);
 $routes->get('moderator', 'Auth::moderator', ['filter' => 'auth']);
@@ -275,6 +277,7 @@ $routes->match(['get', 'post'], 'renewal-schedule-data', 'FleetController::renew
 $routes->match(['get', 'post'], 'maintenance-schedules', 'FleetController::maintenance_schedules', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'maintenance-schedule-calendar', 'FleetController::maintenance_schedule_calendar', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'maintenance-schedule-data', 'FleetController::maintenance_schedule_data', ['filter' => 'auth']);
+
 
 /*
  * --------------------------------------------------------------------

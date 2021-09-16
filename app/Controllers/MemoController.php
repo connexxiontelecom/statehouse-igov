@@ -56,6 +56,14 @@ class MemoController extends PostController
 				$attachments = $post_data['m_attachments'];
 				$this->_upload_attachments($attachments, $post_id);
 			}
+			$notification_data = [
+				'action' => 'new_internal_memo',
+				'description' => site_url('view-memo/').$post_id,
+				'initiator_id' => $this->session->user_id,
+				'target_ids' => json_encode(array($post_data['p_signed_by'])),
+				'notification_status' => 0
+			];
+			$this->notification->insert($notification_data);
 			$response['success'] = true;
 			$response['message'] = 'Successfully created the internal memo';
 		} else {
@@ -92,6 +100,14 @@ class MemoController extends PostController
         $attachments = $post_data['m_attachments'];
         $this->_upload_attachments($attachments, $post_id);
       }
+			$notification_data = [
+				'action' => 'new_external_memo',
+				'description' => site_url('view-memo/').$post_id,
+				'initiator_id' => $this->session->user_id,
+				'target_ids' => json_encode(array($post_data['p_signed_by'])),
+				'notification_status' => 0
+			];
+			$this->notification->insert($notification_data);
 			$response['success'] = true;
 			$response['message'] = 'Successfully created the external memo';
 		} else {
