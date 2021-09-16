@@ -120,6 +120,9 @@ class BaseController extends ResourceController
         }
       }
     }
+    if (count($notifications) <= 1) {
+      $notifications = (array) $notifications;
+    }
     return $notifications;
   }
 }

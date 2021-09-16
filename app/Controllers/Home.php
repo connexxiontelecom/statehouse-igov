@@ -54,8 +54,18 @@ class Home extends BaseController
 		$data['overview_stats']['unsigned_circulars'] = $this->_count_unsigned_circulars();
 		$data['overview_stats']['unsigned_notices'] = $this->_count_unsigned_notices();
 		$data['recent_tasks'] = $this->_get_tasks();
+    $unseen_notifications = $this->_get_unseen_notifications();
+    $this->session->set('unseen_notifications_count', count($unseen_notifications));
+    $this->session->set('unseen_notifications', $unseen_notifications);
+    if ($unseen_notifications)
+      session()->setFlashdata('unseen_notifications', true);
 		return view('pages/dashboard/index', $data);
 	}
+
+  public function get_unseen_notifications() {
+    $response['notifications'] = $this->_get_notifications();
+    return $this->response->setJSON($response);
+  }
 
 	private function _count_memos() {
     $user_id = session()->get('user_id');
@@ -258,5 +268,16 @@ class Home extends BaseController
       }
     }
     return $tasks;
+  }
+
+  private function _get_unseen_notifications() {
+    $notifications = $this->notification->where('notification_status', 0)->findAll();
+    foreach ($notifications as $key => $notification) {
+      if ($notification['initiator_id'] != $this->session->user_id && !in_array($this->session->user_id, json_decode($notification['target_ids']))) {
+        // if neither initiator nor target unset
+        unset($notifications[$key]);
+      }
+    }
+    return $notifications;
   }
 }

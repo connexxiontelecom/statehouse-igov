@@ -32,44 +32,29 @@
 				<li class="dropdown notification-list topbar-dropdown">
 					<a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 						<i class="fe-bell noti-icon"></i>
-<!--						<span class="badge badge-danger rounded-circle noti-icon-badge">9</span>-->
+						<span class="badge badge-danger rounded-circle noti-icon-badge"><?= session()->unseen_notifications_count?></span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-lg">
 						<!-- item-->
 						<div class="dropdown-item noti-title">
 							<h5 class="m-0">
                 <span class="float-right">
-                    <a href="" class="text-dark">
-                        <small>Clear All</small>
-                    </a>
-                </span>Notification
+                </span>
+                Notifications
 							</h5>
 						</div>
-						
-						<div class="noti-scroll" data-simplebar>
-							
-							<!-- item-->
-							<a href="javascript:void(0);" class="dropdown-item notify-item active">
-								<div class="notify-icon">
-									<img src="../assets/images/users/user-1.jpg" class="img-fluid rounded-circle" alt="" /> </div>
-								<p class="notify-details">Cristina Pride</p>
-								<p class="text-muted mb-0 user-msg">
-									<small>Hi, How are you? What about our next meeting</small>
-								</p>
-							</a>
-						
+						<div id="unseen-notifications" class="noti-scroll" data-simplebar>
 						<!-- All-->
-						<a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
+						<a href="/" class="dropdown-item text-center text-primary notify-item notify-all">
 							View all
 							<i class="fe-arrow-right"></i>
 						</a>
-					
 					</div>
 				</li>
 				<li class="dropdown notification-list topbar-dropdown">
 					<a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 <!--						<img src="../assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle">-->
-						<span class="pro-user-name ml-1"><?=ucfirst($username); ?> <i class="mdi mdi-chevron-down"></i></span>
+						<span class="pro-user-name ml-1"><?=$username ?> <i class="mdi mdi-chevron-down"></i></span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
 						<!-- item-->
@@ -502,9 +487,47 @@
 	</div> <!-- end slimscroll-menu-->
 </div>
 <!-- /Right-bar -->
-	
-	
+
+
 	
 <?php echo view('templates/_footer'); ?>
+
+<script>
+  $(document).ready(() => {
+    getNotifications()
+  })
+  function getNotifications() {
+    $.ajax({
+      url: '<?=site_url('get-unseen-notifications')?>',
+      type: 'get',
+      success: response => {
+        let { notifications } = response
+        $('#unseen-notifications').empty()
+        if (typeof notifications === 'object') {
+          notifications = Object.values(notifications)
+        }
+        notifications.forEach(notification => {
+          $('#unseen-notifications').append(`
+          <a href="javascript:void(0);" class="dropdown-item notify-item">
+            <div class="notify-icon">
+          <span class="avatar-title bg-soft-secondary text-secondary rounded-circle">
+            <i class="fe-bell noti-icon"></i>
+          </span>
+            </div>
+            <p class="notify-details">${notification.subject}</p>
+            <p class="text-muted mb-0 user-msg">
+              <small>${notification.body}</small>
+            </p>
+          </a>
+        `)
+        })
+      },
+      cache: false,
+      contentType: false,
+      processData: false
+    })
+    setTimeout(getNotifications, 5000)
+  }
+</script>
 
 

@@ -3,8 +3,8 @@
   <h4 class="header-title mb-3">Recent <span class="text-muted">Activities</span></h4>
   <div class="list-group">
     <?php if (empty($notifications)): ?>
-    <?php else:?>
-    No recent activities
+      No recent activities
+    <?php else: ?>
     <?php foreach ($notifications as $notification):?>
       <a href="javascript:void(0)" class="list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-between">
