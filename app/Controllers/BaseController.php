@@ -101,7 +101,10 @@ class BaseController extends ResourceController
   protected function _get_notifications() {
     $notifications = $this->notification->orderBy('created_at', 'DESC')->findAll();
     foreach ($notifications as $key => $notification) {
-      if ($notification['initiator_id'] != $this->session->user_id && !in_array($this->session->user_id, json_decode($notification['target_ids']))) {
+      if (
+        $notification['initiator_id'] != $this->session->user_id &&
+        !in_array($this->session->user_id, json_decode($notification['target_ids']))
+      ) {
         // if neither initiator nor target unset
         unset($notifications[$key]);
       } else {
@@ -117,6 +120,27 @@ class BaseController extends ResourceController
               $notifications[$key]['body'] = 'An internal memo was created, and you were assigned as signatory.';
             }
             break;
+          case 'new_external_memo':
+            $notifications[$key]['subject'] = 'New External Memo Created!';
+            $notifications[$key]['has_link'] = true;
+            $notifications[$key]['cta'] = 'Click to view memo';
+            if ($notification['initiator_id'] == $this->session->user_id) {
+              $notifications[$key]['body'] = 'You created a new external memo';
+            } else {
+              $notifications[$key]['body'] = 'An external memo was created, and you were assigned as signatory.';
+            }
+            break;
+          case 'sign_memo':
+            $notifications[$key]['subject'] = 'New Memo Signing';
+            $notifications[$key]['has_link'] = true;
+            $notifications[$key]['cta'] = 'Click to view memo';
+            if ($notification['initiator_id'] == $this->session->user_id) {
+              $notifications[$key]['body'] = 'You successfully signed a memo';
+            } else {
+              $notifications[$key]['body'] = 'A memo addressed to you was signed and approved.';
+            }
+            break;
+
         }
       }
     }

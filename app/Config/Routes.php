@@ -55,6 +55,7 @@ $routes->get('/logout', 'Auth::logout', ['filter' => 'auth']);
 $routes->get('/test', 'TestController::index');
 
 $routes->get('/get-unseen-notifications', 'Home::get_unseen_notifications', ['filter' => 'auth']);
+$routes->get('view-notification/(:num)', 'Home::view_notification/$1', ['filter' => 'auth']);
 
 //office route
 $routes->get('office', 'Office::index', ['filter' => 'auth']);
