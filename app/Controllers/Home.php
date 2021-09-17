@@ -67,6 +67,20 @@ class Home extends BaseController
     return $this->response->setJSON($response);
   }
 
+  public function view_notification($notification_id) {
+    $notification = $this->notification->find($notification_id);
+    $response['success'] = false;
+    if ($notification['notification_status'] == 0) {
+      $notification_data = [
+        'notification_id' => $notification['notification_id'],
+        'notification_status' => 1
+      ];
+      $this->notification->save($notification_data);
+      $response['success'] = true;
+    }
+    return $this->response->setJSON($response);
+  }
+
 	private function _count_memos() {
     $user_id = session()->get('user_id');
     $user_data = $this->user->where('user_id', $user_id)->first();
