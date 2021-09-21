@@ -143,12 +143,11 @@ class Auth extends BaseController
 	
 	public function a_register(){
 		$user = array(
-			'user_name' => 'Administrator',
+			'user_name' => 'test test',
 			'user_password' => 'password1234',
-			'user_username' => 'administrator',
 			'user_email' => 'admin@admin.co',
 			'user_phone' => '08090000000',
-			'user_employee_id' => '',
+			
 			'user_status' => 1
 		);
 		

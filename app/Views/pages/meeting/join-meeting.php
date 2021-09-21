@@ -83,6 +83,9 @@
 												<div class="col" >
 													<p id="local-player-name" class="player-name"></p>
 													<div id="local-player" class="player" style="margin-left: -50px"></div>
+													<button id="share" onclick="shareScreen()" type="button" class="btn btn-primary btn-sm">Share</button>
+													<button id="stopshare" onclick="stopShare()" type="button" class="btn btn-primary btn-sm">Stop Share</button>
+												
 												</div>
 											</div>
 											<div class="col">
@@ -126,7 +129,10 @@
 	var user_name = <?=$user_name; ?>
 </script>
 <script src="/vendors/index.js"></script>
+<!--<script src="/vendors/shareTheScreen.js"></script>-->
 <script>
+	$('#share').hide();
+	$('#stopshare').hide();
 	window.addEventListener("beforeunload", function (e) {
 		var confirmationMessage = 'It looks like you have been editing something. '
 				+ 'If you leave before saving, your changes will be lost.';
