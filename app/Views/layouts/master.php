@@ -506,8 +506,7 @@
         if (typeof notifications === 'object') {
           notifications = Object.values(notifications)
         }
-        $('#count').empty()
-        $('#count').append(notifications.length)
+        $('#count').html(notifications.length)
         notifications.forEach(notification => {
           $('#unseen-notifications').append(`
             <a href="javascript:void(0)" onclick="viewNotification(\``+notification.notification_id+`\`)" class="dropdown-item notify-item">
