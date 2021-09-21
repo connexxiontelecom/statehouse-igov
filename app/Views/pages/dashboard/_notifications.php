@@ -6,7 +6,7 @@
       No recent activities
     <?php else: ?>
     <?php foreach ($notifications as $notification):?>
-      <a href="javascript:void(0)" class="list-group-item list-group-item-action">
+      <a href="javascript:void(0)" onclick="viewNotification(<?=$notification['notification_id']?>)" class="list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1"><?=$notification['subject']?></h5>
           <small>

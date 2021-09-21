@@ -32,7 +32,7 @@
 				<li class="dropdown notification-list topbar-dropdown">
 					<a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 						<i class="fe-bell noti-icon"></i>
-						<span class="badge badge-danger rounded-circle noti-icon-badge"><?= session()->unseen_notifications_count?></span>
+						<span id="count" class="badge badge-danger rounded-circle noti-icon-badge"></span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-lg">
 						<!-- item-->
@@ -506,20 +506,22 @@
         if (typeof notifications === 'object') {
           notifications = Object.values(notifications)
         }
+        $('#count').empty()
+        $('#count').append(notifications.length)
         notifications.forEach(notification => {
           $('#unseen-notifications').append(`
-          <a href="javascript:void(0);" onclick="viewNotification(${notification})" class="dropdown-item notify-item">
-            <div class="notify-icon">
-              <span class="avatar-title bg-soft-secondary text-secondary rounded-circle">
-                <i class="fe-bell noti-icon"></i>
-              </span>
-            </div>
-            <p class="notify-details">${notification.subject}</p>
-            <p class="text-muted mb-0 user-msg">
-              <small>${notification.body}</small>
-            </p>
-          </a>
-        `)
+            <a href="javascript:void(0)" onclick="viewNotification(\``+notification.notification_id+`\`)" class="dropdown-item notify-item">
+              <div class="notify-icon">
+                <span class="avatar-title bg-soft-secondary text-secondary rounded-circle">
+                  <i class="fe-bell noti-icon"></i>
+                </span>
+              </div>
+              <p class="notify-details">${notification.subject}</p>
+              <p class="text-muted mb-0 user-msg">
+                <small>${notification.body}</small>
+              </p>
+            </a>
+          `)
         })
       },
       cache: false,
@@ -529,8 +531,15 @@
     setTimeout(getNotifications, 5000)
   }
 
-  function viewNotification(notification) {
-    console.log(notification)
+  function viewNotification(notificationID) {
+    $.ajax({
+      url: '<?=site_url('view-notification/')?>'+notificationID,
+      type: 'get',
+      success: response => {
+        let { success, link } = response
+        location.href = link
+      }
+    })
   }
 </script>
 
