@@ -43,7 +43,7 @@ class Home extends BaseController
 		$data['username'] = $this->session->user_username;
 		$data['firstTime'] = $this->session->firstTime;
 		$data['organization'] = $this->organization->first();
-		$data['notifications'] = $this->_get_notifications();
+		$data['notifications'] = $this->_get_notifications('all');
 		$data['overview_stats']['memos'] = $this->_count_memos();
 		$data['overview_stats']['circulars'] = $this->_count_circulars();
 		$data['overview_stats']['notices'] = $this->_count_notices();
@@ -63,7 +63,7 @@ class Home extends BaseController
 	}
 
   public function get_unseen_notifications() {
-    $response['notifications'] = $this->_get_notifications();
+    $response['notifications'] = $this->_get_notifications('unseen');
     return $this->response->setJSON($response);
   }
 
@@ -78,6 +78,7 @@ class Home extends BaseController
       $this->notification->save($notification_data);
       $response['success'] = true;
     }
+    $response['link'] = $notification['description'];
     return $this->response->setJSON($response);
   }
 

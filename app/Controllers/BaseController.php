@@ -98,8 +98,12 @@ class BaseController extends ResourceController
 		return $ver_code;
 	}
 
-  protected function _get_notifications() {
-    $notifications = $this->notification->orderBy('created_at', 'DESC')->findAll();
+  protected function _get_notifications($type) {
+    if ($type === 'unseen') {
+      $notifications = $this->notification->where('notification_status', 0)->orderBy('created_at', 'DESC')->findAll();
+    } else if ($type === 'all') {
+      $notifications = $this->notification->orderBy('created_at', 'DESC')->findAll();
+    }
     foreach ($notifications as $key => $notification) {
       if (
         $notification['initiator_id'] != $this->session->user_id &&
