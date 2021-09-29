@@ -15,10 +15,11 @@ class Notification extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'action',
-		'description',
-		'initiator_id',
-		'target_ids',
+		'subject',
+		'body',
+		'recipient',
+		'link',
+		'cta',
 		'notification_status',
 	];
 

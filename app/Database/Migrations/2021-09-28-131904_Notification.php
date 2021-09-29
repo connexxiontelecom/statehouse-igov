@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Notifications extends Migration
+class Notification extends Migration
 {
 	public function up()
 	{
@@ -17,20 +17,24 @@ class Notifications extends Migration
 					'auto_increment' => true,
 				],
 
-				'action' =>[
+				'subject' =>[
 					'type' => 'TEXT',
 				],
 
-				'description' =>[
+				'body' =>[
 					'type' => 'TEXT',
 				],
 
-				'initiator_id' =>[
+				'recipient' =>[
 					'type' => 'INT',
 				],
 
-				'target_id' =>[
-					'type' => 'INT',
+				'link' =>[
+					'type' => 'TEXT',
+				],
+
+				'cta' =>[
+					'type' => 'TEXT',
 				],
 
 				'notification_status' =>[

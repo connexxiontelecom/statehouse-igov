@@ -78,7 +78,7 @@ class Home extends BaseController
       $this->notification->save($notification_data);
       $response['success'] = true;
     }
-    $response['link'] = $notification['description'];
+    $response['link'] = $notification['link'];
     return $this->response->setJSON($response);
   }
 
@@ -288,7 +288,7 @@ class Home extends BaseController
   private function _get_unseen_notifications() {
     $notifications = $this->notification->where('notification_status', 0)->findAll();
     foreach ($notifications as $key => $notification) {
-      if ($notification['initiator_id'] != $this->session->user_id && !in_array($this->session->user_id, json_decode($notification['target_ids']))) {
+      if ($notification['recipient'] != $this->session->user_id) {
         // if neither initiator nor target unset
         unset($notifications[$key]);
       }

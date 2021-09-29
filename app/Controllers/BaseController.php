@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\Notification;
+use App\Models\Organization;
+use App\Models\UserModel;
+use App\Models\Employee;
 use App\Models\Verification;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
@@ -78,6 +81,65 @@ class BaseController extends ResourceController
 		return $this->email->send(false);
 	}
 
+	protected function send_notification($subject, $body, $recipient, $link, $cta) {
+		$userModel = new UserModel();
+		$employeeModel = new Employee();
+		$organizationModel = new Organization();
+		$organization = $organizationModel->first();
+		$user = $userModel->find($recipient);
+		$employee = $employeeModel->find($user['user_employee_id']);
+		$to = $employee['employee_mail'];
+		$phone = $employee['employee_phone'];
+		$phone = '234'.substr($phone, 1, strlen($phone));
+		$from['name'] = 'IGOV by Connexxion Telecom';
+		$from['email'] = 'support@connexxiontelecom.com';
+		$data = [
+			'subject' => $subject,
+			'user' => $user['user_name'],
+			'organization' => $organization['org_name'],
+			'notification' => $body,
+			'link' => $link
+		];
+		$message = view('email/notification', $data);
+
+		$notification_data = [
+			'subject' => $subject,
+			'body' => $body,
+			'recipient' => $recipient,
+			'link' => $link,
+			'cta' => $cta,
+			'notification_status' => 0,
+		];
+		if ($this->notification->save($notification_data)) {
+			$this->send_mail($to, $subject, $message, $from);
+			$curl = curl_init();
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => 'https://termii.com/api/sms/send',
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => '',
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => 'POST',
+				CURLOPT_POSTFIELDS =>' {
+          "to": "'.$phone.'",
+           "from": "N-Alert",
+           "sms": '.$body.',
+           "type": "plain",
+           "channel": "dnd",
+           "api_key": "TLfrtWYbF5uWb0GLWjwDigrMb722yJgAp2B3jDoYYRzYOSjIU3PHwRIpGSZlga"
+                }',
+				CURLOPT_HTTPHEADER => array(
+					'Content-Type: application/json'
+				),
+			));
+			$responses = curl_exec($curl);
+//			print_r($responses);
+			curl_close($curl);
+		}
+	}
+
 	protected function _get_verification_code($ver_type) {
 		$verification = new Verification();
 		$ver_code = bin2hex(random_bytes(4));
@@ -99,54 +161,16 @@ class BaseController extends ResourceController
 	}
 
   protected function _get_notifications($type) {
+		$notifications = [];
     if ($type === 'unseen') {
       $notifications = $this->notification->where('notification_status', 0)->orderBy('created_at', 'DESC')->findAll();
     } else if ($type === 'all') {
       $notifications = $this->notification->orderBy('created_at', 'DESC')->findAll();
     }
     foreach ($notifications as $key => $notification) {
-      if (
-        $notification['initiator_id'] != $this->session->user_id &&
-        !in_array($this->session->user_id, json_decode($notification['target_ids']))
-      ) {
-        // if neither initiator nor target unset
-        unset($notifications[$key]);
-      } else {
-        $action = $notification['action'];
-        switch ($action) {
-          case 'new_internal_memo':
-            $notifications[$key]['subject'] = 'New Internal Memo Created!';
-            $notifications[$key]['has_link'] = true;
-            $notifications[$key]['cta'] = 'Click to view memo';
-            if ($notification['initiator_id'] == $this->session->user_id) {
-              $notifications[$key]['body'] = 'You created a new internal memo';
-            } else {
-              $notifications[$key]['body'] = 'An internal memo was created, and you were assigned as signatory.';
-            }
-            break;
-          case 'new_external_memo':
-            $notifications[$key]['subject'] = 'New External Memo Created!';
-            $notifications[$key]['has_link'] = true;
-            $notifications[$key]['cta'] = 'Click to view memo';
-            if ($notification['initiator_id'] == $this->session->user_id) {
-              $notifications[$key]['body'] = 'You created a new external memo';
-            } else {
-              $notifications[$key]['body'] = 'An external memo was created, and you were assigned as signatory.';
-            }
-            break;
-          case 'sign_memo':
-            $notifications[$key]['subject'] = 'New Memo Signing';
-            $notifications[$key]['has_link'] = true;
-            $notifications[$key]['cta'] = 'Click to view memo';
-            if ($notification['initiator_id'] == $this->session->user_id) {
-              $notifications[$key]['body'] = 'You successfully signed a memo';
-            } else {
-              $notifications[$key]['body'] = 'A memo addressed to you was signed and approved.';
-            }
-            break;
-
-        }
-      }
+    	if ($notification['recipient'] != $this->session->user_id) {
+		    unset($notifications[$key]);
+	    }
     }
     if (count($notifications) <= 1) {
       $notifications = (array) $notifications;

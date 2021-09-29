@@ -106,14 +106,6 @@ class PostController extends BaseController
 		curl_close($curl);
 		//echo $responses;
 		if ($this->send_mail($to, $subject, $message, $from)) {
-			$notification_data = [
-				'action' => 'send_doc_signing_verification',
-//				'description' => site_url('view-memo/').$post_id,
-				'initiator_id' => $this->session->user_id,
-				'target_id' => $this->session->user_id,
-				'notification_status' => 0
-			];
-			$this->notification->insert($notification_data);
 			$response['success'] = true;
 			$response['message'] = 'A document signing verification code has been sent to your email.';
 		} else {
@@ -214,44 +206,40 @@ class PostController extends BaseController
 	}
 
 	private function _create_post_sign_notification($post) {
-		$notification_data = [
-			'initiator_id' => $this->session->user_id,
-			'notification_status' => 0
-		];
+		$recipients = json_decode($post['p_recipients_id']);
 		if ($post['p_type'] == 1) {
-			$notification_data['action'] = 'sign_memo';
-			$notification_data['target_ids'] = $post['p_recipients_id'];
-			$notification_data['description'] = site_url('view-memo/').$post['p_id'];
+			$this->send_notification('New Memo Signing', 'You successfully signed a memo', $this->session->user_id, site_url('view-memo/').$post['p_id'], 'click to view memo');
+			foreach ($recipients as $recipient) {
+				$this->send_notification('New Memo Signing', 'A memo addressed to you was signed and approved', $recipient, site_url('view-memo/').$post['p_id'], 'click to view memo');
+			}
 		} else if ($post['p_type'] == 2) {
-			$notification_data['action'] = 'sign_circular';
-			$notification_data['target_ids'] = $post['p_recipients_id'];
-			$notification_data['description'] = site_url('view-circular/').$post['p_id'];
+			$this->send_notification('New Circular Signing', 'You successfully signed a circular', $this->session->user_id, site_url('view-circular/').$post['p_id'], 'click to view circular');
+			foreach ($recipients as $recipient) {
+				$department_users = $this->employee->where('employee_department_id', $recipient)->findAll();
+				foreach ($department_users as $department_user) {
+					$user = $this->user->where('user_employee_id', $department_user['employee_id'])->findAll();
+					$this->send_notification('New Circular Signing', 'A circular addressed to you was signed and approved', $user['user_id'], site_url('view-circular/').$post['p_id'], 'click to view circular');
+				}
+			}
 		} else {
-			$notification_data['action'] = 'sign_notice';
-      // send to everyone
-			$notification_data['description'] = site_url('view-notice/').$post['p_id'];
+			$this->send_notification('New Notice Signing', 'You successfully signed a notice', $this->session->user_id, site_url('view-notice/').$post['p_id'], 'click to view notice');
+			$users = $this->user->findAll();
+			foreach ($users as $user) {
+				$this->send_notification('New Notice Signing', 'A notice was signed and approved', $user['user_id'], site_url('view-notice/').$post['p_id'], 'click to view notice');
+			}
 		}
-		$this->notification->insert($notification_data);
 	}
 
 	private function _create_post_decline_notification($post) {
-		$notification_data = [
-			'initiator_id' => $this->session->user_id,
-			'notification_status' => 0
-		];
 		if ($post['p_type'] == 1) {
-			$notification_data['action'] = 'decline_memo';
-			$notification_data['target_ids'] = json_encode(array($post['p_by']));
-			$notification_data['description'] = site_url('view-memo/').$post['p_id'];
+			$this->send_notification('Memo Declined', 'You successfully declined a memo', $this->session->user_id, site_url('view-memo/').$post['p_id'], 'click to view memo');
+			$this->send_notification('Memo Declined', 'A memo you created was declined', $post['p_by'], site_url('view-memo/').$post['p_id'], 'click to view memo');
 		} else if ($post['p_type'] == 2) {
-			$notification_data['action'] = 'decline_circular';
-			$notification_data['target_ids'] = json_encode(array($post['p_by']));
-			$notification_data['description'] = site_url('view-circular/').$post['p_id'];
+			$this->send_notification('Circular Declined', 'You successfully declined a circular', $this->session->user_id, site_url('view-circular/').$post['p_id'], 'click to view circular');
+			$this->send_notification('Circular Declined', 'A circular you created was declined', $post['p_by'], site_url('view-circular/').$post['p_id'], 'click to view circular');
 		} else {
-			$notification_data['action'] = 'decline_notice';
-			$notification_data['target_ids'] = json_encode(array($post['p_by']));
-			$notification_data['description'] = site_url('view-notice/').$post['p_id'];
+			$this->send_notification('Notice Declined', 'You successfully declined a notice', $this->session->user_id, site_url('view-notice/').$post['p_id'], 'click to view notice');
+			$this->send_notification('Notice Declined', 'A notice you created was declined', $post['p_by'], site_url('view-notice/').$post['p_id'], 'click to view notice');
 		}
-		$this->notification->insert($notification_data);
 	}
 }
