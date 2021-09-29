@@ -277,6 +277,7 @@ class WorkflowController extends BaseController
             'amount'=>$amount
         ];
         $workflow_request_id = $this->workflowrequest->insert($data);
+        $this->send_notification('New Workflow Request', 'You have submitted a new workflow request', $this->session->user_id, site_url('/workflow-requests/view/'.$workflow_request_id), 'click to view workflow request');
         #Process attachments
         if(!empty($workflow_request_id)){
             if($this->request->getFileMultiple('attachments')){
@@ -303,7 +304,8 @@ class WorkflowController extends BaseController
             'request_id'=>$request_id,
         ];
         $this->workflowresponsibleperson->save($data);
-
+        $user = $this->user->where('user_employee_id', $directed_to);
+	      $this->send_notification('New Workflow Request', 'You have been assigned to act on a workflow request', $user['user_id'], site_url('/workflow-requests/view/'.$request_id), 'click to view workflow request');
     }
 
 
@@ -344,7 +346,7 @@ class WorkflowController extends BaseController
                     $action = $this->request->getPost('action');
                     $workflow_responsible_id = $this->request->getPost('workflow_responsible');
                     //return var_dump($workflow_responsible_id);
-                    if($action == 1 || $action || 2){
+                    if($action == 1 || $action == 2){
                         $data = [
                             'request_id'=>$request_id,
                             'request_status'=>$action
@@ -352,8 +354,11 @@ class WorkflowController extends BaseController
                         if($action == 1){
                             $request = $this->workflowrequest->where('workflow_request_id', $request_id)->first();
                             $this->workflowresponsibleperson->update($workflow_responsible_id, $data);
-                            $employee = $this->employee->getEmployeeByUserEmployeeId($request['requested_by']);
-                            #Exception processors
+	                        $this->send_notification('Workflow Request Approved', 'You have approved a workflow request', $this->session->user_id, site_url('/workflow-requests/view/'.$request_id), 'click to view workflow request');
+	                        $employee = $this->employee->getEmployeeByUserEmployeeId($request['requested_by']);
+	                        $user = $this->user->where('user_employee_id', $employee['employee_id']);
+	                        $this->send_notification('Workflow Request Approved', 'Your workflow request was approved', $user['user_id'], site_url('/workflow-requests/view/'.$request_id), 'click to view workflow request');
+	                        #Exception processors
                             $exception_list = $this->workflowexceptionprocessor->checkAllExceptionList($request['requested_by'], $request['requested_type_id']);
                             #Normal
                             $normal_list = $this->workflowprocessor->checkAllNormalList($request['requested_by'], $request['requested_type_id'], $employee['employee_department_id']);
@@ -400,7 +405,12 @@ class WorkflowController extends BaseController
                                 'request_status'=>2
                             ];
                             $this->workflowrequest->update($request_id, $update);
-                            return redirect()->back()->with("success", "<strong>Success!</strong> Workflow request declined.");
+	                        $this->send_notification('Workflow Request Declined', 'You have declined a workflow request', $this->session->user_id, site_url('/workflow-requests/view/'.$request_id), 'click to view workflow request');
+	                        $request = $this->workflowrequest->where('workflow_request_id', $request_id)->first();
+	                        $employee = $this->employee->getEmployeeByUserEmployeeId($request['requested_by']);
+	                        $user = $this->user->where('user_employee_id', $employee['employee_id']);
+	                        $this->send_notification('Workflow Request Declined', 'Your workflow request was declined', $user['user_id'], site_url('/workflow-requests/view/'.$request_id), 'click to view workflow request');
+	                        return redirect()->back()->with("success", "<strong>Success!</strong> Workflow request declined.");
                         }
                         #Check for next approval
 
