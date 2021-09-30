@@ -86,6 +86,12 @@ class RegistryController extends BaseController
 				$attachments = $post_data['m_attachments'];
 				$this->_upload_attachments($attachments, $mail_id);
 			}
+			$this->send_notification('New Incoming Mail', 'You registered a new incoming mail', $this->session->user_id, site_url('manage-mail/').$mail_id, 'click to view mail');
+			$registry = $this->registry->find($registry_id);
+			$registry_users = json_decode($registry['registry_users']);
+			foreach ($registry_users as $registry_user) {
+				$this->send_notification('New Incoming Mail', 'A new incoming mail was registered in your registry', $registry_user, site_url('manage-mail/').$mail_id, 'click to view mail');
+			}
 			$response['success'] = true;
 			$response['message'] = 'Successfully registered the incoming mail';
 		} else {
@@ -125,6 +131,12 @@ class RegistryController extends BaseController
         $attachments = $post_data['m_attachments'];
         $this->_upload_attachments($attachments, $mail_id);
       }
+	    $this->send_notification('New Outgoing Mail', 'You registered a new outgoing mail', $this->session->user_id, site_url('manage-mail/').$mail_id, 'click to view mail');
+	    $registry = $this->registry->find($registry_id);
+	    $registry_users = json_decode($registry['registry_users']);
+	    foreach ($registry_users as $registry_user) {
+		    $this->send_notification('New Outgoing Mail', 'A new outgoing mail was registered in your registry', $registry_user, site_url('manage-mail/').$mail_id, 'click to view mail');
+	    }
       $response['success'] = true;
       $response['message'] = 'Successfully registered the outgoing mail';
     } else {
@@ -171,6 +183,14 @@ class RegistryController extends BaseController
 			'mt_to_id' => $post_data['mt_to_id'],
 		];
 		if ($this->mail_transfer->save($mail_transfer_data)) {
+			$this->send_notification('New Mail Transfer', 'You initiated a mail transfer', $this->session->user_id, site_url('manage-mail/').$post_data['mt_mail_id'], 'click to view mail');
+			$this->send_notification('New Mail Transfer', 'A mail was transferred to you', $post_data['mt_to_id'], site_url('manage-mail/').$post_data['mt_mail_id'], 'click to view mail');
+			$mail = $this->mail->find($post_data['mt_mail_id']);
+			$registry = $this->registry->find($mail['m_registry_id']);
+			$registry_users = json_decode($registry['registry_users']);
+			foreach ($registry_users as $registry_user) {
+				$this->send_notification('New Mail Transfer', 'A mail in your registry was transferred', $registry_user, site_url('manage-mail/').$post_data['mt_mail_id'], 'click to view mail');
+			}
 			$mail_data = [
 				'm_id' => $post_data['mt_mail_id'],
 				'm_status' => 1
@@ -220,6 +240,13 @@ class RegistryController extends BaseController
 				'm_status' => 3
 			];
 			$this->mail->save($mail_data);
+			$this->send_notification('New Mail Filing', 'You filed a mail', $this->session->user_id, site_url('manage-mail/').$post_data['mf_mail_id'], 'click to view mail');
+			$mail = $this->mail->find($post_data['mf_mail_id']);
+			$registry = $this->registry->find($mail['m_registry_id']);
+			$registry_users = json_decode($registry['registry_users']);
+			foreach ($registry_users as $registry_user) {
+				$this->send_notification('New Mail Filing', 'A mail in your registry was filed', $registry_user, site_url('manage-mail/').$post_data['mf_mail_id'], 'click to view mail');
+			}
 			$response['success'] = true;
 			$response['message'] = 'Successfully filed the mail';
 		} else {
@@ -277,6 +304,14 @@ class RegistryController extends BaseController
 					'm_status' => 2
 				];
 				if ($this->mail->save($mail_data)) {
+					$this->send_notification('Mail Transfer Confirmed', 'You confirmed a mail transfer', $this->session->user_id, site_url('manage-mail/').$transfer_request['mt_mail_id'], 'click to view mail');
+					$this->send_notification('Mail Transfer Confirmed', 'Your mail transfer was confirmed', $transfer_request['mt_from_id'], site_url('manage-mail/').$transfer_request['mt_mail_id'], 'click to view mail');
+					$mail = $this->mail->find($transfer_request['mt_mail_id']);
+					$registry = $this->registry->find($mail['m_registry_id']);
+					$registry_users = json_decode($registry['registry_users']);
+					foreach ($registry_users as $registry_user) {
+						$this->send_notification('Mail Transfer Confirmed', 'A mail transfer was confirmed', $registry_user, site_url('manage-mail/').$transfer_request['mt_mail_id'], 'click to view mail');
+					}
 					$response['success'] = true;
 					$response['message'] = 'The transfer request was successfully confirmed';
 				} else {
