@@ -101,7 +101,8 @@ class ProjectController extends BaseController
                 'project_status'=>0
             ];
             $project = $this->project->insert($data);
-            if(!empty($this->request->getPost('team_members'))) {
+            $this->send_notification('New Project Created', 'You created a project', $this->session->user_id, site_url('/projects/').$project, 'click to view project');
+	        if(!empty($this->request->getPost('team_members'))) {
                 foreach ($this->request->getPost('team_members') as $participant){
                     $part = [
                         'participant_id' => $participant,
@@ -109,6 +110,10 @@ class ProjectController extends BaseController
                         'part_project_id'=>$project,
                     ];
                     $this->projectparticipant->save($part);
+		                $user = $this->user->where('user_employee_id', $participant)->find();
+		                if ($user) {
+			                $this->send_notification('New Project Created', 'You are a participant in a new project', $user['user_id'], site_url('/projects/').$project, 'click to view project');
+		                }
                     $remind = [
                         'title'=>$project_name,
                         'reminder_start_date'=>$start_date,
@@ -255,7 +260,15 @@ class ProjectController extends BaseController
                 'project_report_content'=>$this->request->getPost('report'),
             ];
             $reportId = $this->projectreport->insert($data);
-            if($this->request->getFileMultiple('attachments')){
+	          $this->send_notification('Project Report Submitted', 'You successfully submitted a project report', $this->session->user_id, site_url('/projects/').$this->request->getPost('project_report'), 'click to view project');
+	          $participants = $this->projectparticipant->where('part_project_id', $this->request->getPost('project_report'))->findAll();
+	          foreach ($participants as $participant) {
+		          $user = $this->user->where('user_employee_id', $participant['participant_id'])->find();
+		          if ($user) {
+			          $this->send_notification('Project Report Submitted', 'A project report was submitted', $user['user_id'], site_url('/projects/').$this->request->getPost('project_report'), 'click to view project');
+		          }
+	          }
+	        if($this->request->getFileMultiple('attachments')){
                 foreach ($this->request->getFileMultiple('attachments') as $attachment){
                     if($attachment->isValid() ){
                         $extension = $attachment->guessExtension();
