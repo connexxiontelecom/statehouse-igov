@@ -43,13 +43,7 @@
                 Notifications
 							</h5>
 						</div>
-						<div id="unseen-notifications" class="noti-scroll" data-simplebar>
-						<!-- All-->
-						<a href="/" class="dropdown-item text-center text-primary notify-item notify-all">
-							View all
-							<i class="fe-arrow-right"></i>
-						</a>
-					</div>
+						<div id="unseen-notifications" class="noti-scroll" data-simplebar style="max-height: 20em; overflow-y: auto"></div>
 				</li>
 				<li class="dropdown notification-list topbar-dropdown">
 					<a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">

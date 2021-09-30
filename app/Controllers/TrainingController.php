@@ -67,8 +67,13 @@ class TrainingController extends BaseController
                   'author'=>$this->session->user_id,
                   'slug'=>substr(sha1(time()),23,40)
                 ];
-                $this->training->save($data);
-                return redirect()->to(base_url('/add-new-training'))->with("success", "<strong>Training registered successfully.");
+                $training_id = $this->training->insert($data);
+                $this->send_notification('New Training Created', 'You created a new training', $this->session->user_id, site_url('/trainings/').$training_id, 'click to view training');
+                $users = $this->user->findAll();
+                foreach ($users as $user) {
+	                $this->send_notification('New Training Created', 'A new training was created', $user['user_id'], site_url('/trainings/').$training_id, 'click to view training');
+                }
+	            return redirect()->to(base_url('/add-new-training'))->with("success", "<strong>Training registered successfully.");
             }else{
                 return redirect()->to(base_url('/add-new-training'))->with("error", "<strong>Whoops!</strong> All fields are required.");
             }
@@ -127,7 +132,12 @@ class TrainingController extends BaseController
                 ];
                 #Lesson attachments
                 //$attachments = $this->request->getFileMultiple('attachments');
-                $lesson_id =  $this->lesson->save($data);
+                $lesson_id =  $this->lesson->insert($data);
+		            $this->send_notification('New Lesson Added', 'You added a new lesson to a training', $this->session->user_id, site_url('/trainings/').$this->request->getPost('training'), 'click to view training');
+		            $users = $this->user->findAll();
+		            foreach ($users as $user) {
+			            $this->send_notification('New Lesson Added', 'A lesson was added to a training', $user['user_id'], site_url('/trainings/').$this->request->getPost('training'), 'click to view training');
+		            }
                 if($this->request->getFileMultiple('attachments')){
                     foreach ($this->request->getFileMultiple('attachments') as $attachment){
                         if($attachment->isValid() ){
