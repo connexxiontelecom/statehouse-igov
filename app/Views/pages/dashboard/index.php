@@ -27,7 +27,7 @@
       </div>
       <div class="card-box" style="border-radius: 10px">
         <small class="float-right">
-          <a class="text-success" href="<?=site_url('/reminders')?>">View more</a>
+          <a class="text-success" href="<?=site_url('/reminder')?>">View more</a>
         </small>
         <h4 class="header-title mb-3">Upcoming <span class="text-muted">Reminders</span></h4>
         <ul class="list-group">

@@ -13,6 +13,9 @@
             <?php $date = date_create($notification['created_at']);
             echo date_format($date,"d M Y H:i a");
             ?>
+            <?php if ($notification['notification_status'] == 0):?>
+              <div class="badge badge-pill badge-soft-primary ml-1">new</div>
+            <?php endif;?>
           </small>
         </div>
         <p class="mb-1"><?=$notification['body']?></p>
