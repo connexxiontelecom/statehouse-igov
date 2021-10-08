@@ -54,6 +54,9 @@ $routes->get('/', 'Home::index', ['filter' => 'auth']);
 $routes->get('/logout', 'Auth::logout', ['filter' => 'auth']);
 $routes->get('/test', 'TestController::index');
 
+$routes->get('/get-unseen-notifications', 'Home::get_unseen_notifications', ['filter' => 'auth']);
+$routes->get('view-notification/(:num)', 'Home::view_notification/$1', ['filter' => 'auth']);
+
 //office route
 $routes->get('office', 'Office::index', ['filter' => 'auth']);
 $routes->get('moderator', 'Auth::moderator', ['filter' => 'auth']);
@@ -262,12 +265,19 @@ $routes->match(['get'], 'meetings', 'MeetingController::meetings', ['filter' => 
 $routes->match(['get', 'post'], 'new-meeting', 'MeetingController::new_meeting', ['filter' => 'auth']);
 $routes->addPlaceholder('meetingtoken', '[\s\S]');
 $routes->match(['get'], 'join-meeting/(:num)/(:any)', 'MeetingController::join_meeting/$1/$2', ['filter' => 'auth']);
-
+//
 // Fleet routes
 $routes->match(['get'], 'active-vehicles', 'FleetController::active_vehicles', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-vehicle', 'FleetController::new_vehicle', ['filter' => 'auth']);
 $routes->match(['get'], 'drivers', 'FleetController::drivers', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-driver', 'FleetController::new_driver', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'manage-vehicle/(:num)', 'FleetController::manage_vehicle/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'renewal-schedules', 'FleetController::renewal_schedules', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'renewal-schedule-calendar', 'FleetController::renewal_schedule_calendar', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'renewal-schedule-data', 'FleetController::renewal_schedule_data', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'maintenance-schedules', 'FleetController::maintenance_schedules', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'maintenance-schedule-calendar', 'FleetController::maintenance_schedule_calendar', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'maintenance-schedule-data', 'FleetController::maintenance_schedule_data', ['filter' => 'auth']);
 
 
 /*

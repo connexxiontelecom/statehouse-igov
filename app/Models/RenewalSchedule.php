@@ -4,24 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Notification extends Model
+class RenewalSchedule extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'notifications';
-	protected $primaryKey           = 'notification_id';
+	protected $table                = 'renewal_schedules';
+	protected $primaryKey           = 'rs_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'subject',
-		'body',
-		'recipient',
-		'link',
-		'cta',
-		'notification_status',
-	];
+	protected $allowedFields        = ['rs_id', 'rs_frt_id', 'rs_fv_id', 'rs_employee_id', 'rs_renew_date', 'rs_due_date'];
 
 	// Dates
 	protected $useTimestamps        = false;

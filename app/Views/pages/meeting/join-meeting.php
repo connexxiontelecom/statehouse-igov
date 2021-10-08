@@ -24,12 +24,12 @@
 	<!-- end page title -->
 	
 	
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="card">
-				<div class="card-body">
+	<div class="row" style="background-color: black">
+		<div class="col-sm-12"  style="background-color: black">
+			<div class="card"  style="background-color: black">
+				<div class="card-body"  style="background-color: black">
 					
-					<div class="row">
+					<div class="row"  style="background-color: black">
 						<div class="col-xl-12">
 							
 							
@@ -76,13 +76,16 @@
 								</form>
 								<input type="hidden" id="user-name" value="<?=$user_name; ?>">
 								
-								<div class="card video-group">
-									<div class="card-body">
+								<div class="card video-group" style="background-color:black">
+									<div class="card-body" style="margin-left: 3%;">
 										<div class="row">
 											<div class="col-sm-4">
 												<div class="col" >
 													<p id="local-player-name" class="player-name"></p>
 													<div id="local-player" class="player" style="margin-left: -50px"></div>
+													<button id="share" onclick="shareScreen()" type="button" class="btn btn-primary btn-sm">Share</button>
+													<button id="stopshare" onclick="stopShare()" type="button" class="btn btn-primary btn-sm">Stop Share</button>
+												
 												</div>
 											</div>
 											<div class="col">
@@ -126,7 +129,10 @@
 	var user_name = <?=$user_name; ?>
 </script>
 <script src="/vendors/index.js"></script>
+<!--<script src="/vendors/shareTheScreen.js"></script>-->
 <script>
+	$('#share').hide();
+	$('#stopshare').hide();
 	window.addEventListener("beforeunload", function (e) {
 		var confirmationMessage = 'It looks like you have been editing something. '
 				+ 'If you leave before saving, your changes will be lost.';

@@ -4,23 +4,21 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Notification extends Model
+class Stamp extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'notifications';
-	protected $primaryKey           = 'notification_id';
+	protected $table                = 'stamps';
+	protected $primaryKey           = 'stamp_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'subject',
-		'body',
-		'recipient',
-		'link',
-		'cta',
-		'notification_status',
+		'stamp_type',
+		'stamp_status',
+		'stamp_users',
+		'stamp_image',
 	];
 
 	// Dates

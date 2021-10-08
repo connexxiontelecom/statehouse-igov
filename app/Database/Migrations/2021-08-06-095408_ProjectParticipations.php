@@ -26,7 +26,10 @@ class ProjectParticipations extends Migration
                     'comment'=>'1=responsible,2=participant,3=observer'
                 ],
                 'created_at datetime default current_timestamp',
-
+		            'part_project_id' => [
+		                'type' => 'INT',
+		                'null'=>true,
+		            ],
             ]
         );
         $this->forge->addKey('project_part_id', true);

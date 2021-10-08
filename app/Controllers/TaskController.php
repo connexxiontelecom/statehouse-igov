@@ -59,14 +59,12 @@ class TaskController extends BaseController
       'task_status' => 0,
     ];
     $task_id = $this->task->insert($task_data);
-
-
-
     if ($task_id) {
-      if (isset($post_data['task_executors'])) {
+	    $this->send_notification('New Task Created', 'You created a new task', $this->session->user_id, site_url('task-details/').$task_id, 'click to view task');
+	    if (isset($post_data['task_executors'])) {
         $this->_add_executors($post_data['task_executors'], $task_id);
       }
-      $task_log_data = [
+	    $task_log_data = [
         'tl_task_id' => $task_id,
         'tl_user_id' => $this->session->user_id,
         'tl_action' => 'task_creation',
@@ -104,6 +102,11 @@ class TaskController extends BaseController
           'ta_link' => $file_name,
         ];
         if ($this->task_attachment->save($task_attachment_data)) {
+	        $this->send_notification('Task Attachment Uploaded', 'You have uploaded an attachment to a task', $this->session->user_id, site_url('task-details/').$post_data['task_id'], 'click to view task');
+	        $executors = $this->task_executor->where('te_task_id', $post_data['task_id'])->findAll();
+	        foreach($executors as $executor){
+		        $this->send_notification('Task Attachment Uploaded', 'An attachment was uploaded to a task you are assigned to', $executor['te_executor_id'], site_url('task-details/').$post_data['task_id'], 'click to view task');
+	        }
           $task_log_data = [
             'tl_task_id' => $post_data['task_id'],
             'tl_user_id' => $this->session->user_id,
@@ -133,7 +136,8 @@ class TaskController extends BaseController
         'task_status' => 1,
       ];
       if ($this->task->save($task_data)) {
-        $task_log_data = [
+	      $this->send_notification('Task Started', 'You have started a task', $this->session->user_id, site_url('task-details/').$task_id, 'click to view task');
+	      $task_log_data = [
           'tl_task_id' => $task['task_id'],
           'tl_user_id' => $this->session->user_id,
           'tl_action' => 'task_started',
@@ -142,10 +146,10 @@ class TaskController extends BaseController
         $executors = $this->task_executor->where('te_task_id', $task['task_id'])->findAll();
         if(!empty($executors)){
             foreach($executors as $executor){
-                $this->_add_reminder($task['task_id'], $executor['te_executor_id']);
+	            $this->send_notification('Task Started', 'A task you are assigned to has started', $executor['te_executor_id'], site_url('task-details/').$task_id, 'click to view task');
+	            $this->_add_reminder($task['task_id'], $executor['te_executor_id']);
             }
         }
-
         $response['success'] = true;
         $response['message'] = 'The task was successfully started.';
       } else {
@@ -168,7 +172,12 @@ class TaskController extends BaseController
         'task_status' => 3
       ];
       if ($this->task->save($task_data)) {
-        $task_log_data = [
+	      $this->send_notification('Task Cancelled', 'You have cancelled a task', $this->session->user_id, site_url('task-details/').$task['task_id'], 'click to view task');
+	      $executors = $this->task_executor->where('te_task_id', $task['task_id'])->findAll();
+	      foreach($executors as $executor){
+		      $this->send_notification('Task Cancelled', 'A task you are assigned to is cancelled', $executor['te_executor_id'], site_url('task-details/').$task['task_id'], 'click to view task');
+	      }
+	      $task_log_data = [
           'tl_task_id' => $task['task_id'],
           'tl_user_id' => $this->session->user_id,
           'tl_action' => 'task_cancellation',
@@ -197,7 +206,12 @@ class TaskController extends BaseController
         'task_status' => 2
       ];
       if ($this->task->save($task_data)) {
-        $task_log_data = [
+	      $this->send_notification('Task Completed', 'You have completed a task', $this->session->user_id, site_url('task-details/').$task['task_id'], 'click to view task');
+	      $executors = $this->task_executor->where('te_task_id', $task['task_id'])->findAll();
+	      foreach($executors as $executor){
+		      $this->send_notification('Task Completed', 'A task you are assigned to is completed', $executor['te_executor_id'], site_url('task-details/').$task['task_id'], 'click to view task');
+	      }
+	      $task_log_data = [
           'tl_task_id' => $task['task_id'],
           'tl_user_id' => $this->session->user_id,
           'tl_action' => 'task_completion',
@@ -227,7 +241,12 @@ class TaskController extends BaseController
         'tf_comment' => $post_data['comment']
       ];
       if ($this->task_feedback->save($task_feedback_data)) {
-        $task_log_data = [
+	      $this->send_notification('Task Feedback Submitted', 'You have submitted a feedback on a task', $this->session->user_id, site_url('task-details/').$task['task_id'], 'click to view task');
+	      $executors = $this->task_executor->where('te_task_id', $task['task_id'])->findAll();
+	      foreach($executors as $executor){
+		      $this->send_notification('Task Feedback Submitted', 'Feedback was submitted on a task you are assigned to', $executor['te_executor_id'], site_url('task-details/').$task['task_id'], 'click to view task');
+	      }
+	      $task_log_data = [
           'tl_task_id' => $task['task_id'],
           'tl_user_id' => $this->session->user_id,
           'tl_action' => 'feedback_submit',
@@ -293,6 +312,7 @@ class TaskController extends BaseController
           'te_status' => 1
         ];
         $this->task_executor->save($executor_data);
+	      $this->send_notification('New Task Created', 'You were assigned as an executor on a new task', $executor, site_url('task-details/').$task_id, 'click to view task');
       }
     }
   }

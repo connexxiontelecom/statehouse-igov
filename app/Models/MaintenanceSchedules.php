@@ -4,24 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Notification extends Model
+class MaintenanceSchedules extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'notifications';
-	protected $primaryKey           = 'notification_id';
+	protected $table                = 'maintenance_schedules';
+	protected $primaryKey           = 'ms_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'subject',
-		'body',
-		'recipient',
-		'link',
-		'cta',
-		'notification_status',
-	];
+	protected $allowedFields        = ['ms_id', 'ms_fmt_id', 'ms_fv_id', 'ms_employee_id', 'ms_schedule_date', 'ms_schedule_due_date'];
 
 	// Dates
 	protected $useTimestamps        = false;

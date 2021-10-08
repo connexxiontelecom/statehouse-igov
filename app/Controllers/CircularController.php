@@ -96,6 +96,8 @@ class CircularController extends PostController
 			$p_id = $this->post->insert($_POST);
 			if ($p_id):
 				$this->_upload_attachments($p_attachments, $p_id);
+				$this->send_notification('New Internal Circular Created', 'You created a new internal circular', $this->session->user_id, site_url('view-circular/').$p_id, 'click to view circular');
+				$this->send_notification('New Internal Circular Created', 'An internal circular was created. You are the signatory.', $_POST['p_signed_by'], site_url('view-circular/').$p_id, 'click to view circular');
 				$response['success'] = true;
 				$response['message'] = 'Successfully created the internal circular';
 			else:
@@ -127,7 +129,9 @@ class CircularController extends PostController
     $p_id = $this->post->insert($_POST);
     if ($p_id):
       $this->_upload_attachments($p_attachments, $p_id);
-      $response['success'] = true;
+	    $this->send_notification('New External Circular Created', 'You created a new external circular', $this->session->user_id, site_url('view-circular/').$p_id, 'click to view circular');
+	    $this->send_notification('New External Circular Created', 'An external circular was created. You are the signatory.', $_POST['p_signed_by'], site_url('view-circular/').$p_id, 'click to view circular');
+	    $response['success'] = true;
       $response['message'] = 'Successfully created the external circular';
     else:
       $response['success'] = false;

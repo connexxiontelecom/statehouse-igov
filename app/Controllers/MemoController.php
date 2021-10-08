@@ -56,6 +56,8 @@ class MemoController extends PostController
 				$attachments = $post_data['m_attachments'];
 				$this->_upload_attachments($attachments, $post_id);
 			}
+			$this->send_notification('New Internal Memo Created', 'You created a new internal memo', $this->session->user_id, site_url('view-memo/').$post_id, 'click to view memo');
+			$this->send_notification('New Internal Memo Created', 'An internal memo was created. You are the signatory.', $post_data['p_signed_by'], site_url('view-memo/').$post_id, 'click to view memo');
 			$response['success'] = true;
 			$response['message'] = 'Successfully created the internal memo';
 		} else {
@@ -92,6 +94,8 @@ class MemoController extends PostController
         $attachments = $post_data['m_attachments'];
         $this->_upload_attachments($attachments, $post_id);
       }
+			$this->send_notification('New External Memo Created', 'You created a new external memo', $this->session->user_id, site_url('view-memo/').$post_id, 'click to view memo');
+			$this->send_notification('New External Memo Created', 'An external memo was created. You are the signatory.', $post_data['p_signed_by'], site_url('view-memo/').$post_id, 'click to view memo');
 			$response['success'] = true;
 			$response['message'] = 'Successfully created the external memo';
 		} else {

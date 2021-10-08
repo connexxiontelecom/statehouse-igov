@@ -54,6 +54,8 @@ class NoticeController extends PostController
 		$attachments = $post_data['p_attachment'];
 		if ($post_id) {
 			$this->_upload_attachments($attachments, $post_id);
+			$this->send_notification('New Notice Created', 'You created a new notice', $this->session->user_id, site_url('view-notice/').$post_id, 'click to view notice');
+			$this->send_notification('New Notice Created', 'A notice was created. You are the signatory.', $post_data['p_signed_by'], site_url('view-notice/').$post_id, 'click to view notice');
 			$response['success'] = true;
 			$response['message'] = 'Successfully created the notice';
 		} else {

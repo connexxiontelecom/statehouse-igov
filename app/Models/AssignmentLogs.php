@@ -4,24 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Notification extends Model
+class AssignmentLogs extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'notifications';
-	protected $primaryKey           = 'notification_id';
+	protected $table                = 'assignment_logs';
+	protected $primaryKey           = 'al_id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'subject',
-		'body',
-		'recipient',
-		'link',
-		'cta',
-		'notification_status',
-	];
+	protected $allowedFields        = ['al_id', 'al_fd_id', 'al_employee_id', 'al_fv_id', 'al_purpose', 'al_due_date', 'al_by'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -46,4 +39,6 @@ class Notification extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+	
+
 }
