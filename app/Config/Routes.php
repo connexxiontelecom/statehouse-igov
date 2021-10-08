@@ -265,7 +265,7 @@ $routes->match(['get'], 'meetings', 'MeetingController::meetings', ['filter' => 
 $routes->match(['get', 'post'], 'new-meeting', 'MeetingController::new_meeting', ['filter' => 'auth']);
 $routes->addPlaceholder('meetingtoken', '[\s\S]');
 $routes->match(['get'], 'join-meeting/(:num)/(:any)', 'MeetingController::join_meeting/$1/$2', ['filter' => 'auth']);
-
+//
 // Fleet routes
 $routes->match(['get'], 'active-vehicles', 'FleetController::active_vehicles', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'new-vehicle', 'FleetController::new_vehicle', ['filter' => 'auth']);
